@@ -14,6 +14,26 @@
             @yield('landing')
         </div>
         {{-- @yield('content') --}}
-    </div>    
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>  
+    <script>
+      //Phan text
+      var typingEffect = new Typed(".multi_text",{
+        strings: ['FASHION AND SO MUCH MORE'],
+        loop:true,
+        typeSpeed: 100,
+        backSpeed: 50,
+        backDelay: 1000,
+        showCursor: true,
+        cursorChar: '|',
+        autoInsertCss: true
+      })
+     // Phan scroll
+     const home_landing = document.querySelector('.back_home');
+     const landing = document.querySelector('.landing');
+     home_landing.onclick = function(){
+                landing.classList.toggle('active');
+            }
+    </script>  
 </body>
 </html>

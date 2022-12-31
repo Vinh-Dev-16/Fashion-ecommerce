@@ -18,6 +18,10 @@ nav h2{
     background-size: cover;
     background-position: center;
     position: relative;
+    transition: 3s;
+}
+.landing.active{
+    transform: translateY(-100vh);
 }
 .flex_lading{
     display: flex;
@@ -51,6 +55,8 @@ nav h2{
 .text_landing h3{
     font-size: 40px;
     font-weight: 500;
+    text-transform: capitalize;
+    color: #fff;
 }
 .text_landing a{
     color: #fff;
