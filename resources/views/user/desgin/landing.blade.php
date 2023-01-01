@@ -1,9 +1,10 @@
-@extends('user.layout')
+@extends('user.desgin.index')
 @section('landing')
+  <div class="landing_home" class="landing_home" style="background-image: url({{asset('images/banner-bg.png')}})">
   <nav>
     <h2>FASHION</h2>
   </nav>
-  <section>
+  <section >
     <div class="flex_lading">
     <div class="text_landing">
         <p>WEB</p>
@@ -25,4 +26,5 @@
     </div>
     </div>
   </section>
+  </div>
 @endsection

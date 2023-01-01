@@ -4,23 +4,150 @@
     box-sizing: border-box;
     font-family: 'Obito,sans-serif';
 }
+::-webkit-scrollbar{
+    width: 8px;
+ }
+ ::-webkit-scrollbar-thumb{
+     background: rgb(183 183 183) !important;
+     border-radius: 6px;
+ }
+
+ /* Phần progress bar */
+ .progress_bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgb(219 219 219);
+    height: 10px;
+    width: 100%;
+    z-index: 100000;
+ }
+ .progress_bar .value{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color:#717271 ;
+    border-radius: 4px;
+ }
+/* Phần header */
+.head_index{
+    position: relative;
+    background: rgb(243 243 243);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin-top: 13px;
+}
+.head_flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    margin: 0 auto;
+    max-width: 120opx;
+    
+}
+.head_flex .logo_index{
+    font-size: 20px;
+    color: black;
+}
+.head_flex .logo_index h2{
+    text-align: center;
+}
+.navbar a{
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 550;
+    text-transform: uppercase;
+    margin:0 10px;
+    color: #3a3c3c;
+    transition: 0.35s;
+}
+.navbar a:hover{
+    text-decoration: underline;
+    color: rgb(60, 241, 60);
+}
+
+.icon_header{
+    font-size: 19px;
+    color: #4b4e4e;
+    cursor: pointer;
+}
+.icon_header i{
+    margin: 0 8px;
+}
+.search_form{
+    margin-left: 100px;
+}
+.search_form form {
+    background-color:#e1dede;
+    border-radius: 30px;
+}
+.search_form form #search_text{
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 14px;
+    width: 0;
+    padding: 0;
+    transition: all 0.25s ease-in-out;
+} 
+.search_form form:hover #search_text{
+    width: 200px;
+    padding: 6px 20px;
+
+}
+.search_form form button{
+    background-color: #e1dede;
+    border: none;
+    padding: 8px 8px;
+    cursor: pointer;
+    border-radius:50% ;
+}
+/* Phan index */
+.home_index{
+    display: none;
+}
+.home_index.active{
+    display: block;
+}
+.logo_index h2{
+    color: black;
+}
+/*  */
 nav h2{
     color: #fff;
     font-weight: 300;
     margin-left: 50px;
     padding-top: 20px;
 }
+.slider_index{
+    margin-top: 20px;
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+.home_index .slider_index img{
+    width: 100%;
+    max-height: 100vh;
+    object-fit: cover;
+    object-position: center;
+}
 /* Phần index của user */
-.landing{
+.landing_home{
+    position: absolute !important;
+    top: 0;
+    left: 0;
     width:100%;
     height: 100vh;
     /* background-image:url(https://raw.githubusercontent.com/judygab/web-dev-projects/main/personal-portfolio/src/assets/img/banner-bg.png); */
     background-size: cover;
     background-position: center;
-    position: relative;
+    z-index: 100000000;
     transition: 3s;
+    
 }
-.landing.active{
+.landing_home.active{
     transform: translateY(-100vh);
 }
 .flex_lading{
@@ -30,7 +157,7 @@ nav h2{
 .text_landing{
     margin-top: 36vh;
     margin-left: 100px;
-    flex: 2;
+    width: 60%;
     color: #fff;
 }
 .text_landing p{
