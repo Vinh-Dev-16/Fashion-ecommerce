@@ -48,16 +48,16 @@
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>  
     <script>
       //Phan text
-      var typingEffect = new Typed(".multi_text",{
-        strings: ['FASHION AND SO MUCH MORE'],
-        loop:true,
-        typeSpeed: 100,
-        backSpeed: 60,
-        backDelay: 1500,
-        showCursor: true,
-        cursorChar: '|',
-        autoInsertCss: true
-      })
+    //   var typingEffect = new Typed(".multi_text",{
+    //     strings: ['FASHION AND SO MUCH MORE'],
+    //     loop:true,
+    //     typeSpeed: 100,
+    //     backSpeed: 60,
+    //     backDelay: 1500,
+    //     showCursor: true,
+    //     cursorChar: '|',
+    //     autoInsertCss: true
+    //   })
       // Phần progress bar
       document.addEventListener('DOMContentLoaded',()=>{
         const value = document.querySelector('.value');
@@ -71,17 +71,41 @@
         
       });
       });
-     
- 
-     // Phan scroll
-     const home_landing = document.querySelector('.back_home');
-     const landing = document.querySelector('.landing_home');
-     const home_index = document.querySelector('.home_index');
-     home_landing.onclick = function(){
-                landing.classList.toggle('active');
-                home_index.classList.toggle('active');
+     //Phần deal of day
+     let countDate = new Date('16,january,2023 00:00:00').getTime();
+     function countDown(){
+        let now = new Date().getTime();
 
-            }
+        gap =  countDate-now;
+
+        let seconds=1000;
+        let minutes = seconds *60;
+        let hours = minutes *60;
+        let day = hours *24;
+        let d = Math.floor(gap/(day));
+        let h = Math.floor((gap%(day))/(hours));
+        let m = Math.floor((gap%(hours))/(minutes));
+        let s = Math.floor((gap%(minutes))/(seconds));
+
+        document.getElementById('days').innerText = d;
+        document.getElementById('hours').innerText = h;
+        document.getElementById('minutes').innerText = m;
+        document.getElementById('seconds').innerText = s;
+
+
+     }
+     setInterval(() => {
+        countDown()
+     },1000);
+     // Phan scroll
+    //  const home_landing = document.querySelector('.back_home');
+    //  const landing = document.querySelector('.landing_home');
+    //  const home_index = document.querySelector('.home_index');
+    //  home_landing.onclick = function(){
+    //             landing.classList.toggle('active');
+    //             home_index.classList.toggle('active');
+
+    //         }
     </script>  
 </body>
 </html>
