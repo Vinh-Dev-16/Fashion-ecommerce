@@ -141,14 +141,22 @@ nav h2{
     color:#717271
 }
 .countdown{
-    width: 32%;
+    width: 40%;
     display: flex;
-    gap: 10px;
+    gap: 15px;
     justify-content: center;
-
+}
+.countdown h3{
+    font-size: 30px;
+}
+.countdown span{
+    display: block;
+    margin-top: 10px ;
+    color: #088178;
+    font-size: 30px;
 }
 .trademark{
-    font-size: 30px;
+    font-size: 40px;
     font-weight: 500;
     margin-left: 120px;
     color: rgb(194, 40, 40);
@@ -164,7 +172,7 @@ nav h2{
 }
 .box_countdown{
     border: 1px solid rgb(136, 136, 33);
-    padding: 7px 10px;
+    padding: 7px 15px;
 }
 .box_countdown h3{
     color: orange;
@@ -182,6 +190,7 @@ nav h2{
     margin-top: 10px;
     margin-left: 100px;
 }
+
 /* Phần index của user */
 .landing_home{
     position: absolute !important;

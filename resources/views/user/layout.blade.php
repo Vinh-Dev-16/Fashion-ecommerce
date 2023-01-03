@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+  />
     <link rel="stylesheet" type="text/css" href="{{asset('user/user.css')}}">
     <title>Trang chủ</title>
 </head>
@@ -45,7 +49,8 @@
             @show
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>  
     <script>
       //Phan text
     //   var typingEffect = new Typed(".multi_text",{
@@ -72,8 +77,8 @@
       });
       });
      //Phần deal of day
-     let countDate = new Date('16,january,2023 00:00:00').getTime();
-     function countDown(){
+        let countDate = new Date('16,january,2023 00:00:00').getTime();
+        function countDown(){
         let now = new Date().getTime();
 
         gap =  countDate-now;
@@ -86,17 +91,34 @@
         let h = Math.floor((gap%(day))/(hours));
         let m = Math.floor((gap%(hours))/(minutes));
         let s = Math.floor((gap%(minutes))/(seconds));
+        
+        document.querySelector('.days').innerText = d;
+        document.querySelector('.hours').innerText = h;
+        document.querySelector('.minutes').innerText = m;
+        document.querySelector('.seconds').innerText = s;
 
-        document.getElementById('days').innerText = d;
-        document.getElementById('hours').innerText = h;
-        document.getElementById('minutes').innerText = m;
-        document.getElementById('seconds').innerText = s;
-
+ 
 
      }
      setInterval(() => {
         countDown()
      },1000);
+
+     //Phan slider
+     var swiper = new Swiper(".swiper", {
+       
+        loop:true,
+        centeredSlides: true,
+        autoplay: {
+          delay: 6500,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+      }); 
+
      // Phan scroll
     //  const home_landing = document.querySelector('.back_home');
     //  const landing = document.querySelector('.landing_home');
