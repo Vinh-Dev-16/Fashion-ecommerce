@@ -34,8 +34,22 @@ class productController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->isMethod('Post')){
+          $request->validate([
+            'name' =>'required|max:255',
+            'price' =>'required|decimal:2,4',
+            'made_by' =>'required',
+            'thumbnail' =>'image|mimes:jpeg,png,jpg,gif',
+            'size'=>'required',
+            'color'=>'required',
+            'id_year' =>'required|integer',
+            'id_category' =>'required|integer',
+            'discount' =>'required|decimal:2',
+            'stock'=>'required|integer',
+            'desce'=>'required'
+          ]);
     }
+}
 
     /**
      * Display the specified resource.

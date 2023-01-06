@@ -36,10 +36,11 @@ year
 Bảng category
 id 
 name
-
+id_product
 bảng nation
 id 
 nation
+id_product
 
 Bảng feedback
 id

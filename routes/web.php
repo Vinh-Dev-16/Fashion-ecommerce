@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/homeadmin',function(){
+    return view('admin.layout');
+})->name('homeAdmin');
+
 Route::get('/home',function(){
     return view('user.desgin.landing');
-});
+})->name('homeUser');
