@@ -114,7 +114,7 @@
 .logo_index h2{
     color: black;
 }
-/*  */
+
 nav h2{
     color: #fff;
     font-weight: 300;
@@ -190,6 +190,7 @@ nav h2{
     margin-top: 10px;
     margin-left: 100px;
 }
+/* Phần card index */
 
 /* Phần index của user */
 .landing_home{

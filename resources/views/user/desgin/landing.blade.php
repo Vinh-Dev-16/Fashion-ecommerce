@@ -1,6 +1,6 @@
 @extends('user.desgin.index')
 @section('landing')
-  <div class="landing_home" class="landing_home" style="background-image: url({{asset('images/banner-bg.png')}})">
+  <div class="landing_home" style="background-image: url({{asset('images/banner-bg.png')}})">
   <nav>
     <h2>FASHION</h2>
   </nav>
@@ -9,7 +9,7 @@
     <div class="text_landing">
         <p>WEB</p>
         <h1 style="background-image: url({{asset('images/back.png')}})">FASHION</h1>
-        <h3> <span class="multi_text"></span></h3>
+        <h3><span class="multi_text"></span></h3>
         <div class="back_home">
         <a href="#"><i class="fa-solid fa-house"></i> Trang chủ</a>
         </div>

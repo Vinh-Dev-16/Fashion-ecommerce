@@ -9,6 +9,17 @@
             <h3 class="trademark">FASHION SHOP</h3>
             <h3 class="title_countdown">Số ngày còn sale:</h3>
             <div class="countdown">
+                <h3>Sale Sập Sàn <br><span>Tất Cả Các Sản Phẩm</span></h3>
+             
+            </div>
+            <button style="background-image: url({{asset('images/button.png')}})">SHOP NOW<button>
+           </div>
+        </div>
+          <div class="slider swiper-slide" style="background:url({{asset('images/banner2.jpg')}}) no-repeat;">
+            <div class="content_slider">
+             <span class="title_slider">Sale Lên Tới 25%</span>
+             <h3 class="trademark">FASHION SHOP</h3>
+             <div class="countdown">
                 <div class="box_countdown">
                     <h3 class="days" style="color: green">00</h3>
                     <span style="color: green">Ngày</span>
@@ -25,18 +36,7 @@
                     <h3 class="seconds" style="color: blue">00</h3>
                     <span style="color: blue">Giây</span>
                 </div>
-            </div>
-            <button style="background-image: url({{asset('images/button.png')}})">SHOP NOW<button>
-           </div>
-        </div>
-          <div class="slider swiper-slide" style="background:url({{asset('images/banner2.jpg')}}) no-repeat;">
-            <div class="content_slider">
-             <span class="title_slider">Sale Lên Tới 25%</span>
-             <h3 class="trademark">FASHION SHOP</h3>
-             <div class="countdown">
-                <h3>Sale Sập Sàn <br><span>Tất Cả Các Sản Phẩm</span></h3>
-             
-            </div>
+             </div>   
             <button style="background-image: url({{asset('images/button.png')}})">SHOP NOW<button>
         </div>
         </div>
@@ -56,5 +56,15 @@
     <div class="swiper-pagination"></div>
         </div>
     </div>
-    {{-- @yield('landing') --}}
+    {{-- Phần card --}}
+    <section>
+        <div class="card_index">
+            <div class="card_flex">
+                <div class="card_body">
+
+                </div>
+            </div>
+        </div>
+    </section>
+    @yield('landing')
 @endsection
