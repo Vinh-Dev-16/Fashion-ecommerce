@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class productController extends Controller
+class infoAccountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,22 +34,19 @@ class productController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->isMethod('Post')){
-          $request->validate([
-            'name' =>'required|max:255',
-            'price' =>'required|decimal:2,4',
-            'made_by' =>'required',
-            'thumbnail' =>'image|mimes:jpeg,png,jpg,gif',
-            'size'=>'required',
-            'color'=>'required',
-            'id_year' =>'required|integer',
-            'id_category' =>'required|integer',
-            'discount' =>'required|decimal:2',
-            'stock'=>'required|integer',
-            'desce'=>'required'
-          ]);
+        if($request->isMethod('POST')){
+            $request->validate([
+                'name' =>'required',
+                'email' =>'required|email',
+                'phone' =>'required|max:10|numeric',
+                'address' =>'required',
+                'birthday' =>'required|date',
+                'gender' =>'required|in:male,female',
+                'age' =>'required',
+                'image_url' =>'required',
+            ]);
+        }
     }
-}
 
     /**
      * Display the specified resource.

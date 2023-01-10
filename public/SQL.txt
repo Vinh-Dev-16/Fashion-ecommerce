@@ -37,16 +37,18 @@ Bảng category
 id 
 name
 id_product
-bảng nation
-id 
-nation
+
+Bảng year
+id
+year
 id_product
 
 Bảng feedback
 id
 name
 email
-text
+title
+content
 
 Bảng order
 id
@@ -63,6 +65,5 @@ Bảng order_detail
 id
 order_id
 product_id
-price
 num
 total_money

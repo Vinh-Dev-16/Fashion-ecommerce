@@ -24,3 +24,6 @@ Route::get('/homeadmin',function(){
 Route::get('/home',function(){
     return view('user.desgin.landing');
 })->name('homeUser');
+Route::get('/register',function(){
+    return view('register');
+})->name('Register');

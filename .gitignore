@@ -13,3 +13,12 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/.editorconfig
+/evn.example
+/README.md
+/server.php
+/webpack.mix.js
+/compose.json
+/compose.lock
+/tests
+/storage
