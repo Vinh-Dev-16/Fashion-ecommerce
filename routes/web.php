@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\admin\productController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+require_once __DIR__.'/be.php';
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,6 +25,11 @@ Route::get('/homeadmin',function(){
 Route::get('/home',function(){
     return view('user.desgin.landing');
 })->name('homeUser');
+
 Route::get('/register',function(){
-    return view('register');
+    return view('register',[]);
 })->name('Register');
+
+Route::get('/login',function(){
+    return view('login');
+})->name('Login');

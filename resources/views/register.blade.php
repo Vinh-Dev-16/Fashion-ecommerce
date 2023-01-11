@@ -27,6 +27,10 @@
             <input id="password_confirmation" required placeholder=" " name="repassword" type="password" class="form-control" value="">
             <label for="password_confirmation" class="form-label">Nhập lại mật khẩu</label>
           </div>
+          <div class="form-group">
+            <input id="remember_me" name="remember_me" type="checkbox">
+            <label for="remember_me" class="form-label remember ">Remember me</label>
+          </div>
           <button id="button" class="form-submit" name="submit" type="submit">Đăng ký</button>
           <div class="sign-in">
             Bạn đã có tài khoản?
