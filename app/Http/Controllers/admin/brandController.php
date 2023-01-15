@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Models\admin\Brand;
+use App\Models\admin\Product;
 use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class brandController extends Controller
 {
@@ -13,7 +17,9 @@ class brandController extends Controller
      */
     public function index()
     {
-        //
+        $brands = Brand::paginate(6);
+
+        return view('admin.brand.index', compact('brands'));
     }
 
     /**
@@ -23,7 +29,8 @@ class brandController extends Controller
      */
     public function create()
     {
-        //
+        $products  = Product::all();
+        return view('admin.brand.create',compact('products'));
     }
 
     /**
@@ -35,11 +42,23 @@ class brandController extends Controller
     public function store(Request $request)
     {
         if($request ->isMethod('Post')){
-            $request->validate([
+            $rules = [
                 'name' =>'required|max:255',
-                'id_product' =>'required',
+                'product_id' =>'required',
                 'logo'=>'required',
-            ]);
+            ];
+            $messages = [
+                'required' =>'Không được để trống trường này',
+                'max' => 'Số kí tự nhập vượt quá giới hạn cho phép',
+            ];
+            $request -> validate($rules,$messages);
+            try{
+                $input = $request-> all();
+                Brand::create($input);
+                return redirect('admin/brand/index')->with('success','Brand cập nhập thành công');
+            }catch(Exception $e){
+                return back()->withErrors($e->getMessage('Đã xảy ra lỗi'));
+            }
         }
     }
 

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Models\admin\Brand;
+use App\Models\admin\Category;
+use App\Models\admin\CategoryProduct;
 use Illuminate\Http\Request;
 use App\Models\admin\Product;
-use App\Models\admin\Category;
 use Exception;
 
-class productController extends Controller
+class catproController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +17,8 @@ class productController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(6);
-        $categories = Category::all();
-        $count = Product::count();
-        return view('admin.product.index', compact('products', 'categories', 'count'));
+        $catpro = CategoryProduct::paginate(6);
+        return view('admin.catpro.index', compact('catpro'));
     }
 
     /**
@@ -29,9 +27,10 @@ class productController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
-        $brands = Brand::all();
-        return view('admin.product.create',compact('brands'));
+    {
+        $categories = Category::all();
+        $products = Product::all();
+        return view('admin.catpro.create', compact('categories', 'products'));
     }
 
     /**
@@ -42,33 +41,27 @@ class productController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->isMethod('Post')) {
+        if ($request->isMethod('POST')) {
             $rules = [
-                'name' => 'required|max:255',
-                'price' => 'required|integer',
-                'thumbnail' => 'required',
-                'discount' => 'required|integer',
-                'stock' => 'required|integer',
-                'desce' => 'required',
-                'brand_id' => 'required',
+                'id_product' => 'required',
+                'id_category' => 'required',
             ];
             $messages = [
                 'required' => 'Không được để trống trường này',
-                'integer' => 'Trường nhập vào phải là số',
-                'date' => 'Trường nhập vào phải là ngày tháng,'
+
             ];
+
             $request->validate($rules, $messages);
         }
         try {
             $input = $request->all();
-            $brand = $input['brand_id'];
-            $input['brand_id'] = implode(',', $brand);
-            Product::create($input);
-            return redirect('admin/product/index')->with('thongbao', 'Đã thêm thành công');
+            CategoryProduct::create($input);
+            return redirect('admin/catpro/index')->with('thongbao', 'Đã thêm thành công');
         } catch (Exception $e) {
-            return redirect('admin/product/create')->with('loi', 'Da loi');
+            return redirect('admin/catpro/create')->with('loi', 'Da loi');
         }
     }
+
     /**
      * Display the specified resource.
      *
@@ -88,8 +81,10 @@ class productController extends Controller
      */
     public function edit($id)
     {
-        $products = Product::find($id);
-        return view('admin.product.edit', compact('products'));
+        $catpro = CategoryProduct::find($id);
+        $products = Product::all();
+        $categories = Category::all();
+        return view('admin.catpro.edit', compact('catpro', 'products', 'categories'));
     }
 
     /**
@@ -101,14 +96,13 @@ class productController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         try {
-            $products = Product::find($id);
+            $products = Category::find($id);
             $input = $request->all();
             $products->update($input);
-            return redirect('admin/product/index')->with('sua', 'Da sua');
+            return redirect('admin/catpro/index')->with('sua', 'Da sua');
         } catch (Exception $e) {
-            return redirect('admin/product/edit/' . $id)->with('loi', 'Da loi');
+            return redirect('admin/catpro/edit/' . $id)->with('loi', 'Da loi');
         }
     }
 
@@ -120,8 +114,8 @@ class productController extends Controller
      */
     public function destroy($id)
     {
-        $products = Product::find($id);
-        $products->delete();
-        return redirect('admin/product/index')->with('xoa', 'Da xoa');
+        $categories = CategoryProduct::find($id);
+        $categories->delete();
+        return redirect('admin/catpro/index')->with('xoa', 'Da xoa');
     }
 }

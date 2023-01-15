@@ -3,19 +3,19 @@
     @if (Session::has('thongbao'))
         <div class='noti success_noti' style="top: 43px;right:8px">
             <h2> Thông báo thành công </h2>
-            <p> Đã thêm product </p>
+            <p> Đã thêm relationship </p>
         </div>
     @endif
     @if (Session::has('sua'))
         <div class='noti success_noti' style="top: 43px;right:8px">
             <h2> Thông báo thành công </h2>
-            <p> Đã sửa product </p>
+            <p> Đã sửa relationship </p>
         </div>
     @endif
     @if (Session::has('xoa'))
         <div class='noti success_noti' style="top: 43px;right:8px">
             <h2> Thông báo thành công </h2>
-            <p> Đã xóa product </p>
+            <p> Đã xóa relationship </p>
         </div>
     @endif
     {{-- Thống kê --}}
@@ -69,9 +69,9 @@
         <!-- small box -->
         <div class="small-box bg-danger">
             <div class="inner">
-                <h3>{{ $count }}</h3>
+                <h3>65</h3>
 
-                <p>Số sản phẩm</p>
+                <p>Unique Visitors</p>
             </div>
             <div class="icon">
                 <i class="fa-brands fa-product-hunt"></i>
@@ -81,12 +81,13 @@
     </div>
 
     {{-- Content --}}
-    <div class="col-md-12">
-        <div class="card product">
+    <div class="col-md-12" style="display:flex;align-items: center;justify-content:center">
+        <div class="card product col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN PRODUCT</h2>
-                    <h3 class="card-title"><a href="{{ route('admin.product.create') }}">Tạo mới product</a></h3>
+                    <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN RELAYTONSHIP CATEGORY VS
+                        PRODUCT</h2>
+                    <h3 class="card-title"><a href="{{ route('admin.catpro.create') }}">Tạo mới relationship</a></h3>
 
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
@@ -106,36 +107,34 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Giá</th>
-                                <th>Loại sản phẩm</th>
-                                <th>Giảm giá</th>
-                                <th>Tồn kho</th>
+                                <th>Tên loại sản phẩm</th>
+                                <th>Số sản phẩm</th>
                                 <th>CRUD</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                @foreach ($products as $product)
-                                    <td>{{ $product->id }}</td>
-                                    <td>{{ Illuminate\Support\Str::of($product->name)->words(4) }}</td>
-                                    <td>{{ number_format($product->price) }} VND</td>
-                                    <td style="max-width: 253px">
-                                    @foreach ($product->categories as $category)
-                                        {{ $category->name }} ,
+                                @foreach ($catpro as $relationship)
+                                    <td>{{ $relationship->id }}</td>
+                                    @foreach ($relationship->categories as $category)
+                                        <td>{{ Illuminate\Support\Str::of($category->name)->words(6) }}</td>
                                     @endforeach
-                                    </td>
-                                    <td>{{ $product->discount }}%</td>
-                                    <td>{{ $product->stock }}</td>
-                                    <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">
+                                    @if($relationship->products->count() > 0)
+                                 
+                                        <td>{{($relationship->products->count())}}</td>
+                                     @else
+                                        <td>Chưa có sản phẩm</td>
+                                    @endif
+                                    <td class="table_crud" style="display:flex;justify-content:flex-start;">
 
-                                        <a href="{{ url('admin/product/edit/' . $product->id) }}" title="Sửa Product"
-                                            style="border: none;outline:none">
+                                        <a href="{{ url('admin/catpro/edit/' . $relationship->id) }}"
+                                            title="Sửa Relationship" style="border: none;outline:none">
                                             <i class="fa-solid fa-pen" style="color: green; font-size:25px;"></i></a>
-                                        <form method="post" action="{{ url('admin/product/destroy/' . $product->id) }}">
+                                        <form method="post"
+                                            action="{{ url('admin/catpro/destroy/' . $relationship->id) }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" title="Xóa Product"
+                                            <button type="submit" title="Xóa Relationship"
                                                 onclick=" return confirm ('Bạn có muốn xóa không?')"
                                                 style="border: none;outline:none;padding:0 13px;background:transparent"><i
                                                     class="fa-solid fa-trash"
@@ -150,13 +149,13 @@
                 <!-- /.card-body -->
             </div>
         </div>
-        {{ $products->links() }}
+        {{ $catpro->links() }}
     </div>
 @endsection
 
 @section('breadcumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active">Products</li>
+        <li class="breadcrumb-item active">Relationship</li>
     </ol>
 @endsection

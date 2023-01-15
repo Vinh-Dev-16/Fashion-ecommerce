@@ -1,4 +1,7 @@
- //Phan text
+
+
+
+//Phan text
  var typingEffect = new Typed(".multi_text",{
     strings: ['FASHION AND SO MUCH MORE'],
     loop:true,

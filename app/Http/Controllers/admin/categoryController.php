@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Models\admin\Category;
+use Exception;
 use Illuminate\Http\Request;
 
 class categoryController extends Controller
@@ -13,7 +15,8 @@ class categoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::paginate(6);
+        return view('admin.category.index', compact('categories'));
     }
 
     /**
@@ -23,7 +26,7 @@ class categoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.category.create');
     }
 
     /**
@@ -34,11 +37,22 @@ class categoryController extends Controller
      */
     public function store(Request $request)
     {
-        if($request -> isMethod('POST')){
-            $request->validate([
-                'name' =>'required|max:255',
-                'id_product' =>'required|numeric'
-            ]);
+        if ($request->isMethod('POST')) {
+            $rules = [
+                'name' => 'required|max:255',
+            ];
+            $messages = [
+                'required' => 'Không được để trống trường này',
+                'max' => 'Đã vượt qua số từ cho phép',
+            ];
+            $request->validate($rules, $messages);
+        }
+        try {
+            $input = $request->all();
+            Category::create($input);
+            return redirect('admin/category/index')->with('thongbao', 'Đã thêm thành công');
+        } catch (Exception $e) {
+            return redirect('admin/category/create')->with('loi', 'Da loi');
         }
     }
 
@@ -61,7 +75,8 @@ class categoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        return view('admin.category.edit', compact('category'));
     }
 
     /**
@@ -73,7 +88,14 @@ class categoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $products = Category::find($id);
+            $input = $request->all();
+            $products->update($input);
+            return redirect('admin/category/index')->with('sua', 'Da sua');
+        } catch (Exception $e) {
+            return redirect('admin/category/edit/' . $id)->with('loi', 'Da loi');
+        }
     }
 
     /**
@@ -84,6 +106,8 @@ class categoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $categories = Category::find($id);
+        $categories->delete();
+        return redirect('admin/category/index')->with('xoa', 'Da xoa');
     }
 }

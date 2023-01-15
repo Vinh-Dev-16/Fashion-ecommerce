@@ -1,7 +1,9 @@
 <?php
 
+
+use App\Models\admin\Product;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\admin\productController;
+use App\Models\admin\Brand;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +18,13 @@ require_once __DIR__.'/be.php';
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/a',function(){
+  $user =  Product::find(2);
+  $cat = Brand::find(1);
+  echo $cat->product_id;
+  echo $user->id;
+  echo $cat->products->name;
 });
 
 Route::get('/homeadmin',function(){
