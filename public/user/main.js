@@ -73,4 +73,5 @@
             landing.classList.toggle('active');
             home_index.classList.toggle('active');
 
-        }
+}
+

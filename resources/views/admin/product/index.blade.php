@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+    Trang Product
+@endsection
 @section('content')
     @if (Session::has('thongbao'))
         <div class='noti success_noti' style="top: 43px;right:8px">
@@ -87,10 +90,10 @@
                 <div class="card-header">
                     <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN PRODUCT</h2>
                     <h3 class="card-title"><a href="{{ route('admin.product.create') }}">Tạo mới product</a></h3>
-
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                            <input type="text" name="table_search" id="search" class="form-control float-right"
+                                placeholder="Search">
 
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-default">
@@ -108,43 +111,38 @@
                                 <th>ID</th>
                                 <th>Tên sản phẩm</th>
                                 <th>Giá</th>
-                                <th>Loại sản phẩm</th>
                                 <th>Giảm giá</th>
                                 <th>Tồn kho</th>
                                 <th>CRUD</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="infor_product">
                             <tr>
                                 @foreach ($products as $product)
                                     <td>{{ $product->id }}</td>
                                     <td>{{ Illuminate\Support\Str::of($product->name)->words(4) }}</td>
                                     <td>{{ number_format($product->price) }} VND</td>
-                                    <td style="max-width: 253px">
-                                    @foreach ($product->categories as $category)
-                                        {{ $category->name }} ,
-                                    @endforeach
-                                    </td>
                                     <td>{{ $product->discount }}%</td>
                                     <td>{{ $product->stock }}</td>
                                     <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">
 
-                                        <a href="{{ url('admin/product/edit/' . $product->id) }}" title="Sửa Product"
+                                        <a href="{{ url('admin/product/edit' , ['id'=>$product->id,'slug'=> Str::slug($product->slug)]) }}" title="Sửa Product"
                                             style="border: none;outline:none">
-                                            <i class="fa-solid fa-pen" style="color: green; font-size:25px;"></i></a>
-                                        <form method="post" action="{{ url('admin/product/destroy/' . $product->id) }}">
+                                            <i class="fa-solid fa-pen" style="color: #f4f4f4; font-size:22px;"></i></a>
+                                        <form method="post" action="{{ url('admin/product/destroy/' . $product->slug) }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" title="Xóa Product"
                                                 onclick=" return confirm ('Bạn có muốn xóa không?')"
                                                 style="border: none;outline:none;padding:0 13px;background:transparent"><i
                                                     class="fa-solid fa-trash"
-                                                    style="color: red; font-size:25px;"></i></button>
+                                                    style="color: #f4f4f; font-size:22px;"></i></button>
                                         </form>
                                     </td>
                             </tr>
                             @endforeach
                         </tbody>
+                        <tbody id="search_result"></tbody>
                     </table>
                 </div>
                 <!-- /.card-body -->
@@ -159,4 +157,40 @@
         <li class="breadcrumb-item"><a href="#">Home</a></li>
         <li class="breadcrumb-item active">Products</li>
     </ol>
+@endsection
+
+@section('javascript')
+    {{-- CDN Ajax --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    {{-- CDN jquery --}}
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+
+
+    {{-- Search input product --}}
+    <script>
+        $(document).ready(function() {
+            $("#search").keyup(function() {
+                $input = $(this).val();
+                if ($input) {
+                    $('.infor_product').hide();
+                    $('#search_result').show();
+                } else {
+                    $('.infor_product').show();
+                    $('#search_result').hide();
+                }
+                $.ajax({
+                    url: "{{ URL::to('admin/product/search') }}",
+                    method: "GET",
+                    data: {
+                        'search': $input
+                    },
+                    success: function(data) {
+                        $("#search_result").html(data);
+                    }
+                });
+            })
+        })
+    </script>
 @endsection

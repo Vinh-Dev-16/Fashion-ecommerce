@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\admin\ApiController;
 use App\Models\admin\Product;
 use Illuminate\Support\Facades\Route;
 use App\Models\admin\Brand;
@@ -19,13 +19,6 @@ require_once __DIR__.'/be.php';
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/a',function(){
-  $user =  Product::find(2);
-  $cat = Brand::find(1);
-  echo $cat->product_id;
-  echo $user->id;
-  echo $cat->products->name;
-});
 
 Route::get('/homeadmin',function(){
     return view('admin.layout');
@@ -42,3 +35,11 @@ Route::get('/register',function(){
 Route::get('/login',function(){
     return view('login');
 })->name('Login');
+
+Route::view("{/any}","app")->where("any",".*");
+
+Route::get('/api', [ApiController::class,'category']);
+
+Route::get('/fetch',function(){
+   return view('admin.brand.edit');
+});

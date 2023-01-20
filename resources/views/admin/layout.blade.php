@@ -4,7 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Trang quản lý</title>
+    <title>
+        @section('title')
+        @show 
+    </title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -20,6 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="{{asset('dist/css/bootstrap-tagsinput.css')}}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ asset('admin/admin.css') }}">
 </head>
@@ -41,7 +45,7 @@
                     <a href="index3.html" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
+                    <a href="{{url('home')}}" class="nav-link">Trang User</a>
                 </li>
             </ul>
 
@@ -249,12 +253,6 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/catpro/index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Relationship Cat Pro</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="{{ url('admin/brand/index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Brand</p>
@@ -354,6 +352,7 @@
     <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
+    <script src="{{ asset('dist/js/bootstrap-tagsinput.min.js') }}"></script>
 
     <!-- PAGE PLUGINS -->
     <!-- jQuery Mapael -->
@@ -371,6 +370,8 @@
     {{-- forrmat money --}}
     <script src="{{ asset('plugins/Auto-Format-Currency-With-jQuery/simple.money.format.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    @section('javascript')
+    @show
 </body>
 
 </html>

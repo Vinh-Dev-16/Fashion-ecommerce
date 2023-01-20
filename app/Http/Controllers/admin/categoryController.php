@@ -49,6 +49,7 @@ class categoryController extends Controller
         }
         try {
             $input = $request->all();
+            unset($input['_token']);
             Category::create($input);
             return redirect('admin/category/index')->with('thongbao', 'Đã thêm thành công');
         } catch (Exception $e) {
@@ -91,6 +92,7 @@ class categoryController extends Controller
         try {
             $products = Category::find($id);
             $input = $request->all();
+            unset($input['_token']);
             $products->update($input);
             return redirect('admin/category/index')->with('sua', 'Da sua');
         } catch (Exception $e) {

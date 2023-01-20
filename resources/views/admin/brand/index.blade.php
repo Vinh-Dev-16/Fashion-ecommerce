@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+    Trang Brand
+@endsection
 @section('content')
     @if (Session::has('thongbao'))
         <div class='noti success_noti' style="top: 43px;right:8px">
@@ -118,7 +121,6 @@
                                     <td>{{ $brand->name }}</td>
                                     <td style="width:150px;height:120px;"><img class="logo_brand" src=" {{$brand->logo}}" alt="Logo của {{$brand->name}}"></td>
                                     @if($brand->products->count() > 0)
-                                 
                                     <td>{{($brand->products->count())}}</td>
                                      @else
                                         <td>Chưa có sản phẩm</td>

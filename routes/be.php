@@ -17,7 +17,8 @@ use App\Http\Controllers\admin\brandController;
        Route::post('store',[productController::class,'store'])->name('admin.product.store');
        Route::delete('destroy/{id}',[productController::class,'destroy'])->name('admin.product.destroy');
        Route::patch('update/{id}',[productController::class,'update'])->name('admin.product.update');
-       Route::get('edit/{id}',[productController::class,'edit'])->name('admin.product.edit');
+       Route::get('edit/{id}/{slug}',[productController::class,'edit'])->name('admin.product.edit');
+       Route::get('search',[productController::class,'search'])->name('admin.product.search');
     });
     // Route Category
 

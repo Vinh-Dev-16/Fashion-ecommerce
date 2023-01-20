@@ -54,6 +54,7 @@ class brandController extends Controller
             $request -> validate($rules,$messages);
             try{
                 $input = $request-> all();
+                unset($input['_token']);
                 Brand::create($input);
                 return redirect('admin/brand/index')->with('success','Brand cập nhập thành công');
             }catch(Exception $e){

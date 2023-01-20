@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\admin\Brand;
 use Illuminate\Http\Request;
 use App\Models\admin\Product;
+use Illuminate\Support\Str;
 use App\Models\admin\Category;
 use Exception;
 
@@ -29,9 +30,10 @@ class productController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
+    {
         $brands = Brand::all();
-        return view('admin.product.create',compact('brands'));
+        $categories = Category::all();
+        return view('admin.product.create', compact('brands', 'categories'));
     }
 
     /**
@@ -45,8 +47,10 @@ class productController extends Controller
         if ($request->isMethod('Post')) {
             $rules = [
                 'name' => 'required|max:255',
+                'slug' => 'required|max:255',
                 'price' => 'required|integer',
                 'thumbnail' => 'required',
+                'tags' => 'required',
                 'discount' => 'required|integer',
                 'stock' => 'required|integer',
                 'desce' => 'required',
@@ -55,19 +59,47 @@ class productController extends Controller
             $messages = [
                 'required' => 'Không được để trống trường này',
                 'integer' => 'Trường nhập vào phải là số',
-                'date' => 'Trường nhập vào phải là ngày tháng,'
+                'date' => 'Trường nhập vào phải là ngày tháng',
+
             ];
             $request->validate($rules, $messages);
         }
-        try {
+    try{
             $input = $request->all();
-            $brand = $input['brand_id'];
-            $input['brand_id'] = implode(',', $brand);
-            Product::create($input);
+            unset($input['_token']);
+            $products = Product::create($input);
+            $products->categories()->attach($request->input('id_category'));
             return redirect('admin/product/index')->with('thongbao', 'Đã thêm thành công');
         } catch (Exception $e) {
             return redirect('admin/product/create')->with('loi', 'Da loi');
         }
+    }
+
+    public function search(Request $request)
+    {
+        $output = "";
+        $searches = Product::where('name', 'like', '%' . $request->search . '%')->get();
+
+        foreach ($searches as $result) {
+            $output .=
+                '<tr>
+               <td>' . $result->id . '</td>
+               <td>' . Str::of($result->name)->words(4) . '</td>
+               <td>' . number_format($result->price) . ' VND</td>
+               <td>' . $result->discount . '%</td>
+               <td>' . $result->stock . '</td>
+               <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">' . '
+                   <a href="' . route('admin.product.edit', $result->id) . '" title="Sửa Product"
+                   style="border: none;outline:none">
+                   <i class="fa-solid fa-pen" style="color: #f4f4f4; font-size:22px;"></i></a>
+                   <a href="' . route('admin.product.destroy', $result->id) . '" title="Xoa Product"
+                   style="border:none;outline:none">
+                   <i class="fa-solid fa-trash"
+                   style="color: #f4f4f; font-size:22px;"></i></a>
+              ' . '</td>
+           </tr>';
+        }
+        return response($output);
     }
     /**
      * Display the specified resource.
@@ -87,9 +119,11 @@ class productController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    {   
+        $brands = Brand::all();
+        $categories = Category::all();
         $products = Product::find($id);
-        return view('admin.product.edit', compact('products'));
+        return view('admin.product.edit', compact('products','categories','brands'));
     }
 
     /**
@@ -101,10 +135,10 @@ class productController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         try {
             $products = Product::find($id);
             $input = $request->all();
+            unset($input['_token']);
             $products->update($input);
             return redirect('admin/product/index')->with('sua', 'Da sua');
         } catch (Exception $e) {

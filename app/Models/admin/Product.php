@@ -14,19 +14,24 @@ class Product extends Model
     protected $fillable = 
        [
         'name',
+        'slug',
         'price',
-        'brand_id',
+        'category_id',
         'thumbnail',
         'discount',
         'stock',
-        'desce'
+        'tag',
+        'desce',
+        'brand_id',
        ];
+       
 
     public function categories(){
-        return $this->belongsToMany(Category::class,'category_products','id_product','id_category');
+        return $this->belongsToMany(Category::class,'category_products','id_product','id_category')->withTimestamps();
     }
     
     public function brands(){
         return $this->belongsTo(Brand::class);
     }
+     
 }
