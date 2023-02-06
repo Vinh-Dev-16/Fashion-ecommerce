@@ -2,16 +2,16 @@
 
 
 //Phan text
- var typingEffect = new Typed(".multi_text",{
-    strings: ['FASHION AND SO MUCH MORE'],
-    loop:true,
-    typeSpeed: 100,
-    backSpeed: 60,
-    backDelay: 1500,
-    showCursor: true,
-    cursorChar: '|',
-    autoInsertCss: true
-  });
+//  var typingEffect = new Typed(".multi_text",{
+//     strings: ['FASHION AND SO MUCH MORE'],
+//     loop:true,
+//     typeSpeed: 100,
+//     backSpeed: 60,
+//     backDelay: 1500,
+//     showCursor: true,
+//     cursorChar: '|',
+//     autoInsertCss: true
+//   });
   // Phần progress bar
   document.addEventListener('DOMContentLoaded',()=>{
     const value = document.querySelector('.value');
@@ -26,7 +26,7 @@
   });
   });
  //Phần deal of day
-    let countDate = new Date('16,january,2023 00:00:00').getTime();
+    let countDate = new Date('16,march,2023 00:00:00').getTime();
     function countDown(){
     let now = new Date().getTime();
 
@@ -66,12 +66,12 @@
   }); 
 
  // Phan scroll
- const home_landing = document.querySelector('.back_home');
- const landing = document.querySelector('.landing_home');
- const home_index = document.querySelector('.home_index');
- home_landing.onclick = function(){
-            landing.classList.toggle('active');
-            home_index.classList.toggle('active');
+//  const home_landing = document.querySelector('.back_home');
+//  const landing = document.querySelector('.landing_home');
+//  const home_index = document.querySelector('.home_index');
+//  home_landing.onclick = function(){
+//             landing.classList.toggle('active');
+//             home_index.classList.toggle('active');
 
-}
+// }
 

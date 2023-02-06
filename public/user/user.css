@@ -1,6 +1,11 @@
 :root{
   --text:black;
-  --bg_header:  rgb(243 243 243);   
+  --bg_header:  rgb(243 243 243); 
+  --text_button:#088178; 
+  --lavender: #AC92EC;
+  --lavender_2:#967ADC;
+  
+
 }
 *{
     margin: 0;
@@ -32,13 +37,13 @@
     left: 0;
     bottom: 0;
     right: 0;
-    background-color:#717271 ;
+    background-color:var(--lavender) ;
     border-radius: 4px;
  }
 /* Phần header */
 .head_index{
     position: relative;
-    background: var--header;
+    background: var(--bg_header);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     margin-top: 13px;
 }
@@ -53,7 +58,7 @@
 }
 .head_flex .logo_index{
     font-size: 20px;
-    color: var--text;
+    color: var(--text);
 }
 .head_flex .logo_index h2{
     text-align: center;
@@ -195,7 +200,66 @@ nav h2{
     margin-left: 100px;
 }
 /* Phần card index */
-
+.card_category{
+    width: 90%;
+    margin-left: 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    margin: 50px 5%; 
+    grid-column-gap: 10px;
+}
+.card_category_image{
+    width: 100%;
+    height: 350px;
+    background-size: cover;
+}
+.card_category_image img{
+    max-height: 250px;
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+    filter: brightness(0.3);
+    -webkit-filter: brightness(0.8);
+    
+}
+.card_category .card_category_title{
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 550;
+    margin-bottom: 50px;
+}
+.woman_image{
+    grid-row: 3/4;
+}
+.man_image{
+    grid-column: 2/3 !important;
+}
+.kid_image{
+    grid-column: 3/4!important;
+    grid-row: 3/4 !important;
+}
+.glasses_image{
+    grid-column: 4/5 !important;
+}
+.shoe_image{
+    grid-column: 5/6 !important;
+    grid-row: 3/4 !important;
+}
+    /* .card_category_deces{
+        box-sizing: border-box;
+        border: 1px solid black;
+    } */
+.card_category_deces a{
+    background-color: transparent;
+    border: 0;
+    padding: 14px 80px 14px 65px;
+    text-decoration: none;
+    color: var(--text_button);
+    display: block;
+    margin-top: 10px;
+}
 /* Phần index của user */
 .landing_home{
     position: absolute !important;
@@ -458,3 +522,4 @@ nav h2{
 .sign-in a:hover{
     color: #1ac7b6;
 }
+

@@ -9,6 +9,7 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
   />
+    <link rel="stylesheet" href="{{asset('plugins/bootstrap/js/bootstrap.js')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('user/user.css')}}">
     <title>Trang chủ</title>
 </head>
@@ -50,7 +51,7 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script> 
     <script src="{{asset('user/main.js')}}"></script>  
 </body>
 </html>

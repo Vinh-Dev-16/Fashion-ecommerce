@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-
 use App\Models\admin\Brand;
 use Illuminate\Http\Request;
 use App\Models\admin\Product;

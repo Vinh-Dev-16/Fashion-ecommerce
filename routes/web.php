@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\admin\ApiController;
-use App\Models\admin\Product;
 use Illuminate\Support\Facades\Route;
-use App\Models\admin\Brand;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,32 +12,13 @@ use App\Models\admin\Brand;
 | contains the "web" middleware group. Now create something great!
 |
 */
-require_once __DIR__.'/be.php';
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/homeadmin',function(){
-    return view('admin.layout');
-})->name('homeAdmin');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-Route::get('/home',function(){
-    return view('user.desgin.landing');
-})->name('homeUser');
-
-Route::get('/register',function(){
-    return view('register',[]);
-})->name('Register');
-
-Route::get('/login',function(){
-    return view('login');
-})->name('Login');
-
-Route::view("{/any}","app")->where("any",".*");
-
-Route::get('/api', [ApiController::class,'category']);
-
-Route::get('/fetch',function(){
-   return view('admin.brand.edit');
-});
+require __DIR__.'/auth.php';

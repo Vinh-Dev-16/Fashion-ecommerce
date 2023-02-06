@@ -126,8 +126,8 @@
                                     <td>{{ $product->stock }}</td>
                                     <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">
 
-                                        <a href="{{ url('admin/product/edit' , ['id'=>$product->id,'slug'=> Str::slug($product->slug)]) }}" title="Sửa Product"
-                                            style="border: none;outline:none">
+                                        <a href="{{ url('admin/product/edit', ['id' => $product->id, 'slug' => Str::slug($product->slug)]) }}"
+                                            title="Sửa Product" style="border: none;outline:none">
                                             <i class="fa-solid fa-pen" style="color: #f4f4f4; font-size:22px;"></i></a>
                                         <form method="post" action="{{ url('admin/product/destroy/' . $product->slug) }}">
                                             @csrf
@@ -149,6 +149,7 @@
             </div>
         </div>
         {{ $products->links() }}
+        <div class="item"></div>
     </div>
 @endsection
 
@@ -170,27 +171,51 @@
 
     {{-- Search input product --}}
     <script>
-        $(document).ready(function() {
-            $("#search").keyup(function() {
-                $input = $(this).val();
-                if ($input) {
-                    $('.infor_product').hide();
-                    $('#search_result').show();
-                } else {
-                    $('.infor_product').show();
-                    $('#search_result').hide();
-                }
-                $.ajax({
-                    url: "{{ URL::to('admin/product/search') }}",
-                    method: "GET",
-                    data: {
-                        'search': $input
-                    },
-                    success: function(data) {
-                        $("#search_result").html(data);
+        function searchProduct() {
+            $(document).ready(function() {
+                $("#search").keyup(function() {
+                    $input = $(this).val();
+                    if ($input) {
+                        $('.infor_product').hide();
+                        $('#search_result').show();
+                    } else {
+                        $('.infor_product').show();
+                        $('#search_result').hide();
                     }
-                });
+                    $.ajax({
+                        url: "{{ URL::to('admin/product/search') }}",
+                        method: "GET",
+                        data: {
+                            'search': $input
+                        },
+                        success: function(data) {
+                            $("#search_result").html(data);
+                        }
+                    });
+                })
             })
-        })
+        }
+        searchProduct();
+
+        const URL = 'http://127.0.0.1:8000/api/products';
+        loadProduct(URL);
+
+        function loadProduct(URL) {
+            fetch("URL")
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log(data);
+                    let htmls = data.results.map(function(item) {
+                        return `
+                        <ul>
+                        <li>${item.name}</li>
+                        </ul>
+                        `
+                    });
+                    document.querySelector(".item").innerHTML = htmls.join("");
+                })
+        }
     </script>
 @endsection
