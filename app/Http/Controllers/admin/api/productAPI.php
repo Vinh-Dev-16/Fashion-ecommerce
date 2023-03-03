@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\admin\api;
 
-use App\Http\Controllers\admin\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Product;
 class productAPI extends Controller
@@ -14,7 +14,7 @@ class productAPI extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(6);
         return response()->json([
             'status' =>'success',
             'results' => $products,

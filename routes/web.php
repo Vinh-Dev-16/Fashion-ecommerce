@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+require __DIR__.'/../routes/fe.php';
+require __DIR__.'/../routes/be.php';
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,3 +23,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+Route::get('/home', function(){
+    return view('user.design.index');
+});

@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\admin\api\productAPI;
-use App\Models\admin\Product;
+use App\Http\Controllers\admin\api\userAPIController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +22,12 @@ use Illuminate\Support\Facades\Route;
 // );
 
 Route::get('/products',[productAPI::class,'index'])->name('api.products');
+Route::get('/users',[userAPIController::class,'index'])->name('api.users');
+
+Route::post('register',[AuthController::class, 'register'])->name('register');
+Route::post('login',[AuthController::class, 'login'])->name('login');
+
+Route::middleware('auth:sanctum')->group(function(){
+  Route::get('user',[AuthController::class, 'user'])->name('user');
+  Route::get('logout',[AuthController::class, 'logout'])->name('logout');
+});

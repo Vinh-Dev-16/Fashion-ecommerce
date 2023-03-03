@@ -32,21 +32,7 @@ use App\Http\Controllers\admin\brandController;
        Route::get('edit/{id}',[categoryController::class,'edit'])->name('admin.category.edit');
      });
 
-    //  Route quan hệ Category vs product
-
-
-     Route::prefix('/catpro')->group(function(){
-        Route::get('/index',[catproController::class,'index'])->name('admin.catpro.index');
-        Route::get('create',[catproController::class,'create'])->name('admin.catpro.create');
-        Route::post('store',[catproController::class,'store'])->name('admin.catpro.store');
-        Route::delete('destroy/{id}',[catproController::class,'destroy'])->name('admin.catpro.destroy');
-        Route::patch('update/{id}',[catproController::class,'update'])->name('admin.catpro.update');
-        Route::get('edit/{id}',[catproController::class,'edit'])->name('admin.catpro.edit');
-     });
-
     //  Route về brand
-
-
      Route::prefix('/brand')->group(function(){
         Route::get('/index',[brandController::class,'index'])->name('admin.brand.index');
         Route::get('create',[brandController::class,'create'])->name('admin.brand.create');
