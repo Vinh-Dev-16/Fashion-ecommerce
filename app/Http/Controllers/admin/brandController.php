@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\admin;
+use App\Http\Controllers\Controller;
 use App\Models\admin\Brand;
 use App\Models\admin\Product;
 use Illuminate\Http\Request;
@@ -22,6 +22,33 @@ class brandController extends Controller
         return view('admin.brand.index', compact('brands'));
     }
 
+        public function search(Request $request)
+        {
+            $output = "";
+            $searches = Brand::where('name', 'like', '%' . $request->search . '%')->get();
+    
+            foreach ($searches as $result) {
+                $name = $result->products->count()== 0 ? '<p>Chưa có sản phẩm</p>' : $result->products->count();
+                $output .=
+                    '<tr>
+                   <td>' . $result->id . '</td>
+                   <td>' . $result->name . '</td>
+                   <td style="width:150px;height:120px;"><img class="logo_brand" src=" '. $result->logo .'"
+                   alt='. "Logo của  $result->name " .'></td>
+                   <td>'. $name. '</td>
+                   <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">' . '
+                       <a href="' . route('admin.brand.edit', $result->id) . '" title="Sửa Category"
+                       style="border: none;outline:none">
+                       <i class="fa-solid fa-pen" style=" font-size:22px;"></i></a>
+                       <a href="' . route('admin.brand.destroy', $result->id) . '" title="Xoa Category"
+                       style="border:none;outline:none">
+                       <i class="fa-solid fa-trash"
+                       style="font-size:22px;"></i></a>
+                  ' . '</td>
+               </tr>';
+            }
+            return response($output);
+        }
     /**
      * Show the form for creating a new resource.
      *
@@ -58,7 +85,7 @@ class brandController extends Controller
                 Brand::create($input);
                 return redirect('admin/brand/index')->with('success','Brand cập nhập thành công');
             }catch(Exception $e){
-                return back()->withErrors($e->getMessage('Đã xảy ra lỗi'));
+                return back()->withErrors($e->getMessage('error','Đã xảy ra lỗi'));
             }
         }
     }
@@ -82,7 +109,8 @@ class brandController extends Controller
      */
     public function edit($id)
     {
-        //
+        $brand= Brand::find($id);
+        return view('admin.brand.edit',compact('brand'));
     }
 
     /**
@@ -94,7 +122,15 @@ class brandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $brands = Brand::find($id);
+            $input = $request->all();
+            unset($input['_token']);
+            $brands->update($input);
+            return redirect('admin/brand/index')->with('success', 'Sửa brand thành công');
+        } catch (Exception $e) {
+            return redirect('admin/brand/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
+        }
     }
 
     /**
@@ -105,6 +141,8 @@ class brandController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $brands = Brand::find($id);
+        $brands->delete();
+        return redirect('admin/category/index')->with('success', 'Xóa brand thành công');
     }
 }

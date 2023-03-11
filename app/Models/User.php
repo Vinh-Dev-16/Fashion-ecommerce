@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Role;
 use Laravel\Sanctum\HasApiTokens;
 
 
@@ -21,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role_id',
         'password',
     ];
 
@@ -47,5 +49,9 @@ class User extends Authenticatable
     }
     public function getJWTCustomClaims(){
         return [];
+    }
+
+    public function roles(){
+        return $this->belongsTo(Role::class, 'role_id');
     }
 }

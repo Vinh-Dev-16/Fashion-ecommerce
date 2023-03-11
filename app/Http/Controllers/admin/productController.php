@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
+use App\Http\Controllers\Controller;
 use App\Models\admin\Brand;
 use Illuminate\Http\Request;
 use App\Models\admin\Product;
 use Illuminate\Support\Str;
 use App\Models\admin\Category;
+use App\Models\admin\ValueAttribute;
 use Exception;
 
 class productController extends Controller
@@ -17,7 +19,7 @@ class productController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(6);
+        $products = Product::orderBy('name', 'desc')->paginate(6);
         $categories = Category::all();
         $count = Product::count();
         return view('admin.product.index', compact('products', 'categories', 'count'));
@@ -32,7 +34,10 @@ class productController extends Controller
     {
         $brands = Brand::all();
         $categories = Category::all();
-        return view('admin.product.create', compact('brands', 'categories'));
+        $brands = Brand::all();
+        $colors = ValueAttribute::where('attribute_id', '=', '2')->get();
+        $sizes = ValueAttribute::where('attribute_id', '=', 1)->get();
+        return view('admin.product.create', compact('brands', 'categories','sizes','colors','brands'));
     }
 
     /**
@@ -41,6 +46,7 @@ class productController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         if ($request->isMethod('Post')) {
@@ -54,6 +60,7 @@ class productController extends Controller
                 'stock' => 'required|integer',
                 'desce' => 'required',
                 'brand_id' => 'required',
+                'attribute_value_id' => 'required',
             ];
             $messages = [
                 'required' => 'Không được để trống trường này',
@@ -68,9 +75,10 @@ class productController extends Controller
             unset($input['_token']);
             $products = Product::create($input);
             $products->categories()->attach($request->input('id_category'));
-            return redirect('admin/product/index')->with('thongbao', 'Đã thêm thành công');
+            $products->attributevalues()->attach($request->input('attribute_value_id'));
+            return redirect('admin/product/index')->with('success', 'Đã thêm product thành công');
         } catch (Exception $e) {
-            return redirect('admin/product/create')->with('loi', 'Da loi');
+            return redirect('admin/product/create')->with('error', 'Đã xảy ra lỗi');
         }
     }
 
@@ -122,7 +130,11 @@ class productController extends Controller
         $brands = Brand::all();
         $categories = Category::all();
         $products = Product::find($id);
-        return view('admin.product.edit', compact('products','categories','brands'));
+        $colors = ValueAttribute::where('attribute_id', '=', '2')->get();
+        $sizes = ValueAttribute::where('attribute_id', '=', 1)->get();
+        $select = $products->categories()->pluck('categories.id');
+        $select->all();
+        return view('admin.product.edit', compact('products','categories','brands','select','colors','sizes'));
     }
 
     /**
@@ -134,15 +146,17 @@ class productController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
+        // try {
             $products = Product::find($id);
             $input = $request->all();
             unset($input['_token']);
             $products->update($input);
-            return redirect('admin/product/index')->with('sua', 'Da sua');
-        } catch (Exception $e) {
-            return redirect('admin/product/edit/' . $id)->with('loi', 'Da loi');
-        }
+            $products -> categories()->sync($request->input('id_category'));
+            $products -> attributevalues()->sync($request->input('attribute_value_id'));
+            return redirect('admin/product/index')->with('success', 'Đã sửa product thành công');
+        // } catch (Exception $e) {
+        //     return redirect('admin/product/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
+        // }
     }
 
     /**
@@ -155,6 +169,8 @@ class productController extends Controller
     {
         $products = Product::find($id);
         $products->delete();
-        return redirect('admin/product/index')->with('xoa', 'Da xoa');
+        $products->categories()->detach();
+        $products->attributevalues()->detach();
+        return redirect('admin/product/index')->with('success', 'Đã xóa product thành công');
     }
 }

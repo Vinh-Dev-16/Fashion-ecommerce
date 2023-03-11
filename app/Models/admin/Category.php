@@ -12,6 +12,7 @@ class Category extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
+        'parent_id'
     ];
     public function products(){
         return $this->belongsToMany(Product::class,'category_products','id_category','id_product');

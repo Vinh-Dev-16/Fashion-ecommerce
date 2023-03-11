@@ -21,13 +21,13 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // );
 
-Route::get('/products',[productAPI::class,'index'])->name('api.products');
-Route::get('/users',[userAPIController::class,'index'])->name('api.users');
+// Route::get('/products',[productAPI::class,'index'])->name('api.products');
+// Route::get('/users',[userAPIController::class,'index'])->name('api.users');
 
-Route::post('register',[AuthController::class, 'register'])->name('register');
-Route::post('login',[AuthController::class, 'login'])->name('login');
+// Route::post('register',[AuthController::class, 'register'])->name('register');
+// Route::post('login',[AuthController::class, 'login'])->name('login');
 
-Route::middleware('auth:sanctum')->group(function(){
-  Route::get('user',[AuthController::class, 'user'])->name('user');
-  Route::get('logout',[AuthController::class, 'logout'])->name('logout');
-});
+// Route::middleware('auth:sanctum')->group(function(){
+//   Route::get('user',[AuthController::class, 'user'])->name('user');
+//   Route::get('logout',[AuthController::class, 'logout'])->name('logout');
+// });

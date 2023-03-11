@@ -5,7 +5,8 @@ use App\Models\admin\Brand;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\admin\Category;
-use App\Models\admin\CategoryProduct;
+use App\Models\admin\Image;
+use App\Models\admin\ValueAttribute;
 class Product extends Model
 {
     use HasFactory;
@@ -16,11 +17,8 @@ class Product extends Model
         'name',
         'slug',
         'price',
-        'category_id',
-        'thumbnail',
         'discount',
         'stock',
-        'tag',
         'desce',
         'brand_id',
        ];
@@ -33,5 +31,13 @@ class Product extends Model
     public function brands(){
         return $this->belongsTo(Brand::class);
     }
-     
+    
+    public function images(){
+        return $this->hasMany(Image::class);
+    }
+
+    public function attributevalues()
+    {
+        return $this->belongsToMany(ValueAttribute::class,'product_attribute_value', 'product_id','attribute_value_id')->withTimestamps();
+    }
 }

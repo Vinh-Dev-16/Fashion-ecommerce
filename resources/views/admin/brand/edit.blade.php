@@ -1,19 +1,51 @@
 @extends('admin.layout')
-@section('title')
-    Trang sửa product
+@section('content')
+  
+
+    <div class="col-md-12">
+        <div class="product">
+            <div class="card">
+                <div class="card-header">
+                    <h2 style="font-size:25px;text-align:center;margin:10px 0">SỬA BRAND</h2>
+                </div>
+                <div class="card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Form sửa</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form action="{{ url('admin/brand/update/' . $brand->id) }}" method="POST">
+                        @csrf
+                        @method('PATCH')
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="exampleName">Tên brand sản phẩm</label>
+                                <input type="text" class="form-control" id="exampleInputName" value="{{ $brand->name }}"
+                                    name="name">
+                                @error('name')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
-@section('javascript')
-<script>
-// fetch(`http://example.com/movies.json`)
-//   .then((async response) => await response.json())
-//   .then((data) => console.log(data));
-console.log(1);
-const APP_ID = 'cf26e7b2c25b5acd18ed5c3e836fb235';
-console.log(APP_ID);
-  fetch(`https://api.openweathermap.org/data/2.5/weather?q=ha noi&appid=${APP_ID}&units=metric&lang=vi`)
-        .then(async res => {
-            const data = await res.json();
-            console.log(1);
-        });
-</script>
+
+@section('breadcumb')
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Home</a></li>
+        <li class="breadcrumb-item "><a href="{{ route('admin.brand.index') }}">Brand</a></li>
+        <li class="breadcrumb-item active">Edit Brand</li>
+    </ol>
 @endsection
+

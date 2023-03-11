@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\admin;
+use App\Http\Controllers\Controller;
 use App\Models\admin\Category;
 use Exception;
 use Illuminate\Http\Request;
@@ -19,6 +19,32 @@ class categoryController extends Controller
         return view('admin.category.index', compact('categories'));
     }
 
+
+    public function search(Request $request)
+    {
+        $output = "";
+        $searches = Category::where('name', 'like', '%' . $request->search . '%')->get();
+
+        foreach ($searches as $result) {
+            $name = $result->parent_id == 0? '<p>Không có</p>' : Category::find($result->parent_id)->name;
+            $output .=
+                '<tr>
+               <td>' . $result->id . '</td>
+               <td>' . $result->name . '</td>
+               <td>'. $name. '</td>
+               <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">' . '
+                   <a href="' . route('admin.category.edit', $result->id) . '" title="Sửa Category"
+                   style="border: none;outline:none">
+                   <i class="fa-solid fa-pen" style=" font-size:22px;"></i></a>
+                   <a href="' . route('admin.category.destroy', $result->id) . '" title="Xoa Category"
+                   style="border:none;outline:none">
+                   <i class="fa-solid fa-trash"
+                   style="font-size:22px;"></i></a>
+              ' . '</td>
+           </tr>';
+        }
+        return response($output);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -26,7 +52,8 @@ class categoryController extends Controller
      */
     public function create()
     {
-        return view('admin.category.create');
+        $categories = Category::all();
+        return view('admin.category.create', compact('categories'));
     }
 
     /**
@@ -40,6 +67,7 @@ class categoryController extends Controller
         if ($request->isMethod('POST')) {
             $rules = [
                 'name' => 'required|max:255',
+                'parent_id' => 'required',
             ];
             $messages = [
                 'required' => 'Không được để trống trường này',
@@ -51,9 +79,9 @@ class categoryController extends Controller
             $input = $request->all();
             unset($input['_token']);
             Category::create($input);
-            return redirect('admin/category/index')->with('thongbao', 'Đã thêm thành công');
+            return redirect('admin/category/index')->with('success', 'Đã thêm category thành công');
         } catch (Exception $e) {
-            return redirect('admin/category/create')->with('loi', 'Da loi');
+            return redirect('admin/category/create')->with('error', 'Đã xảy ra lỗi');
         }
     }
 
@@ -76,8 +104,9 @@ class categoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
-        return view('admin.category.edit', compact('category'));
+        $categories = Category::find($id);
+        $category = Category::all();
+        return view('admin.category.edit', compact('categories','category'));
     }
 
     /**
@@ -90,13 +119,13 @@ class categoryController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $products = Category::find($id);
+            $categories = Category::find($id);
             $input = $request->all();
             unset($input['_token']);
-            $products->update($input);
-            return redirect('admin/category/index')->with('sua', 'Da sua');
+            $categories->update($input);
+            return redirect('admin/category/index')->with('success', 'Đã sửa category thành công');
         } catch (Exception $e) {
-            return redirect('admin/category/edit/' . $id)->with('loi', 'Da loi');
+            return redirect('admin/category/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
         }
     }
 
@@ -110,6 +139,6 @@ class categoryController extends Controller
     {
         $categories = Category::find($id);
         $categories->delete();
-        return redirect('admin/category/index')->with('xoa', 'Da xoa');
+        return redirect('admin/category/index')->with('success', 'Đã xóa category thành công');
     }
 }

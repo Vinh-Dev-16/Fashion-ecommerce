@@ -6,51 +6,125 @@
    border-radius: 6px;
 }
 
-/* Alert */
-.noti {
-  position: fixed;
-  width: 250px;
-  height: 70px;
-  top: 0px !important;
-  right: 36% !important;
-  background: #b71c1c;
-  clear: right;
-  cursor: pointer;
-  border-radius: 6px;
-  animation: 6s ease 0.5s 1 normal forwards running notifi;
-  z-index: 100000;
-}
-.success_noti {
-  background: #2ecc71;
-}
-.noti h2 {
-  font-size: 20px;
-  line-height: 100px;
-  color: black;
-  margin-top: -30px;
-  text-align: center;
-}
-.noti p {
-  color: black;
-  margin-top: -40px;
-  text-align: center;
-  font-style: italic;
-}
-@keyframes notifi {
-  0% {
-    transform: scale(1, 1);
-  }
 
-  20% {
-    opacity: 1;
+:root {
+  --dark: #34495e;
+  --light: #f4f4f4;
+  --success: #0abf30;
+  --error: #e24d4c;
+  --warning: #e23d4c;
+  --info: #3498db;
+}
+
+.notification {
+  position: fixed;
+  top: 3.875em;
+  right: 1.25em;
+}
+.notification :where(.toasts, .column) {
+  display: flex;
+  align-items: center;
+}
+.notification .toasts {
+  min-width: 23em;
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  border-radius: 0.3125em;
+  padding: 1em 1.0625em;
+  margin-bottom: 0.625em;
+  background: var(--light);
+  display: flex;
+  justify-content: space-between;
+  animation:  show_toasts 0.3s ease forwards;
+}
+@keyframes show_toasts {
+  0%{
+      transform: translateX(100%);
   }
-  40% {
-    transform: scale(1.05, 1.05);
+  40%{
+      transform: translateX(-5%);
   }
-  100% {
-    opacity: 0;
+  80%{
+      transform: translateX(0%);
+  }
+  100%{
+      transform: translateX(-10px);
   }
 }
+.notification .toasts.hide{
+  animation:  hide_toasts 0.3s ease forwards;
+}
+@keyframes hide_toasts {
+  0%{
+      transform: translateX(-10px);
+  }
+  40%{
+      transform: translateX(0%);
+  }
+  80%{
+      transform: translateX(-5%);
+  }
+  100%{
+      transform: translateX(calc(100% + 20px));
+  }
+}
+.notification .toasts::before{
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  height: 3px;
+  width: 50%;
+  background: red;
+  animation:  progress_toasts 4s  ease forwards;
+}
+@keyframes progress_toasts{
+  100%{
+      width: 0%;
+  }
+}
+.notification .toasts.success .column i{
+  color: var(--success);
+}
+.notification .toasts.error .column i{
+  color: var(--error);
+}
+.notification .toasts.warning .column i{
+  color: var(--warning);
+}
+.notification .toasts.info .column i{
+  color: var(--info);
+}
+.notification .toasts.success::before , .btn#success{
+  background: var(--success);
+}
+.notification .toasts.error::before , .btn#error{
+  background: var(--error);
+}
+.notification .toasts.warning::before , .btn#warning{
+  background: var(--warning);
+}
+.notification .toasts.info::before , .btn#info{
+  background: var(--info);
+}
+.toasts .column i{
+ font-size: 1.45rem;
+}
+.toasts .column span{
+  font-size: 1.07rem;
+  margin-left: 17px;
+}
+.toasts i:last-child{
+  color: #aeb0d7;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.toasts i:last-child:hover{
+  color: var(--dark);
+}
+
 .paginate_fashion {
   color: #e57474;
   margin-right: 15px;
@@ -69,3 +143,4 @@
   display: block;
   padding: 5px 8px;
 }
+

@@ -3,89 +3,10 @@
     Trang Product
 @endsection
 @section('content')
-    @if (Session::has('thongbao'))
-        <div class='noti success_noti' style="top: 43px;right:8px">
-            <h2> Thông báo thành công </h2>
-            <p> Đã thêm product </p>
-        </div>
-    @endif
-    @if (Session::has('sua'))
-        <div class='noti success_noti' style="top: 43px;right:8px">
-            <h2> Thông báo thành công </h2>
-            <p> Đã sửa product </p>
-        </div>
-    @endif
-    @if (Session::has('xoa'))
-        <div class='noti success_noti' style="top: 43px;right:8px">
-            <h2> Thông báo thành công </h2>
-            <p> Đã xóa product </p>
-        </div>
-    @endif
-    {{-- Thống kê --}}
-
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>150</h3>
-
-                <p>New Orders</p>
-            </div>
-            <div class="icon">
-                <i class="fa-solid fa-bag-shopping"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                <p>Bounce Rate</p>
-            </div>
-            <div class="icon">
-                <i class="fa-regular fa-percent"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3>44</h3>
-
-                <p>User Registrations</p>
-            </div>
-            <div class="icon">
-                <i class="fa-solid fa-chart-pie"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-danger">
-            <div class="inner">
-                <h3>{{ $count }}</h3>
-
-                <p>Số sản phẩm</p>
-            </div>
-            <div class="icon">
-                <i class="fa-brands fa-product-hunt"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-    </div>
 
     {{-- Content --}}
     <div class="col-md-12">
-        <div class="card product">
+        <div class="product">
             <div class="card">
                 <div class="card-header">
                     <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN PRODUCT</h2>
@@ -126,10 +47,10 @@
                                     <td>{{ $product->stock }}</td>
                                     <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">
 
-                                        <a href="{{ url('admin/product/edit', ['id' => $product->id, 'slug' => Str::slug($product->slug)]) }}"
-                                            title="Sửa Product" style="border: none;outline:none">
-                                            <i class="fa-solid fa-pen" style="color: #f4f4f4; font-size:22px;"></i></a>
-                                        <form method="post" action="{{ url('admin/product/destroy/' . $product->slug) }}">
+                                        <a href="{{ url('admin/product/edit/' . $product->id) }}" title="Sửa Product"
+                                            style="border: none;outline:none">
+                                            <i class="fa-solid fa-pen" style="color: black; font-size:22px;"></i></a>
+                                        <form method="post" action="{{ url('admin/product/destroy/' . $product->id) }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" title="Xóa Product"
@@ -155,22 +76,15 @@
 
 @section('breadcumb')
     <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{route('admin.dashboard.index')}}">Home</a></li>
         <li class="breadcrumb-item active">Products</li>
     </ol>
 @endsection
 
 @section('javascript')
-    {{-- CDN Ajax --}}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
-    {{-- CDN jquery --}}
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
-
-
     {{-- Search input product --}}
     <script>
+        
         function searchProduct() {
             $(document).ready(function() {
                 $("#search").keyup(function() {
@@ -196,26 +110,5 @@
             })
         }
         searchProduct();
-
-        const URL = 'http://127.0.0.1:8000/api/products';
-        loadProduct(URL);
-
-        function loadProduct(URL) {
-            fetch("URL")
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    console.log(data);
-                    let htmls = data.results.map(function(item) {
-                        return `
-                        <ul>
-                        <li>${item.name}</li>
-                        </ul>
-                        `
-                    });
-                    document.querySelector(".item").innerHTML = htmls.join("");
-                })
-        }
     </script>
 @endsection

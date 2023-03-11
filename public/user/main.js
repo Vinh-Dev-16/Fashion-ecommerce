@@ -51,19 +51,19 @@
  },1000);
 
  //Phan slider
- var swiper = new Swiper(".swiper", {
+//  var swiper = new Swiper(".swiper", {
    
-    loop:true,
-    centeredSlides: true,
-    autoplay: {
-      delay: 6500,
-      disableOnInteraction: false,
-    },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-  }); 
+//     loop:true,
+//     centeredSlides: true,
+//     autoplay: {
+//       delay: 6500,
+//       disableOnInteraction: false,
+//     },
+//     pagination: {
+//       el: ".swiper-pagination",
+//       clickable: true,
+//     },
+//   }); 
 
  // Phan scroll
 //  const home_landing = document.querySelector('.back_home');

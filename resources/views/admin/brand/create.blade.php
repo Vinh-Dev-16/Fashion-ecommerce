@@ -1,18 +1,13 @@
 @extends('admin.layout')
 @section('content')
-    @if (Session::has('loi'))
-        <div class='noti ' style="top: 43px;right:8px">
-            <h2> Thông báo lỗi </h2>
-            <p> Đã lỗi về thứ gì đó </p>
-        </div>
-    @endif
+ 
     <div class="col-md-12">
-        <div class="card product">
+        <div class="product">
             <div class="card">
                 <div class="card-header">
                     <h2 style="font-size:25px;text-align:center;margin:10px 0">TẠO MỚI BRAND</h2>
                 </div>
-                <div class="card card-primary">
+                <div class="card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Form tạo mới</h3>
                     </div>
@@ -57,3 +52,5 @@
         <li class="breadcrumb-item active">Create Brand</li>
     </ol>
 @endsection
+
+
