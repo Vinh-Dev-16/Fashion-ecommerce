@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+    Trang sửa role User
+@endsection
 @section('content')
    
 

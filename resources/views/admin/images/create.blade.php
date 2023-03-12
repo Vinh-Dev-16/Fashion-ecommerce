@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+    Trang tạo mới Image Product
+@endsection
 @section('content')
  
     <div class="col-md-12">

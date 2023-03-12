@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+    Trang sửa Brand
+@endsection
 @section('content')
   
 

@@ -1,24 +1,22 @@
 @extends('admin.layout')
 @section('title')
-    Trang Product
+    Trang restore
 @endsection
 @section('content')
 
     {{-- Content --}}
     <div class="col-md-12">
-        <div class="product">
+        <div class="restore">
             <div class="card">
                 <div class="card-header">
-                    <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN PRODUCT</h2>
+                    <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN RESTORE</h2>
                     <h3 class="card-title">
-                        <a href="{{ route('admin.product.create') }}">Tạo mới product</a>
-                        <span style="margin-left: 20px"><a href="{{route('admin.product.viewrestore')}}">Restore product</a></span>
+                        <a href="{{ route('admin.product.index') }}">Quay lại trang product</a>
                     </h3>
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
                             <input type="text" name="table_search" id="search" class="form-control float-right"
                                 placeholder="Search">
-
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-default">
                                     <i class="fas fa-search"></i>
@@ -40,23 +38,23 @@
                                 <th>CRUD</th>
                             </tr>
                         </thead>
-                        <tbody class="infor_product">
+                        <tbody class="infor_restore">
                             <tr>
-                                @foreach ($products as $product)
-                                    <td>{{ $product->id }}</td>
-                                    <td>{{ Illuminate\Support\Str::of($product->name)->words(4) }}</td>
-                                    <td>{{ number_format($product->price) }} VND</td>
-                                    <td>{{ $product->discount }}%</td>
-                                    <td>{{ $product->stock }}</td>
+                                @foreach ($restores as $restore)
+                                    <td>{{ $restore->id }}</td>
+                                    <td>{{ Illuminate\Support\Str::of($restore->name)->words(4) }}</td>
+                                    <td>{{ number_format($restore->price) }} VND</td>
+                                    <td>{{ $restore->discount }}%</td>
+                                    <td>{{ $restore->stock }}</td>
                                     <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">
 
-                                        <a href="{{ url('admin/product/edit/' . $product->id) }}" title="Sửa Product"
+                                        <a href="{{ url('admin/product/restore/' . $restore->id) }}" title="Restore"
                                             style="border: none;outline:none">
-                                            <i class="fa-solid fa-pen" style="color: black; font-size:22px;"></i></a>
-                                        <form method="post" action="{{ url('admin/product/destroy/' . $product->id) }}">
+                                            <i class="fa-solid fa-rotate-left" style="color: black; font-size:22px;"></i></a>
+                                        <form method="post" action="{{ url('admin/product/delete/' . $restore->id) }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" title="Xóa Product"
+                                            <button type="submit" title="Xóa restore"
                                                 onclick=" return confirm ('Bạn có muốn xóa không?')"
                                                 style="border: none;outline:none;padding:0 13px;background:transparent"><i
                                                     class="fa-solid fa-trash"
@@ -72,7 +70,7 @@
                 <!-- /.card-body -->
             </div>
         </div>
-        {{ $products->links() }}
+        {{ $restores->links() }}
         <div class="item"></div>
     </div>
 @endsection
@@ -80,38 +78,6 @@
 @section('breadcumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item"><a href="{{route('admin.dashboard.index')}}">Home</a></li>
-        <li class="breadcrumb-item active">Products</li>
+        <li class="breadcrumb-item active">Restore restores</li>
     </ol>
-@endsection
-
-@section('javascript')
-    {{-- Search input product --}}
-    <script>
-        
-        function searchProduct() {
-            $(document).ready(function() {
-                $("#search").keyup(function() {
-                    $input = $(this).val();
-                    if ($input) {
-                        $('.infor_product').hide();
-                        $('#search_result').show();
-                    } else {
-                        $('.infor_product').show();
-                        $('#search_result').hide();
-                    }
-                    $.ajax({
-                        url: "{{ URL::to('admin/product/search') }}",
-                        method: "GET",
-                        data: {
-                            'search': $input
-                        },
-                        success: function(data) {
-                            $("#search_result").html(data);
-                        }
-                    });
-                })
-            })
-        }
-        searchProduct();
-    </script>
 @endsection

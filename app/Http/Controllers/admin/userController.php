@@ -95,4 +95,20 @@ class userController extends Controller
         $accounts->delete();
         return redirect('admin/account/index')->with('success', 'Xóa user thành công');
     }
+
+     // Phần restore 
+     public function viewRestore(){
+        $restores = User::onlyTrashed()->paginate(6);
+        return view('admin.account.restore', compact('restores'));
+    }
+
+    public function restore($id){
+        User::onlyTrashed()->find($id)->restore();
+        return back()->with('success', 'Đã restore user thành công');
+    }  
+
+    public function delete($id){
+        User::onlyTrashed()->find($id)->forceDelete();
+        return back()->with('success', 'Đã xóa user thành công');
+    }
 }

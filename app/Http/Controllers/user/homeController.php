@@ -12,7 +12,7 @@ class homeController extends Controller
 {
     public function home(){
         $products = Product::all();
-        $categories = Category::all()->take(8);
+        $categories = Category::all();
         $brands = Brand::all();
         return view('user.design.home', compact('products', 'categories', 'brands'));
     }

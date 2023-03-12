@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+    Trang User
+@endsection
 @section('content')
 
     {{-- Content --}}
@@ -6,7 +9,8 @@
         <div class="product col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN account</h2>
+                    <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN USER</h2>
+                    <h3 class="card-title"><a href="{{ route('admin.account.viewrestore') }}">Trang Restore User</a></h3>
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
                             <input type="text" name="table_search" class="form-control float-right" placeholder="Search">

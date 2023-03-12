@@ -30,8 +30,9 @@
                     <nav class="mobile_hide">
                         <ul class="flexitem second_link">
                             <li><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="#">Shop
-                                    {{-- <i style="position: absolute " class="ri-arrow-down-s-line"></i> --}}
+                            <li>
+                                <a href="#" id="shop_toggle">Shop
+                                    <i style="position: absolute " class="ri-arrow-down-s-line" id="arrow_shop"></i>
                                 </a>
                                 <div class="mega">
                                     <div class="container">
@@ -40,7 +41,7 @@
                                                 <div class="row">
                                                     <h4>Danh mục sản phẩm</h4>
                                                     <ul>
-                                                        @foreach ($categories as $category)
+                                                        @foreach ($categories->take(8) as $category)
                                                             <li><a href="#">{{ $category->name }}</a></li>
                                                         @endforeach
                                                     </ul>
@@ -50,16 +51,11 @@
                                                 <div class="row">
                                                     <h4>Túi</h4>
                                                     <ul>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
+                                                        <ul>
+                                                            @foreach ($categories->take(8) as $category)
+                                                                <li><a href="#">{{ $category->name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -67,11 +63,11 @@
                                                 <div class="row">
                                                     <h4>Giày</h4>
                                                     <ul>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
+                                                        <ul>
+                                                            @foreach ($categories->take(8) as $category)
+                                                                <li><a href="#">{{ $category->name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -79,16 +75,11 @@
                                                 <div class="row">
                                                     <h4>Brand</h4>
                                                     <ul class="brands">
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
-                                                        <li><a href="">1</a></li>
+                                                        <ul>
+                                                            @foreach ($categories->take(8) as $category)
+                                                                <li><a href="#">{{ $category->name }}</a></li>
+                                                            @endforeach
+                                                        </ul>
                                                     </ul>
                                                     <a href="" class="view_all">Xem tất cả <i
                                                             class="ri-arrow-right-line"></i></a>
@@ -126,14 +117,14 @@
                 <div class="right">
                     <ul class="flexitem second_links">
                         <li class="mobile_hide"><a href="#">
-                                <div class="icon_large"><i class="ri-heart-line"></i>
+                                <div class="icon_large" style="margin-top: -36px"><i class="ri-heart-line"></i>
                                     <div class="fly_item"><span class="item_number">0</span></div>
                                 </div>
                             </a>
                         </li>
                         <li>
                             <a href="#" class="iscart">
-                                <div class="icon_large"><i class="ri-shopping-cart-line"></i>
+                                <div class="icon_large" style="margin-top: -36px"><i class="ri-shopping-cart-line"></i>
                                     <div class="fly_item"><span class="item_number">0</span></div>
                                 </div>
                             </a>
@@ -150,7 +141,7 @@
                                                 <li>
                                                     <a href="#">Thông tin cá nhân</a>
                                                 </li>
-                                                @if (!(Auth::user()->role_id == 0))
+                                                @if (!(Auth::user()->role_id == 1))
                                                     <li>
                                                         <a href="{{ route('admin.dashboard.index') }}">Trang
                                                             Dashboard</a>
@@ -194,16 +185,59 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+    <script>
+        const shop_toggle = document.getElementById('shop_toggle');
+        const mega = document.querySelector('.mega');
+        const arrow_shop = document.querySelector('#arrow_shop');
+
+        // Xử lý sự kiến cho shop
+        shop_toggle.addEventListener('click', () => {
+            toggleShop();
+        });
+
+        function toggleShop() {
+            mega.classList.toggle('active');
+            arrow_shop.classList.toggle('active');
+
+             // Xử lý sự kiện khi không click vào shop
+
+            document.addEventListener('click', function(e) {
+            if (e.target !== mega && e.target !== shop_toggle) {
+                mega.classList.remove('active');
+                arrow_shop.classList.remove('active');
+                console.log(e.target);
+            }
+        });
+        }
+
+    </script>
     @if (Auth::check())
         <script>
             const btn_auth = document.getElementById('btn_auth');
             const select = document.getElementById('select');
             const arrow_down = document.getElementById('arrow_down');
 
+            // Toggle cho auth
+
             btn_auth.addEventListener('click', function() {
+                toggleAuth();
+            });
+
+            function toggleAuth() {
                 select.classList.toggle('active');
                 arrow_down.classList.toggle('active');
-            });
+
+                // Xử lý sự kiện khi không click vào shop
+
+            document.addEventListener('click', function(e) {
+            if (e.target !== select && e.target !== btn_auth) {
+                select.classList.remove('active');
+                arrow_down.classList.remove('active');
+            }
+            })
+        };
         </script>
     @endif
 </body>

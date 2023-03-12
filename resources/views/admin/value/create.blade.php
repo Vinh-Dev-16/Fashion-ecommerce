@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+Trang tạo mới Attribute Value
+@endsection
 @section('content')
     <div class="col-md-12">
         <div class="product">

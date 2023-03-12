@@ -1,6 +1,6 @@
 @extends('user.layout')
 @section('content')
-    {{-- <div class="flex home_user" style="background-image: url({{asset('images/bg1.jpg')}});  filter: brightness(0.9);">
+    <div class="flex home_user" style="background-image: url({{asset('images/bg1.jpg')}});  filter: brightness(0.9);">
         <div class="text_slider">
         </div>
         <div class="slider_animation">
@@ -13,12 +13,15 @@
         </div>
     </div>
     <div class="category_home">
-        <img src="{{asset('images/woman.png')}}" alt="woman">
-        <img src="{{asset('images/man.png')}}" alt="man">
-        <img src="{{asset('images/shoe.png')}}" alt="shoe">
-        <img src="{{asset('images/perfume.png')}}" alt="perfume">
-        <img src="{{asset('images/bag.png')}}" alt="bag">
-    </div> --}}
+        <h3> Brand Fashion </h3>
+        <div class="img_category">
+            <img src="{{asset('images/woman.png')}}" alt="woman">
+            <img src="{{asset('images/man.png')}}" alt="man">
+            <img src="{{asset('images/shoe.png')}}" alt="shoe">
+            <img src="{{asset('images/perfume.png')}}" alt="perfume">
+            <img src="{{asset('images/bag.png')}}" alt="bag">
+        </div>
+    </div>
 
    
 @endsection

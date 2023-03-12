@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+    Trang Dashboard 
+@endsection
 @section('content')
  
 

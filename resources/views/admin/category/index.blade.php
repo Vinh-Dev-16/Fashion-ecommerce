@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+    Trang Category
+@endsection
 @section('content')
     {{-- Content --}}
     <div class="col-md-12" style="display:flex;align-items: center;justify-content:center">

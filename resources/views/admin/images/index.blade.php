@@ -43,10 +43,10 @@
                                             alt="images của {{$image->products->name}}"></td>
                                     <td>{{ Illuminate\Support\Str::of($image->products->name)->words(4) }}</td>
                                     <td class="table_crud" style="display:flex;justify-content:flex-start;">
-                                        <a href="{{ url('admin/image/edit/' . $image->id) }}" title="Sửa image"
+                                        <a href="{{ url('admin/images/edit/' . $image->id) }}" title="Sửa image"
                                             style="border: none;outline:none">
                                             <i class="fa-solid fa-pen" style="color:black; font-size:25px;"></i></a>
-                                        <form method="post" action="{{ url('admin/image/destroy/' . $image->id) }}">
+                                        <form method="post" action="{{ url('admin/images/destroy/' . $image->id) }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" title="Xóa image"

@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\admin\Category;
 use App\Models\admin\Image;
 use App\Models\admin\ValueAttribute;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $table = 'products';
     protected $primaryKey = 'id';
     protected $fillable = 

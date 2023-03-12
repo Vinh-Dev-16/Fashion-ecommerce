@@ -26,6 +26,9 @@ Route::middleware('auth', 'is_admin')->prefix('/admin')->group(function () {
     Route::patch('update/{id}', [userController::class, 'update'])->name('admin.account.update');
     Route::get('edit/{id}', [userController::class, 'edit'])->name('admin.account.edit');
     Route::delete('delete/{id}', [userController::class, 'delete'])->name('admin.account.delete');
+    Route::get('viewrestore', [userController::class,'viewrestore'])->name('admin.account.viewrestore');
+    Route::get('restore/{id}', [userController::class, 'restore'])->name('admin.account.restore');
+    Route::delete('delete/{id}', [userController::class, 'delete'])->name('admin.account.delete');
   });
 
   // Router Products
@@ -38,7 +41,9 @@ Route::middleware('auth', 'is_admin')->prefix('/admin')->group(function () {
     Route::patch('update/{id}', [productController::class, 'update'])->name('admin.product.update');
     Route::get('edit/{id}', [productController::class, 'edit'])->name('admin.product.edit');
     Route::get('search', [productController::class, 'search'])->name('admin.product.search');
-   
+    Route::get('viewrestore', [productController::class, 'viewrestore'])->name('admin.product.viewrestore');
+    Route::get('restore/{id}', [productController::class, 'restore'])->name('admin.product.restore');
+    Route::delete('delete/{id}', [productController::class, 'delete'])->name('admin.product.delete');
   });
   // Route Category
 
@@ -91,9 +96,9 @@ Route::middleware('auth', 'is_admin')->prefix('/admin')->group(function () {
   Route::prefix('/images')->group(function () {
     Route::get('/index', [imagesController::class, 'index'])->name('admin.images.index');
     Route::get('create', [imagesController::class, 'create'])->name('admin.images.create');
-    Route::get('update', [imagesController::class, 'update'])->name('admin.images.update');
+    Route::patch('update/{id}', [imagesController::class, 'update'])->name('admin.images.update');
     Route::post('store', [imagesController::class, 'store'])->name('admin.images.store');
-    Route::patch('edit/{id}', [imagesController::class, 'edit'])->name('admin.images.edit');
+    Route::get('edit/{id}', [imagesController::class, 'edit'])->name('admin.images.edit');
     Route::delete('destroy/{id}', [imagesController::class, 'destroy'])->name('admin.images.destroy');
     Route::get('search', [imagesController::class, 'search'])->name('admin.images.search');
   });

@@ -37,10 +37,10 @@ class imagesController extends Controller
                <td>'. $path . '</td>
                <td> '. $name. ' </td>
                <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">' . '
-                   <a href="' . route('admin.images.edit', $images->id) . '" title="Sửa Category"
+                   <a href="' . route('admin.images.edit', $images->id) . '" title="Sửa image"
                    style="border: none;outline:none">
                    <i class="fa-solid fa-pen" style=" font-size:22px;"></i></a>
-                   <a href="' . route('admin.images.destroy', $images->id) . '" title="Xoa Category"
+                   <a href="' . route('admin.images.destroy', $images->id) . '" title="Xoa image"
                    style="border:none;outline:none">
                    <i class="fa-solid fa-trash"
                    style="font-size:22px;"></i></a>
@@ -110,7 +110,9 @@ class imagesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $images = Image::find($id);
+        $products = Product::all();
+        return view('admin.images.edit', compact('images','products'));
     }
 
     /**
@@ -122,7 +124,15 @@ class imagesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $images = Image::find($id);
+            $input = $request->all();
+            unset($input['_token']);
+            $images->update($input);
+            return redirect('admin/images/index')->with('success', 'Đã sửa image thành công');
+        } catch (Exception $e) {
+            return redirect('admin/images/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
+        }
     }
 
     /**
