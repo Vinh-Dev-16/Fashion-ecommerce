@@ -23,8 +23,8 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="exampleName">Tên sản phẩm</label>
-                                <input type="text" class="form-control" id="exampleInputName"
-                                    value="{{ $products->name }}" name="name">
+                                <input type="text" class="form-control" id="slug"
+                                    value="{{ $products->name }}" name="name"  onkeyup="ChangeToSlug();">
                                 @error('name')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <label for="exampleName">Slug sản phẩm</label>
                                 <input type="text" class="form-control" id="convert_slug" name="slug"
-                                    value="{{ $products->slug }}">
+                                  value="{{$products->slug}}" >
                                 @error('slug')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -49,8 +49,8 @@
                                 <label for="examplePrice">Category sản phẩm</label>
                                 <select name="id_category[]" class="select2" id="select2" multiple="multiple"
                                     style="width: 100%">
-                                    @foreach ($products->categories as $select)
-                                        <option selected value="{{ $select->id }}">{{ $select->name }}</option>
+                                    @foreach ($selects as $id=>$name) 
+                                    <option selected value="{{ $id }}">{{ $name }}</option>
                                     @endforeach
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -61,8 +61,7 @@
                                 <label for="examplePrice">Brand sản phẩm</label>
                                 <select name="brand_id" class="form-control">
                                     @foreach ($brands as $brand)
-                                        <option @if ($products->brand_id == $brand->id) selected
-                                            
+                                        <option @if ($products->brand_id == $brand->id) selected                                            
                                         @endif value="{{ $brand->id }}">{{ $brand->name }}</option>
                                     @endforeach
                                 </select>
@@ -75,7 +74,7 @@
                                 <select class="select2" name="attribute_value_id[]" multiple="multiple"
                                     style="width: 100%">
                                     @foreach ($products->attributevalues as $select)
-                                    @if ($select->id == 1)
+                                    @if ($select->attributes->id == 1)
                                     <option selected value="{{$select->id}}">{{$select->value}}</option>
                                     @endif
                                     @endforeach
@@ -85,12 +84,12 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group"> 
                                 <label for="examplePrice">Màu sản phẩm</label>
                                 <select class="select2" name="attribute_value_id[]" multiple="multiple"
                                     style="width: 100%">
                                     @foreach ($products->attributevalues as $select)
-                                    @if ($select->id == 2)
+                                    @if ($select->attributes->id == 2)
                                     <option selected value="{{$select->id}}">{{$select->value}}</option>
                                     @endif
                                     @endforeach

@@ -26,11 +26,12 @@
                                 <label for="exampleName">Tên brand sản phẩm</label>
                                 <input type="text" class="form-control" id="exampleInputName" value="{{ $brand->name }}"
                                     name="name">
-                                @error('name')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
                             </div>
-
+                            <div class="form-group">
+                                <label for="exampleName">Logo brand</label>
+                                <input type="text" class="form-control" id="exampleInputName"
+                                    value="{{$brand->logo}}" name="logo" >
+                            </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">

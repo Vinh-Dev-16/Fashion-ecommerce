@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\admin;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Feedback extends Model
+class Review extends Model
 {
     use HasFactory;
     protected $table = 'feedback';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'username',
+        'name',
         'email',
         'title',
         'content',
+        'product_id',
     ];
 }

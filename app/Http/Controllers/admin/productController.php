@@ -22,8 +22,7 @@ class productController extends Controller
         // Sắp xếp theo số lượng tồn kho để khi stock = 0 thì xử lý
         $products = Product::orderBy('stock')->paginate(6);
         $categories = Category::all();
-        $count = Product::count();
-        return view('admin.product.index', compact('products', 'categories', 'count'));
+        return view('admin.product.index', compact('products', 'categories'));
     }
     /**
      * Show the form for creating a new resource.
@@ -52,10 +51,7 @@ class productController extends Controller
         if ($request->isMethod('Post')) {
             $rules = [
                 'name' => 'required|max:255',
-                'slug' => 'required|max:255',
                 'price' => 'required|integer',
-                'tags' => 'required',
-                'discount' => 'integer',
                 'stock' => 'required|integer',
                 'desce' => 'required',
                 'brand_id' => 'required',
@@ -63,21 +59,20 @@ class productController extends Controller
             $messages = [
                 'required' => 'Không được để trống trường này',
                 'integer' => 'Trường nhập vào phải là số',
-                'date' => 'Trường nhập vào phải là ngày tháng',
 
             ];
             $request->validate($rules, $messages);
         }
-    try{
+    // try{
             $input = $request->all();
             unset($input['_token']);
             $products = Product::create($input);
             $products->categories()->attach($request->input('id_category'));
             $products->attributevalues()->attach($request->input('attribute_value_id'));
             return redirect('admin/product/index')->with('success', 'Đã thêm product thành công');
-        } catch (Exception $e) {
-            return redirect('admin/product/create')->with('error', 'Đã xảy ra lỗi');
-        }
+        // } catch (Exception $e) {
+        //     return redirect('admin/product/create')->with('error', 'Đã xảy ra lỗi');
+        // }
     }
 
     public function search(Request $request)
@@ -96,7 +91,7 @@ class productController extends Controller
                <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">' . '
                    <a href="' . route('admin.product.edit', $result->id) . '" title="Sửa Product"
                    style="border: none;outline:none">
-                   <i class="fa-solid fa-pen" style="color: #f4f4f4; font-size:22px;"></i></a>
+                   <i class="fa-solid fa-pen" style=" font-size:22px;"></i></a>
                    <a href="' . route('admin.product.destroy', $result->id) . '" title="Xoa Product"
                    style="border:none;outline:none">
                    <i class="fa-solid fa-trash"
@@ -130,9 +125,9 @@ class productController extends Controller
         $products = Product::find($id);
         $colors = ValueAttribute::where('attribute_id', '=', '2')->get();
         $sizes = ValueAttribute::where('attribute_id', '=', 1)->get();
-        $select = $products->categories()->pluck('categories.id');
-        $select->all();
-        return view('admin.product.edit', compact('products','categories','brands','select','colors','sizes'));
+        $selects = $products->categories()->pluck('categories.name','categories.id');
+        $options = $products->attributevalues()->pluck('attribute_value.id','attribute_value.value');
+        return view('admin.product.edit', compact('products','categories','brands','selects','colors','sizes','options'));
     }
 
     /**

@@ -30,7 +30,7 @@ class Product extends Model
         return $this->belongsToMany(Category::class,'category_products','id_product','id_category')->withTimestamps();
     }
     
-    public function brands(){
+    public function brand(){
         return $this->belongsTo(Brand::class);
     }
     

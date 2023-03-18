@@ -23,7 +23,7 @@ class AdminMiddleware
             return redirect('/');
         }
     }else{
-        return redirect()->route('/login')->with('warning', 'Không có quyền truy cập');
+        return redirect()->route('/login')->with('error', 'Không có quyền truy cập');
     }
     return $next($request);
     }

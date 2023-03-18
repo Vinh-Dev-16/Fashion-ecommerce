@@ -1,0 +1,230 @@
+html{
+    background-color: rgb(58 51 53 / 51%);
+    margin:0;
+    height: 100%;
+    width: 100%;
+    display: block;
+    overflow-x: hidden;
+}
+img{
+    height: 100%;
+    max-width: 70%;
+    object-fit: cover;
+    max-height: 100%;
+}
+.wrapper{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.animation{
+    position: relative;
+    text-align: center;
+    flex:1;
+    animation-name: ani;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: 2s;
+    animation-direction: alternate-reverse;
+}
+
+@keyframes ani{
+    100% {transform: rotate(-5deg) translateX(20px);}
+          
+        
+    0%{transform: rotate(5deg) translateX(-20px); }
+    
+}
+
+.ani_crane{
+    height: 100%;
+}
+.crane{
+    height: 100%;
+}
+.flex{
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+    align-items: baseline;
+    justify-content: center;
+}
+.flex span{
+    font-size: 130px;
+    color: yellow;
+    font-weight: bold;
+    position: relative;
+}
+.flex span img{
+
+    height: auto;
+}
+.flex .bird{
+    position: absolute;
+    width: 40%;
+    height: auto;
+    bottom: calc(100%-30px);
+    left: 36%;
+    animation-name: bird_run;
+    animation-duration: 2s;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+}
+@keyframes bird_run{
+    0%{
+        transform: scale(1,1);
+    }
+    50%{
+        transform: scale(-1,1);
+    }
+    100%{
+        transform: scale(1,1);
+    }
+}
+.flex .plaint{
+    width: auto;
+    height: 130px;
+}
+.flex span small{
+    position: absolute;
+    border-radius: 50%;
+    top:20%;
+    left: 50%;
+    display: block;
+}
+.flex span small:nth-child(2){
+    height: 10px;
+    width: 10px;
+    animation-name: ani_dot1;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+    animation-duration: 4s;
+}
+.flex small:nth-child(3){
+    height: 10px;
+    width: 10px;
+    animation-name: ani_dot2;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+    animation-duration: 6s;
+    margin-left: 30px;
+    
+}
+.flex small:nth-child(4){
+    height: 10px;
+    width: 10px;
+    animation-name: ani_dot3;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+    animation-duration: 8s;
+    margin-left: 60px;
+}
+@keyframes ani_dot1{
+    0%{transform: translate(0px , 0px);
+       background: orange;}
+    25%{
+        transform: translate(20px,-10px);
+        background: rgb(235, 158, 17);
+    }
+    50%{
+        transform: translate(30px, -30px);
+        background: rgb(248, 225, 182);
+    }
+    75%{
+        transform: translate(50px, -20px);
+        background: rgb(254, 244, 225);
+        opacity: 0.6;
+    }
+    90%{
+        transform: translate(70px, -90px);
+        background: orange;
+        opacity: 0.3;
+    }
+    100%{
+        transform: translate(100px, -80px);
+        background: orange;
+        opacity: 0;
+    }
+}
+@keyframes ani_dot2{
+    0%{transform: translate(0px , 0px) scale(1.3, 1.3);
+       background: orange;}
+    25%{
+        transform: translate(50px,-50px) scale(1.5, 1.5);
+        background: rgb(235, 158, 17);
+    }
+    50%{
+        transform: translate(90px, -70px) scale(2, 2);
+        background: rgb(248, 225, 182);
+    }
+    75%{
+        transform: translate(120px, -40px) scale(1.2, 1.2);
+        background: rgb(254, 244, 225);
+        opacity: 0.6;
+    }
+    90%{
+        transform: translate(140px, -70px) scale(1.01, 1.01);
+        background: orange;
+        opacity: 0.3;
+    }
+    100%{
+        transform: translate(160px, -100px) scale(1,1);
+        background: orange;
+        opacity: 0;
+    }
+}
+@keyframes ani_dot3{
+    0%{transform: translate(0px , 0px);
+       background: orange;}
+    25%{
+        transform: translate(20px,-10px);
+        background: rgb(235, 158, 17);
+    }
+    50%{
+        transform: translate(30px, -30px);
+        background: rgb(248, 225, 182);
+    }
+    75%{
+        transform: translate(50px, -20px);
+        background: rgb(254, 244, 225);
+        opacity: 0.6;
+    }
+    90%{
+        transform: translate(70px, -90px);
+        background: orange;
+        opacity: 0.3;
+    }
+    100%{
+        transform: translate(100px, -80px);
+        background: orange;
+        opacity: 0;
+    }
+}
+.text{
+    text-align: center;
+    padding: 20px 0;
+
+}
+.text h3{
+    font-size: 30px;
+    color: black;
+    margin-bottom: 10px;
+}
+.text p{
+    font-size: 18px;
+    color: black;
+}
+.text #reload{
+    display: inline-block;
+    padding: 10px 35px;
+    border-radius: 6px;
+    color: black;
+    font-size: 18px;
+    background: rgb(55, 180, 87);
+    border: none;
+    text-transform: uppercase;
+    transition: 0.25s;
+}
+.text #reload:hover{
+   background:rgb(68, 66, 66);
+}

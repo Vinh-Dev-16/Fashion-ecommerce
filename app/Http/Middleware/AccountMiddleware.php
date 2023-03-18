@@ -20,7 +20,7 @@ class AccountMiddleware
             if(Auth::user()->role_id == 2 ) {
                 return $next($request);
         }else{
-            return redirect('admin/dashboard')->with('warning', 'Không có quyền truy cập ');
+            return redirect('admin/dashboard')->with('error', 'Không có quyền truy cập ');
         }
         return $next($request);
     }

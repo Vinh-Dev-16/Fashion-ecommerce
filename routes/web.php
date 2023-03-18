@@ -19,7 +19,11 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
+// Route::get('/{any}', function ($any) {
 
+//     return view('404');
+  
+// })->where('any', '.*');
 
 
 Route::get('/register', function(){

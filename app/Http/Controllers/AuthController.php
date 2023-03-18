@@ -57,7 +57,7 @@ class AuthController extends Controller
                     break;
             }
         } else {
-            return redirect('/login');
+            return redirect('/login')->with('error', 'Mật khẩu hoặt email không đúng');
         }
     }
 

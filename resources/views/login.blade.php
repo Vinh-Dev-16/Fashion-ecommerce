@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ asset('user/auth.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <title>Login</title>
 </head>
 
@@ -22,19 +23,17 @@
             </li>
         </ul>
     @endif
-    @if (Session::has('warning'))
-        <div class="flash_message">
-            <ul class="notification">
-                <li>
-                    <div class="column">
-                        <i class="fa fa-check"></i>
-                        <span>{{ session('warning') }}</span>
-                    </div>
-                    <i class="fa fa-xmark"></i>
-                </li>
-            </ul>
-        </div>
-    @endif
+    @if (Session::has('error'))
+    <ul class="notification">
+        <li class="error toasts">
+            <div class="column">
+                <i class="fa-solid fa-x"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+            <i class="fa fa-xmark"></i>
+        </li>
+    </ul>
+@endif
     <div class="wrapper_res"
         style=" background-image: linear-gradient(0deg,rgba(0,0,0,.8) 0,transparent 60%,rgba(0,0,0,.8)),
     url('{{ asset('images/banner-bg.png') }}');">
@@ -72,6 +71,29 @@
     </div>
 
 
+    @if (Session::has('success') || Session::has('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+    
+                const notifications = document.querySelector('.notification');
+                const toast = document.querySelector('.toasts');
+                const timer = 3000;
+    
+    
+                function removeToast(toast) {
+                    toast.classList.add("hide");
+                    if (toast.timeoutId) clearTimeout(toast.timeoutId);
+                    setTimeout(() => toast.remove(), 400);
+                }
+    
+                setTime();
+    
+                function setTime() {
+                    setTimeout(() => removeToast(toast), 3000)
+                }
+            });
+        </script>
+    @endif
 </body>
 
 </html>

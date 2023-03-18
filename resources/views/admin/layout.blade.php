@@ -255,9 +255,8 @@
                             <!-- small box -->
                             <div class="small-box bg-success">
                                 <div class="inner">
-                                    <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                                    <p>Bounce Rate</p>
+                                    <h3>{{App\Models\admin\Category::count()}}</h3>
+                                    <p>Category</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa-regular fa-percent"></i>
@@ -271,9 +270,8 @@
                             <!-- small box -->
                             <div class="small-box bg-warning">
                                 <div class="inner">
-                                    <h3>44</h3>
-
-                                    <p>User Registrations</p>
+                                    <h3>{{App\Models\admin\Brand::count()}}</h3>
+                                    <p>Brand</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa-solid fa-chart-pie"></i>
@@ -287,9 +285,8 @@
                             <!-- small box -->
                             <div class="small-box bg-danger">
                                 <div class="inner">
-                                    <h3>65</h3>
-
-                                    <p>Unique Visitors</p>
+                                    <h3>{{App\Models\admin\Product::count()}}</h3>                                        
+                                    <p>Sản phẩm</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa-brands fa-product-hunt"></i>
@@ -308,19 +305,16 @@
                                 <i class="fa fa-xmark"></i>
                             </li>
                         </ul>
-                    @endif
-                    @if (Session::has('error'))
-                        <div class="flash_message">
-                            <ul class="notification">
-                                <li>
-                                    <div class="column">
-                                        <i class="fa fa-check"></i>
-                                        <span>{{ session('warning') }}</span>
-                                    </div>
-                                    <i class="fa fa-xmark"></i>
-                                </li>
-                            </ul>
-                        </div>
+                    @elseif (Session::has('error'))
+                        <ul class="notification">
+                            <li class="error toasts">
+                                <div class="column">
+                                    <i class="fa fa-check"></i>
+                                    <span>{{ session('error') }}</span>
+                                </div>
+                                <i class="fa fa-xmark"></i>
+                            </li>
+                        </ul>
                     @endif
                         @section('content')
                         @show
@@ -388,7 +382,7 @@
         integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-        @if (Session::has('success'))
+        @if (Session::has('success') || Session::has('error'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
     
@@ -410,29 +404,7 @@
                 }
             });
         </script>
-        @elseif (Session::has('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-    
-                const notifications = document.querySelector('.notification');
-                const toast = document.querySelector('.toasts');
-                const timer = 3000;
-    
-    
-                function removeToast(toast) {
-                    toast.classList.add("hide");
-                    if (toast.timeoutId) clearTimeout(toast.timeoutId);
-                    setTimeout(() => toast.remove(), 400);
-                }
-    
-                setTime();
-    
-                function setTime() {
-                    setTimeout(() => removeToast(toast), 3000)
-                }
-            });
-        </script>
-        @endif
+    @endif
     @section('javascript')
     @show
 

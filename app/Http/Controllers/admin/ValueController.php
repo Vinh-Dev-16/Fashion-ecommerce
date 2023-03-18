@@ -50,14 +50,14 @@ class ValueController extends Controller
             ];
             $request->validate($rules, $messages);
         }
-        // try {
+        try {
             $input = $request->all();
             unset($input['_token']);
             ValueAttribute::create($input);
             return redirect('admin/value/index')->with('success', 'Đã thêm value thành công');
-        // } catch (Exception $e) {
-        //     return redirect('admin/value/create')->with('error', 'Đã xảy ra lỗi');
-        // }
+        } catch (Exception $e) {
+            return redirect('admin/value/create')->with('error', 'Đã xảy ra lỗi');
+        }
     }
 
     /**

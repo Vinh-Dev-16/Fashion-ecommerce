@@ -46,7 +46,11 @@
                                     <td>{{ $product->id }}</td>
                                     <td>{{ Illuminate\Support\Str::of($product->name)->words(4) }}</td>
                                     <td>{{ number_format($product->price) }} VND</td>
+                                    @if ($product->discount)
                                     <td>{{ $product->discount }}%</td>
+                                    @else
+                                    <td>0%</td>   
+                                    @endif
                                     <td>{{ $product->stock }}</td>
                                     <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">
 

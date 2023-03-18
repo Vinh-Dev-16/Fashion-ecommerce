@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->integer('price');
             $table->decimal('discount')->nullable();
             $table->integer('stock');
-            $table->string('desce');
+            $table->longText('desce');
             $table->timestamps();
         });
     }

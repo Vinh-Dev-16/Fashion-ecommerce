@@ -71,7 +71,6 @@ class brandController extends Controller
         if($request ->isMethod('Post')){
             $rules = [
                 'name' =>'required|max:255',
-                'product_id' =>'required',
                 'logo'=>'required',
             ];
             $messages = [

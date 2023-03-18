@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
-use Exception;
-use App\Models\Feedback;
-use Illuminate\Http\Request;
+namespace App\Http\Controllers\admin;
 
-class feedbackController extends Controller
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\admin\Review;
+class reviewController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class feedbackController extends Controller
      */
     public function index()
     {
-        //
+        $reviews = Review::all();
+        return view('user.design.review.index', compact('reviews'));
     }
 
     /**
@@ -35,22 +36,7 @@ class feedbackController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->isMethod('POST')){
-            $request->validate([
-                'username' =>'required|max:255',
-                'email' =>'required|email',
-               'title' =>'required',
-               'content' =>'required',
-            ]);
-        }
-        try{
-            $input = $request->all();   
-            Feedback::create($input);
-            return redirect('feedback')->with('thongbao');  
-            }catch (Exception $e){
-            return redirect('feedback')->with('post');  
-        }
-        
+        //
     }
 
     /**
