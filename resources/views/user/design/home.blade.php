@@ -46,7 +46,7 @@
                 </div>
                 <div class="column">
                     <div class="flexwrap">
-                        @foreach ($products->take(1) as $product)
+                        @foreach (App\Models\admin\Product::where('sale', '=', 1)->limit(1)->get() as $product)
                             <div class="row products big">
                                 <div class="item">
                                     <div class="offer">
@@ -68,7 +68,7 @@
                                         <div class="hoverable">
                                             <ul>
                                                 <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                                <li><a href="{{url('detail/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
+                                                <li><a href="{{url('pageoffer/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
                                                 <li><a href=""><i class="ri-shuffle-line"></i></a></li>
                                             </ul>
                                         </div>
@@ -105,11 +105,11 @@
                         @endforeach
                     </div>
                     <div class="row products mini">
-                            @foreach (App\Models\admin\Product::where('id', '>', 1)->get()->take(3) as $product)
+                            @foreach (App\Models\admin\Product::where('sale' , '=' ,1)->inRandomOrder()->limit(6)->get() as $product)
                             <div class="item">
                                 <div class="media">
                                     <div class="thumbnail " style="object-fit: cover">
-                                        <a href="{{ url('detail/' . $product->id) }}">
+                                        <a href="{{ url('pageoffer/' . $product->id) }}">
                                             <img src="{{ $product->images->first()->path }}" style="height: 100%">
                                         </a>
                                     </div>
@@ -130,54 +130,11 @@
                                             href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
                                     </h3>
                                     <div class="rating">
-                                        <div class="stars"></div>
-                                        <div class="mini_text">(160)</div>
-                                    </div>
-                                    <div class="price">
-                                        @if ($product->discount)
-                                            <span
-                                                class="current">{{ number_format(floor($product->price - ($product->price * $product->discount) / 100)) }}
-                                                VND</span>
-                                            <span class="normal mini_text">{{ number_format($product->price) }} VND</span>
+                                        @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
                                         @else
-                                            <span class="current">{{ number_format($product->price) }} VND</span>
+                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
                                         @endif
-                                    </div>
-                                    <div class="mini_text">
-                                        <p>Đã bán 30</p>
-                                        <p>Free Shipping</p>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                        <div class="row products mini">
-                            @foreach (App\Models\admin\Product::where('id', '>', 5)->get()->take(3) as $product)
-                            <div class="item">
-                                <div class="media">
-                                    <div class="thumbnail " style="object-fit: cover">
-                                        <a href="{{ url('detail/' . $product->id) }}">
-                                            <img src="{{ $product->images->first()->path }}" style="height: 100%">
-                                        </a>
-                                    </div>
-                                    <div class="hoverable">
-                                        <ul>
-                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="{{url('detail/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
-                                            <li><a href=""><i class="ri-shuffle-line"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    @if ($product->discount)
-                                        <div class="discount circle flexcenter"><span>{{ $product->discount }}%</span>
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="content">
-                                    <h3 class="main_links"><a
-                                            href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
-                                    </h3>
-                                    <div class="rating">
-                                        <div class="stars"></div>
                                         <div class="mini_text">(160)</div>
                                     </div>
                                     <div class="price">
@@ -217,7 +174,7 @@
                                     class="ri-arrow-right-line"></i></a></div>
                     </div>
                     <div class="products main flexwrap">
-                        @foreach (App\Models\admin\Product::where('id' , '>' , 1)->orderBy('created_at', 'desc')->get()->take(9) as $product)
+                        @foreach (App\Models\admin\Product::where('sale' , '=' , 0)->inRandomOrder()->limit(9)->get() as $product)
                             <div class="item">
                                 <div class="media">
                                     <div class="thumbnail object_cover">
@@ -239,7 +196,11 @@
                                 </div>
                                 <div class="content">
                                     <div class="rating">
-                                        <div class="stars"></div>
+                                        @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        @else
+                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                        @endif
                                         <div class="mini_text">(160)</div>
                                     </div>
                                     <h3 class="main_links"><a
@@ -254,6 +215,13 @@
                                         @else
                                             <span class="current">{{ number_format($product->price) }} VND</span>
                                         @endif
+                                    </div>
+                                    <div class="footer">
+                                        <ul class="mini_text">
+                                            <li>Cotton, Polyester</li>
+                                            <li>100% nguyên chất</li>
+                                            <li>Phong cách</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -270,7 +238,7 @@
 @section('javascript')
     <script>
         //Phần deal of day
-        let countDate = new Date('29,march,2023 00:00:00').getTime();
+        let countDate = new Date('29,Jun,2023 00:00:00').getTime();
 
         function countDown() {
             let now = new Date().getTime();

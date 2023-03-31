@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\admin\Category;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class categoryController extends Controller
 {
@@ -16,6 +17,7 @@ class categoryController extends Controller
     public function index()
     {
         $categories = Category::paginate(6);
+        Session::put('category_url', request()->fullUrl());
         return view('admin.category.index', compact('categories'));
     }
 
@@ -79,9 +81,11 @@ class categoryController extends Controller
             $input = $request->all();
             unset($input['_token']);
             Category::create($input);
-            return redirect('admin/category/index')->with('success', 'Đã thêm category thành công');
+            if (Session::get('category_url')) {
+                return redirect(session('category_url'))->with('success', 'Đã thêm category thành công');
+            }
         } catch (Exception $e) {
-            return redirect('admin/category/create')->with('error', 'Đã xảy ra lỗi');
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
 
@@ -123,9 +127,11 @@ class categoryController extends Controller
             $input = $request->all();
             unset($input['_token']);
             $categories->update($input);
-            return redirect('admin/category/index')->with('success', 'Đã sửa category thành công');
+            if (Session::get('category_url')) {
+                return redirect(session('category_url'))->with('success', 'Đã sửa category thành công');
+            }
         } catch (Exception $e) {
-            return redirect('admin/category/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
 
@@ -139,6 +145,8 @@ class categoryController extends Controller
     {
         $categories = Category::find($id);
         $categories->delete();
-        return redirect('admin/category/index')->with('success', 'Đã xóa category thành công');
+        if (Session::get('category_url')) {
+            return redirect(session('category_url'))->with('success', 'Đã xóa category thành công');
+        }
     }
 }

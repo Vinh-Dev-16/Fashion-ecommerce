@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class InfoAccount extends Model
+class Information extends Model
 {
     use HasFactory;
-    protected $table = 'info_account';
+    protected $table = 'infoaccounts';
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
@@ -17,7 +17,8 @@ class InfoAccount extends Model
         'address',
         'birthday',
         'gender',
-        'age',
+        'hobbies',
+        'description',
         'image_url',
     ];
 }

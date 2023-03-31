@@ -1,21 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\admin;
-
+namespace App\Http\Controllers\user;
+use App\Models\admin\Product;
+use App\Models\admin\Category;
+use App\Models\admin\Brand;
 use App\Http\Controllers\Controller;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
-use App\Models\admin\Review;
-class reviewController extends Controller
+
+class wishlistController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        $reviews = Review::all();
-        return view('user.design.review.index', compact('reviews'));
+        $wishlists = Wishlist::where('user_id',$id)->paginate(12);
+        $products = Product::all();
+        $categories = Category::all();
+        $brands = Brand::all();
+        $cart = session()->get('cart', []);
+        return view('user.design.wishlist',compact('wishlists','products', 'categories', 'brands','cart'));
     }
 
     /**
@@ -36,7 +43,14 @@ class reviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Wishlist::create([
+            'product_id' => $request->product_id,
+            'user_id' => $request->user_id,
+        ]);
+        $wishlists = Wishlist::all();
+        return response()->json([
+            'result' => $wishlists,
+        ]);
     }
 
     /**
@@ -81,6 +95,15 @@ class reviewController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Wishlist::find($id)->delete();
+        $wishlists = Wishlist::all();
+        return response()->json([
+            'result' => $wishlists,
+        ]);
+    }
+    public function delete($id)
+    {
+        Wishlist::find($id)->delete();
+        return redirect()->back()->with('success','Đã xóa thành công');
     }
 }

@@ -1,19 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\user;
+use App\Models\Information;
+use App\Models\admin\Product;
+use App\Models\admin\Category;
+use App\Models\admin\Brand;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class infoAccountController extends Controller
+class informationController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $products = Product::all();
+        $categories = Category::all();
+        $brands = Brand::all();
+        $informations = Information::find($id);
+        $cart = session()->get('cart', []);
+        return view('user.design.information.index', compact('informations','products', 'categories', 'brands','cart'));
     }
 
     /**
@@ -34,18 +43,7 @@ class infoAccountController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->isMethod('POST')){
-            $request->validate([
-                'name' =>'required',
-                'email' =>'required|email',
-                'phone' =>'required|max:10|numeric',
-                'address' =>'required',
-                'birthday' =>'required|date',
-                'gender' =>'required|in:male,female',
-                'age' =>'required',
-                'image_url' =>'required',
-            ]);
-        }
+        //
     }
 
     /**

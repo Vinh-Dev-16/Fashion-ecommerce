@@ -6,7 +6,7 @@ use App\Models\admin\Brand;
 use App\Models\admin\Product;
 use Illuminate\Http\Request;
 use Exception;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class brandController extends Controller
 {
@@ -18,7 +18,7 @@ class brandController extends Controller
     public function index()
     {
         $brands = Brand::paginate(6);
-
+        Session::put('brand_url', request()->fullUrl() );
         return view('admin.brand.index', compact('brands'));
     }
 
@@ -82,7 +82,9 @@ class brandController extends Controller
                 $input = $request-> all();
                 unset($input['_token']);
                 Brand::create($input);
-                return redirect('admin/brand/index')->with('success','Brand cập nhập thành công');
+                if (Session::get('brand_url')) {
+                    return redirect(session('brand_url'))->with('success', 'Đã thêm brand thành công');
+                }
             }catch(Exception $e){
                 return back()->withErrors($e->getMessage('error','Đã xảy ra lỗi'));
             }
@@ -126,7 +128,9 @@ class brandController extends Controller
             $input = $request->all();
             unset($input['_token']);
             $brands->update($input);
-            return redirect('admin/brand/index')->with('success', 'Sửa brand thành công');
+            if (Session::get('brand_url')) {
+                return redirect(session('brand_url'))->with('success', 'Đã sửa brand thành công');
+            }
         } catch (Exception $e) {
             return redirect('admin/brand/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
         }
@@ -142,6 +146,8 @@ class brandController extends Controller
     {
         $brands = Brand::find($id);
         $brands->delete();
-        return redirect('admin/category/index')->with('success', 'Xóa brand thành công');
+        if (Session::get('brand_url')) {
+            return redirect(session('brand_url'))->with('success', 'Đã xóa brand thành công');
+        }
     }
 }

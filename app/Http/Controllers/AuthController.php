@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Exception;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
@@ -60,6 +61,8 @@ class AuthController extends Controller
             return redirect('/login')->with('error', 'Mật khẩu hoặt email không đúng');
         }
     }
+
+
 
     public function logout()
     {

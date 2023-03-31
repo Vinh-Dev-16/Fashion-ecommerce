@@ -7,8 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap/js/bootstrap.js') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('user/user.css') }}">
     <title>
         @section('title')
@@ -18,6 +19,33 @@
 
 <body>
 
+    <div id="preloader" style="background: #ffffff url({{ asset('images/preview.gif') }}) no-repeat center center;">
+    </div>
+
+    @if (Session::has('success'))
+        <ul class="notification">
+            <li class="success toasts">
+                <div class="column">
+                    <i class="fa fa-check"></i>
+                    <span>{{ session('success') }}</span>
+                </div>
+                <i class="fa fa-xmark"></i>
+            </li>
+        </ul>
+    @elseif (Session::has('error'))
+        <ul class="notification">
+            <li class="error toasts">
+                <div class="column">
+                    <i class="fa fa-check"></i>
+                    <span>{{ session('error') }}</span>
+                </div>
+                <i class="fa fa-xmark"></i>
+            </li>
+        </ul>
+    @endif
+    <ul class="notification">
+
+    </ul>
     {{-- Navbar --}}
 
     <div class="header_nav">
@@ -94,7 +122,7 @@
                                                         <div class="thumbnail object_cover">
                                                             <a href="#">
                                                                 <img src="{{ asset('images/model.jpg') }}"
-                                                                    alt="Ảnh model fashion">
+                                                                    alt="Ảnh model fashion" style="position:static">
                                                             </a>
                                                         </div>
                                                     </div>
@@ -119,78 +147,149 @@
                 </div>
                 <div class="right">
                     <ul class="flexitem second_links">
-                        <li class="mobile_hide"><a href="#">
+                        @if (Auth::check())
+                        <li class="mobile_hide"><a href="{{ url('/wishlist/'. Auth::user()->id) }}">
                                 <div class="icon_large" style="margin-top: -36px"><i class="ri-heart-line"></i>
-                                    <div class="fly_item"><span class="item_number">0</span></div>
+                                    <div class="fly_item"><span class="item_number" id="wishlist_number">{{   App\Models\Wishlist::where('user_id',Auth::user()->id)->count();}}</span></div>
                                 </div>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="iscart">
-                                <div class="icon_large" style="margin-top: -36px"><i class="ri-shopping-cart-line"></i>
-                                    <div class="fly_item"><span class="item_number">0</span></div>
+                        @else
+                        <li class="mobile_hide" onclick="createToast('Bạn cần phải đăng nhập')"><div>
+                            <div class="icon_large" style="margin-top: -10px"><i class="ri-heart-line"></i>
+                                <div class="fly_item"><span class="item_number" id="wishlist_number">0</span></div>
+                            </div>
+                        </div>
+                        </li>
+                        @endif
+                        <li class="iscart">
+                            <a href="#">
+                                <div class="icon_large" style="margin-top: -36px"><i
+                                        class="ri-shopping-cart-line"></i>
+                                    <div class="fly_item"><span class="item_number"
+                                            id="item_number">{{ count($cart) }}</span></div>
                                 </div>
                             </a>
-                            {{-- <div class="mini_cart">
+
+                            <div class="mini_cart" id="mini_cart">
                                 <div class="content">
-                                    <div class="cart_head">
-                                        Có ? đơn hàng
+                                    <div class="cart_head" id="card_head">
+                                        <p>Có {{ count($cart) }} sản phẩm</p>
                                     </div>
-                                        <div class="cart_body">
-                                            <ul class="product mini">
-                                                <li class="item">
-                                                    <div class="thumbnail object_cover">
-                                                        <a href="#"><img src="{{asset('images/home1.jpg')}}"></a>
-                                                    </div>
-                                                    <div class="item_content">
-                                                        <p><a href="#">Name</a></p>
-                                                        <span class="price">
-                                                            <span>200</span>
-                                                            <span class="fly_item"><span>2x</span></span>
-                                                        </span>
-                                                    </div>
-                                                    <a href="" class="item_remove">
-                                                        <i class="ri-close-line"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                    <div class="cart_body">
+                                        <ul class="products mini" id="card_body">
+                                            @if (Session::has('cart'))
+                                                @foreach ($cart as $cart_product)
+                                                    <li class="item" style="margin-bottom: 1em">
+                                                        <div class="thumbnail object_cover">
+                                                            <a href="#"><img
+                                                                    src="{{ $cart_product['image'] }}"></a>
+                                                        </div>
+                                                        <div class="item_content">
+                                                            @if ($cart_product['product']->sale == 0)
+                                                                <p><a
+                                                                        href="{{ url('detail/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
+                                                                </p>
+                                                            @else
+                                                                <p><a
+                                                                        href="{{ url('pageoffer/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
+                                                            @endif
+                                                            <span class="price">
+                                                                <br>
+                                                                @if ($cart_product['product']->discount)
+                                                                    <span>{{ number_format($cart_product['quantity'] * ($cart_product['product']->price - ($cart_product['product']->discount / 100) * $cart_product['product']->price)) }}
+                                                                        VND
+                                                                    </span>
+                                                                @else
+                                                                    {{ number_format($cart_product['quantity'] * $cart_product['product']->price) }}
+                                                                    VND
+                                                                @endif
+                                                                <span
+                                                                    class="fly_item"><span>{{ $cart_product['quantity'] }}x</span></span>
+                                                            </span>
+                                                        </div>
+                                                        <a href="#" class="item_remove" id="item_remove"
+                                                            onclick="removeCart({{ $cart_product['product']->id }})">
+                                                            <i class="ri-close-line"></i>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            @endif
+                                        </ul>
+                                    </div>
+                                    <div class="cart_footer">
+                                        <div class="subtotal" id="subtotal">
+                                            <p>Phí ship</p>
+                                            <p><strong>{{ number_format(15000) }} * {{ count($cart) }} =
+                                                    {{ number_format(15000 * count($cart)) }} VND</strong></p>
+                                            <p>Tổng tiền</p>
+                                            <?php $cartCollect = collect($cart);
+                                            $subTotal = $cartCollect->sum(function ($cartItem) {
+                                                if (!$cartItem['product']->discount) {
+                                                    return $cartItem['quantity'] * $cartItem['product']->price;
+                                                } else {
+                                                    return $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
+                                                }
+                                            });
+                                            ?>
+                                            <p><strong>{{ number_format($subTotal + 15000 * count($cart)) }}
+                                                    VND</strong></p>
                                         </div>
+                                        <div class="actions">
+                                            <a href="" class="primary_button">CheckOut</a>
+                                            <a href="{{ url('cart') }}" class="secondary_button">Đến xem giỏ
+                                                hàng</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div> --}}
+                            </div>
                         </li>
                         <li>
+
                             @if (Auth::check())
-                                <div class="auth login_user">
-                                    <div class="auth_select">
-                                        <button id="btn_auth">{{ Auth::user()->name }}<i class="ri-arrow-down-s-line"
-                                                style="font-size:23px;position: absolute;right:1px"
-                                                id="arrow_down"></i></button>
-                                        <div class="select_user" id="select">
-                                            <ul>
-                                                <li>
-                                                    <a href="#">Thông tin cá nhân</a>
-                                                </li>
-                                                @if (!(Auth::user()->role_id == 1))
-                                                    <li>
-                                                        <a href="{{ route('admin.dashboard.index') }}">Trang
-                                                            Dashboard</a>
-                                                    </li>
-                                                @endif
-                                                <li>
-                                                    <form action="{{ url('logout') }}" method="POST">
-                                                        @csrf
-                                                        <button type="submit"
-                                                            style="border: none; outline:none; background-color:transparent;font-size:18px">Đăng
-                                                            xuất</button>
-                                                    </form>
-                                                </li>
-                                            </ul>
+                                <div class="profile-dropdown">
+                                    <div onclick="toggle()" class="profile-dropdown-btn">
+                                        <div class="profile-img" style="background-image:url({{asset('images/user.png')}})">
+                                            <i class="fa-solid fa-circle"></i>
                                         </div>
+
+                                        <span>{{ Auth::user()->name }}
+                                            <i class="fa-solid fa-angle-down"></i>
+                                        </span>
                                     </div>
+
+                                    <ul class="profile-dropdown-list">
+                                        <li class="profile-dropdown-list-item">
+                                            <a href="{{url('information/'. Auth::user()->id)}}">
+                                                <i class="fa-regular fa-user"></i>
+                                                Thông tin cá nhân
+                                            </a>
+                                        </li>
+                                        @if (!(Auth::user()->role_id == 1))
+                                            <li class="profile-dropdown-list-item">
+                                                <a href="{{ url('/admin/dashboard') }}">
+                                                    <i class="fa-regular fa-envelope"></i>
+                                                    Trang dashboard
+                                                </a>
+                                            </li>
+                                        @endif
+                                        <hr />
+                                        <li class="profile-dropdown-list-item">
+                                            <form action="{{ route('do_logout') }}" method="POST">
+                                                @csrf
+                                                <button type="submit">
+                                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                                    Log out
+                                                </button>
+                                            </form>
+                                            
+                                        </li>
+                                    </ul>
                                 </div>
                             @else
                                 <div class="auth login">
-                                    <a href="{{ route('login') }}" style="font-family: 'Rubik' ,sans-serif;">Đăng nhập</a>
+                                    <a href="{{ route('login') }}" style="font-family: 'Rubik' ,sans-serif;">Đăng
+                                        nhập</a>
                                 </div>
                             @endif
                         <li>
@@ -384,9 +483,10 @@
                 </div>
                 <div class="right">
                     <div class="search_box">
-                        <form action="" class="search">
+                        <form action="{{ url('searchpage') }}" class="search">
                             <span class="icon_large"><i class="ri-search-line" style="margin-bottom:16px"></i></span>
-                            <input type="search" placeholder="Tìm kiếm tên sản phẩm" name="search" id="search_product">
+                            <input type="search" placeholder="Tìm kiếm tên sản phẩm" name="search"
+                                id="search_product">
                             <button type="submit">Search</button>
                         </form>
                         <ul class="search_results">
@@ -401,203 +501,204 @@
         @section('content')
         @show
 
-         {{-- banner --}}
+        {{-- banner --}}
 
-    <div class="banners">
-        <div class="container">
-            <div class="wrapper">
-                <div class="column">
-                    <div class="banner flexwrap">
-                        <div class="row">
-                            <div class="item">
-                                <div class="image">
-                                    <img src="{{ asset('images/banner1.jpg') }}" alt="Banner1">
+        <div class="banners">
+            <div class="container">
+                <div class="wrapper">
+                    <div class="column">
+                        <div class="banner flexwrap">
+                            <div class="row">
+                                <div class="item">
+                                    <div class="image">
+                                        <img src="{{ asset('images/banner1.jpg') }}" alt="Banner1">
+                                    </div>
+                                    <div class="text_content flexcol">
+                                        <h4>Brutal Sale</h4>
+                                        <h3><span>Lấy discount tại đây!!!</span><br>Shop Fashion</h3>
+                                        <a href="#" class="primary_button">Shop now</a>
+                                    </div>
+                                    <a href="#" class="over_link"></a>
                                 </div>
-                                <div class="text_content flexcol">
-                                    <h4>Brutal Sale</h4>
-                                    <h3><span>Lấy discount tại đây!!!</span><br>Shop Fashion</h3>
-                                    <a href="#" class="primary_button">Shop now</a>
+                            </div>
+                            <div class="row">
+                                <div class="item get_gray">
+                                    <div class="image">
+                                        <img src="{{ asset('images/banner2.jpg') }}" alt="Banner1">
+                                    </div>
+                                    <div class="text_content flexcol">
+                                        <h4>Brutal Sale</h4>
+                                        <h3><span>Giảm giá vào mọi lúc !!!</span><br>Shop Fashion</h3>
+                                        <a href="#" class="primary_button">Shop now</a>
+                                    </div>
+                                    <a href="#" class="over_link"></a>
                                 </div>
-                                <a href="#" class="over_link"></a>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="item get_gray">
-                                <div class="image">
-                                    <img src="{{ asset('images/banner2.jpg') }}" alt="Banner1">
+                        {{-- category --}}
+
+                        <div class="products_categories flexwrap">
+                            <div class="row">
+                                <div class="item">
+                                    <div class="image">
+                                        <img src="{{ asset('images/procat1.jpg') }}" alt="Category1">
+                                    </div>
+                                    <div class="content mini_links">
+                                        <h4>Beauty</h4>
+                                        <ul class="flexcol">
+                                            <li><a href="#">Makeup</a></li>
+                                            <li><a href="#">Skin Care</a></li>
+                                            <li><a href="#">Hair Care</a></li>
+                                            <li><a href="#">Fragrance</a></li>
+                                            <li><a href="#">Foot & Hand Care</a></li>
+                                        </ul>
+                                        <div class="second_links"><a href="#" class="view_all">Xem tất cả<i
+                                                    class="ri-arrow-right-line"></i></a></div>
+                                    </div>
                                 </div>
-                                <div class="text_content flexcol">
-                                    <h4>Brutal Sale</h4>
-                                    <h3><span>Giảm giá vào mọi lúc !!!</span><br>Shop Fashion</h3>
-                                    <a href="#" class="primary_button">Shop now</a>
+                            </div>
+                            <div class="row">
+                                <div class="item">
+                                    <div class="image">
+                                        <a href="#">
+                                            <img src="{{ asset('images/procat2.jpg') }}" alt="Category2">
+                                        </a>
+                                    </div>
+                                    <div class="content mini_links">
+                                        <h4><a href="#">Gatdets</a></h4>
+                                        <ul class="flexcol">
+                                            <li><a href="#">Camera</a></li>
+                                            <li><a href="#">Cell phones</a></li>
+                                            <li><a href="#">Computes</a></li>
+                                            <li><a href="#">GPS & Navigation</a></li>
+                                            <li><a href="#">Headphones</a></li>
+                                        </ul>
+                                        <div class="second_links"><a href="#" class="view_all">Xem tất cả<i
+                                                    class="ri-arrow-right-line"></i></a></div>
+                                    </div>
                                 </div>
-                                <a href="#" class="over_link"></a>
+                            </div>
+                            <div class="row">
+                                <div class="item">
+                                    <div class="image">
+                                        <a href="#">
+                                            <img src="{{ asset('images/procat3.jpg') }}" alt="Category2">
+                                        </a>
+                                    </div>
+                                    <div class="content mini_links">
+                                        <h4><a href="#">Home Decor</a></h4>
+                                        <ul class="flexcol">
+                                            <li><a href="#">Kitchen</a></li>
+                                            <li><a href="#">Dinning Room</a></li>
+                                            <li><a href="#">Pantry</a></li>
+                                            <li><a href="#">Great Room</a></li>
+                                            <li><a href="#">Breakfast Nook</a></li>
+                                        </ul>
+                                        <div class="second_links"><a href="#" class="view_all">Xem tất cả<i
+                                                    class="ri-arrow-right-line"></i></a></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
-                    {{-- category --}}
-
-                    <div class="products_categories flexwrap">
-                        <div class="row">
-                            <div class="item">
-                                <div class="image">
-                                    <img src="{{ asset('images/procat1.jpg') }}" alt="Category1">
-                                </div>
-                                <div class="content mini_links">
-                                    <h4>Beauty</h4>
-                                    <ul class="flexcol">
-                                        <li><a href="#">Makeup</a></li>
-                                        <li><a href="#">Skin Care</a></li>
-                                        <li><a href="#">Hair Care</a></li>
-                                        <li><a href="#">Fragrance</a></li>
-                                        <li><a href="#">Foot & Hand Care</a></li>
-                                    </ul>
-                                    <div class="second_links"><a href="#" class="view_all">Xem tất cả<i
-                                                class="ri-arrow-right-line"></i></a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="item">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="{{ asset('images/procat2.jpg') }}" alt="Category2">
-                                    </a>
-                                </div>
-                                <div class="content mini_links">
-                                    <h4><a href="#">Gatdets</a></h4>
-                                    <ul class="flexcol">
-                                        <li><a href="#">Camera</a></li>
-                                        <li><a href="#">Cell phones</a></li>
-                                        <li><a href="#">Computes</a></li>
-                                        <li><a href="#">GPS & Navigation</a></li>
-                                        <li><a href="#">Headphones</a></li>
-                                    </ul>
-                                    <div class="second_links"><a href="#" class="view_all">Xem tất cả<i
-                                                class="ri-arrow-right-line"></i></a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="item">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="{{ asset('images/procat3.jpg') }}" alt="Category2">
-                                    </a>
-                                </div>
-                                <div class="content mini_links">
-                                    <h4><a href="#">Home Decor</a></h4>
-                                    <ul class="flexcol">
-                                        <li><a href="#">Kitchen</a></li>
-                                        <li><a href="#">Dinning Room</a></li>
-                                        <li><a href="#">Pantry</a></li>
-                                        <li><a href="#">Great Room</a></li>
-                                        <li><a href="#">Breakfast Nook</a></li>
-                                    </ul>
-                                    <div class="second_links"><a href="#" class="view_all">Xem tất cả<i
-                                                class="ri-arrow-right-line"></i></a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     {{-- Footer --}}
-    
-    <footer>
-       <div class="widgets">
-        <div class="container">
-            <div class="wrapper">
-                <div class="flexwrap">
-                    <div class="row">
-                        <div class="item mini_links">
-                            <h4>Help & Contact</h4>
-                            <ul class="flexcol">
-                                <li><a href="">Your Account</a></li>
-                                <li><a href="">Your Order</a></li>
-                                <li><a href="">Shipping Rate</a></li>
-                                <li><a href="">Returns</a></li>
-                                <li><a href="">Assistant</a></li>
-                                <li><a href="">Help</a></li>
-                                <li><a href="">Contact US</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="item mini_links">
-                            <h4>Product Category</h4>
-                            <ul class="flexcol">
-                                <li><a href="">Beauty</a></li>
-                                <li><a href="">Electronic</a></li>
-                                <li><a href="">Women's Fashion</a></li>
-                                <li><a href="">Men's Fashion</a></li>
-                                <li><a href="">Girl's Fashion</a></li>
-                                <li><a href="">Boy's Fashion</a></li>
-                                <li><a href="">Health & HouseHold</a></li>
-                                <li><a href="">Home & Kitchen</a></li>
-                                <li><a href="">Pet Suppeise</a></li>
-                                <li><a href="">Sports</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="item mini_links">
-                            <h4>Payment Info</h4>
-                            <ul class="flexcol">
-                                <li><a href="">Bussiness Card</a></li>
-                                <li><a href="">Shop with Points</a></li>
-                                <li><a href="">Reload your Balance</a></li>
-                                <li><a href="">Payal</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="item mini_links">
-                            <h4>About Us</h4>
-                            <ul class="flexcol">
-                                <li><a href="">Company Info</a></li>
-                                <li><a href="">News</a></li>
-                                <li><a href="">Inverstor</a></li>
-                                <li><a href="">Careers</a></li>
-                                <li><a href="">Customer Reviews</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-       </div>
 
-       <div class="footer_info">
-        <div class="conatainer">
-            <div class="wrapper">
-                <div class="flexcol">
-                    <div class="logo">
-                        <a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
-                            alt="logo" style="width:30px; height:30px; margin-right:5px"><span
-                            class="circle"></span><span
-                            style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
-                    </div>
-                    <div class="socials">
-                        <ul class="flexitem">
-                            <li><a href=""><i class="ri-twitter-line"></i></a></li>
-                            <li><a href=""><i class="ri-facebook-line"></i></a></li>
-                            <li><a href=""><i class="ri-instagram-line"></i></a></li>
-                            <li><a href=""><i class="ri-github-line"></i></a></li>
-                            <li><a href=""><i class="ri-youtube-line"></i></a></li>
-                        </ul>
+    <footer>
+        <div class="widgets">
+            <div class="container">
+                <div class="wrapper">
+                    <div class="flexwrap">
+                        <div class="row">
+                            <div class="item mini_links">
+                                <h4>Help & Contact</h4>
+                                <ul class="flexcol">
+                                    <li><a href="">Your Account</a></li>
+                                    <li><a href="">Your Order</a></li>
+                                    <li><a href="">Shipping Rate</a></li>
+                                    <li><a href="">Returns</a></li>
+                                    <li><a href="">Assistant</a></li>
+                                    <li><a href="">Help</a></li>
+                                    <li><a href="">Contact US</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="item mini_links">
+                                <h4>Product Category</h4>
+                                <ul class="flexcol">
+                                    <li><a href="">Beauty</a></li>
+                                    <li><a href="">Electronic</a></li>
+                                    <li><a href="">Women's Fashion</a></li>
+                                    <li><a href="">Men's Fashion</a></li>
+                                    <li><a href="">Girl's Fashion</a></li>
+                                    <li><a href="">Boy's Fashion</a></li>
+                                    <li><a href="">Health & HouseHold</a></li>
+                                    <li><a href="">Home & Kitchen</a></li>
+                                    <li><a href="">Pet Suppeise</a></li>
+                                    <li><a href="">Sports</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="item mini_links">
+                                <h4>Payment Info</h4>
+                                <ul class="flexcol">
+                                    <li><a href="">Bussiness Card</a></li>
+                                    <li><a href="">Shop with Points</a></li>
+                                    <li><a href="">Reload your Balance</a></li>
+                                    <li><a href="">Payal</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="item mini_links">
+                                <h4>About Us</h4>
+                                <ul class="flexcol">
+                                    <li><a href="">Company Info</a></li>
+                                    <li><a href="">News</a></li>
+                                    <li><a href="">Inverstor</a></li>
+                                    <li><a href="">Careers</a></li>
+                                    <li><a href="">Customer Reviews</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <p class="mini_text">Copyright &copy; 2022 <strong><a href="{{url('/')}}">FASHION</a>.</strong> 
-                    All rights reserved.</p>
             </div>
         </div>
-       </div>
+
+        <div class="footer_info">
+            <div class="conatainer">
+                <div class="wrapper">
+                    <div class="flexcol">
+                        <div class="logo">
+                            <a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
+                                    alt="logo" style="width:30px; height:30px; margin-right:5px"><span
+                                    class="circle"></span><span
+                                    style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
+                        </div>
+                        <div class="socials">
+                            <ul class="flexitem">
+                                <li><a href=""><i class="ri-twitter-line"></i></a></li>
+                                <li><a href=""><i class="ri-facebook-line"></i></a></li>
+                                <li><a href=""><i class="ri-instagram-line"></i></a></li>
+                                <li><a href=""><i class="ri-github-line"></i></a></li>
+                                <li><a href=""><i class="ri-youtube-line"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="mini_text">Copyright &copy; 2022 <strong><a
+                                href="{{ url('/') }}">FASHION</a>.</strong>
+                        All rights reserved.</p>
+                </div>
+            </div>
+        </div>
     </footer>
 
 
@@ -613,16 +714,53 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
-
+    @if (Auth::check())
+        <script>
+            const notifications = document.querySelector('.notification');
+            const timer = 3000;
+        </script>
+    @endif
     <script>
+        window.addEventListener('load', () => {
+            document.querySelector('#preloader').style.display = "none";
+        })
+
+        // Phần comment
+
+
+
+        // Tao remove toast
+
+        const removeNoti = (noti) => {
+            noti.classList.add("hide");
+            if (noti.timeoutId) clearTimeout(noti.timeoutId);
+            setTimeout(() => noti.remove(), 400);
+        };
+
+
+        // Tao Toast
+
+        function createNoti(message) {
+            const noti = document.createElement('li');
+            noti.className = `toasts success`;
+            noti.innerHTML = `
+                        <div class="column">
+                            <i class="fa-solid fa-check"></i>
+                            <span>${message}</span>
+                        </div>
+                        <i class="fa-solid fa-x"></i>
+                        `
+            notifications.appendChild(noti);
+            setTimeout(() => removeNoti(noti), 3000)
+        };
 
         const submenu = document.querySelectorAll('.has_child .icon_small');
-        submenu.forEach((menu)=> menu.addEventListener('click',toggle));
+        submenu.forEach((menu) => menu.addEventListener('click', togglePage));
 
-        function toggle(e) {
+        function togglePage(e) {
             e.preventDefault();
-            submenu.forEach((item)=> item != this ? item.closest('.has_child').classList.remove('expand'):null);
-            if(this.closest('.has_child').classList != 'expand');
+            submenu.forEach((item) => item != this ? item.closest('.has_child').classList.remove('expand') : null);
+            if (this.closest('.has_child').classList != 'expand');
             this.closest('.has_child').classList.toggle('expand');
         }
 
@@ -662,21 +800,27 @@
         function searchProduct() {
             search.addEventListener('keyup', function(e) {
                 if (e.target.value) {
-                    sendData(e.target.value);
+                    send(e.target.value.trim());
                     search_result.style.display = 'block';
                 } else {
                     search_result.style.display = 'none';
+                }
+            })
+
+            document.addEventListener('click', (e) => {
+                if (e.target != search_result) {
+                    search_result.style.display = "none";
                 }
             })
         }
 
         // Search dữ liệu
 
-        async function sendData(data) {
+        async function send(data) {
             const res = await fetch(`${searchURL}?data=${data}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    showData(data);
+                    show(data);
                 })
                 .catch((error) => {
                     console.error("Error:", error);
@@ -685,87 +829,320 @@
 
         // Show Data
 
-        function showData(data) {
+        function show(data) {
             console.log(data.results);
             if (data.results.length > 0) {
                 let output = '';
                 data.results.slice(0, 5).map(function(item) {
-                    if(item.id>1){
-                        item.images.slice(0,1).map((image) => {
+                    if (item.sale == 0) {
+                        item.images.slice(0, 1).map((image) => {
                             output += `
-                            <a href="{{url('detail/${item.id}')}}">
+                            <a href="{{ url('detail/${item.id}') }}">
                                 <li><img src="${image.path}" alt="${item.name}">
                                 <span>${(item.name).substring(0,30)}</span>
                         </li>
                             </a>
                         `
                         });
-                    }else{
-                        item.images.slice(0,1).map((image) => {
+                    } else {
+                        item.images.slice(0, 1).map((image) => {
                             output += `
-                            <a href="{{url('pageoffer/${item.id}')}}">
+                            <a href="{{ url('pageoffer/${item.id}') }}">
                                 <li><img src="${image.path}" alt="${item.name}">
-                                <span>${(item.name).substring(0,30)}</span>
+                                <span>${(item.name).substring(0,50)}</span>
                         </li>
                             </a>
                         `
-                    });
-                }});
+                        });
+                    }
+                });
                 search_result.innerHTML = output;
             } else {
-                search_result.innerHTML = '<p>Không tìm thấy sản phẩm</p>';
+                search_result.innerHTML = '<li> <span> Không tìm thấy sản phẩm </span></li>';
             }
-        } 
+        }
+
+
+        // wishlist
+        async function wishlist(id,userID){
+           
+            const res = await fetch(`http://127.0.0.1:8000/wishlist/store/${id}`,{
+                method: 'POST',
+                 headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    product_id: id,
+                    user_id : userID,
+                }),
+            }).then((response) => response.json())
+                .then((data) => {
+                    console.log(data.result);
+                    message = 'Đã thêm vào danh sách yêu thích';
+                    createNoti(message);
+                    let wishlist_number = document.querySelector('#wishlist_number');
+                    wishlist_number.innerText = data.result.length;
+                    let wishlist_love = document.querySelector('#wish_love');
+                    let content ='';
+                    data.result.slice(0,1).map((item)=>{
+                      content += `
+                        <li>
+                        <a href="#" id="wishlist" onclick="wishlistDelete(${item.id},${item.product_id})">
+                          <span class="icon_large" style="color: #ff6b6b"><i class="ri-heart-fill"></i></span>
+                         <span id="love" style="color:#ff6b6b">Đã yêu thích</span>
+                          </a>
+                        </li>
+                        <li>
+                        <a href="">
+                         <span class="icon_large"><i class="ri-share-line"></i></span>
+                         <span>Chia sẻ</span>
+                         </a>
+                         </li>
+                        `;
+                    });
+                    wishlist_love.innerHTML = content;
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+            
+            return false;
         
+        }
+
+        async function wishlistDelete(id,productID,userID){
+            const res = await fetch(`http://127.0.0.1:8000/wishlist/destroy/${id}`,{
+                method: 'DELETE',
+                 headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                
+            }).then((response) => response.json())
+                .then((data) => {
+                    let wishlist_number = document.querySelector('#wishlist_number');
+                    wishlist_number.innerText = data.result.length;
+                    let wishlist_love = document.querySelector('#wish_love');
+                    let content  ='';
+                       content += `
+                        <li>
+                          <a href="#" id="wishlist" onclick="wishlist(${productID},${userID})">
+                          <span class="icon_large"><i class="ri-heart-line"></i></span>
+                          <span id="love" >Yêu thích</span>
+                          </a>
+                         </li> 
+                        <li>
+                        <a href="">
+                         <span class="icon_large"><i class="ri-share-line"></i></span>
+                         <span>Chia sẻ</span>
+                         </a>
+                         </li>
+                        `;
+                    wishlist_love.innerHTML = content;
+                    message = 'Đã xóa khỏi danh sách yêu thích';
+                    createNoti(message);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+              
+            return false;
+        }
+
+
+        // add to Cart
+
+        function addCart(id) {
+            let colorRadio = document.getElementsByName('color');
+            for (let i of colorRadio) {
+                if (i.checked) {
+                    var color = i.value;
+                }
+            }
+            let sizeRadio = document.getElementsByName('size');
+            for (let i of sizeRadio) {
+                if (i.checked) {
+                    var size = i.value;
+                }
+            }
+            let quantity = document.querySelector("input[name='stock']").value;
+            if (color == undefined && size == undefined) {
+                message = "Phải chọn color và size";
+                createNoti(message);
+            } else if (size == undefined) {
+                message = "Phải chọn size";
+                createNoti(message);
+            } else if (color == undefined) {
+                message = "Phải chọn color";
+                createNoti(message);
+            }
+            sendCart(id, color, size, quantity)
+            console.log(id, color, size, quantity)
+            return false;
+        }
+
+        async function sendCart(id, color, size, quantity) {
+            const res = await fetch(`http://127.0.0.1:8000/cart/${id}`, {
+
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                    body: JSON.stringify({
+                        color: parseInt(color),
+                        size: parseInt(size),
+                        quantity: parseInt(quantity),
+                    }),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    showCart(data);
+                    message = "Đã thêm vào giỏ hàng";
+                    createNoti(message)
+                    let form_cart = document.querySelector('#form_cart');
+                    console.log(form_cart);
+                    form_cart.reset();
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+
+        // remove cart
+
+        document.querySelector('#item_remove').addEventListener('click', (e) => {
+            e.preventDefault();
+        });
+
+        async function removeCart(id) {
+            const res = await fetch(`http://127.0.0.1:8000/removecart/${id}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    showCart(data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+
+        function showCart(data) {
+            console.log(data);
+            let render = '';
+            let card_render = '';
+            let item_number = document.querySelector('#item_number');
+            item_number.innerText = data.cart.length;
+            data.cart.map((cart) => {
+                if (cart.product.discount) {
+                    var price = (cart.product.price - (cart.product.price * ((cart.product.discount) / 100))) * cart
+                        .quantity
+
+                } else {
+                    var price = cart.product.price * cart.quantity
+
+                };
+                render += `
+                                        <li class="item" style="margin-bottom: 1em">
+                                            ${
+                                                (()=>{
+                                                    if((cart.product.sale) == 0){
+                                                        return `
+                                                        <div class="thumbnail object_cover">
+                                                            <a href="{{ url('detail/${cart.product.id}') }}"><img src="${cart.image}"></a>
+                                                        </div>
+                                                        <div class="item_content">
+                                                            <p><a href="{{ url('detail/${cart.product.id}') }}">${(cart.product.name).substring(0,30)}</a>
+                                                            </p>       
+                                                                    `
+                                                    }else{
+                                                       return ` <
+                    div class = "thumbnail object_cover" >
+                    <
+                    a href = "{{ url('pageoffer/${cart.product.id}') }}" > < img src = "${cart.image}" > < /a> < /
+                    div > <
+                    div class = "item_content" >
+                    <
+                    p > < a href = "{{ url('pageoffer/${cart.product.id}') }}" > $ {
+                        (cart.product.name).substring(0, 30)
+                    } < /a> < /
+                    p >
+                    `
+                                                    }
+                                                })()
+                                            }
+                                                <span class="price">
+                                                    <span>${price.toLocaleString('vi-VN')} VND</span>
+                                                    <span class="fly_item"><span>${cart.quantity}x</span></span>
+                                                </span>
+                                            </div>
+                                            <a href="#" class="item_remove" id="item_remove" onclick="removeCart(${cart.product.id})">
+                                                    <i class="ri-close-line" ></i>
+                                                </a>  
+                                        </li>
+            `;
+                let ship = (15000 * data.cart.length).toLocaleString('vi-VN');
+                console.log(data.cart.length)
+                const caculator = data.cart.reduce((total, cartItem) => {
+                    if (cart.product.discount) {
+                        return total + cartItem.quantity * (cartItem.product.price - ((cartItem.product
+                            .price) * ((cartItem.product.discount) / 100)));
+                    } else {
+                        return total + cartItem.quantity * (cartItem.product.price);
+                    }
+                }, 0);
+                let total = caculator.toLocaleString('vi-VN')
+
+                card_render = `
+                                            <p>Phí ship</p>
+                                            <p><strong> ${(15000).toLocaleString('vi-VN')} * ${data.cart.length} = ${ship}  VND</strong></p>
+                                            <p>Tổng tiền</p>
+                                            <p><strong>${(caculator + (15000 * data.cart.length)).toLocaleString('vi-VN')}
+                                                    VND</strong></p>
+                                        `
+            })
+
+            document.querySelector('#subtotal').innerHTML = card_render;
+            document.querySelector('#card_body').innerHTML = render;
+            document.querySelector('#card_head').innerText = `Có ${data.cart.length} sản phẩm`;
+        };
     </script>
-     @if (Session::has('success') || Session::has('error'))
-     <script>
-         document.addEventListener('DOMContentLoaded', function() {
- 
-             const notifications = document.querySelector('.notification');
-             const toast = document.querySelector('.toasts');
-             const timer = 3000;
- 
- 
-             function removeToast(toast) {
-                 toast.classList.add("hide");
-                 if (toast.timeoutId) clearTimeout(toast.timeoutId);
-                 setTimeout(() => toast.remove(), 400);
-             }
- 
-             setTime();
- 
-             function setTime() {
-                 setTimeout(() => removeToast(toast), 3000)
-             }
-         });
-     </script>
- @endif
+    @if (Session::has('success') || Session::has('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                const notifications = document.querySelector('.notification');
+                const toast = document.querySelector('.toasts');
+                const timer = 3000;
+
+
+                function removeToast(toast) {
+                    toast.classList.add("hide");
+                    if (toast.timeoutId) clearTimeout(toast.timeoutId);
+                    setTimeout(() => toast.remove(), 400);
+                }
+
+                setTime();
+
+                function setTime() {
+                    setTimeout(() => removeToast(toast), 3000)
+                }
+            });
+        </script>
+    @endif
     @if (Auth::check())
         <script>
-            const btn_auth = document.getElementById('btn_auth');
-            const select = document.getElementById('select');
-            const arrow_down = document.getElementById('arrow_down');
+            let profileDropdownList = document.querySelector(".profile-dropdown-list");
+            let btn = document.querySelector(".profile-dropdown-btn");
 
-            // Toggle cho auth
+            let classList = profileDropdownList.classList;
 
-            btn_auth.addEventListener('click', function() {
-                toggleAuth();
+            const toggle = () => classList.toggle("active");
+
+            window.addEventListener("click", function(e) {
+                if (!btn.contains(e.target)) classList.remove("active");
             });
 
-            function toggleAuth() {
-                select.classList.toggle('active');
-                arrow_down.classList.toggle('active');
-
-                // Xử lý sự kiện khi không click vào shop
-
-                document.addEventListener('click', function(e) {
-                    if (e.target !== select && e.target !== btn_auth) {
-                        select.classList.remove('active');
-                        arrow_down.classList.remove('active');
-                    }
-                })
-            };
         </script>
     @endif
 

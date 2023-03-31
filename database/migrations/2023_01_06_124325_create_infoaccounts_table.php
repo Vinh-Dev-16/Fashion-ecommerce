@@ -22,7 +22,8 @@ class CreateInfoaccountsTable extends Migration
             $table->string('address')->nullable();
             $table->date('birthday');
             $table->string('gender')->nullable();
-            $table->integer('age');
+            $table->text('hobbies');
+            $table->longText('description');
             $table->string('images_url');
             $table->timestamps();
         });

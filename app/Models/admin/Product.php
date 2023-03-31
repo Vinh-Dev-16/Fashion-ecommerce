@@ -8,6 +8,9 @@ use App\Models\admin\Category;
 use App\Models\admin\Image;
 use App\Models\admin\ValueAttribute;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\admin\Review;
+use App\Models\Wishlist;
+
 class Product extends Model
 {
     use HasFactory;
@@ -21,6 +24,7 @@ class Product extends Model
         'price',
         'discount',
         'stock',
+        'sale',
         'desce',
         'brand_id',
        ];
@@ -38,6 +42,12 @@ class Product extends Model
         return $this->hasMany(Image::class);
     }
 
+    public function wishlist(){
+        return $this->hasOne(Wishlist::class);
+    }
+    public function reviews(){
+        return $this->hasMany(Review::class);
+    }
     public function attributevalues()
     {
         return $this->belongsToMany(ValueAttribute::class,'product_attribute_value', 'product_id','attribute_value_id')->withTimestamps();

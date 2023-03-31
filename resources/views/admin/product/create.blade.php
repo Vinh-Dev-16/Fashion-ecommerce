@@ -99,6 +99,16 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                <label for="exampleSale">Sản phẩm Sale</label>
+                                <select class="form-control" name="sale">
+                                    <option selected value="0">Không sale</option>
+                                    <option value="1">Sale</option>
+                                </select>
+                                @error('sale')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleStock">Số tồn kho</label>
                                 <input type="text" class="form-control" id="exampleInputStock" name="stock"
                                     placeholder="Điền số lượng hàng tồn kho">

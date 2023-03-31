@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\admin\Product;
 use App\Models\admin\Category;
 use App\Models\admin\Brand;
-use App\Models\admin\Image;
-
+use App\Models\Wishlist;
 class homeController extends Controller
 {
     public function home()
@@ -16,7 +15,8 @@ class homeController extends Controller
         $products = Product::all();
         $categories = Category::all();
         $brands = Brand::all();
-        return view('user.design.home', compact('products', 'categories', 'brands'));
+        $cart = session()->get('cart', []);
+        return view('user.design.home', compact('products', 'categories', 'brands','cart'));
     }
 
     public function search(Request $request)
@@ -32,17 +32,25 @@ class homeController extends Controller
         ]);
     }
 
-    public function detail(Request $request, $id){
-        $products = Product::find($id);
+    public function searchPage(Request $request)
+    {
+        $products = Product::all();
         $categories = Category::all();
         $brands = Brand::all();
-        return view('user.design.detail', compact('products','categories','brands'));
-    }
-
-    public function pageOffer(Request $request , $id ){
-        $products = Product::find($id);
-        $categories = Category::all();
-        $brands = Brand::all();
-        return view('user.design.pageoffer', compact('products','categories','brands'));
+        $cart = session()->get('cart', []);
+        $key = $request->search;
+        $searches = Product::where([
+            ['name' ,'!=', Null],
+            [function ($query) use ($request) {
+                if (($s = $request->search)) {
+                    $query->Where('name', 'LIKE', '%' . $s . '%')
+                        ->get();
+                }
+            }]
+        ])->paginate(12);
+       
+        return view('user.design.search',compact('searches','key','products','categories','brands','cart'));
     }
 }
+
+   

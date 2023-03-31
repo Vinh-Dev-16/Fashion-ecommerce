@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\admin\Category;
 use App\Models\admin\ValueAttribute;
 use Exception;
-
+use Illuminate\Support\Facades\Session;
 class productController extends Controller
 {
     /**
@@ -21,8 +21,9 @@ class productController extends Controller
     {
         // Sắp xếp theo số lượng tồn kho để khi stock = 0 thì xử lý
         $products = Product::orderBy('stock')->paginate(6);
+        Session::put('products_url', request()->fullUrl());
         $categories = Category::all();
-        return view('admin.product.index', compact('products', 'categories'));
+        return view('admin.product.index' , compact('products', 'categories'));
     }
     /**
      * Show the form for creating a new resource.
@@ -63,16 +64,18 @@ class productController extends Controller
             ];
             $request->validate($rules, $messages);
         }
-    // try{
+    try{
             $input = $request->all();
             unset($input['_token']);
             $products = Product::create($input);
             $products->categories()->attach($request->input('id_category'));
             $products->attributevalues()->attach($request->input('attribute_value_id'));
-            return redirect('admin/product/index')->with('success', 'Đã thêm product thành công');
-        // } catch (Exception $e) {
-        //     return redirect('admin/product/create')->with('error', 'Đã xảy ra lỗi');
-        // }
+            if (Session::get('products_url')) {
+                return redirect(session('products_url'))->with('success', 'Đã thêm products thành công');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
+        }
     }
 
     public function search(Request $request)
@@ -146,9 +149,11 @@ class productController extends Controller
             $products->update($input);
             $products -> categories()->sync($request->input('id_category'));
             $products -> attributevalues()->sync($request->input('attribute_value_id'));
-            return redirect('admin/product/index')->with('success', 'Đã sửa product thành công');
+            if (Session::get('products_url')) {
+                return redirect(session('products_url'))->with('success', 'Đã sửa products thành công');
+            }
         } catch (Exception $e) {
-            return redirect('admin/product/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
 
@@ -162,7 +167,9 @@ class productController extends Controller
     {
         $products = Product::find($id);
         $products->delete();
-        return redirect('admin/product/index')->with('success', 'Đã xóa product thành công');
+        if (Session::get('products_url')) {
+            return redirect(session('products_url'))->with('success', 'Đã xóa mềm products thành công');
+        }
     }
 
     // Phần restore 

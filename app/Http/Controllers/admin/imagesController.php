@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\admin\Product;
 use App\Models\admin\Image;
 use Exception;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 class imagesController extends Controller
@@ -19,6 +20,7 @@ class imagesController extends Controller
     public function index()
     {
         $images = Image::orderBy('product_id')->paginate(6);
+        Session::put('image_url', request()->fullUrl());
         return view('admin.images.index', compact('images'));
     }
 
@@ -85,9 +87,11 @@ class imagesController extends Controller
             $input = $request->all();
             unset($input['_token']);
             Image::create($input);
-            return redirect('admin/images/index')->with('success', 'Đã thêm image thành công');
+            if (Session::get('image_url')) {
+                return redirect(session('image_url'))->with('success', 'Đã thêm image thành công');
+            }
         } catch (Exception $e) {
-            return redirect('admin/images/create')->with('error', 'Đã xảy ra lỗi');
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
 
@@ -129,9 +133,11 @@ class imagesController extends Controller
             $input = $request->all();
             unset($input['_token']);
             $images->update($input);
-            return redirect('admin/images/index')->with('success', 'Đã sửa image thành công');
+            if (Session::get('image_url')) {
+                return redirect(session('image_url'))->with('success', 'Đã sửa image thành công');
+            }
         } catch (Exception $e) {
-            return redirect('admin/images/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
 
@@ -145,6 +151,8 @@ class imagesController extends Controller
     {
         $images = Image::find($id);
         $images->delete();
-        return redirect('admin/images/index')->with('success', 'Đã xóa images thành công');
+        if (Session::get('image_url')) {
+            return redirect(session('image_url'))->with('success', 'Đã xóa image thành công');
+        }
     }
 }

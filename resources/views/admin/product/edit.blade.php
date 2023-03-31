@@ -103,9 +103,13 @@
                                 <label for="exampleDiscount">% giảm giá</label>
                                 <input type="text" class="form-control" id="exampleInputDiscount" name="discount"
                                     value="{{ $products->discount }}">
-                                @error('discount')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleSale">Sản phẩm Sale</label>
+                                <select class="form-control" name="sale">
+                                    <option @if ($products->sale == 1) selected @endif value="1">Sale</option>
+                                    <option value="0">Không sale</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="exampleStock">Số tồn kho</label>

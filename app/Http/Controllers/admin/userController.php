@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use Exception;
+use Illuminate\Support\Facades\Session;
 class userController extends Controller
 {
     /**
@@ -16,6 +17,7 @@ class userController extends Controller
     public function index()
     {
         $accounts = User::orderBy('role_id')->paginate(6);
+        Session::put('admin_url', request()->fullUrl());
         return view('admin.account.index', compact('accounts'));
     }
 
@@ -78,9 +80,11 @@ class userController extends Controller
         $input  = $request->all();
         unset($input['_token']);
         $accounts->update($input);
-        return redirect('admin/account/index')->with('success', 'Sửa vai trò thành công');
+        if (Session::get('admin_url')) {
+            return redirect(session('admin_url'))->with('success', 'Đã sửa vai trò thành công');
+        }
         }catch(Exception $e){
-            return redirect('admin/user/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
+            return redirect()->back()>with('error', 'Đã xảy ra lỗi');
         }
     }
     /**
@@ -93,7 +97,9 @@ class userController extends Controller
     {
         $accounts = User::find($id);
         $accounts->delete();
-        return redirect('admin/account/index')->with('success', 'Xóa user thành công');
+        if (Session::get('admin_url')) {
+            return redirect(session('admin_url'))->with('success', 'Đã xóa mềm User thành công');
+        }
     }
 
      // Phần restore 
