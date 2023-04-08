@@ -109,6 +109,42 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                <label for="examplePrice">Ảnh sản phẩm</label>
+                                <select class="tag_multiple" name="path[]" multiple="multiple"
+                                    style="width: 100%">
+                                </select>
+                                @error('path')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>  
+                            <div class="form-group">
+                                <label for="examplePrice">Voucher</label>
+                                <select class="tag_multiple" name="value[]" multiple="multiple"
+                                    style="width: 100%">
+                                </select>
+                                @error('value')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="examplePrice">Giá Voucher</label>
+                                <select class="tag_multiple" name="percent[]" multiple="multiple"
+                                    style="width: 100%">
+                                </select>
+                                @error('percent')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="examplePrice">Số lượng Voucher</label>
+                                <select class="tag_multiple" name="quantity[]" multiple="multiple"
+                                    style="width: 100%">
+                                </select>
+                                @error('quantity')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleStock">Số tồn kho</label>
                                 <input type="text" class="form-control" id="exampleInputStock" name="stock"
                                     placeholder="Điền số lượng hàng tồn kho">
@@ -118,7 +154,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleDesce">Thông tin sản phẩm</label>
-                                <textarea type="text" class="form-control" id="exampleInputDesce" name="desce"
+                                <textarea type="text" class="form-control" id="editor" name="desce"
                                     placeholder="Điền thông tin sản phẩm"></textarea>
                                 @error('desce')
                                     <div class="text-danger">{{ $message }}</div>
@@ -147,13 +183,21 @@
 
 @section('javascript')
     {{-- Search input category --}}
-
     <script>
         $(document).ready(function() {
             $('.select2').select2();
+            
+             $('.tag_multiple').select2({
+             theme: "classic",
+             tags: true,
+             });
         });
 
-
+        ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
             // Slug
             function ChangeToSlug() {
                 var slug;

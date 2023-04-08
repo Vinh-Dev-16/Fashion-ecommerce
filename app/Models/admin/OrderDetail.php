@@ -11,9 +11,11 @@ class OrderDetail extends Model
     protected $table = 'order_details';
     protected $primaryKey = 'id';
     protected $fillable = [
-       'order_id',
-       'product_id',
-       'number',
+       'user_id',
+       'fullname',
+       'phone',
+       'address',
+       'subtotal',
        'total_money',
     ];
 }

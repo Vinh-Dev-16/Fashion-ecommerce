@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\admin\Product;
 use Illuminate\Support\Str;
 use App\Models\admin\Category;
+use App\Models\admin\Image;
 use App\Models\admin\ValueAttribute;
+use App\Models\Voucher;
 use Exception;
 use Illuminate\Support\Facades\Session;
 class productController extends Controller
@@ -56,26 +58,43 @@ class productController extends Controller
                 'stock' => 'required|integer',
                 'desce' => 'required',
                 'brand_id' => 'required',
+                'value' => 'required',
+                'percent' => 'required',
+                'path'=>'required',
+                'quantity' => 'required',
             ];
             $messages = [
                 'required' => 'Không được để trống trường này',
                 'integer' => 'Trường nhập vào phải là số',
-
             ];
             $request->validate($rules, $messages);
         }
-    try{
+    try{   
             $input = $request->all();
             unset($input['_token']);
             $products = Product::create($input);
             $products->categories()->attach($request->input('id_category'));
             $products->attributevalues()->attach($request->input('attribute_value_id'));
+            for($i = 0; $i< count($request->value); $i++){
+               Voucher::create([
+                    'value' => $request->value[$i],
+                    'product_id' => $products->id,
+                    'quantity' => $request->quantity[$i],
+                    'percent' => $request->percent[$i],
+                ]);
+            }
+            for($j = 0; $j < count($request->path); $j++) {
+                Image::create([
+                    'path' => $request->path[$j],
+                    'product_id' => $products->id,
+                ]);
+            }
             if (Session::get('products_url')) {
                 return redirect(session('products_url'))->with('success', 'Đã thêm products thành công');
             }
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
-        }
+     }
     }
 
     public function search(Request $request)

@@ -12,18 +12,50 @@
                 <div class="head_information">
                     <div class="user_information">
                         <div class="avatar object-cover">
-                            <img src="{{asset('images/user.png')}}" alt="Ảnh đại diện">
+                            @if ($user->information)
+                                <img src="{{asset('storage/avatar/'. $user->information->avatar)}}" alt="">
+                            @else
+                                <img src="{{asset('images/user.png')}}" alt="Ảnh đại diện">
+                            @endif
                         </div>
                         <div class="text_content">
-                            <p>Tên user:{{Auth::user()->name}}</p>
+                            <p>Tên user: {{Auth::user()->name}}</p>
                             <p>Email: {{Auth::user()->email}}</p>
+                            @if ($user->information)
+                            <p>Giới thiệu: {!! $user->information->description !!}</p>
+                            @else
+                            <p>Chưa có giới thiệu</p>
+                            @endif
                         </div>
                     </div>
                     </div>
                 <div class="body_information">
+                    @if ($user->information)
                     <div class="infor">
-                        <h2>Thông tin cá nhân</h2>
-                        <div>
+                        <h2 class="search_page">Thông tin cá nhân</h2>
+                        <a class="primary_button" style="margin-left: 30px" href="{{url('information/edit/' . Auth::user()->id)}}">Điền thông tin</a>
+                        <div class="text_content">
+                            <ul>
+                                <li>Tên đầy đủ: {{$user->information->fullname}}</li>
+                                <li>Số điện thoại: {{$user->information->phone}} </li>
+                                <li>Địa chỉ: {{$user->information->address}}</li>
+                            </ul>
+                            <ul>
+                                <li>Ngày sinh: {{$user->information->birthday}}</li>
+                                @if (($user->information->gender) == 'male')
+                                    <li>Giới tính: Nam</li>
+                                @else
+                                    <li>Giới tính: Nữ</li>
+                                @endif
+                                <li>Sở thích: {{$user->information->hobbies}}</li>
+                            </ul>
+                        </div>
+                    </div> 
+                    @else   
+                    <div class="infor">
+                        <h2 class="search_page">Thông tin cá nhân</h2>
+                        <a class="primary_button" style="margin-left: 30px" href="{{url('information/edit/' . Auth::user()->id)}}">Điền thông tin</a>
+                        <div class="text_content">
                             <ul>
                                 <li>Số điện thoại: </li>
                                 <li>Địa chỉ:</li>
@@ -36,6 +68,7 @@
                             </ul>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@
 @section('content')
     {{-- Slider --}}
 
-    <div class="flex home_user" style="background-image: url({{ asset('images/bg1.jpg') }});  filter: brightness(0.9);">
+    <div class="flex home_user  " style="background-image: url({{ asset('images/bg1.jpg') }});  filter: brightness(0.9);">
         <div class="text_slider">
         </div>
         <div class="slider_animation">
@@ -77,8 +77,8 @@
                                     </div>
                                     <div class="content">
                                         <div class="rating">
-                                            <div class="stars"></div>
-                                            <div class="mini_text">(160)</div>
+                                            <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
+                                            <div class="mini_text">{{$product->reviews->count()}}</div>
                                         </div>
                                         <h3 class="main_links"><a
                                                 href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
@@ -135,7 +135,7 @@
                                         @else
                                         <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
                                         @endif
-                                        <div class="mini_text">(160)</div>
+                                        <div class="mini_text">{{$product->reviews->count()}} review</div>
                                     </div>
                                     <div class="price">
                                         @if ($product->discount)
@@ -201,7 +201,7 @@
                                         @else
                                         <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
                                         @endif
-                                        <div class="mini_text">(160)</div>
+                                        <div class="mini_text">{{$product->reviews->count()}} review</div>
                                     </div>
                                     <h3 class="main_links"><a
                                             href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
@@ -231,12 +231,51 @@
             </div>
         </div>
     </div>
-
-   
+ 
 @endsection
 
+@section('modal')
+    <div id="modal" class="modal">
+        <div class="content flexcol">
+            <div class="image object_cover">
+                <img src="{{asset('images/apparel4.jpg')}}">
+            </div>
+            <h2>Chào mừng đến với Fashion</h2>
+            <p class="mobile_hide">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum id quam nam blanditiis odio molestiae ducimus?</p>
+            <form action="" class="search">
+                <span class="icon-large"><i class="ri-mail-line"></i></span>
+                <input type="email" name="email" placeholder="Email của bạn" style="width:85%;padding: 0 2em 0 4.5em;">
+                <button>Đăng kí</button>
+            </form>
+            <a href="" class="mini_text again">Không show nó lần nữa</a>
+            <a href="#" class="t_close modalclose flexcenter">
+                <i class="ri-close-line"></i>
+            </a>
+        </div>
+    </div>
+    <div class="overlay"></div>
+@endsection
 @section('javascript')
     <script>
+        if(window.sessionStorage.getItem('close')){
+            window.onload = function(){
+            document.querySelector('.site').classList.remove('showmodal')    
+            }; 
+        }else{
+            window.onload  = function (){
+            document.querySelector('.site').classList.toggle('showmodal')
+        };
+        }
+        document.querySelector('.modalclose').addEventListener('click', function(){
+            document.querySelector('.site').classList.remove('showmodal')
+        });
+
+
+        document.querySelector('.again').addEventListener('click', function(e){
+            e.preventDefault();
+            window.sessionStorage.setItem('close','showmodal');
+            document.querySelector('.site').classList.remove('showmodal');
+        });
         //Phần deal of day
         let countDate = new Date('29,Jun,2023 00:00:00').getTime();
 

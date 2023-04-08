@@ -29,7 +29,7 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="exampleName">Bố danh mục</label>
+                                <label for="exampleName">Bố của nó</label>
                                    <select class="select2" name="product_id" style="width: 100%;height:100%">
                                     @foreach ($products as $product)
                                         <option value="{{$product->id}}">{{$product->name}}</option>

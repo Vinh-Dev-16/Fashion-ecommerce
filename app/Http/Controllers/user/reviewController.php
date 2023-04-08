@@ -44,7 +44,6 @@ class reviewController extends Controller
             $rules = [
                 'title' => 'required|max:255',
                 'content' => 'required',
-              
             ];
             $messages = [
                 'required' => 'Không được để trống trường này',

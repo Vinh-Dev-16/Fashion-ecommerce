@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\admin\Product;
 use App\Models\admin\Category;
 use App\Models\admin\Brand;
+use App\Models\Information;
 use App\Models\Wishlist;
 class homeController extends Controller
 {

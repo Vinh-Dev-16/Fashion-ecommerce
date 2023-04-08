@@ -96,7 +96,7 @@
                                                 <li class="seconds"></li>
                                             </ul>
                                         </div>
-                                        <form action="{{ url('cart/' . $products->id) }}" method="POST" id="form_cart">
+                                        <form action="{{url('payment/'.$products->id)}}" method="POST" id="form_cart">
                                             @csrf
                                             <div class="colors">
                                                 <p>Color</p>
@@ -111,6 +111,9 @@
                                                             </P>
                                                         @endif
                                                     @endforeach
+                                                    @error('color')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="sizes">
@@ -119,14 +122,17 @@
 
                                                     @foreach ($products->attributevalues as $size)
                                                         @if ($size->attribute_id == 1)
-                                                            <P>
+                                                            <p>
                                                                 <input type="radio" name="size"
                                                                     id="{{ $size->value }}" value="{{ $size->id }}">
                                                                 <label for="{{ $size->value }}" class="circle size_bf"
                                                                     style="top:0; left:0;"><span>{{ $size->value }}</span></label>
-                                                            </P>
+                                                            </p>
                                                         @endif
                                                     @endforeach
+                                                    @error('size')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="actions">
@@ -139,6 +145,10 @@
                                                 <div class="button_cart">
                                                     <button class="primary_button" id="addtocart"
                                                         onclick="addCart({{ $products->id }})">Add to cart</button>
+                                                </div>
+                                                <div class="button_cart" style="margin-right: 1em">
+                                                    <button type="submit" class="secondary_button"
+                                                      >Mua ngay</button>
                                                 </div>
                                         </form>
                                         <div class="wish_share">
@@ -286,7 +296,7 @@
                                                                                         {{ $review->name }}
                                                                                     </p>
                                                                                     <p class="mini_text">Vào ngày
-                                                                                        {{ date('d-m-y'), strtotime($review->created_at) }}
+                                                                                        {{ date('d-m-Y'), strtotime($review->created_at)}}
                                                                                     </p>
                                                                                 </div>
                                                                                 <div class="review_rating rating">

@@ -44,11 +44,10 @@
         </ul>
     @endif
     <ul class="notification">
-
     </ul>
     {{-- Navbar --}}
 
-    <div class="header_nav">
+    <div class="header_nav" id="top">
         <div class="container">
             <div class="wrapper flexitem">
                 <a href="#" class="trigger desktop_hide"><i class="ri-menu-2-line"></i></a>
@@ -187,12 +186,13 @@
                                                         </div>
                                                         <div class="item_content">
                                                             @if ($cart_product['product']->sale == 0)
-                                                                <p><a
+                                                                <p style="margin-bottom:0px"><a
                                                                         href="{{ url('detail/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
                                                                 </p>
                                                             @else
-                                                                <p><a
-                                                                        href="{{ url('pageoffer/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
+                                                                <p style="margin-bottom: 0px"><a
+                                                                        href="{{ url('pageoffer/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product   ['product']->name)->words(9) }}</a>
+                                                                </p>
                                                             @endif
                                                             <span class="price">
                                                                 <br>
@@ -201,11 +201,11 @@
                                                                         VND
                                                                     </span>
                                                                 @else
-                                                                    {{ number_format($cart_product['quantity'] * $cart_product['product']->price) }}
-                                                                    VND
+                                                                <span>{{ number_format($cart_product['quantity'] * $cart_product['product']->price) }} VND
+                                                                </span> 
                                                                 @endif
                                                                 <span
-                                                                    class="fly_item"><span>{{ $cart_product['quantity'] }}x</span></span>
+                                                                class="fly_item"><span>{{ $cart_product['quantity'] }}x</span></span>
                                                             </span>
                                                         </div>
                                                         <a href="#" class="item_remove" id="item_remove"
@@ -222,7 +222,6 @@
                                             <p>Phí ship</p>
                                             <p><strong>{{ number_format(15000) }} * {{ count($cart) }} =
                                                     {{ number_format(15000 * count($cart)) }} VND</strong></p>
-                                            <p>Tổng tiền</p>
                                             <?php $cartCollect = collect($cart);
                                             $subTotal = $cartCollect->sum(function ($cartItem) {
                                                 if (!$cartItem['product']->discount) {
@@ -232,12 +231,19 @@
                                                 }
                                             });
                                             ?>
-                                            <p><strong>{{ number_format($subTotal + 15000 * count($cart)) }}
+                                            <p>VAT sản phẩm <small>(10%)</small></p>
+                                            <p><strong>{{ number_format($subTotal * 0.1)}} VND</strong></p>
+                                            <p>Tổng tiền</p>
+                                            <p><strong>{{ number_format($subTotal + 15000 * count($cart) + $subTotal * 0.1) }}
                                                     VND</strong></p>
                                         </div>
                                         <div class="actions">
-                                            <a href="" class="primary_button">CheckOut</a>
-                                            <a href="{{ url('cart') }}" class="secondary_button">Đến xem giỏ
+                                            @if (Auth::check())
+                                            <a href="{{url('checkout')}}" class="primary_button">CheckOut</a>
+                                            @else
+                                            <a href="#" class="primary_button" onclick="checkout()">CheckOut</a>
+                                            @endif
+                                            <a href="{{ url('viewcart') }}" class="secondary_button">Đến xem giỏ
                                                 hàng</a>
                                         </div>
                                     </div>
@@ -249,7 +255,12 @@
                             @if (Auth::check())
                                 <div class="profile-dropdown">
                                     <div onclick="toggle()" class="profile-dropdown-btn">
+                                       
+                                        @if ( App\Models\Information::where('user_id', '=', Auth::user()->id)->first())
+                                        <div class="profile-img" style="background-image:url({{asset('storage/avatar/' .  App\Models\Information::where('user_id', '=', Auth::user()->id)->first()->avatar)}});border:1px solid black">  
+                                        @else     
                                         <div class="profile-img" style="background-image:url({{asset('images/user.png')}})">
+                                        @endif
                                             <i class="fa-solid fa-circle"></i>
                                         </div>
 
@@ -277,8 +288,8 @@
                                         <li class="profile-dropdown-list-item">
                                             <form action="{{ route('do_logout') }}" method="POST">
                                                 @csrf
+                                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                                 <button type="submit">
-                                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                                     Log out
                                                 </button>
                                             </form>
@@ -497,10 +508,12 @@
         </div>
     </div>
 
-    <div class="main_fashion">
+    <div class="main_fashion site">
         @section('content')
         @show
-
+        @section('modal')
+        @show
+       
         {{-- banner --}}
 
         <div class="banners">
@@ -699,10 +712,19 @@
                 </div>
             </div>
         </div>
+        <div class="backtotop">
+            <a href="#top" class="flexcol">
+                <i class="ri-arrow-up-line"></i>
+                <span>Top</span>
+            </a>
+        </div>
     </footer>
+ 
 
 
+ 
 
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="{{asset('user/main.js')}}"></script>   --}}
@@ -1056,18 +1078,14 @@
                                                             </p>       
                                                                     `
                                                     }else{
-                                                       return ` <
-                    div class = "thumbnail object_cover" >
-                    <
-                    a href = "{{ url('pageoffer/${cart.product.id}') }}" > < img src = "${cart.image}" > < /a> < /
-                    div > <
-                    div class = "item_content" >
-                    <
-                    p > < a href = "{{ url('pageoffer/${cart.product.id}') }}" > $ {
-                        (cart.product.name).substring(0, 30)
-                    } < /a> < /
-                    p >
-                    `
+                                                       return ` 
+                                                       <div class = "thumbnail object_cover" ><a href = "{{ url('pageoffer/${cart.product.id}') }}"> 
+                                                        <img src = "${cart.image}"> </a> 
+                                                        </div> 
+                                                        <div class = "item_content">
+                                                        <p> <a href = "{{ url('pageoffer/${cart.product.id}') }}"> 
+                                                            ${(cart.product.name).substring(0, 30)} </a> </p>
+                                                        `
                                                     }
                                                 })()
                                             }
@@ -1106,6 +1124,13 @@
             document.querySelector('#card_body').innerHTML = render;
             document.querySelector('#card_head').innerText = `Có ${data.cart.length} sản phẩm`;
         };
+
+
+        function checkout(){
+            message = "Bạn cần phải đăng nhập";
+            createNoti(message);
+            return false;
+        }
     </script>
     @if (Session::has('success') || Session::has('error'))
         <script>

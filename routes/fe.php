@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\categoryController;
 use App\Http\Controllers\user\reviewController;
 use App\Http\Controllers\user\cartController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,10 @@ use App\Http\Controllers\user\wishlistController;
 
         Route::post('cart/{id}',[cartController::class,'addToCart'])->name('cart');
         Route::get('removecart/{id}',[cartController::class,'removeCart'])->name('removecart');
+        Route::get('viewcart',[cartController::class,'viewCart'])->name('viewcart');
+        Route::get('deletecart/{id}',[cartController::class,'deleteCart'])->name('deletecart');
+        Route::get('checkout',[cartController::class,'checkout'])->middleware('auth')->name('checkout');
+        Route::post('payment/{id}',[cartController::class,'payment'])->middleware('auth')->name('payment');
   
         // Route single-page
 
@@ -30,7 +35,7 @@ use App\Http\Controllers\user\wishlistController;
         Route::get('pageoffer/{id}',[singlePageController::class,'pageOffer'])->name('pageoffer');
         Route::get('/brand/{id}',[singlePageController::class,'brand'])->name('brand');
 
-        Route::prefix('wishlist')->group(function(){
+        Route::middleware('auth')->prefix('wishlist')->group(function(){
             Route::get('/{id}',[wishlistController::class,'index'])->name('wishlist');
             Route::post('store/{id}',[wishlistController::class,'store'])->name('wishlist.store');
             Route::delete('destroy/{id}',[wishlistController::class,'destroy'])->name('wishlist.destroy');
@@ -39,8 +44,10 @@ use App\Http\Controllers\user\wishlistController;
 
         // Route infomation user
 
-        Route::prefix('information')->group(function(){
+        Route::middleware('auth')->prefix('information')->group(function(){
             Route::get('/{id}',[informationController::class,'index'])->name('information');
+            Route::post('store',[informationController::class,'store'])->name('information.store');
+            Route::get('edit/{id}',[informationController::class,'edit'])->name('information.edit');
          });
 
         // Route comment

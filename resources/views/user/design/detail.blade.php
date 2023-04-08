@@ -77,7 +77,18 @@
                                             <span class="current">{{ number_format($products->price) }} VND</span>
                                         @endif
                                     </div>
-                                    <form action="{{url('cart/'.$products->id)}}" method="POST" id="form_cart">
+
+                                    <div class="voucher">
+                                        @if ($products->vouchers)
+                                            <h4>Voucher của sản phẩm: 
+                                                @foreach ($products->vouchers as $voucher) 
+                                                    {{$voucher->value}},
+                                                @endforeach
+                                            </h4>
+                                        @endif
+                                    </div>
+
+                                    <form action="{{url('payment/'.$products->id)}}" method="POST" id="form_cart">
                                         @csrf
                                         <div class="color">
                                         <p>Color</p>
@@ -91,6 +102,9 @@
                                                         </p>
                                                     @endif
                                                 @endforeach
+                                            @error('color')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                         @error('color')
@@ -108,6 +122,9 @@
                                                         </P>
                                                     @endif
                                                 @endforeach
+                                            @error('size')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     @error('size')
                                         <div class="text-danger">{{ $message }}</div>
@@ -123,10 +140,15 @@
                                             <button type="submit" onclick="addCart({{$products->id}})" class="primary_button" id="addtocart"
                                               >Add to cart</button>
                                         </div>
+                                        <div class="button_cart" style="margin-right: 1em">
+                                            <button type="submit" class="secondary_button"
+                                              >Mua ngay</button>
+                                        </div>
                                         </form>
                                     </div>
                                     
-                                        <div class="wish_share">
+                                    <div class="wish_share">
+                                           
                                             <ul class="flexitem second_links" id="wish_love">
                                                 @if (Auth::check())
                                                 @if ($products->wishlist)
@@ -272,7 +294,7 @@
                                                                                         {{ $review->name }}
                                                                                     </p>
                                                                                     <p class="mini_text">Vào ngày
-                                                                                        {{ date('d-m-y'), strtotime($review->created_at) }}
+                                                                                        {{ date('d-m-Y'), strtotime($review->created_at) }}
                                                                                     </p>
                                                                                 </div>
                                                                                 <div class="review_rating rating">

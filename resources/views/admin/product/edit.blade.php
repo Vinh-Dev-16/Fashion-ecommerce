@@ -121,8 +121,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleDesce">Thông tin sản phẩm</label>
-                                <input type="text" class="form-control" id="exampleInputDesce" name="desce"
-                                    value="{{ $products->desce }}">
+                                <input type="text" class="form-control" id="editor" name="desce"
+                                    value="{{ $products->desce }}" >
                                 @error('desce')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -150,7 +150,14 @@
 @endsection
 @section('javascript')
     {{-- Search input category --}}
+    
     <script>
+
+        ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
 
         $(document).ready(function() {
             $('.select2').select2();

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Role;
 use App\Models\Wishlist;
+use App\Models\Information;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -60,5 +61,9 @@ class User extends Authenticatable
 
     public function whislists(){
         return $this->hasMany(Wishlist::class);
+    }
+
+    public function information(){
+        return $this->hasOne(Information::class, 'user_id');
     }
 }
