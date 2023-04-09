@@ -622,7 +622,7 @@
 
     {{-- Footer --}}
 
-    <footer>
+    <footer style="position: relative">
         <div class="widgets">
             <div class="container">
                 <div class="wrapper">
@@ -716,6 +716,12 @@
             <a href="#top" class="flexcol">
                 <i class="ri-arrow-up-line"></i>
                 <span>Top</span>
+            </a>
+        </div>
+        <div class="chat" >
+            <a href="{{url('/chatify/1')}}" class="flexcol" style="bottom: 1em; right:2em">
+                <i class="ri-chat-1-line"></i>
+                <span>Chat</span>
             </a>
         </div>
     </footer>

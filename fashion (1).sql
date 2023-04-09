@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 31, 2023 lúc 08:57 AM
+-- Thời gian đã tạo: Th4 09, 2023 lúc 03:06 PM
 -- Phiên bản máy phục vụ: 10.4.24-MariaDB
 -- Phiên bản PHP: 7.4.29
 
@@ -139,7 +139,8 @@ INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`, `parent_id`)
 (6, 'Kính nam', '2023-01-12 08:56:54', '2023-03-09 09:14:25', 8),
 (7, 'Kính nữ', '2023-01-12 08:57:15', '2023-03-09 09:14:50', 9),
 (8, 'Nam', '2023-03-09 08:58:09', '2023-03-09 08:58:09', 0),
-(9, 'Nữ', '2023-03-09 09:13:21', '2023-03-09 09:13:21', 0);
+(9, 'Nữ', '2023-03-09 09:13:21', '2023-03-09 09:13:21', 0),
+(10, 'Áo da nam', '2023-04-07 04:57:20', '2023-04-07 04:57:20', 8);
 
 -- --------------------------------------------------------
 
@@ -164,11 +165,53 @@ INSERT INTO `category_products` (`id`, `id_product`, `id_category`, `created_at`
 (2, 2, 2, '2023-01-11 17:17:02', '2023-01-11 17:17:02'),
 (3, 3, 4, '2023-01-12 10:38:48', '2023-01-12 10:38:48'),
 (4, 3, 1, '2023-01-12 10:39:23', '2023-01-12 10:39:23'),
-(21, 5, 4, '2023-03-15 23:07:09', '2023-03-15 23:07:09'),
-(22, 6, 2, '2023-03-16 07:39:28', '2023-03-16 07:39:28'),
-(23, 7, 3, '2023-03-16 07:42:30', '2023-03-16 07:42:30'),
-(24, 8, 3, '2023-03-18 08:15:06', '2023-03-18 08:15:06'),
-(25, 9, 2, '2023-03-18 08:39:12', '2023-03-18 08:39:12');
+(5, 5, 4, '2023-03-15 23:07:09', '2023-03-15 23:07:09'),
+(6, 6, 2, '2023-03-16 07:39:28', '2023-03-16 07:39:28'),
+(7, 7, 3, '2023-03-16 07:42:30', '2023-03-16 07:42:30'),
+(8, 8, 3, '2023-03-18 08:15:06', '2023-03-18 08:15:06'),
+(9, 9, 2, '2023-03-18 08:39:12', '2023-03-18 08:39:12'),
+(10, 15, 2, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
+(11, 15, 3, '2023-04-08 08:19:29', '2023-04-08 08:19:29');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `ch_favorites`
+--
+
+CREATE TABLE `ch_favorites` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `favorite_id` bigint(20) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `ch_messages`
+--
+
+CREATE TABLE `ch_messages` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from_id` bigint(20) NOT NULL,
+  `to_id` bigint(20) NOT NULL,
+  `body` varchar(5000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `attachment` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `seen` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `ch_messages`
+--
+
+INSERT INTO `ch_messages` (`id`, `from_id`, `to_id`, `body`, `attachment`, `seen`, `created_at`, `updated_at`) VALUES
+('215304be-b8e7-4c80-8b5f-d4fc059193be', 1, 1, 'abc', NULL, 1, '2023-04-09 04:41:54', '2023-04-09 04:42:49'),
+('97fdffb5-ce4f-4353-bf5e-f3c8a1e7d738', 1, 3, 'hi 0', NULL, 1, '2023-04-09 04:43:35', '2023-04-09 04:44:24'),
+('f90df57b-3012-40f1-b4ae-ad39775d2bff', 3, 1, 'hi', NULL, 1, '2023-04-09 04:44:31', '2023-04-09 04:44:33');
 
 -- --------------------------------------------------------
 
@@ -274,7 +317,10 @@ INSERT INTO `images` (`id`, `path`, `product_id`, `created_at`, `updated_at`) VA
 (21, 'https://down-vn.img.susercontent.com/file/sg-11134201-22100-9yuvg4f7d2iv42', 8, '2023-03-18 08:18:17', '2023-03-18 08:18:17'),
 (22, 'https://down-vn.img.susercontent.com/file/vn-11134201-23030-zd27d7bn2jovff', 9, '2023-03-18 08:45:15', '2023-03-18 08:45:15'),
 (23, 'https://down-vn.img.susercontent.com/file/vn-11134201-23030-99pzdbcn2jov5a', 9, '2023-03-18 08:45:55', '2023-03-18 08:45:55'),
-(24, 'https://down-vn.img.susercontent.com/file/vn-11134201-23030-nol528bn2jove0', 9, '2023-03-18 08:46:21', '2023-03-18 08:46:21');
+(24, 'https://down-vn.img.susercontent.com/file/vn-11134201-23030-nol528bn2jove0', 9, '2023-03-18 08:46:21', '2023-03-18 08:46:21'),
+(25, 'https://down-vn.img.susercontent.com/file/514ae455b4fd0d0102db496ee30ddafb', 15, '2023-04-08 08:19:30', '2023-04-08 08:19:30'),
+(26, 'https://down-vn.img.susercontent.com/file/0937a2c6b76cc8396b9ad128e573b493', 15, '2023-04-08 08:19:30', '2023-04-08 08:19:30'),
+(27, 'https://down-vn.img.susercontent.com/file/sg-11134201-22090-m8j2dwol22hvc0', 15, '2023-04-08 08:19:30', '2023-04-08 08:19:30');
 
 -- --------------------------------------------------------
 
@@ -284,19 +330,26 @@ INSERT INTO `images` (`id`, `path`, `product_id`, `created_at`, `updated_at`) VA
 
 CREATE TABLE `infoaccounts` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `id_account` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` int(255) NOT NULL,
+  `fullname` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `birthday` date NOT NULL,
   `gender` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `hobbies` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `images_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `infoaccounts`
+--
+
+INSERT INTO `infoaccounts` (`id`, `user_id`, `fullname`, `phone`, `address`, `birthday`, `gender`, `avatar`, `hobbies`, `description`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Đào Xuân Vinh', '0382282381', 'Cửu Việt 2', '2023-04-07', 'male', '1680861804.png', 'Ăn', '<p>Mình là Đào Xuân Vinh</p>', '2023-04-07 03:03:24', '2023-04-07 03:03:24'),
+(2, 3, 'Nguyễn Văn B', '123456789', 'Hà Nội', '2023-04-28', 'male', '1680883712.png', 'Ăn', '<p>Mình là</p>', '2023-04-07 09:08:32', '2023-04-07 09:08:32');
 
 -- --------------------------------------------------------
 
@@ -345,7 +398,14 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (34, '2023_03_15_034914_create_rating_table', 21),
 (35, '2023_03_18_145636_add_sale_to_products_table', 22),
 (36, '2023_03_24_143124_create_wishlist_table', 23),
-(37, '2023_03_31_035216_add_user_id_to_wishlist_table', 24);
+(37, '2023_03_31_035216_add_user_id_to_wishlist_table', 24),
+(38, '2023_04_08_060121_create_voucher_to_table', 25),
+(39, '2023_04_09_999999_add_active_status_to_users', 26),
+(40, '2023_04_09_999999_add_avatar_to_users', 26),
+(41, '2023_04_09_999999_add_dark_mode_to_users', 26),
+(42, '2023_04_09_999999_add_messenger_color_to_users', 26),
+(43, '2023_04_09_999999_create_chatify_favorites_table', 26),
+(44, '2023_04_09_999999_create_chatify_messages_table', 26);
 
 -- --------------------------------------------------------
 
@@ -355,13 +415,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` int(255) NOT NULL,
   `fullname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `order_date` date NOT NULL,
-  `status` int(11) NOT NULL,
+  `note` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` int(11) DEFAULT 0,
+  `subtotal` float NOT NULL,
   `total_money` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -435,8 +495,8 @@ CREATE TABLE `products` (
   `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` float NOT NULL,
   `brand_id` int(11) NOT NULL,
-  `discount` float DEFAULT NULL,
-  `sale` int(11) NOT NULL DEFAULT 0,
+  `discount` float NOT NULL,
+  `sale` int(11) DEFAULT 0,
   `stock` int(11) NOT NULL,
   `desce` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -451,12 +511,13 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`id`, `name`, `slug`, `price`, `brand_id`, `discount`, `sale`, `stock`, `desce`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 'ao-khoac-cardigan-vien-xanh-nau-frmlk-form-rong', 800000, 1, 40, 1, 12, 'abc', '2023-01-11 05:09:46', '2023-03-15 22:37:34', NULL),
 (2, 'Áo thun phông logo PINK tay lỡ  SANJATI Unisex', 'a', 105000, 1, 20, 0, 59, 'Chất liệu : thun cotton dày dặn, hình in nhiệt chắc chắc🔻Form : 3 Size ( Áo đã được cải tiến về Số Đo , Form Dáng & Mẫu Mã đẹp hơn ạ ✔️M : < 45kg , Cao < 1.6m✔️L : 46kg _ 65kg , Cao 1.6m _ 1.7m ✔️XL : 66kg _ 75kg , Cao 1.7m _ 1.75m', '2023-01-12 10:13:33', '2023-03-14 06:54:25', NULL),
-(3, 'Áo thun nam Care & Share cotton compact in Mặt Trời', 'ao-thun-nam-care-share-cotton-compact-in-mat-troi', 259000, 1, NULL, 0, 90, 'Một công ty không cần phải lớn mới làm điều ý nghĩa\" - Coolmate đã nghĩ và tin như thế khi khởi xướng chương trình Care & Share này. Sức nhỏ làm việc nhỏ, có ít đóng góp ít, có nhiều đóng góp nhiều. Ít nhất chúng ta đã bắt tay vào làm và lan toả điều tích cực. \r\n\r\n\r\nHiểu một cách đơn giản, \"Care & Share: For A Better Childhood\" là một chương trình được xây dựng và duy trì bởi Coolmate nhằm góp sức mình giúp đỡ những trẻ em kém may mắn, giúp các em đến trường và có cuộc sống tốt hơn. Coolmate cam kết sẽ dành 10% doanh thu từ tất cả những sản phẩm trong danh mục \"Care & Share\" để đóng góp vào quỹ dành cho trẻ em có hoàn cảnh khó khăn. Coolmate mong muốn là một cầu nối để viết tiếp những ước mơ con trẻ còn dang dở, hướng tới một tương lai tốt đẹp hơn.', '2023-03-15 05:31:11', '2023-03-15 05:31:11', NULL),
+(3, 'Áo thun nam Care & Share cotton compact in Mặt Trời', 'ao-thun-nam-care-share-cotton-compact-in-mat-troi', 259000, 1, 0, 0, 90, 'Một công ty không cần phải lớn mới làm điều ý nghĩa\" - Coolmate đã nghĩ và tin như thế khi khởi xướng chương trình Care & Share này. Sức nhỏ làm việc nhỏ, có ít đóng góp ít, có nhiều đóng góp nhiều. Ít nhất chúng ta đã bắt tay vào làm và lan toả điều tích cực. \r\n\r\n\r\nHiểu một cách đơn giản, \"Care & Share: For A Better Childhood\" là một chương trình được xây dựng và duy trì bởi Coolmate nhằm góp sức mình giúp đỡ những trẻ em kém may mắn, giúp các em đến trường và có cuộc sống tốt hơn. Coolmate cam kết sẽ dành 10% doanh thu từ tất cả những sản phẩm trong danh mục \"Care & Share\" để đóng góp vào quỹ dành cho trẻ em có hoàn cảnh khó khăn. Coolmate mong muốn là một cầu nối để viết tiếp những ước mơ con trẻ còn dang dở, hướng tới một tương lai tốt đẹp hơn.', '2023-03-15 05:31:11', '2023-03-15 05:31:11', NULL),
 (5, 'Áo thun nữ trơn cổ V IVY moda MS 57P0155', 'ao-thun-nu-tron-co-v-ivy-moda-ms-57p0155', 490000, 3, 8, 0, 200, 'Áo thun cổ V, cộc tay, form suông basic phù hợp với mọi vóc dáng.Sản phẩm được tạo ra từ chất liệu Thun cao cấp, với những tính năng vượt trội như thấm hút mồ hôi tốt và có độ co dãn giúp người mặc vô cùng thoải mái. Hơn hết có thể dễ dàng mix&match được với nhiều kiểu quần khác nhau. Đấy chính là lý do để phái nữ nên có ít nhất một chiếc áo thun trong tủ đồ của bạn.', '2023-03-15 23:07:09', '2023-03-15 23:07:17', NULL),
 (6, 'Áo khoác bò, áo khoác thu đông nam Việt Nam cá tính năng động mã N51', 'ao-khoac-bo-ao-khoac-thu-dong-nam-viet-nam-ca-tinh-nang-dong-ma-n51', 500000, 2, 8, 0, 160, '- Phong cách Việt Nam\r\n- Form dáng : Slim Fitl\r\n- mùa thích hơp : Mùa Thu đông\r\n- Thành phần chính của vải  bò\r\n- Đặc tính của Vải : chất vải lai kaki thân thiện với môi trường, mặc tạo cảm giác thoải mái.\r\n- Độ dày : vừa phải.', '2023-03-16 07:39:27', '2023-03-16 07:39:27', NULL),
-(7, 'Áo khoác lông dáng dài của nữ phong cách sang trọng khí chất thanh lịch hàng Quảng Châu cao cấp', 'ao-khoac-long-dang-dai-cua-nu-phong-cach-sang-trong-khi-chat-thanh-lich-hang-quang-chau-cao-cap', 701000, 4, NULL, 0, 56, '❗❗❗  Để đảm bảo hàng về kịp Tết, quý khách hàng vui lòng đặt đơn trước 23h59 ngày 01/01/2022⚜KÍCH THƯỚC⚜Chiều rộng vai 55    Ngực 134      Chiều dài áo 109       Tay áo dài 50(Đơn vị: cm, lát gạch và đo bằng tay, có thể sai số 1-2cm, chỉ mang tính chất tham khảo)✔Thời gian giao hàng của sản phẩm này là 7-15 ngày✔Khuyến khích khách hàng nhắn tin cho shop trước khi đặt hàng‼‼KHÔNG NHẬN ĐƠN NẾU BẠN CẦN GẤP💥Lưu ý:💭Đảm bảo khi nhận hàng bạn sẽ không thất vọng💭Hotline: 0937768275💌 Chúc bạn có một buổi mua sắm vui vẻ', '2023-03-16 07:42:30', '2023-03-16 07:46:17', NULL),
+(7, 'Áo khoác lông dáng dài của nữ phong cách sang trọng khí chất thanh lịch hàng Quảng Châu cao cấp', 'ao-khoac-long-dang-dai-cua-nu-phong-cach-sang-trong-khi-chat-thanh-lich-hang-quang-chau-cao-cap', 701000, 4, 0, 0, 56, '❗❗❗  Để đảm bảo hàng về kịp Tết, quý khách hàng vui lòng đặt đơn trước 23h59 ngày 01/01/2022⚜KÍCH THƯỚC⚜Chiều rộng vai 55    Ngực 134      Chiều dài áo 109       Tay áo dài 50(Đơn vị: cm, lát gạch và đo bằng tay, có thể sai số 1-2cm, chỉ mang tính chất tham khảo)✔Thời gian giao hàng của sản phẩm này là 7-15 ngày✔Khuyến khích khách hàng nhắn tin cho shop trước khi đặt hàng‼‼KHÔNG NHẬN ĐƠN NẾU BẠN CẦN GẤP💥Lưu ý:💭Đảm bảo khi nhận hàng bạn sẽ không thất vọng💭Hotline: 0937768275💌 Chúc bạn có một buổi mua sắm vui vẻ', '2023-03-16 07:42:30', '2023-03-16 07:46:17', NULL),
 (8, 'BEAUTEBYV - Áo khoác Trench Coat 2022', 'beautebyv-ao-khoac-trench-coat-2022', 1200000, 4, 30, 1, 300, '1. Giặt tay bằng nước lạnh.\r\n\r\n2. Trước khi giặt phải phân loại màu; cài khuy, kéo hết khóa và lộn trái sản phẩm. Tránh đổ trực tiếp xà phòng lên quần áo.\r\n\r\n3. Tuyệt đối không ngâm, không dùng chất tẩy (đặc biệt đối với vải màu).\r\n\r\n4. Đối với các sản phẩm phối màu: giặt nhanh bằng tay, không ngâm, để an toàn nhất có thể giặt bằng nước rửa chén.\r\n\r\n5. Đối với các sản phẩm có đính hoa cố định, các chất liệu len, dạ nên giặt khô.', '2023-03-18 08:15:06', '2023-03-18 08:15:06', NULL),
-(9, 'Áo khoác nam 100% cotton Tum Machines TUMS NVSCVR TEAM JACKET – BLACK', 'ao-khoac-nam-100-cotton-tum-machines-tums-nvscvr-team-jacket-–-black', 680000, 2, 30, 1, 200, '_ THÀNH PHẦN VẢI : 100% COTTON ( COTTON TWILL NHẬP KHẨU ), PHẦN LÓT ÁO 100% POLYESTER MANG LẠI SỰ THOÁNG MÁT TỐT NHẤT.\r\n\r\n_ TẤT CẢ HỌA TIẾT TRÊN ÁO ĐỀU ĐƯỢC DÙNG QUY CÁCH IN, THÊU MẢNG VÀ NÉT CAO CẤP, CHO SỰ SẮC NÉT, KHÔNG BONG TRÓC.\r\n\r\n_ ÁO DÙNG NÚT ĐÓNG BẰNG NHÔM CHỐNG GHỈ, 2 TÚI ÁO ĐƯỢC MAY Ở 2 BÊN SƯỜN ÁO\r\n\r\n” SAU SỰ THÀNH CÔNG CỦA WE’RE BADASS JACKET, TEAM TUMS LUÔN MUỐN TẠO RA THÊM MỘT CHIẾC JACKET MANG HƠI HƯỚNG CỦA NASCAR VỚI GIÁ THÀNH PHẢI CHĂNG, BỀN BỈ, ĐA DỤNG VÀ DỄ MẶC. VÀ TUM RACING TEAM JACKET RA ĐỜI. “\r\n\r\n_XUẤT XỨ: VIỆT NAM', '2023-03-18 08:39:12', '2023-03-18 08:39:12', NULL);
+(9, 'Áo khoác nam 100% cotton Tum Machines TUMS NVSCVR TEAM JACKET – BLACK', 'ao-khoac-nam-100-cotton-tum-machines-tums-nvscvr-team-jacket-–-black', 680000, 2, 30, 1, 200, '_ THÀNH PHẦN VẢI : 100% COTTON ( COTTON TWILL NHẬP KHẨU ), PHẦN LÓT ÁO 100% POLYESTER MANG LẠI SỰ THOÁNG MÁT TỐT NHẤT.\r\n\r\n_ TẤT CẢ HỌA TIẾT TRÊN ÁO ĐỀU ĐƯỢC DÙNG QUY CÁCH IN, THÊU MẢNG VÀ NÉT CAO CẤP, CHO SỰ SẮC NÉT, KHÔNG BONG TRÓC.\r\n\r\n_ ÁO DÙNG NÚT ĐÓNG BẰNG NHÔM CHỐNG GHỈ, 2 TÚI ÁO ĐƯỢC MAY Ở 2 BÊN SƯỜN ÁO\r\n\r\n” SAU SỰ THÀNH CÔNG CỦA WE’RE BADASS JACKET, TEAM TUMS LUÔN MUỐN TẠO RA THÊM MỘT CHIẾC JACKET MANG HƠI HƯỚNG CỦA NASCAR VỚI GIÁ THÀNH PHẢI CHĂNG, BỀN BỈ, ĐA DỤNG VÀ DỄ MẶC. VÀ TUM RACING TEAM JACKET RA ĐỜI. “\r\n\r\n_XUẤT XỨ: VIỆT NAM', '2023-03-18 08:39:12', '2023-03-18 08:39:12', NULL),
+(15, 'Áo khoác cadigan nam nữ chất cotton tổ ong', 'ao-khoac-cadigan-nam-nu-chat-cotton-to-ong', 228000, 4, 30, 0, 300, '<p>MÔ TẢ SẢN PHẨM ✪ Chất Liệu Vải : cotton tổ ong xuất Hàn cao cấp 100%, co giãn 4 chiều, vải mềm, mịn, thoáng mát, không xù lông. ✪ Kĩ thuật may: Đường may chuẩn chỉnh, tỉ mỉ, chắc chắn ✪ Kiểu Dáng :Form Rộng Thoải Mái ✪ Full size nam nữ : 40 - 85 kg</p>', '2023-04-08 08:19:29', '2023-04-08 08:19:29', NULL);
 
 -- --------------------------------------------------------
 
@@ -507,21 +568,13 @@ INSERT INTO `product_attribute_value` (`id`, `product_id`, `attribute_value_id`,
 (37, 9, 1, '2023-03-18 08:39:12', '2023-03-18 08:39:12'),
 (38, 9, 3, '2023-03-18 08:39:12', '2023-03-18 08:39:12'),
 (39, 9, 5, '2023-03-18 08:39:12', '2023-03-18 08:39:12'),
-(40, 9, 10, '2023-03-18 08:39:12', '2023-03-18 08:39:12');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `rating`
---
-
-CREATE TABLE `rating` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `rate_star` int(11) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(40, 9, 10, '2023-03-18 08:39:12', '2023-03-18 08:39:12'),
+(41, 15, 5, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
+(42, 15, 6, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
+(43, 15, 7, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
+(44, 15, 9, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
+(45, 15, 10, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
+(46, 15, 11, '2023-04-08 08:19:29', '2023-04-08 08:19:29');
 
 -- --------------------------------------------------------
 
@@ -561,18 +614,46 @@ CREATE TABLE `users` (
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `active_status` tinyint(1) NOT NULL DEFAULT 0,
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'avatar.png',
+  `dark_mode` tinyint(1) NOT NULL DEFAULT 0,
+  `messenger_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 2, 'vinh', 'vinhhttt@gmail.com', NULL, '$2y$10$RQcRNRMQIfjzEFklr2EEIeIOKmWmhMwd0jOVow8wGvn5ezoAnzlUG', NULL, '2023-02-05 08:18:25', '2023-02-05 08:18:25', NULL),
-(2, 1, 'a', 'a@gmail.com', NULL, '$2y$10$iCqUB6O.ooamGhE5X9DnLeT0XvW70Wlrnw5Zb2qOzljVH8/0pDcFm', NULL, '2023-02-22 02:52:54', '2023-02-22 02:52:54', NULL),
-(3, 3, '0', 'b@gmail.com', NULL, '$2y$10$28J1kQJq6OMOfELOeIpgEuuExankw2MaKI9tL4ks6hxLhe0weJx3C', NULL, '2023-03-05 23:06:38', '2023-03-06 06:42:35', NULL),
-(4, 1, 'test', 'test@gmail.com', NULL, '$2y$10$FK0S5rj.kNYKul4xinWcrOYAyTKS0svzOxxa8kPXPrkVYvj99SgoW', NULL, '2023-03-09 02:14:11', '2023-03-09 02:14:11', NULL);
+INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `active_status`, `avatar`, `dark_mode`, `messenger_color`) VALUES
+(1, 2, 'vinh', 'vinhhttt@gmail.com', NULL, '$2y$10$RQcRNRMQIfjzEFklr2EEIeIOKmWmhMwd0jOVow8wGvn5ezoAnzlUG', NULL, '2023-02-05 08:18:25', '2023-04-09 04:44:51', NULL, 0, '1680861804.png', 0, NULL),
+(2, 1, 'a', 'a@gmail.com', NULL, '$2y$10$iCqUB6O.ooamGhE5X9DnLeT0XvW70Wlrnw5Zb2qOzljVH8/0pDcFm', NULL, '2023-02-22 02:52:54', '2023-02-22 02:52:54', NULL, 0, 'avatar.png', 0, NULL),
+(3, 3, '0', 'b@gmail.com', NULL, '$2y$10$28J1kQJq6OMOfELOeIpgEuuExankw2MaKI9tL4ks6hxLhe0weJx3C', NULL, '2023-03-05 23:06:38', '2023-03-06 06:42:35', NULL, 0, 'avatar.png', 0, NULL),
+(4, 1, 'test', 'test@gmail.com', NULL, '$2y$10$FK0S5rj.kNYKul4xinWcrOYAyTKS0svzOxxa8kPXPrkVYvj99SgoW', NULL, '2023-03-09 02:14:11', '2023-03-09 02:14:11', NULL, 0, 'avatar.png', 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `voucher`
+--
+
+CREATE TABLE `voucher` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `percent` float NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `voucher`
+--
+
+INSERT INTO `voucher` (`id`, `value`, `product_id`, `quantity`, `percent`, `created_at`, `updated_at`) VALUES
+(1, '12', 14, 1, 1, '2023-04-08 07:57:29', '2023-04-08 07:57:29'),
+(2, 'Giảm 8%', 15, 30, 8, '2023-04-08 08:19:29', '2023-04-08 08:19:29');
 
 -- --------------------------------------------------------
 
@@ -639,6 +720,18 @@ ALTER TABLE `category_products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Chỉ mục cho bảng `ch_favorites`
+--
+ALTER TABLE `ch_favorites`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `ch_messages`
+--
+ALTER TABLE `ch_messages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Chỉ mục cho bảng `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -661,7 +754,8 @@ ALTER TABLE `images`
 -- Chỉ mục cho bảng `infoaccounts`
 --
 ALTER TABLE `infoaccounts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
 
 --
 -- Chỉ mục cho bảng `migrations`
@@ -709,12 +803,6 @@ ALTER TABLE `product_attribute_value`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `rating`
---
-ALTER TABLE `rating`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Chỉ mục cho bảng `roles`
 --
 ALTER TABLE `roles`
@@ -726,6 +814,12 @@ ALTER TABLE `roles`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- Chỉ mục cho bảng `voucher`
+--
+ALTER TABLE `voucher`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `wishlist`
@@ -765,13 +859,13 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT cho bảng `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `category_products`
 --
 ALTER TABLE `category_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `failed_jobs`
@@ -789,19 +883,19 @@ ALTER TABLE `feedbacks`
 -- AUTO_INCREMENT cho bảng `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `infoaccounts`
 --
 ALTER TABLE `infoaccounts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
@@ -825,19 +919,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT cho bảng `product_attribute_value`
 --
 ALTER TABLE `product_attribute_value`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
-
---
--- AUTO_INCREMENT cho bảng `rating`
---
-ALTER TABLE `rating`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`
@@ -850,6 +938,12 @@ ALTER TABLE `roles`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `voucher`
+--
+ALTER TABLE `voucher`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `wishlist`
