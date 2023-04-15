@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap/js/bootstrap.js') }}">
+    <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_SANDBOX_CLIENT_ID') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('user/user.css') }}">
     <title>
@@ -147,6 +148,12 @@
                 <div class="right">
                     <ul class="flexitem second_links">
                         @if (Auth::check())
+                        <li class="mobile_hide"><a href="{{ url('history')}}">
+                            <div class="icon_large" style="margin-top: -36px">
+                                <i class="ri-history-line"></i>
+                            </div>
+                        </a>
+                        </li>
                         <li class="mobile_hide"><a href="{{ url('/wishlist/'. Auth::user()->id) }}">
                                 <div class="icon_large" style="margin-top: -36px"><i class="ri-heart-line"></i>
                                     <div class="fly_item"><span class="item_number" id="wishlist_number">{{   App\Models\Wishlist::where('user_id',Auth::user()->id)->count();}}</span></div>
@@ -238,7 +245,7 @@
                                                     VND</strong></p>
                                         </div>
                                         <div class="actions">
-                                            @if (Auth::check())
+                                            @if (Auth::check() && count($cart) > 0)
                                             <a href="{{url('checkout')}}" class="primary_button">CheckOut</a>
                                             @else
                                             <a href="#" class="primary_button" onclick="checkout()">CheckOut</a>
@@ -276,7 +283,7 @@
                                                 Thông tin cá nhân
                                             </a>
                                         </li>
-                                        @if (!(Auth::user()->role_id == 1))
+                                        @if (!(Auth::user()->role_id == 1) && !(Auth::user()->role_id == 4))
                                             <li class="profile-dropdown-list-item">
                                                 <a href="{{ url('/admin/dashboard') }}">
                                                     <i class="fa-regular fa-envelope"></i>
@@ -284,16 +291,39 @@
                                                 </a>
                                             </li>
                                         @endif
+                                        @if (Auth::user()->role_id == 2)
+                                        <li class="profile-dropdown-list-item">
+                                            <a href="{{ url('pageConfirm') }}">
+                                                <i class="fa-regular fa-envelope"></i>
+                                                Trang xác nhận đơn hàng
+                                            </a>
+                                        </li>
+                                    @endif
+                                        @if (Auth::user()->role_id == 1)
+                                        <li class="profile-dropdown-list-item">
+                                            <a href="{{url('shipper')}}">
+                                                <i class="ri-run-line"></i>      
+                                                Đăng kí làm shipper
+                                            </a>
+                                        </li>
+                                        @endif
+                                        @if (Auth::user()->role_id == 4)
+                                        <li class="profile-dropdown-list-item">
+                                            <a href="{{url('pageShip')}}">
+                                                <i class="ri-truck-line"></i>      
+                                                Check đơn hàng
+                                            </a>
+                                        </li>
+                                        @endif
                                         <hr />
                                         <li class="profile-dropdown-list-item">
                                             <form action="{{ route('do_logout') }}" method="POST">
                                                 @csrf
-                                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                                <i style="margin-left: 0.88em" class="fa-solid fa-arrow-right-from-bracket"></i>
                                                 <button type="submit">
                                                     Log out
                                                 </button>
                                             </form>
-                                            
                                         </li>
                                     </ul>
                                 </div>
@@ -1063,12 +1093,9 @@
             item_number.innerText = data.cart.length;
             data.cart.map((cart) => {
                 if (cart.product.discount) {
-                    var price = (cart.product.price - (cart.product.price * ((cart.product.discount) / 100))) * cart
-                        .quantity
-
+                    var price = (cart.product.price - (cart.product.price * ((cart.product.discount) / 100))) * cart.quantity
                 } else {
                     var price = cart.product.price * cart.quantity
-
                 };
                 render += `
                                         <li class="item" style="margin-bottom: 1em">
@@ -1133,7 +1160,7 @@
 
 
         function checkout(){
-            message = "Bạn cần phải đăng nhập";
+            message = "Bạn cần đăng nhập hoặc có sản phẩm trong giỏ hàng";
             createNoti(message);
             return false;
         }

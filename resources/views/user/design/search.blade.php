@@ -10,9 +10,7 @@
                 <div class="wrapper">
                     <div class="column">
                         <div class="sectop flexitem">
-                            <h2><span class="circle"></span><span>View Products</span></h2>
-                            <div class="second_links"><a href="" class="view_all">Xem tất cả<i
-                                        class="ri-arrow-right-line"></i></a></div>
+                            <h2><span class="circle"></span><span>Kết quả</span></h2>
                         </div>
                         <div class="products main flexwrap">
                             @foreach ($searches as $product)
@@ -88,7 +86,7 @@
             <h1 class="search_page">Không có kết quả tìm kiếm cho {{$key}}</h1>
         @endif
 
-        {{$searches->links()}}
+        {{$searches->links('vendor.pagination.default')}}
 @endsection
 
 @section('javascript')

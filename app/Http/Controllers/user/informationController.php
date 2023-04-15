@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Exception;
-
+use Illuminate\Support\Facades\File;
 class informationController extends Controller
 {
     /**
@@ -44,8 +44,7 @@ class informationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        
+    {   
         $products = Product::all();
         $categories = Category::all();
         $brands = Brand::all();
@@ -53,7 +52,7 @@ class informationController extends Controller
         if ($request->isMethod('POST')) {
             $now = date('Y-m-d');
             $rules = [
-                'birthday' => 'required|after_or_equal:$now',
+                'birthday' => 'required|before:today|before:'.now()->subYear(10)->toDateString(),
                 'avatar' => 'required|image',
                 'fullname' => 'required|max:255',
                 'phone' => 'required|max:10',
@@ -64,7 +63,9 @@ class informationController extends Controller
             $messages = [
                 'required' => 'Không được để trống trường này',
                 'image' => 'Phải là ảnh',
-                'max' => 'Vượt quá giới hạn cho phép'
+                'max' => 'Vượt quá giới hạn cho phép',
+                'before:today'=> 'Ngày không được ở tương lai',
+                'before:' => 'Số tuổi phải trên 10',
             ];
             $request->validate($rules, $messages);
         }
@@ -117,6 +118,7 @@ class informationController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
+
         return view('user.design.information.edit', compact('products', 'categories', 'brands', 'cart','user'));
     }
 
@@ -129,7 +131,56 @@ class informationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $products = Product::all();
+        $categories = Category::all();
+        $brands = Brand::all();
+        $cart = session()->get('cart', []);
+        if ($request->isMethod('POST')) {
+            $now = date('Y-m-d');
+            $rules = [
+                'birthday' => 'required|before:today|before:'.now()->subYear(10)->toDateString(),
+                'avatar' => 'required|image',
+                'fullname' => 'required|max:255',
+                'phone' => 'required|max:10',
+                'address' => 'required',
+                'hobbies' => 'required',
+                'description' => 'required',
+            ];
+            $messages = [
+                'required' => 'Không được để trống trường này',
+                'image' => 'Phải là ảnh',
+                'max' => 'Vượt quá giới hạn cho phép',
+                'before:today'=> 'Ngày không được ở tương lai',
+                'before:' => 'Số tuổi phải trên 10',
+            ];
+            $request->validate($rules, $messages);
+        }
+        $user = User::find($id);
+        $information = Information::where('user_id', $id)->first();
+        $input = $request->all();
+        $information->fullname = $input['fullname'];
+        $information->phone = $input['phone'];
+        $information->address = $input['address'];
+        $information->birthday = $input['birthday'];
+        $information->hobbies = $input['hobbies'];
+        $information->gender = $input['gender'];
+        $information->description = $input['description'];
+        if($request->hasFile('avatar')){
+            $destination = 'storage/avatar/' . $information->avatar;
+            if(File::exists($destination)){
+                File::delete($destination);
+            }
+            $file = $request->file('avatar');
+            $file->storeAs('avatar' , time().'.'.$file->getClientOriginalExtension(),'public');
+            $image = time().'.'.$file->getClientOriginalExtension(); 
+            $information->avatar = $image;
+        }
+        try{
+            $information->save();
+            return view('user.design.information.index',compact('products', 'categories', 'brands','cart','user'))->with('success', 'Đã thêm thông tin thành công');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Đã xảy ra lỗi');
+        }
     }
 
     /**

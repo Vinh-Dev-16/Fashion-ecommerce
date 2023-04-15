@@ -92,8 +92,8 @@
                                         <div class="stock mini_text">
                                             <div class="qty">
                                                 <span>Số lượng: <strong
-                                                        class="qty_available">{{ $product->stock }}</strong></span>
-                                                <span>Đã bán: <strong class="qty_sold">60</strong></span>
+                                                        class="qty_available">{{ $product->stock + $product->sold}}</strong></span>
+                                                <span>Đã bán: <strong class="qty_sold">{{$product->sold}}</strong></span>
                                             </div>
                                             <div class="bar">
                                                 <div class="available"></div>
@@ -148,7 +148,7 @@
                                         @endif
                                     </div>
                                     <div class="mini_text">
-                                        <p>Đã bán 30</p>
+                                        <p>Đã bán {{$product->sold}}</p>
                                         <p>Free Shipping</p>
                                     </div>
                                 </div>

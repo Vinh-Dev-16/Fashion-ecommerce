@@ -36,8 +36,6 @@
 <body class="hold-transition  sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
 
-
-
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-dark">
             <!-- Left navbar links -->
@@ -84,6 +82,7 @@
                     <div class="media">
                         <form action="{{ route('do_logout') }}" method="POST">
                             @csrf
+
                             <button type="submit" style="color:white;">Logout</button>
                         </form>
                     </div>
@@ -240,8 +239,8 @@
                             <!-- small box -->
                             <div class="small-box bg-info">
                                 <div class="inner">
-                                    <h3>150</h3>
-                                    <p>New Orders</p>
+                                    <h3>{{App\Models\Order::count()}}</h3>
+                                    <p>Đơn đặt hàng</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa-solid fa-bag-shopping"></i>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
+use App\Models\Information;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
@@ -96,6 +97,8 @@ class userController extends Controller
     public function destroy($id)
     {
         $accounts = User::find($id);
+        $infomation = Information::where('user_id', $id)->first();
+        $infomation->delete();
         $accounts->delete();
         if (Session::get('admin_url')) {
             return redirect(session('admin_url'))->with('success', 'Đã xóa mềm User thành công');

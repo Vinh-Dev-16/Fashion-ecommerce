@@ -9,6 +9,12 @@
     <div class="page_single">
         <div class="container" >
             <div class="wrapper" style="border: 1px solid #e5e8ec;min-height:100vh">
+                <div class="breadcrumb">
+                    <ul class="flexitem">
+                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li>Trang thông tin</li>
+                    </ul>
+                </div>
                 <div class="head_information">
                     <div class="user_information">
                         <div class="avatar object-cover">

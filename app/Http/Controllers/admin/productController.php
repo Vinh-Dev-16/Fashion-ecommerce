@@ -185,9 +185,15 @@ class productController extends Controller
     public function destroy($id)
     {
         $products = Product::find($id);
-        $products->delete();
-        if (Session::get('products_url')) {
-            return redirect(session('products_url'))->with('success', 'Đã xóa mềm products thành công');
+        if($products->orderDetails->count() > 0){
+            if (Session::get('products_url')) {
+                return redirect(session('products_url'))->with('error', 'Sản phẩm đang có đơn đặt hàng');
+            }
+        }else{
+            $products->delete();
+            if (Session::get('products_url')) {
+                return redirect(session('products_url'))->with('success', 'Đã xóa mềm products thành công');
+            }
         }
     }
 

@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.5",
         "munafio/chatify": "^1.6",
         "realrashid/sweet-alert": "^6.0",
+        "srmklive/paypal": "~3.0",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {

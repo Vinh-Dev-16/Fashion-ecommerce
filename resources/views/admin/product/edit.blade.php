@@ -121,7 +121,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleDesce">Thông tin sản phẩm</label>
-                                <input type="text" class="form-control" id="editor" name="desce"
+                                <input type="text" class="form-control"  name="desce"
                                     value="{{ $products->desce }}" >
                                 @error('desce')
                                     <div class="text-danger">{{ $message }}</div>

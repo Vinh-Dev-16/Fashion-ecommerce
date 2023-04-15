@@ -53,6 +53,9 @@ class AuthController extends Controller
                 case (3):
                     return redirect('admin/dashboard');
                     break;
+                case (4):
+                    return redirect('/');
+                    break;
                 case (1):
                     return redirect('/');
                     break;

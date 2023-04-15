@@ -97,7 +97,7 @@
     @endif   
     @endif
 
-    {!! $wishlists->render() !!}
+    {{ $wishlists->links('vendor.pagination.default')}}
 @endsection
 
 

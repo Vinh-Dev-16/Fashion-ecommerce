@@ -80,412 +80,418 @@
 
                                     <div class="voucher">
                                         @if ($products->vouchers)
-                                            <h4>Voucher của sản phẩm: 
-                                                @foreach ($products->vouchers as $voucher) 
-                                                    {{$voucher->value}},
-                                                @endforeach
-                                            </h4>
+                                            @foreach ($products->vouchers as $voucher)
+                                                <h4>Voucher của sản phẩm:
+                                                    {{ $voucher->value }},
+                                                </h4>
+                                            @endforeach
                                         @endif
                                     </div>
 
-                                    <form action="{{url('payment/'.$products->id)}}" method="POST" id="form_cart">
+                                    <form action="{{ url('payment') }}" method="POST" id="form_cart">
                                         @csrf
+                                        <input name="product_id" hidden value="{{ $products->id }}">
                                         <div class="color">
-                                        <p>Color</p>
-                                        <div class="variant">
+                                            <p>Color</p>
+                                            <div class="variant">
                                                 @foreach ($products->attributevalues as $color)
                                                     @if ($color->attribute_id == 2)
                                                         <p>
-                                                            <input type="radio" name="color" id="{{ $color->value }}" value="{{$color->id}}" >
+                                                            <input type="radio" name="color" id="{{ $color->value }}"
+                                                                value="{{ $color->id }}">
                                                             <label for="{{ $color->value }}" class="circle size_bf"
                                                                 style="top:0; left:0; --bg:{{ $color->value }} "></label>
                                                         </p>
                                                     @endif
                                                 @endforeach
-                                            @error('color')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
+                                                @error('color')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
                                         @error('color')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                    <div class="sizes">
-                                        <p>Size</p>
-                                        <div class="variant">
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        <div class="sizes">
+                                            <p>Size</p>
+                                            <div class="variant">
                                                 @foreach ($products->attributevalues as $size)
                                                     @if ($size->attribute_id == 1)
                                                         <P>
-                                                            <input type="radio" name="size" id="{{ $size->value }}" value="{{$size->id}}">
+                                                            <input type="radio" name="size" id="{{ $size->value }}"
+                                                                value="{{ $size->id }}">
                                                             <label for="{{ $size->value }}" class="circle size_bf"
                                                                 style="top:0; left:0;"><span>{{ $size->value }}</span></label>
                                                         </P>
                                                     @endif
                                                 @endforeach
+                                                @error('size')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                             @error('size')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                    @error('size')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                    </div>
-                                    <div class="actions">
-                                        <div class="qty_control flexitem">
-                                            <div class="minus circle">-</div>
-                                            <input type="number" id="stock" value="1" name="stock" min="1" max="{{$products->stock}}" required>
-                                            <div class="plus circle">+</div>
-                                        </div>
-                                        <div class="button_cart">
-                                            <button type="submit" onclick="addCart({{$products->id}})" class="primary_button" id="addtocart"
-                                              >Add to cart</button>
-                                        </div>
-                                        <div class="button_cart" style="margin-right: 1em">
-                                            <button type="submit" class="secondary_button"
-                                              >Mua ngay</button>
-                                        </div>
-                                        </form>
-                                    </div>
-                                    
-                                    <div class="wish_share">
-                                           
-                                            <ul class="flexitem second_links" id="wish_love">
-                                                @if (Auth::check())
-                                                @if ($products->wishlist)
-                                                <li >
-                                                    <a href="#" id="wishlist" onclick="wishlistDelete({{$products->wishlist->id}},{{$products->id}},{{Auth::user()->id}})">
-                                                        <span class="icon_large" style="color: #ff6b6b"><i class="ri-heart-fill"></i></span>
+                                        <div class="actions">
+                                            <div class="qty_control flexitem">
+                                                <div class="minus circle">-</div>
+                                                <input type="number" id="stock" value="1" name="stock"
+                                                    min="1" max="{{ $products->stock }}" required>
+                                                <div class="plus circle">+</div>
+                                            </div>
+                                            <div class="button_cart">
+                                                <button type="submit" onclick="addCart({{ $products->id }})"
+                                                    class="primary_button" id="addtocart">Add to cart</button>
+                                            </div>
+                                            <div class="button_cart" style="margin-right: 1em">
+                                                <button type="submit" class="secondary_button">Mua ngay</button>
+                                            </div>
+                                    </form>
+                                </div>
+
+                                <div class="wish_share">
+
+                                    <ul class="flexitem second_links" id="wish_love">
+                                        @if (Auth::check())
+                                            @if ($products->wishlist && Auth::user()->id == $products->wishlist->user_id)
+                                                <li>
+                                                    <a href="#" id="wishlist"
+                                                        onclick="wishlistDelete({{ $products->wishlist->id }},{{ $products->id }},{{ Auth::user()->id }})">
+                                                        <span class="icon_large" style="color: #ff6b6b"><i
+                                                                class="ri-heart-fill"></i></span>
                                                         <span id="love" style="color: #ff6b6b">Đã yêu thích</span>
                                                     </a>
-                                                </li> 
-                                                @else 
+                                                </li>
+                                            @else
                                                 <li>
-                                                    <a href="#" id="wishlist" onclick="wishlist({{$products->id}},{{Auth::user()->id}})">
+                                                    <a href="#" id="wishlist"
+                                                        onclick="wishlist({{ $products->id }},{{ Auth::user()->id }})">
                                                         <span class="icon_large"><i class="ri-heart-line"></i></span>
                                                         <span id="love">Yêu thích</span>
-                                                    </a>
-                                                </li>   
-                                                    
-                                                @endif
-                                                @else
-                                                <li>
-                                                    <div id="wishlist" onclick="createToast('Bạn phải đăng nhập')" style="cursor: pointer">
-                                                        <span class="icon_large"><i class="ri-heart-line"></i></span>
-                                                        <span id="love">Yêu thích</span>
-                                                    </div>
-                                                </li> 
-                                                @endif
-                                                <li>
-                                                    <a href="">
-                                                        <span class="icon_large"><i class="ri-share-line"></i></span>
-                                                        <span>Chia sẻ</span>
                                                     </a>
                                                 </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="descripition collapse">
-                                        <ul>
-                                            <li class="has_child expand ">
-                                                <a href="#" class="icon_small">Thông tin sản phẩm</a>
-                                                <div class="content">
-                                                    <ul>
-                                                        <li><span>Brand:</span><a
-                                                                href=""><span>{{ $products->brand->name }}</span></a>
-                                                        </li>
-                                                        <li><span>Category:</span>
-                                                            @foreach ($products->categories as $category)
-                                                                <a href="#">
-                                                                    <span>{{ $category->name }},</span></a>
-                                                            @endforeach
-                                                        </li>
-                                                        <li><span>Số lượng: </span><span>{{ $products->stock }}</span>
-                                                        </li>
-                                                        <li><span>Đã bán:</span><span>160</span></li>
-                                                        <li><span>Đánh giá:</span><span>160</span></li>
-                                                    </ul>
+                                            @endif
+                                        @else
+                                            <li>
+                                                <div id="wishlist" onclick="createToast('Bạn phải đăng nhập')"
+                                                    style="cursor: pointer">
+                                                    <span class="icon_large"><i class="ri-heart-line"></i></span>
+                                                    <span id="love">Yêu thích</span>
                                                 </div>
                                             </li>
-                                            <li class="has_child">
-                                                <a href="#0" class="icon_small">Giới thiệu sản phẩm</a>
-                                                <div class="content">
-                                                    <p>{{ $products->desce }}</p>
-                                                </div>
-                                            </li>
-                                            <li class="has_child">
-                                                <a href="#0" class="icon_small">Bảng size </a>
-                                                <div class="content">
-                                                    <div class="table">
-                                                        <table style="width:100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Size</th>
-                                                                    <th><span class="mini_text">Rộng</span>(cm)</th>
-                                                                    <th><span class="mini_text">Eo</span>(cm)</th>
-                                                                    <th><span class="mini_text">Hông</span>(cm)</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>S</td>
-                                                                    <td>82.5</td>
-                                                                    <td>62.5</td>
-                                                                    <td>87.5</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>M</td>
-                                                                    <td>85</td>
-                                                                    <td>63.5</td>
-                                                                    <td>89</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>L</td>
-                                                                    <td>87.5</td>
-                                                                    <td>67.5</td>
-                                                                    <td>93</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>XL</td>
-                                                                    <td>90</td>
-                                                                    <td>72.5</td>
-                                                                    <td>98</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>XXL</td>
-                                                                    <td>93</td>
-                                                                    <td>77.5</td>
-                                                                    <td>103</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="has_child">
-                                                <a href="#" class="icon_small">Đánh giá<span
-                                                        class="mini_text render_count">{{ $products->reviews->count() }}</span></a>
-                                                <div class="content">
-                                                    <div class="reviews">
-                                                        <h4>Bình luận của mọi người</h4>
-                                                        <div class="review_block">
-                                                            <div class="review_block_head">
-                                                                <div class="flexitem">
-                                                                    <span class="rate_sum">{{ round($rate, 1) }}
-                                                                        sao</span>
-                                                                    <span class="render_count">Trên
-                                                                        {{ $products->reviews->count() }} đánh
-                                                                        giá</span>
-                                                                </div>
-                                                                @if (Auth::check())
-                                                                    <a href="#review_form" class="secondary_button">Viết
-                                                                        bình luận</a>
-                                                                @else
-                                                                    <a href="#" class="secondary_button"
-                                                                        id="review_btn">Viết bình luận
-                                                                @endif
-                                                                </a>
-                                                                <div class="review_block_body">
-                                                                    <ul id="review_ul">
-
-                                                                        @foreach ($products->reviews()->orderBy('created_at', 'desc')->limit(6)->get() as $review)
-                                                                            <li class="item">
-                                                                                <div class="review_form">
-                                                                                    <p class="person">Bình luận bởi
-                                                                                        {{ $review->name }}
-                                                                                    </p>
-                                                                                    <p class="mini_text">Vào ngày
-                                                                                        {{ date('d-m-Y'), strtotime($review->created_at) }}
-                                                                                    </p>
-                                                                                </div>
-                                                                                <div class="review_rating rating">
-                                                                                    <div class="stars"
-                                                                                        style="width: {{ 80 * ($review->rate / 5) }}px">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="review_img object_cover">
-                                                                                    @if ($review->image)
-                                                                                        <img src="{{ asset('' . $review->image) }}"
-                                                                                            style="position: static;width:200px;height:200px">
-                                                                                    @endif
-                                                                                </div>
-                                                                                <div class="review_title">
-                                                                                    <p>{{ $review->title }}</p>
-                                                                                </div>
-                                                                                <div class="review_text">
-                                                                                    <p>{{ $review->content }}</p>
-                                                                                </div>
-                                                                                @if (Auth::check())
-                                                                                    @if (Auth::user()->name === $review->name || Auth::user()->role_id == 2)
-                                                                                        <div
-                                                                                            style="display:flex; gap:1em;">
-                                                                                            <button class="primary_button"
-                                                                                                style="border: none;outline:none"
-                                                                                                id="btn_edit"
-                                                                                                onclick="sendEdit(this)">Sửa</button>
-                                                                                            <button type="submit"
-                                                                                                class="secondary_button"
-                                                                                                id="btn_delete"
-                                                                                                style="border:none; outline:none"
-                                                                                                onclick="sendDelete({{ $review->id }})">
-                                                                                                Xóa </button>
-                                                                                        </div>
-                                                                                    @endif
-                                                                                @endif
-                                                                            </li>
-                                                                        @endforeach
-                                                                    </ul>
-                                                                    <div class="second_links">
-                                                                        <a href="#" class="view_all">
-                                                                            Xem tất cả bình luận
-                                                                            <i class="ri-arrow-right-line"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                                @if (Auth::check())
-                                                                    <div id="review_form" class="review_form">
-                                                                        <h4>Viết bình luận của bạn</h4>
-
-                                                                        <form class="user_review"
-                                                                            action="{{ url('/review/store/' . $products->id) }}"
-                                                                            method="POST" enctype="multipart/form-data">
-                                                                            @csrf
-                                                                            <div class="rating">
-                                                                                <p>Bạn có thấy hài lòng?</p>
-                                                                                <div class="rate_this"
-                                                                                    style="margin-bottom: 23px">
-                                                                                    <input type="radio" name="rate"
-                                                                                        id="star5" value="5">
-                                                                                    <label for="star5"><i
-                                                                                            class="ri-star-fill"></i></label>
-                                                                                    <input type="radio" name="rate"
-                                                                                        id="star4" value="4">
-                                                                                    <label for="star4"><i
-                                                                                            class="ri-star-fill"></i></label>
-                                                                                    <input type="radio" name="rate"
-                                                                                        id="star3" value="3">
-                                                                                    <label for="star3"><i
-                                                                                            class="ri-star-fill"></i></label>
-                                                                                    <input type="radio" name="rate"
-                                                                                        id="star2" value="2">
-                                                                                    <label for="star2"><i
-                                                                                            class="ri-star-fill"></i></label>
-                                                                                    <input type="radio" name="rate"
-                                                                                        id="star1" value="1">
-                                                                                    <label for="star1"><i
-                                                                                            class="ri-star-fill"></i></label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <p>
-                                                                                <label>Tiêu đề</label>
-                                                                                <input type="text" name="title" required>
-                                                                            </p>
-                                                                            <p>
-                                                                                <label>Ảnh review</label>
-                                                                                <input type="file" name="image">
-                                                                            </p>
-                                                                            <p>
-                                                                                <label>Bình luận</label>
-                                                                                <textarea cols="30" rows="10" name="content" required></textarea>
-                                                                            </p>
-                                                                            <p>
-                                                                                <input type="text" hidden
-                                                                                    name="name"
-                                                                                    value="{{ Auth::user()->name }}">
-                                                                                <input type="text" hidden
-                                                                                    name="email"
-                                                                                    value="{{ Auth::user()->email }}">
-                                                                            </p>
-                                                                            <button id="button_review" type="submit"
-                                                                                class="primary_button"
-                                                                                style="border:none; outline:none">Bình
-                                                                                luận</button>
-                                                                        </form>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                        @endif
+                                        <li>
+                                            <a href="">
+                                                <span class="icon_large"><i class="ri-share-line"></i></span>
+                                                <span>Chia sẻ</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- Product --}}
-
-            <div class="related_products">
-                <div class="container">
-                    <div class="wrapper">
-                        <div class="column">
-                            <div class="sectop flexitem">
-                                <h2><span class="circle"></span><span>Sản phẩm liên quan</span></h2>
-                                <div class="second_links"><a href="" class="view_all">Xem tất cả<i
-                                            class="ri-arrow-right-line"></i></a></div>
-                            </div>
-                            <div class="products main flexwrap">
-                                @foreach (App\Models\admin\Product::where('sale', '=', 0)->where('brand_id', $products->brand_id)->where('id', '!=', $products->id)->inRandomOrder()->limit(6)->get() as $product)
-                                    <div class="item">
-                                        <div class="media">
-                                            <div class="thumbnail object_cover">
-                                                <a href="{{ url('detail/' . $product->id) }}">
-                                                    <img src="{{ $product->images->first()->path }}"
-                                                        alt="{{ $product->name }}">
-                                                </a>
-                                            </div>
-                                            <div class="hoverable">
-                                                <ul>
-                                                    <li class="active"><a href=""><i
-                                                                class="ri-heart-line"></i></a></li>
-                                                    <li><a href="{{ url('pageoffer/' . $product->id) }}"><i
-                                                                class="ri-eye-line"></i></a></li>
-                                                    <li><a href=""><i class="ri-shuffle-line"></i></a></li>
-                                                </ul>
-                                            </div>
-                                            @if ($product->discount)
-                                                <div class="discount circle flexcenter">
-                                                    <span>{{ $product->discount }}%</span>
-                                                </div>
-                                            @endif
-                                        </div>
+                            <div class="descripition collapse">
+                                <ul>
+                                    <li class="has_child expand ">
+                                        <a href="#" class="icon_small">Thông tin sản phẩm</a>
                                         <div class="content">
-                                            <div class="rating">
-                                                <div class="stars"></div>
-                                                <div class="mini_text">(160)</div>
-                                            </div>
-                                            <h3 class="main_links"><a
-                                                    href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
-                                            </h3>
-                                            <div class="price">
-                                                @if ($product->discount)
-                                                    <span
-                                                        class="current">{{ number_format(floor($product->price - ($product->price * $product->discount) / 100)) }}
-                                                        VND</span>
-                                                    <span class="normal mini_text">{{ number_format($product->price) }}
-                                                        VND</span>
-                                                @else
-                                                    <span class="current">{{ number_format($product->price) }}
-                                                        VND</span>
-                                                @endif
-                                            </div>
-                                            <div class="footer">
-                                                <ul class="mini_text">
-                                                    <li>Cotton, Polyester</li>
-                                                    <li>100% nguyên chất</li>
-                                                    <li>Phong cách</li>
-                                                </ul>
+                                            <ul>
+                                                <li><span>Brand:</span><a
+                                                        href=""><span>{{ $products->brand->name }}</span></a>
+                                                </li>
+                                                <li><span>Category:</span>
+                                                    @foreach ($products->categories as $category)
+                                                        <a href="#">
+                                                            <span>{{ $category->name }},</span></a>
+                                                    @endforeach
+                                                </li>
+                                                <li><span>Số lượng: </span><span>{{ $products->stock }}</span>
+                                                </li>
+                                                <li><span>Đã bán:</span><span>{{$products->sold}} sản phẩm </span></li>
+                                                <li><span>Đánh giá:</span><span>{{ round($rate, 1) }} sao</span></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="has_child">
+                                        <a href="#0" class="icon_small">Giới thiệu sản phẩm</a>
+                                        <div class="content">
+                                            <p>{{ $products->desce }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="has_child">
+                                        <a href="#0" class="icon_small">Bảng size </a>
+                                        <div class="content">
+                                            <div class="table">
+                                                <table style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Size</th>
+                                                            <th><span class="mini_text">Rộng</span>(cm)</th>
+                                                            <th><span class="mini_text">Eo</span>(cm)</th>
+                                                            <th><span class="mini_text">Hông</span>(cm)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>S</td>
+                                                            <td>82.5</td>
+                                                            <td>62.5</td>
+                                                            <td>87.5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>M</td>
+                                                            <td>85</td>
+                                                            <td>63.5</td>
+                                                            <td>89</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>L</td>
+                                                            <td>87.5</td>
+                                                            <td>67.5</td>
+                                                            <td>93</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>XL</td>
+                                                            <td>90</td>
+                                                            <td>72.5</td>
+                                                            <td>98</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>XXL</td>
+                                                            <td>93</td>
+                                                            <td>77.5</td>
+                                                            <td>103</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    </li>
+                                    <li class="has_child">
+                                        <a href="#" class="icon_small">Đánh giá<span
+                                                class="mini_text render_count">{{ $products->reviews->count() }}</span></a>
+                                        <div class="content">
+                                            <div class="reviews">
+                                                <h4>Bình luận của mọi người</h4>
+                                                <div class="review_block">
+                                                    <div class="review_block_head">
+                                                        <div class="flexitem">
+                                                            <span class="rate_sum">{{ round($rate, 1) }}
+                                                                sao</span>
+                                                            <span class="render_count">Trên
+                                                                {{ $products->reviews->count() }} đánh
+                                                                giá</span>
+                                                        </div>
+                                                        @if (Auth::check())
+                                                            <a href="#review_form" class="secondary_button">Viết
+                                                                bình luận</a>
+                                                        @else
+                                                            <a href="#" class="secondary_button"
+                                                                id="review_btn">Viết bình luận
+                                                        @endif
+                                                        </a>
+                                                        <div class="review_block_body">
+                                                            <ul id="review_ul">
+
+                                                                @foreach ($products->reviews()->orderBy('created_at', 'desc')->limit(6)->get() as $review)
+                                                                    <li class="item">
+                                                                        <div class="review_form">
+                                                                            <p class="person">Bình luận bởi
+                                                                                {{ $review->name }}
+                                                                            </p>
+                                                                            <p class="mini_text">Vào ngày
+                                                                                {{ date('d-m-Y'), strtotime($review->created_at) }}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="review_rating rating">
+                                                                            <div class="stars"
+                                                                                style="width: {{ 80 * ($review->rate / 5) }}px">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="review_img object_cover">
+                                                                            @if ($review->image)
+                                                                                <img src="{{ asset('' . $review->image) }}"
+                                                                                    style="position: static;width:200px;height:200px">
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="review_title">
+                                                                            <p>{{ $review->title }}</p>
+                                                                        </div>
+                                                                        <div class="review_text">
+                                                                            <p>{{ $review->content }}</p>
+                                                                        </div>
+                                                                        @if (Auth::check())
+                                                                            @if (Auth::user()->name === $review->name || Auth::user()->role_id == 2)
+                                                                                <div style="display:flex; gap:1em;">
+                                                                                    <a href="#review_form" class="primary_button"
+                                                                                        style="border: none;outline:none"
+                                                                                        id="btn_edit"
+                                                                                        onclick="sendEdit({{ $review->id }})">Sửa</a>
+                                                                                    <button type="submit"
+                                                                                        class="secondary_button"
+                                                                                        id="btn_delete"
+                                                                                        style="border:none; outline:none"
+                                                                                        onclick="sendDelete({{ $review->id }})">
+                                                                                        Xóa </button>
+                                                                                </div>
+                                                                            @endif
+                                                                        @endif
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                            <div class="second_links">
+                                                                <a href="#" class="view_all">
+                                                                    Xem tất cả bình luận
+                                                                    <i class="ri-arrow-right-line"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        @if (Auth::check())
+                                                            <div id="review_form" class="review_form">
+                                                                <h4>Viết bình luận của bạn</h4>
+                                                                <div class="form_review_user">
+                                                                    <form class="user_review"
+                                                                        action="{{ url('/review/store/' . $products->id) }}"
+                                                                        method="POST" enctype="multipart/form-data">
+                                                                        @csrf
+                                                                        <div class="rating">
+                                                                            <p>Bạn có thấy hài lòng?</p>
+                                                                            <div class="rate_this"
+                                                                                style="margin-bottom: 23px">
+                                                                                <input type="radio" name="rate"
+                                                                                    id="star5" value="5">
+                                                                                <label for="star5"><i
+                                                                                        class="ri-star-fill"></i></label>
+                                                                                <input type="radio" name="rate"
+                                                                                    id="star4" value="4">
+                                                                                <label for="star4"><i
+                                                                                        class="ri-star-fill"></i></label>
+                                                                                <input type="radio" name="rate"
+                                                                                    id="star3" value="3">
+                                                                                <label for="star3"><i
+                                                                                        class="ri-star-fill"></i></label>
+                                                                                <input type="radio" name="rate"
+                                                                                    id="star2" value="2">
+                                                                                <label for="star2"><i
+                                                                                        class="ri-star-fill"></i></label>
+                                                                                <input type="radio" name="rate"
+                                                                                    id="star1" value="1">
+                                                                                <label for="star1"><i
+                                                                                        class="ri-star-fill"></i></label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p>
+                                                                            <label>Tiêu đề</label>
+                                                                            <input type="text" name="title" required>
+                                                                        </p>
+                                                                        <p>
+                                                                            <label>Ảnh review</label>
+                                                                            <input type="file" name="image">
+                                                                        </p>
+                                                                        <p>
+                                                                            <label>Bình luận</label>
+                                                                            <textarea cols="30" rows="10" name="content" required></textarea>
+                                                                        </p>
+                                                                        <p>
+                                                                            <input type="text" hidden name="name"
+                                                                                value="{{ Auth::user()->name }}">
+                                                                            <input type="text" hidden name="email"
+                                                                                value="{{ Auth::user()->email }}">
+                                                                        </p>
+                                                                        <button id="button_review" type="submit"
+                                                                            class="primary_button"
+                                                                            style="border:none; outline:none">Bình
+                                                                            luận</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    {{-- Product --}}
+
+    <div class="related_products">
+        <div class="container">
+            <div class="wrapper">
+                <div class="column">
+                    <div class="sectop flexitem">
+                        <h2><span class="circle"></span><span>Sản phẩm liên quan</span></h2>
+                        <div class="second_links"><a href="" class="view_all">Xem tất cả<i
+                                    class="ri-arrow-right-line"></i></a></div>
+                    </div>
+                    <div class="products main flexwrap">
+                        @foreach (App\Models\admin\Product::where('sale', '=', 0)->where('brand_id', $products->brand_id)->where('id', '!=', $products->id)->inRandomOrder()->limit(6)->get() as $product)
+                            <div class="item">
+                                <div class="media">
+                                    <div class="thumbnail object_cover">
+                                        <a href="{{ url('detail/' . $product->id) }}">
+                                            <img src="{{ $product->images->first()->path }}" alt="{{ $product->name }}">
+                                        </a>
+                                    </div>
+                                    <div class="hoverable">
+                                        <ul>
+                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
+                                            <li><a href="{{ url('pageoffer/' . $product->id) }}"><i
+                                                        class="ri-eye-line"></i></a></li>
+                                            <li><a href=""><i class="ri-shuffle-line"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    @if ($product->discount)
+                                        <div class="discount circle flexcenter">
+                                            <span>{{ $product->discount }}%</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="content">
+                                    <div class="rating">
+                                        @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        @else
+                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                        @endif
+                                        <div class="mini_text">{{$product->reviews->count()}} review</div>
+                                    </div>
+                                    <h3 class="main_links"><a
+                                            href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
+                                    </h3>
+                                    <div class="price">
+                                        @if ($product->discount)
+                                            <span
+                                                class="current">{{ number_format(floor($product->price - ($product->price * $product->discount) / 100)) }}
+                                                VND</span>
+                                            <span class="normal mini_text">{{ number_format($product->price) }}
+                                                VND</span>
+                                        @else
+                                            <span class="current">{{ number_format($product->price) }}
+                                                VND</span>
+                                        @endif
+                                    </div>
+                                    <div class="footer">
+                                        <ul class="mini_text">
+                                            <li>Cotton, Polyester</li>
+                                            <li>100% nguyên chất</li>
+                                            <li>Phong cách</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
     </div>
     </div>
 @endsection
@@ -504,14 +510,14 @@
                 let rate = document.querySelector('input[name="rate"]').value;
                 let name = document.querySelector('input[name="name"]').value;
                 let email = document.querySelector('input[name="email"]').value
-                sendData(name, email, rate, title, image, content);
+                sendDataCreate(name, email, rate, title, image, content);
                 message = "Đã thêm bình luận"
                 createNoti(message);
             })
 
             // Create review
 
-            async function sendData(name, email, rate, title, image, content) {
+            async function sendDataCreate(name, email, rate, title, image, content) {
                 let form = new FormData();
                 let dataReview = {
                     'name': `${name}`,
@@ -569,6 +575,136 @@
             }
 
 
+            // Edit comment
+
+            async function sendEdit(id) {
+                const res = await fetch(`http://127.0.0.1:8000/review/edit/${id}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        createForm(data);
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                    });
+            };
+
+            function createForm(data) {
+                console.log(data.result.content);
+                let form_review_user = document.querySelector('.form_review_user');
+                form_review.style.display = 'none';
+                let new_form = `
+                <form class="user_review" id="form_reset" enctype="multipart/form-data">
+                     @csrf
+                      <div class="rating">
+                      <p>Đánh giá sản phẩm: </p>
+                        <div class="rate_this" style="margin-bottom: 23px">
+                            <input type="radio" name="rate" ${ 5 == data.result.rate ? 'checked' : ''} id="star5" value="5">
+                            <label for="star5"><i class="ri-star-fill"></i></label>
+                            <input type="radio" name="rate" id="star4" ${ 4 == data.result.rate ? 'checked' : ''} value="4">
+                            <label for="star4"><i class="ri-star-fill"></i></label>
+                            <input type="radio" name="rate" id="star3" ${ 3 == data.result.rate ? 'checked' : ''} value="3">
+                            <label for="star3"><i class="ri-star-fill"></i></label>
+                            <input type="radio" name="rate" id="star2" ${ 2 == data.result.rate ? 'checked' : ''} value="2">
+                            <label for="star2"><i class="ri-star-fill"></i></label>
+                            <input type="radio" name="rate" id="star1" ${ 1 == data.result.rate ? 'checked' : ''}  value="1">
+                            <label for="star1"><i class="ri-star-fill"></i></label>
+                            </div>
+                        </div>
+                              <p>
+                             <label>Tiêu đề</label>
+                              <input type="text" name="title" required value="${data.result.title}">
+                            </p>
+                            ${
+                            (()=>{
+                                if(data.result.image){
+                                    return `
+                                                            <p>
+                                                    Ảnh review trước đó: 
+                                                    <img src="{{ asset('${data.result.image}') }}" style="position: static;width:160px;height:220px">    
+                                                    </p>
+                                                                    `
+                                }else{
+                                    return `
+                `
+                                }
+                            })()
+                            }
+                            
+                           <p>
+                           <label>Ảnh review <small>(Nếu muốn đổi)</small>)</label>
+                         <input type="file" name="image" value="${data.result.file}">
+                         </p>
+                        <p>
+                        <label>Bình luận</label>
+                        <input cols="30" rows="10" name="content" required value="${data.result.content}"></input>
+                         </p>
+                        <p>
+                         <input type="text" hidden name="name" value="${data.result.name}">
+                         <input type="text" hidden name="email" value="${data.result.email}">
+                         </p>
+                         <button id="button_review_update" onclick="handleData(${data.result.id},event)" class="primary_button"
+                         style="border:none; outline:none">Bình luận</button>                                                                
+                         </form>                          
+                `;
+                form_review_user.innerHTML = new_form;
+
+            }
+
+            function handleData(id, e) {
+                let title = document.querySelector('input[name="title"]').value;
+                let image = document.querySelector('input[name="image"]').files[0];
+                let content = document.querySelector('input[name="content"]').value;
+                let rateBtn = document.querySelectorAll('input[name="rate"]');
+                let name = document.querySelector('input[name="name"]').value;
+                let email = document.querySelector('input[name="email"]').value;
+                console.log(rateBtn);
+                for (let i of rateBtn) {
+                    if (i.checked) {
+                        var rate = i.value;
+                        console.log(rate);
+                    }
+                }
+                sendData(id, name, email, rate, title, image, content);
+
+                e.preventDefault();
+            };
+
+            async function sendData(id, name, email, rate, title, image, content) {
+                let form = new FormData();
+                let dataReview = {
+                    'name': `${name}`,
+                    'email': `${email}`,
+                    'rate': rate,
+                    'title': `${title}`,
+                    'content': `${content}`,
+                }
+                form.append('name', `${name}`);
+                form.append('email', `${email}`);
+                form.append('rate', rate);
+                form.append('title', `${title}`);
+                form.append('content', `${content}`);
+                form.append('image', image);
+                const res = await fetch(`http://127.0.0.1:8000/review/update/${id}`, {
+                        method: "POST",
+                        // headers: {
+                        //     "Content-Type": "application/json",
+                        //     "X-Requested-With": "XMLHttpRequest",
+                        // },
+                        body: form,
+                    }).then((response) => response.json())
+                    .then((data) => {
+                        showData(data);
+                        message = 'Đã update bình luận';
+                        createNoti(message);
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                    });
+
+                return false;
+            }
+
+
             function showData(data) {
 
                 let show = '';
@@ -584,57 +720,60 @@
                 });
                 sort.slice(0, 6).map((item) => {
                     console.log(item);
+                    let width = 80 * (item.rate / 5);
                     let date = new Date(item.created_at);
                     let time = (date.getDate()) +
                         '-' + (date.getMonth()) +
                         '-' + date.getFullYear()
                     console.log(item);
                     show += `
-        <li class="item">
-           <div class="review_form">
-             <p class="person">Bình luận bởi ${item.name} </p>
-             <p class="mini_text">Vào ngày ${time} </p>
-           </div>
-        <div class="review_rating rating">
-         <div class="stars" style="width: { 80 * (${item.rate} / 5) }px">
-         </div>
-          </div>
-           ${
-            (()=>{
-                if((item.image)){
-                    return `
-                            <div class="review_img object_cover">
-                                <img src="{{ asset('${item.image}') }}" style="position: static;width:200px;height:200px">
-                            </div>
-                            `
-                }else{
-                    return `<div></div>`
-                }
-            })()
-           }
-             <div class="review_title">
-             <p>${item.title}</p>
-             </div>
-             <div class="review_text">
-              <p>${item.content}</p>
-              </div>
-              ${
-                (()=>{
-                    if(item.name == '{{ Auth::user()->name }}' || {{ Auth::user()->role_id  }}==2){
-                        return `
-                                <div style="display:flex; gap:1em;">
-                                    <button class="primary_button" style="border: none;outline:none" id="btn_edit"
-                                     onclick="sendEdit(this)">Sửa</button>
-                                     <button type="submit" class="secondary_button" id="btn_delete" style="border:none; outline:none" onclick="sendDelete(${item.id})"> Xóa </button>
-                                </div>
-                                `
-                    }else{
-                    return `<div></div>`
-                }
-                })()
-              }
-         </li>
-        `;
+                <li class="item">
+                   <div class="review_form">
+                     <p class="person">Bình luận bởi ${item.name} </p>
+                     <p class="mini_text">Vào ngày ${time} </p>
+                   </div>
+                <div class="review_rating rating">
+                 <div class="stars" style="width:${width}px">
+                 </div>
+                  </div>
+                   ${
+                    (()=>{
+                        if(item.image){
+                            return `
+                                                            <div class="review_img object_cover">
+                                                                <img src="{{ asset('${item.image}') }}" style="position: static;width:200px;height:200px">
+                                                            </div>
+                                                            `
+                        }else{
+                            return `
+                    `
+                        }
+                    })()
+                   }
+                     <div class="review_title">
+                     <p>${item.title}</p>
+                     </div>
+                     <div class="review_text">
+                      <p>${item.content}</p>
+                      </div>
+                      ${
+                        (()=>{
+                            if(item.name == '{{ Auth::user()->name }}' || {{ Auth::user()->role_id }}==2){
+                                return `
+                                                                <div style="display:flex; gap:1em;">
+                                                                    <a href="#review_form" class="primary_button" style="border: none;outline:none" id="btn_edit"
+                                                                     onclick="sendEdit(${item.id})">Sửa</a>
+                                                                     <button type="submit" class="secondary_button" id="btn_delete" style="border:none; outline:none" onclick="sendDelete(${item.id})"> Xóa </button>
+                                                                </div>
+                                                                `;
+                            }else{
+                                return `
+                    `
+                            }
+                        })()
+                      }
+                 </li>
+                `;
                 });
                 review_ul.innerHTML = show;
                 let render_count = document.querySelectorAll('.render_count');
@@ -698,28 +837,27 @@
         let quantity = document.querySelector('#stock');
         let minus = document.querySelector('.minus');
         let plus = document.querySelector('.plus');
-      
-        minus.addEventListener('click',(e)=>{
+
+        minus.addEventListener('click', (e) => {
             let value = parseInt(quantity.value);
-            if(value > 1){
+            if (value > 1) {
                 value -= 1;
                 quantity.value = value;
             }
         });
-        
-        plus.addEventListener('click',(e)=>{
+
+        plus.addEventListener('click', (e) => {
             let value = parseInt(quantity.value);
-            if(value < {{$products->stock}}){
+            if (value < {{ $products->stock }}) {
                 value += 1;
                 quantity.value = value;
             }
-                     
         });
 
-        quantity.addEventListener('change', (e)=>{    
-            if(e.target.value > {{$products->stock}}){
-                e.target.value = {{$products->stock}};
-                quantity.value = {{$products->stock}};
+        quantity.addEventListener('change', (e) => {
+            if (e.target.value > {{ $products->stock }}) {
+                e.target.value = {{ $products->stock }};
+                quantity.value = {{ $products->stock }};
             }
         });
     </script>

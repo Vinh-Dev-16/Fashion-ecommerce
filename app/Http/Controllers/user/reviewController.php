@@ -9,6 +9,7 @@ use App\Models\admin\Product;
 use App\Models\admin\Category;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class reviewController extends Controller
 {
@@ -78,6 +79,12 @@ class reviewController extends Controller
                      ]);
             }
             $data= Review::all();
+            $rateProduct = Product::find($id);
+            $rate = $rateProduct->reviews()->pluck('feedbacks.rate')->avg();
+            $rateProduct->update([
+                'rate' => $rate,
+            ]);
+            
             return response()->json([
                 'result'=>$data,
             ]);
@@ -117,33 +124,31 @@ class reviewController extends Controller
     public function update(Request $request, $id)
     {
         $reviews = Review::find($id);
-        $product_id = $reviews->product_id;
+        $input = $request->all();
+        $reviews->product_id = $reviews->product_id;
+        $reviews->name = $input['name'];
+        $reviews->email = $input['email'];
+        $reviews->title = $input['title'];
+        $reviews->content = $input['content'];
+        $reviews->rate = $input['rate'];
         $input = $request->all(); 
         if(request()->hasFile('image')){
+            $destination = 'storage/review/'. $reviews->image;
+            if(File::exists($destination)){
+                File::delete($destination);
+            }
             $file = $request->file('image');
             $file->storeAs('review' , time().'.'.$file->getClientOriginalExtension(),'public');
-            $image = time().'.'.$file->getClientOriginalExtension();
-                $reviews->update([
-                    'name' => $input['name'],
-                    'email' => $input['email'],
-                    'title' => $input['title'],
-                    'image' => 'storage/review/'. $image,
-                    'content'=>$input['content'],
-                    'product_id' => $product_id,
-                    'rate' =>$input['rate'],
-                 ]);
-              
-        }else{
-                $reviews->update([
-                    'name' => $input['name'],
-                    'email' => $input['email'],
-                    'title' => $input['title'],
-                    'content'=>$input['content'],
-                    'product_id' => $product_id,
-                    'rate' => $input['rate'],
-                 ]);
+            $image = 'storage/review/'.time().'.'.$file->getClientOriginalExtension();
+            $reviews->image = $image;     
         }
+        $reviews->update();
         $data= Review::all();
+        $rateProduct = Product::find($id);
+        $rate = $rateProduct->reviews()->pluck('feedbacks.rate')->avg();
+        $rateProduct->update([
+            'rate' => $rate,
+        ]);
         return response()->json([
             'result'=>$data,
         ]);

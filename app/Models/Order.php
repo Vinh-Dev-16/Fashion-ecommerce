@@ -4,20 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $table = 'orders';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'name',
-        'email',
+        'fullname',
+        'user_id',
         'phone',
         'address',
         'note',
-        'order_date',
+        'subtotal',
         'status',
         'total_money',
     ];
+
+    public function orderDetails(){
+        return $this->hasMany(OrderDetail::class);
+    }
 }

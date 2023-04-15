@@ -70,22 +70,26 @@
                                                 <span>{{ number_format( ($cart_product['product']->price - ($cart_product['product']->discount / 100) * $cart_product['product']->price))}}
                                                 </span>
                                             @else
+                                               <span>
                                                 {{ number_format($cart_product['product']->price)}}
+                                                </span> 
                                             @endif
                                             </td>
                                             <td>
                                                 <div class="qty_control flexitem">
-                                                    <button class="minus">-</button>
-                                                    <input type="number" value="{{$cart_product['quantity']}}" min="1" max="{{$cart_product['product']->stock}}" disabled>
-                                                    <button class="plus">+</button>
+                                                    <div style="padding-top: 12px" class="minus" onclick="decrement({{$cart_product['product']->id}},this)">-</div>
+                                                    <input type="number" value="{{$cart_product['quantity']}}" min="1" max="{{$cart_product['product']->stock}}" id="quantity_cart" disabled>
+                                                    <div style="padding-top: 12px" onclick="increment({{$cart_product['product']->id}},{{$cart_product['product']->stock}},this)" class="plus">+</div>
                                                 </div>
                                             </td>
                                             <td>
                                                 @if ($cart_product['product']->discount)
-                                                <span>{{ number_format($cart_product['quantity'] * ($cart_product['product']->price - ($cart_product['product']->discount / 100) * $cart_product['product']->price)) }}
+                                                <span class="price_item">{{ number_format($cart_product['quantity'] * ($cart_product['product']->price - ($cart_product['product']->discount / 100) * $cart_product['product']->price)) }}
                                                 </span>
                                             @else
+                                            </span class="price_item"> 
                                                 {{ number_format($cart_product['quantity'] * $cart_product['product']->price) }}
+                                               <span>
                                             @endif
                                             </td>
                                             <td><a href="{{url('deletecart',['id'=>$cart_product['product']->id])}}">
@@ -121,19 +125,19 @@
                                             <tbody>
                                                 <tr>
                                                     <th>Tổng tiền</th>
-                                                    <td>{{number_format($subTotal)}} VND</td>
+                                                    <td class="sub_total">{{number_format($subTotal)}} </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Phí ship<span class="mini_text">/Product</span></th>
                                                     <td>{{number_format((15000) * (count($cart)))}} VND</td>
                                                 </tr>
                                                 <tr>
-                                                    <th>Tax</th>
-                                                    <td>{{ number_format($subTotal * 0.1)}} VND</td>
+                                                    <th >Tax</th>
+                                                    <td class="tax">{{ number_format($subTotal * 0.1)}} VND</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Tổng tất cả</th>
-                                                    <td>{{ number_format($subTotal + 15000 * count($cart) + $subTotal * 0.1) }} VND
+                                                    <td class="total">{{ number_format($subTotal + 15000 * count($cart) + $subTotal * 0.1) }} 
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -177,6 +181,64 @@
         e.preventDefault();
         dpt_menu.classList.toggle('active');
     });
+
+    // quantity
+
+        function decrement(id,el){
+            let quantity = el.parentElement.querySelector('#quantity_cart');
+            let value = parseInt(quantity.value);
+            if (value > 1) {
+                value -= 1;
+                quantity.value = value;
+            }
+            updateQuantity(id,value,el);
+        };
+
+        function increment(id,stock,el){
+            let quantity = el.parentElement.querySelector('#quantity_cart');
+            let value = parseInt(quantity.value);
+            if (value < stock) {
+                value += 1;
+                quantity.value = value;
+            }
+            updateQuantity(id,value,el);
+        }        
+
+        async function updateQuantity(id,quantity,el){
+            console.log(el);
+            const res = await fetch(`http://127.0.0.1:8000/updateQuantity/${id}/${quantity}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    showUpdate(data,el);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+        
+        function showUpdate(data,el) {
+            if (data.cart_item.product.discount) {
+                var price = (data.cart_item.product.price - (data.cart_item.product.price * ((data.cart_item.product.discount) / 100))) * data.cart_item.quantity;
+                el.parentElement.parentElement.parentElement.querySelector('.price_item').innerText = price.toLocaleString('vi-VN');
+            } else {
+                var price = data.cart_item.product.price * data.cart_item.quantity;
+                el.parentElement.parentElement.parentElement.querySelector('.price_item').innerText = price.toLocaleString('vi-VN');
+            };
+
+            let ship = (15000 * data.data.length);
+                const caculator = data.data.reduce((total, cartItem) => {
+                    if (data.cart_item.product.discount) {
+                        return total + cartItem.quantity * (cartItem.product.price - ((cartItem.product
+                            .price) * ((cartItem.product.discount) / 100)));
+                    } else {
+                        return total + cartItem.quantity * (cartItem.product.price);
+                    }
+                }, 0);
+                let total = caculator;
+                document.querySelector('.tax').innerText = (total * 0.1).toLocaleString('vi-VN') + ' VND';
+                document.querySelector('.sub_total').innerText = total.toLocaleString('vi-VN');
+                document.querySelector('.total').innerText = (total + (total * 0.1) + ship).toLocaleString('vi-VN');    
+        }
 </script>
 
 @endsection

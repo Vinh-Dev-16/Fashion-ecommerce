@@ -15,7 +15,7 @@
                 </div>
                 <div class="checkout flexwrap">
                     <div class="item left styled">
-                        <h1>Đơn thông tin</h1>
+                        <h1>Thông tin khách hàng</h1>
                         <?php $cartCollect = collect($cart);
                         $subTotal = $cartCollect->sum(function ($cartItem) {
                             if (!$cartItem['product']->discount) {
@@ -25,27 +25,79 @@
                             }
                         });
                         ?>
-                        <form action="">
+                        @if (App\Models\Information::where('user_id', Auth::user()->id)->first())
+                        <form action="{{ url('/process')}}" method="POST">
+                            @csrf
+                            @foreach (App\Models\Information::where('user_id', Auth::user()->id)->get() as $information )
                             <p>
                                 <label for="fullname">Full Name<span></span></label>
-                                <input type="text" name="fullname">
+                                <input type="text" name="fullname" value="{{$information->fullname}}" >
                             </p>
+                            @error('fullname')
+                            <div class="text-danger">{{ $message }}</div>
+                             @enderror
                             <p>
                                 <label for="phone">Phone<span></span></label>
-                                <input type="phone" name="phone">
+                                <input type="phone" name="phone" value="{{$information->phone}}">
                             </p>
+                            @error('phone')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
                             <p>
                                 <label for="address">Address<span></span></label>
-                                <input type="text" name="address">
+                                <input type="text" name="address" value="{{$information->address}}">
                             </p>
+                            @error('address')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                            @endforeach
+                            <p>
+                                <label for="note">Note<span></span></label>
+                                <input type="text" name="note" id="note">
+                             </p>
                                 <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
                                 <input type="text" name="subtotal" value="{{$subTotal}}" hidden>
-                                <input type="text" name="user_id" value="{{($subTotal + 15000 * count($cart) + $subTotal * 0.1)}}" hidden>
                             <p>
                                 <div class="primary_checkout"><button class="primary_button" type="s
                                     ">Thanh toán</button></div>
                             </p>
                         </form>
+                        @else  
+                        <form action="{{ url('/process')}}" method="POST">
+                            @csrf
+                            <p>
+                                <label for="fullname">Full Name<span></span></label>
+                                <input type="text" name="fullname" >
+                            </p>
+                            @error('fullname')
+                            <div class="text-danger">{{ $message }}</div>
+                             @enderror
+                            <p>
+                                <label for="phone">Phone<span></span></label>
+                                <input type="phone" name="phone">
+                            </p>
+                            @error('phone')
+                            <div class="text-danger">{{ $message }}</div>
+                             @enderror
+                            <p>
+                                <label for="address">Address<span></span></label>
+                                <input type="text" name="address">
+                            </p>
+                            @error('address')
+                            <div class="text-danger">{{ $message }}</div>
+                             @enderror
+                            <p>
+                                <label for="note">Note<span></span></label>
+                                <input type="text" name="note" id="note">
+                             </p>
+                                <input type="text" name="user_id" value="{{Auth::user()->id}}" hidden>
+                                <input type="text" name="subtotal" value="{{$subTotal}}" hidden>
+                            <p>
+                                <div class="primary_checkout"><button class="primary_button" type="s
+                                    ">Thanh toán</button></div>
+                            </p>
+                        </form>
+                        @endif
                     </div>
                     <div class="item right">
                         <h2>Thông tin đơn hàng</h2>

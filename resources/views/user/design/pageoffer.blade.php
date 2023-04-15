@@ -76,10 +76,10 @@
                                                 <span class="current">{{ number_format($products->price) }} VND</span>
                                             @endif
                                         </div>
-                                        <div class="stock mini_text" data-stock="172">
+                                        <div class="stock mini_text" data-stock="{{($products->sold + $products->stock)}}">
                                             <div class="qty">
                                                 <span>Đã bán<strong class="qty_sold">
-                                                        160</strong></span>
+                                                        {{$products->sold}}</strong></span>
                                                 <span>Còn lại<strong class="qty_available">
                                                         {{ $products->stock }}</strong></span>
                                             </div>
@@ -96,8 +96,18 @@
                                                 <li class="seconds"></li>
                                             </ul>
                                         </div>
-                                        <form action="{{url('payment/'.$products->id)}}" method="POST" id="form_cart">
+                                        <div class="voucher">
+                                            @if ($products->vouchers)
+                                                @foreach ($products->vouchers as $voucher)
+                                                    <h4>Voucher của sản phẩm:
+                                                        {{ $voucher->value }},
+                                                    </h4>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                        <form action="{{ url('payment') }}" method="POST" id="form_cart">
                                             @csrf
+                                            <input name="product_id" hidden value="{{ $products->id }}">
                                             <div class="colors">
                                                 <p>Color</p>
                                                 <div class="variant">
@@ -112,7 +122,7 @@
                                                         @endif
                                                     @endforeach
                                                     @error('color')
-                                                    <div class="text-danger">{{ $message }}</div>
+                                                        <div class="text-danger">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -131,7 +141,7 @@
                                                         @endif
                                                     @endforeach
                                                     @error('size')
-                                                    <div class="text-danger">{{ $message }}</div>
+                                                        <div class="text-danger">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -147,35 +157,40 @@
                                                         onclick="addCart({{ $products->id }})">Add to cart</button>
                                                 </div>
                                                 <div class="button_cart" style="margin-right: 1em">
-                                                    <button type="submit" class="secondary_button"
-                                                      >Mua ngay</button>
+                                                    <button type="submit" class="secondary_button">Mua ngay</button>
                                                 </div>
                                         </form>
                                         <div class="wish_share">
                                             <ul class="flexitem second_links" id="wish_love">
                                                 @if (Auth::check())
-                                                @if ($products->wishlist)
-                                                <li >
-                                                    <a href="#" id="wishlist" onclick="wishlistDelete({{$products->wishlist->id}},{{$products->id}},{{Auth::user()->id}})">
-                                                        <span class="icon_large" style="color: #ff6b6b"><i class="ri-heart-fill"></i></span>
-                                                        <span id="love" style="color: #ff6b6b">Đã yêu thích</span>
-                                                    </a>
-                                                </li> 
-                                                @else 
-                                                <li>
-                                                    <a href="#" id="wishlist" onclick="wishlist({{$products->id}},{{Auth::user()->id}})">
-                                                        <span class="icon_large"><i class="ri-heart-line"></i></span>
-                                                        <span id="love">Yêu thích</span>
-                                                    </a>
-                                                </li>   
-                                                @endif
+                                                    @if ($products->wishlist && Auth::user()->id == $products->wishlist->user_id)
+                                                        <li>
+                                                            <a href="#" id="wishlist"
+                                                                onclick="wishlistDelete({{ $products->wishlist->id }},{{ $products->id }},{{ Auth::user()->id }})">
+                                                                <span class="icon_large" style="color: #ff6b6b"><i
+                                                                        class="ri-heart-fill"></i></span>
+                                                                <span id="love" style="color: #ff6b6b">Đã yêu
+                                                                    thích</span>
+                                                            </a>
+                                                        </li>
+                                                    @else
+                                                        <li>
+                                                            <a href="#" id="wishlist"
+                                                                onclick="wishlist({{ $products->id }},{{ Auth::user()->id }})">
+                                                                <span class="icon_large"><i
+                                                                        class="ri-heart-line"></i></span>
+                                                                <span id="love">Yêu thích</span>
+                                                            </a>
+                                                        </li>
+                                                    @endif
                                                 @else
-                                                <li>
-                                                    <div id="wishlist" onclick="createToast('Bạn phải đăng nhập')" style="cursor: pointer">
-                                                        <span class="icon_large"><i class="ri-heart-line"></i></span>
-                                                        <span id="love">Yêu thích</span>
-                                                    </div>
-                                                </li> 
+                                                    <li>
+                                                        <div id="wishlist" onclick="createToast('Bạn phải đăng nhập')"
+                                                            style="cursor: pointer">
+                                                            <span class="icon_large"><i class="ri-heart-line"></i></span>
+                                                            <span id="love">Yêu thích</span>
+                                                        </div>
+                                                    </li>
                                                 @endif
                                                 <li>
                                                     <a href="">
@@ -203,8 +218,9 @@
                                                         </li>
                                                         <li><span>Số lượng: </span><span>{{ $products->stock }}</span>
                                                         </li>
-                                                        <li><span>Đã bán:</span><span>160</span></li>
-                                                        <li><span>Đánh giá:</span><span>160</span></li>
+                                                        <li><span>Đã bán:</span><span>{{$products->sold}}</span></li>
+                                                        <li><span>Đánh giá:</span><span>{{ round($rate, 1) }} sao</span>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </li>
@@ -296,7 +312,7 @@
                                                                                         {{ $review->name }}
                                                                                     </p>
                                                                                     <p class="mini_text">Vào ngày
-                                                                                        {{ date('d-m-Y'), strtotime($review->created_at)}}
+                                                                                        {{ date('d-m-Y'), strtotime($review->created_at) }}
                                                                                     </p>
                                                                                 </div>
                                                                                 <div class="review_rating rating">
@@ -320,10 +336,11 @@
                                                                                     @if (Auth::user()->name === $review->name || Auth::user()->role_id == 2)
                                                                                         <div
                                                                                             style="display:flex; gap:1em;">
-                                                                                            <button class="primary_button"
+                                                                                            <a href="#review_form"
+                                                                                                class="primary_button"
                                                                                                 style="border: none;outline:none"
                                                                                                 id="btn_edit"
-                                                                                                onclick="sendEdit({{$review->id}})">Sửa</button>
+                                                                                                onclick="sendEdit({{ $review->id }})">Sửa</a>
                                                                                             <button type="submit"
                                                                                                 class="secondary_button"
                                                                                                 id="btn_delete"
@@ -472,8 +489,12 @@
                                                 </ul>
                                             </div>
                                             <div class="rating">
-                                                <div class="stars"></div>
-                                                <div class="mini_text">(160)</div>
+                                                @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                                <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                                @else
+                                                <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                                @endif
+                                                <div class="mini_text">{{$product->reviews->count()}} review</div>
                                             </div>
                                             <h3 class="main_links"><a
                                                     href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
@@ -490,12 +511,12 @@
                                                         VND</span>
                                                 @endif
                                             </div>
-                                            <div class="stock mini_text" data-stock="172">
+                                            <div class="stock mini_text" data-stock="{{($product->sold + $product->stock)}}">
                                                 <div class="qty">
                                                     <span>Đã bán<strong class="qty_sold">
-                                                            160</strong></span>
+                                                            {{$product->sold}}</strong></span>
                                                     <span>Còn lại<strong class="qty_available">
-                                                            {{ $products->stock }}</strong></span>
+                                                            {{ $product->stock }}</strong></span>
                                                 </div>
                                                 <div class="bar">
                                                     <div class="available"></div>
@@ -517,10 +538,6 @@
 @section('javascript')
     @if (Auth::check())
         <script>
-
-
-    
-
             // comment
             const btn_review = document.querySelector('#button_review');
             const form_review = document.querySelector('.user_review');
@@ -529,17 +546,24 @@
                 let title = document.querySelector('input[name="title"]').value;
                 let image = document.querySelector('input[name="image"]').files[0];
                 let content = document.querySelector('textarea[name="content"]').value;
-                let rate = document.querySelector('input[name="rate"]').value;
+                let rateBtn = document.querySelectorAll('input[name="rate"]');
                 let name = document.querySelector('input[name="name"]').value;
-                let email = document.querySelector('input[name="email"]').value
-                sendData(name, email, rate, title, image, content);
+                let email = document.querySelector('input[name="email"]').value;
+                console.log(rateBtn);
+                for (let i of rateBtn) {
+                    if (i.checked) {
+                        var rate = i.value;
+                        console.log(rate);
+                    }
+                }
+                sendDataCreate(name, email, rate, title, image, content);
                 message = "Đã thêm bình luận"
                 createNoti(message);
             })
 
             // Create review
 
-            async function sendData(name, email, rate, title, image, content) {
+            async function sendDataCreate(name, email, rate, title, image, content) {
                 let form = new FormData();
                 let dataReview = {
                     'name': `${name}`,
@@ -614,21 +638,20 @@
                 let form_review_user = document.querySelector('.form_review_user');
                 form_review.style.display = 'none';
                 let new_form = `
-                <form class="user_review" method="POST" enctype="multipart/form-data">
+                <form class="user_review" id="form_reset" enctype="multipart/form-data">
                      @csrf
                       <div class="rating">
-                      <p>Bạn đã đánh giá sản phẩm này là ${data.result.rate} sao</p>
-                      <p>Bạn có muốn đánh giá lại?</p>
+                      <p>Đánh giá sản phẩm: </p>
                         <div class="rate_this" style="margin-bottom: 23px">
-                            <input type="radio" name="rate" id="star5" value="5">
+                            <input type="radio" name="rate" ${ 5 == data.result.rate ? 'checked' : ''} id="star5" value="5">
                             <label for="star5"><i class="ri-star-fill"></i></label>
-                            <input type="radio" name="rate" id="star4" value="4">
+                            <input type="radio" name="rate" id="star4" ${ 4 == data.result.rate ? 'checked' : ''} value="4">
                             <label for="star4"><i class="ri-star-fill"></i></label>
-                            <input type="radio" name="rate" id="star3" value="3">
+                            <input type="radio" name="rate" id="star3" ${ 3 == data.result.rate ? 'checked' : ''} value="3">
                             <label for="star3"><i class="ri-star-fill"></i></label>
-                            <input type="radio" name="rate" id="star2" value="2">
+                            <input type="radio" name="rate" id="star2" ${ 2 == data.result.rate ? 'checked' : ''} value="2">
                             <label for="star2"><i class="ri-star-fill"></i></label>
-                            <input type="radio" name="rate" id="star1"  value="1">
+                            <input type="radio" name="rate" id="star1" ${ 1 == data.result.rate ? 'checked' : ''}  value="1">
                             <label for="star1"><i class="ri-star-fill"></i></label>
                             </div>
                         </div>
@@ -636,13 +659,25 @@
                              <label>Tiêu đề</label>
                               <input type="text" name="title" required value="${data.result.title}">
                             </p>
-                            <p>
-                            Ảnh review trước đó: 
-                            <img src="{{ asset('${data.result.image}') }}" style="position: static;width:200px;height:200px">    
-                            </p>
+                            ${
+                            (()=>{
+                                if(data.result.image){
+                                    return `
+                                                    <p>
+                                            Ảnh review trước đó: 
+                                            <img src="{{ asset('${data.result.image}') }}" style="position: static;width:160px;height:220px">    
+                                            </p>
+                                                            `
+                                }else{
+                                    return `
+                `
+                                }
+                            })()
+                            }
+                            
                            <p>
                            <label>Ảnh review <small>(Nếu muốn đổi)</small>)</label>
-                        <input type="file" name="image" value="${data.result.file}">
+                         <input type="file" name="image" value="${data.result.file}">
                          </p>
                         <p>
                         <label>Bình luận</label>
@@ -652,14 +687,32 @@
                          <input type="text" hidden name="name" value="${data.result.name}">
                          <input type="text" hidden name="email" value="${data.result.email}">
                          </p>
-                         <button id="button_review" type="submit" class="primary_button"
-                         style="border:none; outline:none">Bình luận</button>
+                         <button id="button_review_update" onclick="handleData(${data.result.id},event)" class="primary_button"
+                         style="border:none; outline:none">Bình luận</button>                                                                
                          </form>                          
-                                                                                        
                 `;
                 form_review_user.innerHTML = new_form;
+
             }
 
+            function handleData(id, e) {
+                let title = document.querySelector('input[name="title"]').value;
+                let image = document.querySelector('input[name="image"]').files[0];
+                let content = document.querySelector('input[name="content"]').value;
+                let rateBtn = document.querySelectorAll('input[name="rate"]');
+                let name = document.querySelector('input[name="name"]').value;
+                let email = document.querySelector('input[name="email"]').value;
+                console.log(rateBtn);
+                for (let i of rateBtn) {
+                    if (i.checked) {
+                        var rate = i.value;
+                        console.log(rate);
+                    }
+                }
+                sendData(id, name, email, rate, title, image, content);
+
+                e.preventDefault();
+            };
 
             async function sendData(id, name, email, rate, title, image, content) {
                 let form = new FormData();
@@ -677,7 +730,7 @@
                 form.append('content', `${content}`);
                 form.append('image', image);
                 const res = await fetch(`http://127.0.0.1:8000/review/update/${id}`, {
-                        method: "PATCH",
+                        method: "POST",
                         // headers: {
                         //     "Content-Type": "application/json",
                         //     "X-Requested-With": "XMLHttpRequest",
@@ -686,10 +739,14 @@
                     }).then((response) => response.json())
                     .then((data) => {
                         showData(data);
+                        message = 'Đã update bình luận';
+                        createNoti(message);
                     })
                     .catch((error) => {
                         alert(error.message);
                     });
+
+                return false;
             }
 
 
@@ -708,6 +765,7 @@
                 });
                 sort.slice(0, 6).map((item) => {
                     console.log(item);
+                    let width = 80 * (item.rate / 5);
                     let date = new Date(item.created_at);
                     let time = (date.getDate()) +
                         '-' + (date.getMonth()) +
@@ -720,23 +778,23 @@
                      <p class="mini_text">Vào ngày ${time} </p>
                    </div>
                 <div class="review_rating rating">
-                 <div class="stars" style="width: { 80 * (${item.rate} / 5) }px">
+                 <div class="stars" style="width:${width}px">
                  </div>
                   </div>
                    ${
                     (()=>{
                         if(item.image){
                             return `
-                                    <div class="review_img object_cover">
-                                        <img src="{{ asset('${item.image}') }}" style="position: static;width:200px;height:200px">
-                                    </div>
-                                    `
+                                                    <div class="review_img object_cover">
+                                                        <img src="{{ asset('${item.image}') }}" style="position: static;width:200px;height:200px">
+                                                    </div>
+                                                    `
                         }else{
                             return `
                     `
                         }
                     })()
-                   };
+                   }
                      <div class="review_title">
                      <p>${item.title}</p>
                      </div>
@@ -747,18 +805,18 @@
                         (()=>{
                             if(item.name == '{{ Auth::user()->name }}' || {{ Auth::user()->role_id }}==2){
                                 return `
-                                        <div style="display:flex; gap:1em;">
-                                            <button class="primary_button" style="border: none;outline:none" id="btn_edit"
-                                             onclick="sendEdit(this)">Sửa</button>
-                                             <button type="submit" class="secondary_button" id="btn_delete" style="border:none; outline:none" onclick="sendDelete(${item.id})"> Xóa </button>
-                                        </div>
-                                        `;
+                                                        <div style="display:flex; gap:1em;">
+                                                            <a href="#review_form" class="primary_button" style="border: none;outline:none" id="btn_edit"
+                                                             onclick="sendEdit(${item.id})">Sửa</a>
+                                                             <button type="submit" class="secondary_button" id="btn_delete" style="border:none; outline:none" onclick="sendDelete(${item.id})"> Xóa </button>
+                                                        </div>
+                                                        `;
                             }else{
                                 return `
                     `
                             }
                         })()
-                      };
+                      }
                  </li>
                 `;
                 });
@@ -925,6 +983,7 @@
 
             // Tao Toast
             let toastMessage = "Bạn phải đăng nhập mới được bình luận";
+
             function createToast(toastMessage) {
                 const toast = document.createElement('li');
                 toast.className = `toasts error`;
