@@ -52,6 +52,9 @@
             </div>
         @enderror
             <button name="submit" type="submit">Đăng nhập</button>
+            <hr>
+            <br>
+            <a href="{{ url('/auth/redirect/facebook') }}"> Đăng nhập bằng Facebook</a>
             <div class="auth">
                 <span>Bạn chưa có tài khoản?</span><span><a href="{{url('/register')}}">Đăng kí</a></span>
             </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\user;
 
+use App\Events\AdminConfirm;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Product;
@@ -203,11 +204,14 @@ class homeController extends Controller
                         'time_confirm' => $now,
                     ]
                 );
-            }
-            return redirect()->back()->with('success', 'Đã giao hàng');
+            } 
+            $count = OrderDetail::where('status', 2)->count();
+            event(new AdminConfirm($count));
+            return redirect()->back()->with('success', 'Đã xác nhận');
         }catch(Exception $e){
             return redirect()->back()->with('error','Đã xảy ra lỗi');
         }
+       
     }
 }
    

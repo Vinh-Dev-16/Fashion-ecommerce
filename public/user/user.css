@@ -342,6 +342,12 @@ h4 {
 	width: 100%;
 	height: 100%;
 }
+:where(header , .off_canvas) li>a{
+	display: flex;
+	position: relative;
+	line-height: inherit;
+	transition: var(--trans-color);
+}
 .header_nav{
 	padding: 0.5em 0;
 	margin-bottom: 1.5em;
@@ -353,7 +359,9 @@ h4 {
 	padding: 0.25em;
 	margin-right: 0.5em;
 }
-
+#cart_product{
+	margin-top: 0;
+}
 .logo a {
 	font-size: 1.75em;
 	position: relative;
@@ -627,7 +635,13 @@ nav .fly_item , .header_nav .mini_cart .price .fly_item{
 	height: 63.7px;
 	align-items: center;
 }
-
+.dpt_menu .has_child:hover ul{
+	display: block;
+	z-index: 1000;
+}
+.dpt_menu .has_child li:hover a{
+	text-decoration: underline;
+}
 .header_main .right{
 	flex: 1;
 	position: relative;
@@ -670,6 +684,103 @@ form.search :where(span,button){
 	background-color: var(--dark-color);
 }
 
+/* side bar */
+
+.site_off{
+	position: fixed;
+	width: 320px;
+	height: var(--percent100);
+	background-color: var(--while-color);
+	overflow-y: auto;
+	overflow-x: hidden;
+	z-index: 1000;
+	transform: translateX(-100%);
+	visibility: hidden;
+	transition: transform .4s , visibility .4s;
+	will-change: trasform , visibility ;
+}
+.showmenu .site_off{
+	transform: translateX(0);
+	visibility: visible;
+	transform: transform .4s 0s , visibility 0s 0s;
+}
+.off_canvas{
+	width: var(--percent100);
+	height: var(--percent100);
+	touch-action: auto;
+	padding: 1.5em;
+}
+.off_canvas .canvas_head{
+	color: var(--while-color);
+	justify-content: space-between;
+	padding: 1.5em;
+	width: 90%;
+	margin: -1.5em -1.5em 1.5em;
+	background-color: var(--secondary-dark-color);
+	border-bottom-right-radius:160px 25px ;
+}
+.off_canvas .canvas_head .logo{
+	z-index: 10;
+	position: relative;
+}
+.off_canvas .canvas_head .logo .circle{
+	opacity: .75;
+}
+.off_canvas .dpt_head{
+	font-size: var(--font-small);
+	padding:1em;
+	margin-bottom: 1em;
+	text-align: center;
+	background-color: var(--light-bg-color);
+	border-radius: 7px 7px 0 0;
+}
+.off_canvas .dpt_menu{
+	width: 94%;
+}
+.off_canvas .has_child> :where(ul , .mega){
+	font-size: var(--font-small);
+	font-weight: var(--fw3);
+	line-height: 28px;
+	padding-left: 3em;
+	height: auto;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height .3s cubic-bezier(0.215, 0.610, 0,355, 1);
+}
+.off_canvas .expand > :where(ul, .mega){
+	max-height: 2000px;
+}
+.off_canvas .departments{
+	width: 90%;
+}
+.off_canvas nav {
+	width: 90%;
+}
+.off_canvas .thetop_nav ul , .off_canvas nav >ul{
+	flex-direction: column;
+	align-items: flex-start;
+	font-size: var(--font-small);
+	line-height: 36px;
+	padding-top: 1.25em;
+	border-top: 1px solid var(--border-color);
+}
+.off_canvas nav .mega{
+	padding: 0;
+}
+.off_canvas nav .mega .products{
+	display: none;
+}
+.off_canvas .has_child .icon_small{
+	padding: 0.5em;
+	line-height: inherit;
+}
+.off_canvas .dpt_menu .icon_small{
+	transform: rotate(90deg);
+}
+.off_canvas .has_child{
+	width: 90%;
+}
+/*  */
 .search_results{
 	position: absolute;
 	top: 53px;
@@ -1238,7 +1349,7 @@ form.search :where(span,button){
 	color: var(--primary-color);
 }
 .flexwrap .row{
-	flex: 0 0 100%;
+	flex: 0 0 82%;
 	width: 100%;
 	margin-bottom: 2em;
 }
@@ -1426,9 +1537,7 @@ form.search :where(span,button){
 
 /* detail */
 
-.dpt_menu.active{
-	display: none;
-}
+
 .breadcrumb{
 	font-size: var(--font-small);
 	margin-bottom: 2em;
@@ -2255,7 +2364,7 @@ input[type="range"]{
 .backtotop a{
 	position: absolute;
 	bottom: 6em;
-	right:2em;
+	left:5em;
 	text-align: center;
 	gap: 0;
 	font-size: var(--font-small);
@@ -2472,6 +2581,47 @@ input[type="range"]{
 	transform: translate(-50%, -50%);
 }
 
+/* bottom */
+.menu_bottom{
+	position: fixed;
+	left: 0;
+	right:0;
+	bottom: 0;
+	height: 60px;
+	background-color: var(--while-color);
+	box-shadow: 0 -2px 10px rgb(0 0 0 /10%);
+	z-index: 900;
+}
+.menu_bottom nav li{
+	flex: 1;
+}
+.menu_bottom nav li a{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0.5em 0;
+	color: var(--light-text-color);
+	transition: var(--trans-color);
+}
+.menu_bottom nav li a:hover{
+	color: var(--dark-color);
+}
+.menu_bottom nav li a span{
+	font-size: var(--font-smaller);
+}
+.menu_bottom nav li a i{
+	font-size: 1.25em;
+}
+.menu_bottom .fly_item{
+	right: 50%;
+	width: 11px;
+	height: 11px;
+	border-radius: var(--percent50);
+	margin-right: -20px;
+	background-color: var(--secondary-dark-color);
+}
+
 @media screen and (min-width: 481px) {
 	.products.main .item{
 		flex:0 0 43%;
@@ -2536,10 +2686,12 @@ input[type="range"]{
 	.products .price .current{
 		font-size: 1.05em;
 	}
-	.products.mini, .banner .row ,
-	.checkout .item
+	.products.mini, .banner .row
 	{
 		flex: 0 0 42%;
+	}
+	.checkout .item{
+		flex:  0 0 38%;
 	}
 	.widgets .row{
 		flex: 0 0 43%;
@@ -2549,8 +2701,12 @@ input[type="range"]{
 	}
 	.products.one .row
 	{
-		flex: 0 0 43%;
+		flex: 0 0 50%;
 		width: 50%;	
+		margin-left: calc((100% - 530px)/2);
+	}
+	.icon_large{
+		margin-top: -36px;
 	}
 	.products.one .is_sticky, .is_sticky{
 		position: sticky;
@@ -2561,7 +2717,7 @@ input[type="range"]{
 	}
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 1100px) {
 	.container {
 		padding: 0 2em;
 	}
@@ -2599,6 +2755,9 @@ input[type="range"]{
 		z-index: 60;
 		box-shadow: rgb(0 0 0 / 20%) 0 30px 20px -30px;
 		display: none;
+	}
+	nav li.has_child:hover .mega{
+		display: block;
 	}
 	nav .mega.active{
 		display: block;
@@ -2693,13 +2852,8 @@ input[type="range"]{
 		transition: var(--trans-background);
 		filter: brightness(0.8);
 	}
-	.dpt_menu .has_child:hover>ul{
-		display: block;
-	}
-	.dpt_menu .has_child li a:hover{
-		text-decoration: underline;
-	}
-	.dpt_menu .has_child > :where(ul,.mega)::before{
+
+	.dpt_menu .has_child > .mega::before{
 		content: '';
 		position: absolute;
 		top: 0;
@@ -2714,6 +2868,24 @@ input[type="range"]{
 	}
 	.dpt_menu .has_child:hover .mega{
 		display: flex;
+	}
+	.dpt_menu .beauty ul{
+		background-image: url('../images/menu_bg1.jpg');
+	}
+	.dpt_menu .electric ul{
+		background-image: url('../images/menu_bg2.jpg');
+	}
+	.dpt_menu .woman ul{
+		background-image: url('../images/menu_bg3.jpg');
+	}
+	.dpt_menu .homekit .mega{
+		background-image: url('../images/menu_bg4.jpg');
+	}
+	.dpt_menu.active{
+		display: none !important;
+	}
+	#model_fashion{
+		position: static;
 	}
 	.trending .products, 
 	.products_categories .row{

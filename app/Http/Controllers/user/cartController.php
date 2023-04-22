@@ -9,6 +9,7 @@ use App\Models\admin\Brand;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Illuminate\Http\Request;
 use App\Models\Information;
+use App\Events\UserOrderEvent;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Support\Facades\DB;
@@ -250,6 +251,10 @@ class cartController extends Controller
                 DB::rollBack();
                 return back()->with('error','Đã xảy ra lỗi về thanh toán');
             };
+
+            $count =OrderDetail::where('status', 0)->count();
+            $name = $orders[0]['fullname'];
+            event(new UserOrderEvent($name,$count));
             session()->forget('cart');
             session()->forget('order');
  

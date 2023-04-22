@@ -104,15 +104,20 @@
 @section('javascript')
     
     <script>
-        const dpt_menu = document.querySelector('.dpt_menu');
-        const close_menu = document.getElementById('close_menu');
-
-        dpt_menu.classList.add('active');
-
-        close_menu.addEventListener('click', (e) => {
+        const dpt_menu = document.querySelectorAll('.dpt_menu');
+        const close_menu = document.querySelectorAll('#close_menu');
+       
+       for(let i of dpt_menu){
+        i.classList.add('active');
+       }
+       close_menu.forEach((item)=>{
+         item.addEventListener('click', (e) => {
             e.preventDefault();
-            dpt_menu.classList.toggle('active');
-        });
+            for(let i of dpt_menu){
+                i.classList.toggle('active');
+            }
+       });
+    })    
 
     </script>
 

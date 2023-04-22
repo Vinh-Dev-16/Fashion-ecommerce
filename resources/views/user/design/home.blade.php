@@ -105,7 +105,58 @@
                         @endforeach
                     </div>
                     <div class="row products mini">
-                            @foreach (App\Models\admin\Product::where('sale' , '=' ,1)->inRandomOrder()->limit(6)->get() as $product)
+                            @foreach (App\Models\admin\Product::where('sale' , '=' ,1)->inRandomOrder()->limit(3)->get() as $product)
+                            <div class="item">
+                                <div class="media">
+                                    <div class="thumbnail " style="object-fit: cover">
+                                        <a href="{{ url('pageoffer/' . $product->id) }}">
+                                            <img src="{{ $product->images->first()->path }}" style="height: 100%">
+                                        </a>
+                                    </div>
+                                    <div class="hoverable">
+                                        <ul>
+                                            <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
+                                            <li><a href="{{url('detail/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
+                                            <li><a href=""><i class="ri-shuffle-line"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    @if ($product->discount)
+                                        <div class="discount circle flexcenter"><span>{{ $product->discount }}%</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="content">
+                                    <h3 class="main_links"><a
+                                            href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
+                                    </h3>
+                                    <div class="rating">
+                                        @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        @else
+                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                        @endif
+                                        <div class="mini_text">{{$product->reviews->count()}} review</div>
+                                    </div>
+                                    <div class="price">
+                                        @if ($product->discount)
+                                            <span
+                                                class="current">{{ number_format(floor($product->price - ($product->price * $product->discount) / 100)) }}
+                                                VND</span>
+                                            <span class="normal mini_text">{{ number_format($product->price) }} VND</span>
+                                        @else
+                                            <span class="current">{{ number_format($product->price) }} VND</span>
+                                        @endif
+                                    </div>
+                                    <div class="mini_text">
+                                        <p>Đã bán {{$product->sold}}</p>
+                                        <p>Free Shipping</p>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        <div class="row products mini">
+                            @foreach (App\Models\admin\Product::where('sale' , '=' ,1)->inRandomOrder()->limit(3)->get() as $product)
                             <div class="item">
                                 <div class="media">
                                     <div class="thumbnail " style="object-fit: cover">

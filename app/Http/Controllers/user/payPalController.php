@@ -11,6 +11,7 @@ use App\Models\admin\Category;
 use App\Models\admin\Brand;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Events\UserOrderEvent;
 
 
 use App\Models\Information;
@@ -108,15 +109,24 @@ class payPalController extends Controller
             } else {
                  $subTotal= $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
             }
-            if($cartItem['voucher'] == 0 || !($cartItem['voucher'])){
-                return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment',[])));
-            }else{
-                return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment',[]))) - ($subTotal * ($cartItem['voucher']/100));
+            switch($cartItem['voucher']){
+                case(!($cartItem['voucher'])):
+                  return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment',[])));
+                  break;
+                case($cartItem['voucher'] == 0):
+                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment',[])));
+                    break;
+                case($cartItem['voucher'] > 0 && $cartItem['voucher'] <= 100):
+                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment',[]))) - ($subTotal * ($cartItem['voucher']/100));
+                    break;
+                case($cartItem['voucher'] >100):
+                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment',[]))) - ($cartItem['voucher']);
+                    break;
             }
         });
         $order = collect(session('order',[]));
         $order = $order->toArray();
-
+        
         foreach($paymentCollect as $payment){
             array_push($order,[
               'product' => $payment['product'],
@@ -183,6 +193,7 @@ class payPalController extends Controller
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
             
             $orders = session()->get('order', []);
+        
             try{
                 DB::beginTransaction();
                 foreach($orders as $order){
@@ -195,6 +206,7 @@ class payPalController extends Controller
                         'subtotal' => $order['subtotal'],
                         'total_money' => $order['total'],
                     ]);
+                 
                 }
 
                 $orderCollect = collect($orders);
@@ -216,15 +228,20 @@ class payPalController extends Controller
                         'stock' => $cartItem['product']->stock - $cartItem['quantity'],
                     ]);
                 });
-
+                $count =OrderDetail::where('status', 0)->count();
+                $name = $orders[0]['fullname'];
+                event(new UserOrderEvent($name,$count));
                 DB::commit();
             }catch(Exception $e){
                 DB::rollBack();
                 return back()->with('error','Đã xảy ra lỗi về thanh toán');
             };
+            
+          
+            
             session()->forget('payment');
             session()->forget('order');
- 
+    
             return redirect()
                 ->route('history')
                 ->with('success', 'Thanh toán thành công');

@@ -50,8 +50,8 @@ class Product extends Model
         return $this->hasMany(Voucher::class);
     }
 
-    public function wishlist(){
-        return $this->hasOne(Wishlist::class);
+    public function wishlists(){
+        return $this->hasMany(Wishlist::class);
     }
     public function reviews(){
         return $this->hasMany(Review::class);

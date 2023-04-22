@@ -79,12 +79,12 @@
                                     </div>
 
                                     <div class="voucher">
-                                        @if ($products->vouchers)
-                                            @foreach ($products->vouchers as $voucher)
-                                                <h4>Voucher của sản phẩm:
+                                        @if ($products->vouchers->count() > 0)
+                                            <h4>Voucher của sản phẩm:
+                                                @foreach ($products->vouchers as $voucher)
                                                     {{ $voucher->value }},
-                                                </h4>
-                                            @endforeach
+                                                @endforeach
+                                            </h4>
                                         @endif
                                     </div>
 
@@ -154,27 +154,29 @@
 
                                     <ul class="flexitem second_links" id="wish_love">
                                         @if (Auth::check())
-                                            @if ($products->wishlist && Auth::user()->id == $products->wishlist->user_id)
-                                                <li>
-                                                    <a href="#" id="wishlist"
-                                                        onclick="wishlistDelete({{ $products->wishlist->id }},{{ $products->id }},{{ Auth::user()->id }})">
-                                                        <span class="icon_large" style="color: #ff6b6b"><i
-                                                                class="ri-heart-fill"></i></span>
-                                                        <span id="love" style="color: #ff6b6b">Đã yêu thích</span>
-                                                    </a>
-                                                </li>
-                                            @else
-                                                <li>
-                                                    <a href="#" id="wishlist"
-                                                        onclick="wishlist({{ $products->id }},{{ Auth::user()->id }})">
-                                                        <span class="icon_large"><i class="ri-heart-line"></i></span>
-                                                        <span id="love">Yêu thích</span>
-                                                    </a>
-                                                </li>
+                                            @if (App\Models\Wishlist::where('user_id', Auth::user()->id)->where('product_id', $products->id)->count() > 0)
+                                            @foreach (App\Models\Wishlist::where('user_id', Auth::user()->id)->where('product_id', $products->id)->get() as $love)
+                                            <li>
+                                                <a href="#" id="wishlist"
+                                                    onclick="wishlistDelete({{$love->id}},{{ $products->id }},{{ Auth::user()->id }})">
+                                                    <span class="icon_large" style="color: #ff6b6b"><i
+                                                            class="ri-heart-fill"></i></span>
+                                                    <span id="love" style="color: #ff6b6b">Đã yêu thích</span>
+                                                </a>
+                                            </li>
+                                            @endforeach
+                                          @else
+                                            <li>    
+                                                <a href="#" id="wishlist"
+                                                    onclick="wishlist({{ $products->id }},{{ Auth::user()->id }})">
+                                                    <span class="icon_large"><i class="ri-heart-line"></i></span>
+                                                    <span id="love">Yêu thích</span>
+                                                </a>
+                                            </li>
                                             @endif
                                         @else
                                             <li>
-                                                <div id="wishlist" onclick="createToast('Bạn phải đăng nhập')"
+                                                <div id="wishlist" onclick="createNoti('Bạn phải đăng nhập')"
                                                     style="cursor: pointer">
                                                     <span class="icon_large"><i class="ri-heart-line"></i></span>
                                                     <span id="love">Yêu thích</span>
@@ -207,7 +209,7 @@
                                                 </li>
                                                 <li><span>Số lượng: </span><span>{{ $products->stock }}</span>
                                                 </li>
-                                                <li><span>Đã bán:</span><span>{{$products->sold}} sản phẩm </span></li>
+                                                <li><span>Đã bán:</span><span>{{ $products->sold }} sản phẩm </span></li>
                                                 <li><span>Đánh giá:</span><span>{{ round($rate, 1) }} sao</span></li>
                                             </ul>
                                         </div>
@@ -215,7 +217,7 @@
                                     <li class="has_child">
                                         <a href="#0" class="icon_small">Giới thiệu sản phẩm</a>
                                         <div class="content">
-                                            <p>{{ $products->desce }}</p>
+                                            <p>{!! $products->desce !!}</p>
                                         </div>
                                     </li>
                                     <li class="has_child">
@@ -323,7 +325,8 @@
                                                                         @if (Auth::check())
                                                                             @if (Auth::user()->name === $review->name || Auth::user()->role_id == 2)
                                                                                 <div style="display:flex; gap:1em;">
-                                                                                    <a href="#review_form" class="primary_button"
+                                                                                    <a href="#review_form"
+                                                                                        class="primary_button"
                                                                                         style="border: none;outline:none"
                                                                                         id="btn_edit"
                                                                                         onclick="sendEdit({{ $review->id }})">Sửa</a>
@@ -454,12 +457,18 @@
                                 </div>
                                 <div class="content">
                                     <div class="rating">
-                                        @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
-                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        @if (80 *
+                                                ($product->reviews()->pluck('feedbacks.rate')->avg() /
+                                                    5) ==
+                                                0)
+                                            <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá
+                                            </div>
                                         @else
-                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                            <div class="stars"
+                                                style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
+                                            </div>
                                         @endif
-                                        <div class="mini_text">{{$product->reviews->count()}} review</div>
+                                        <div class="mini_text">{{ $product->reviews->count() }} review</div>
                                     </div>
                                     <h3 class="main_links"><a
                                             href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
@@ -618,11 +627,11 @@
                             (()=>{
                                 if(data.result.image){
                                     return `
-                                                            <p>
-                                                    Ảnh review trước đó: 
-                                                    <img src="{{ asset('${data.result.image}') }}" style="position: static;width:160px;height:220px">    
-                                                    </p>
-                                                                    `
+                                                                    <p>
+                                                            Ảnh review trước đó: 
+                                                            <img src="{{ asset('${data.result.image}') }}" style="position: static;width:160px;height:220px">    
+                                                            </p>
+                                                                            `
                                 }else{
                                     return `
                 `
@@ -740,10 +749,10 @@
                     (()=>{
                         if(item.image){
                             return `
-                                                            <div class="review_img object_cover">
-                                                                <img src="{{ asset('${item.image}') }}" style="position: static;width:200px;height:200px">
-                                                            </div>
-                                                            `
+                                                                    <div class="review_img object_cover">
+                                                                        <img src="{{ asset('${item.image}') }}" style="position: static;width:200px;height:200px">
+                                                                    </div>
+                                                                    `
                         }else{
                             return `
                     `
@@ -760,12 +769,12 @@
                         (()=>{
                             if(item.name == '{{ Auth::user()->name }}' || {{ Auth::user()->role_id }}==2){
                                 return `
-                                                                <div style="display:flex; gap:1em;">
-                                                                    <a href="#review_form" class="primary_button" style="border: none;outline:none" id="btn_edit"
-                                                                     onclick="sendEdit(${item.id})">Sửa</a>
-                                                                     <button type="submit" class="secondary_button" id="btn_delete" style="border:none; outline:none" onclick="sendDelete(${item.id})"> Xóa </button>
-                                                                </div>
-                                                                `;
+                                                                        <div style="display:flex; gap:1em;">
+                                                                            <a href="#review_form" class="primary_button" style="border: none;outline:none" id="btn_edit"
+                                                                             onclick="sendEdit(${item.id})">Sửa</a>
+                                                                             <button type="submit" class="secondary_button" id="btn_delete" style="border:none; outline:none" onclick="sendDelete(${item.id})"> Xóa </button>
+                                                                        </div>
+                                                                        `;
                             }else{
                                 return `
                     `
@@ -794,15 +803,20 @@
             e.preventDefault();
         })
 
-        const dpt_menu = document.querySelector('.dpt_menu');
-        const close_menu = document.getElementById('close_menu');
+        const dpt_menu = document.querySelectorAll('.dpt_menu');
+        const close_menu = document.querySelectorAll('#close_menu');
 
-        dpt_menu.classList.add('active');
-
-        close_menu.addEventListener('click', (e) => {
-            e.preventDefault();
-            dpt_menu.classList.toggle('active');
-        });
+        for (let i of dpt_menu) {
+            i.classList.add('active');
+        }
+        close_menu.forEach((item) => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                for (let i of dpt_menu) {
+                    i.classList.toggle('active');
+                }
+            });
+        })
 
 
         // slider images

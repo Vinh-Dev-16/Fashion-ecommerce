@@ -47,7 +47,7 @@ class wishlistController extends Controller
             'product_id' => $request->product_id,
             'user_id' => $request->user_id,
         ]);
-        $wishlists = Wishlist::all();
+        $wishlists = Wishlist::where('user_id', $request->user_id)->get();
         return response()->json([
             'result' => $wishlists,
         ]);
@@ -95,8 +95,9 @@ class wishlistController extends Controller
      */
     public function destroy($id)
     {
+        $user_id = Wishlist::find($id)->user_id;
         Wishlist::find($id)->delete();
-        $wishlists = Wishlist::all();
+        $wishlists = Wishlist::where('user_id', $user_id)->get();
         return response()->json([
             'result' => $wishlists,
         ]);

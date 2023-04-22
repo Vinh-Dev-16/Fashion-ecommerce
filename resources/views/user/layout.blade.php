@@ -47,227 +47,272 @@
     <ul class="notification">
     </ul>
     {{-- Navbar --}}
-
-    <div class="header_nav" id="top">
-        <div class="container">
-            <div class="wrapper flexitem">
-                <a href="#" class="trigger desktop_hide"><i class="ri-menu-2-line"></i></a>
-                <div class="left flexitem">
+    <div id="page" class="site">
+        <aside class="site_off desktop_hide">
+            <div class="off_canvas">
+                <div class="canvas_head flexitem">
                     <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
                                 alt="logo" style="width:30px; height:30px; margin-right:5px"><span
                                 class="circle"></span><span
                                 style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
                     </div>
-                    <nav class="mobile_hide">
-                        <ul class="flexitem second_link">
-                            <li><a href="{{ route('home') }}">Trang chủ</a></li>
-                            <li>
-                                <a href="#" id="shop_toggle">Shop
-                                    <i style="position: absolute " class="ri-arrow-down-s-line" id="arrow_shop"></i>
-                                </a>
-                                <div class="mega">
-                                    <div class="container">
-                                        <div class="wrapper">
-                                            <div class="flexcol">
-                                                <div class="row">
-                                                    <h4>Danh mục sản phẩm</h4>
-                                                    <ul>
-                                                        @foreach ($categories->take(8) as $category)
-                                                            <li><a href="#">{{ $category->name }}</a></li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="flexcol">
-                                                <div class="row">
-                                                    <h4>Túi</h4>
-                                                    <ul>
+                    <a href="#" class="t_close flexcenter"><i class="ri-close-line"></i></a>
+                </div>
+                <div class="departments">
+
+                </div>
+                <nav></nav>
+                <div class="thetop_nav"></div>
+            </div>
+        </aside>
+        <div class="header_nav" id="top">
+            <div class="container">
+                <div class="wrapper flexitem">
+                    <a href="#" class="trigger desktop_hide"><i class="ri-menu-2-line"></i></a>
+                    <div class="left flexitem">
+                        <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
+                                    alt="logo" style="width:30px; height:30px; margin-right:5px"><span
+                                    class="circle"></span><span
+                                    style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
+                        </div>
+                        <nav class="mobile_hide">
+                            <ul class="flexitem second_link">
+                                <li><a href="{{ route('home') }}">Trang chủ</a></li>
+                                <li class="has_child">
+                                    <a href="#">Shop
+                                        <i style="position: absolute " class="ri-arrow-down-s-line" id="arrow_shop"></i>
+                                    </a>
+                                    <div class="mega">
+                                        <div class="container">
+                                            <div class="wrapper">
+                                                <div class="flexcol">
+                                                    <div class="row">
+                                                        <h4>Danh mục sản phẩm</h4>
                                                         <ul>
                                                             @foreach ($categories->take(8) as $category)
                                                                 <li><a href="#">{{ $category->name }}</a></li>
                                                             @endforeach
                                                         </ul>
-                                                    </ul>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="flexcol">
-                                                <div class="row">
-                                                    <h4>Giày</h4>
-                                                    <ul>
+                                                <div class="flexcol">
+                                                    <div class="row">
+                                                        <h4>Túi</h4>
                                                         <ul>
-                                                            @foreach ($categories->take(8) as $category)
-                                                                <li><a href="#">{{ $category->name }}</a></li>
-                                                            @endforeach
+                                                            <ul>
+                                                                @foreach ($categories->take(8) as $category)
+                                                                    <li><a href="#">{{ $category->name }}</a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
                                                         </ul>
-                                                    </ul>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="flexcol">
-                                                <div class="row">
-                                                    <h4>Brand</h4>
-                                                    <ul class="brands">
+                                                <div class="flexcol">
+                                                    <div class="row">
+                                                        <h4>Giày</h4>
                                                         <ul>
-                                                            @foreach ($categories->take(8) as $category)
-                                                                <li><a href="#">{{ $category->name }}</a></li>
-                                                            @endforeach
+                                                            <ul>
+                                                                @foreach ($categories->take(8) as $category)
+                                                                    <li><a href="#">{{ $category->name }}</a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
                                                         </ul>
-                                                    </ul>
-                                                    <a href="" class="view_all">Xem tất cả <i
-                                                            class="ri-arrow-right-line"></i></a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="flexcol products">
-                                                <div class="row">
-                                                    <div class="media">
-                                                        <div class="thumbnail object_cover">
-                                                            <a href="#">
-                                                                <img src="{{ asset('images/model.jpg') }}"
-                                                                    alt="Ảnh model fashion" style="position:static">
-                                                            </a>
+                                                <div class="flexcol">
+                                                    <div class="row">
+                                                        <h4>Brand</h4>
+                                                        <ul class="brands">
+                                                            <ul>
+                                                                @foreach ($categories->take(8) as $category)
+                                                                    <li><a href="#">{{ $category->name }}</a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </ul>
+                                                        <a href="" class="view_all">Xem tất cả <i
+                                                                class="ri-arrow-right-line"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="flexcol products">
+                                                    <div class="row">
+                                                        <div class="media">
+                                                            <div class="thumbnail object_cover">
+                                                                <a href="#">
+                                                                    <img src="{{ asset('images/model.jpg') }}"
+                                                                        alt="Ảnh model fashion" id="model_fashion">
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text_content">
+                                                            <h4>Lalala</h4>
+                                                            <a href="#" class="primary_button">Shop now</a>
                                                         </div>
                                                     </div>
-                                                    <div class="text_content">
-                                                        <h4>Lalala</h4>
-                                                        <a href="#" class="primary_button">Shop now</a>
-                                                    </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><a href="#">Nữ</a></li>
+                                <li><a href="#">Nam</a></li>
+                                <li><a href="#">Giày</a></li>
+                                <li style="position: relative"><a href="#">Túi
+                                        <div class="fly_item"><span>New!</span></div>
+                                    </a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="right">
+                        <ul class="flexitem second_links">
+                            @if (Auth::check())
+                                <li class="mobile_hide"><a href="{{ url('history') }}">
+                                        <div class="icon_large" style="margin-top: -36px">
+                                            <i class="ri-history-line"></i>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="mobile_hide"><a href="{{ url('/wishlist/' . Auth::user()->id) }}">
+                                        <div class="icon_large" style="margin-top: -36px"><i
+                                                class="ri-heart-line"></i>
+                                            <div class="fly_item"><span class="item_number"
+                                                    id="wishlist_number">{{ App\Models\Wishlist::where('user_id', Auth::user()->id)->count() }}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @else
+                                <li class="mobile_hide" onclick="createToast('Bạn cần phải đăng nhập')">
+                                    <div>
+                                        <div class="icon_large" style="margin-top: -10px"><i
+                                                class="ri-heart-line"></i>
+                                            <div class="fly_item"><span class="item_number"
+                                                    id="wishlist_number">0</span></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endif
+                            <li class="iscart">
+                                <a href="#">
+                                    <div class="icon_large" id="cart_product"><i
+                                            class="ri-shopping-cart-line"></i>
+                                        <div class="fly_item"><span class="item_number"
+                                                id="item_number">{{ count($cart) }}</span></div>
+                                    </div>
+                                </a>
+
+                                <div class="mini_cart" id="mini_cart">
+                                    <div class="content">
+                                        <div class="cart_head" id="card_head">
+                                            <p>Có {{ count($cart) }} sản phẩm</p>
+                                        </div>
+                                        <div class="cart_body">
+                                            <ul class="products mini" id="card_body">
+                                                @if (Session::has('cart'))
+                                                    @foreach ($cart as $cart_product)
+                                                        <li class="item" style="margin-bottom: 1em">
+                                                            <div class="thumbnail object_cover">
+                                                                <a href="#"><img
+                                                                        src="{{ $cart_product['image'] }}"></a>
+                                                            </div>
+                                                            <div class="item_content">
+                                                                @if ($cart_product['product']->sale == 0)
+                                                                    <p style="margin-bottom:0px"><a
+                                                                            href="{{ url('detail/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
+                                                                    </p>
+                                                                @else
+                                                                    <p style="margin-bottom: 0px"><a
+                                                                            href="{{ url('pageoffer/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
+                                                                    </p>
+                                                                @endif
+                                                                <span class="price">
+                                                                    <br>
+                                                                    @if ($cart_product['product']->discount)
+                                                                        <span>{{ number_format($cart_product['quantity'] * ($cart_product['product']->price - ($cart_product['product']->discount / 100) * $cart_product['product']->price)) }}
+                                                                            VND
+                                                                        </span>
+                                                                    @else
+                                                                        <span>{{ number_format($cart_product['quantity'] * $cart_product['product']->price) }}
+                                                                            VND
+                                                                        </span>
+                                                                    @endif
+                                                                    <span
+                                                                        class="fly_item"><span>{{ $cart_product['quantity'] }}x</span></span>
+                                                                </span>
+                                                            </div>
+                                                            <a href="#" class="item_remove" id="item_remove"
+                                                                onclick="removeCart({{ $cart_product['product']->id }})">
+                                                                <i class="ri-close-line"></i>
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                @endif
+                                            </ul>
+                                        </div>
+                                        <div class="cart_footer">
+                                            <div class="subtotal" id="subtotal">
+                                                <p>Phí ship</p>
+                                                <p><strong>{{ number_format(15000) }} * {{ count($cart) }} =
+                                                        {{ number_format(15000 * count($cart)) }} VND</strong></p>
+                                                <?php $cartCollect = collect($cart);
+                                                $subTotal = $cartCollect->sum(function ($cartItem) {
+                                                    if (!$cartItem['product']->discount) {
+                                                        return $cartItem['quantity'] * $cartItem['product']->price;
+                                                    } else {
+                                                        return $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
+                                                    }
+                                                });
+                                                ?>
+                                                <p>VAT sản phẩm <small>(10%)</small></p>
+                                                <p><strong>{{ number_format($subTotal * 0.1) }} VND</strong></p>
+                                                <p>Tổng tiền</p>
+                                                <p><strong>{{ number_format($subTotal + 15000 * count($cart) + $subTotal * 0.1) }}
+                                                        VND</strong></p>
+                                            </div>
+                                            <div class="actions">
+                                                @if (Auth::check() && count($cart) > 0)
+                                                    <a href="{{ url('checkout') }}"
+                                                        class="primary_button">CheckOut</a>
+                                                @else
+                                                    <a href="#" class="primary_button"
+                                                        onclick="checkout()">CheckOut</a>
+                                                @endif
+                                                <a href="{{ url('viewcart') }}" class="secondary_button">Đến xem giỏ
+                                                    hàng</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </li>
-                            <li><a href="#">Nữ</a></li>
-                            <li><a href="#">Nam</a></li>
-                            <li><a href="#">Giày</a></li>
-                            <li style="position: relative"><a href="#">Túi
-                                    <div class="fly_item"><span>New!</span></div>
-                                </a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="right">
-                    <ul class="flexitem second_links">
-                        @if (Auth::check())
-                        <li class="mobile_hide"><a href="{{ url('history')}}">
-                            <div class="icon_large" style="margin-top: -36px">
-                                <i class="ri-history-line"></i>
-                            </div>
-                        </a>
-                        </li>
-                        <li class="mobile_hide"><a href="{{ url('/wishlist/'. Auth::user()->id) }}">
-                                <div class="icon_large" style="margin-top: -36px"><i class="ri-heart-line"></i>
-                                    <div class="fly_item"><span class="item_number" id="wishlist_number">{{   App\Models\Wishlist::where('user_id',Auth::user()->id)->count();}}</span></div>
-                                </div>
-                            </a>
-                        </li>
-                        @else
-                        <li class="mobile_hide" onclick="createToast('Bạn cần phải đăng nhập')"><div>
-                            <div class="icon_large" style="margin-top: -10px"><i class="ri-heart-line"></i>
-                                <div class="fly_item"><span class="item_number" id="wishlist_number">0</span></div>
-                            </div>
-                        </div>
-                        </li>
-                        @endif
-                        <li class="iscart">
-                            <a href="#">
-                                <div class="icon_large" style="margin-top: -36px"><i
-                                        class="ri-shopping-cart-line"></i>
-                                    <div class="fly_item"><span class="item_number"
-                                            id="item_number">{{ count($cart) }}</span></div>
-                                </div>
-                            </a>
+                            <li>
 
-                            <div class="mini_cart" id="mini_cart">
-                                <div class="content">
-                                    <div class="cart_head" id="card_head">
-                                        <p>Có {{ count($cart) }} sản phẩm</p>
-                                    </div>
-                                    <div class="cart_body">
-                                        <ul class="products mini" id="card_body">
-                                            @if (Session::has('cart'))
-                                                @foreach ($cart as $cart_product)
-                                                    <li class="item" style="margin-bottom: 1em">
-                                                        <div class="thumbnail object_cover">
-                                                            <a href="#"><img
-                                                                    src="{{ $cart_product['image'] }}"></a>
-                                                        </div>
-                                                        <div class="item_content">
-                                                            @if ($cart_product['product']->sale == 0)
-                                                                <p style="margin-bottom:0px"><a
-                                                                        href="{{ url('detail/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
-                                                                </p>
-                                                            @else
-                                                                <p style="margin-bottom: 0px"><a
-                                                                        href="{{ url('pageoffer/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product   ['product']->name)->words(9) }}</a>
-                                                                </p>
-                                                            @endif
-                                                            <span class="price">
-                                                                <br>
-                                                                @if ($cart_product['product']->discount)
-                                                                    <span>{{ number_format($cart_product['quantity'] * ($cart_product['product']->price - ($cart_product['product']->discount / 100) * $cart_product['product']->price)) }}
-                                                                        VND
-                                                                    </span>
-                                                                @else
-                                                                <span>{{ number_format($cart_product['quantity'] * $cart_product['product']->price) }} VND
-                                                                </span> 
-                                                                @endif
-                                                                <span
-                                                                class="fly_item"><span>{{ $cart_product['quantity'] }}x</span></span>
-                                                            </span>
-                                                        </div>
-                                                        <a href="#" class="item_remove" id="item_remove"
-                                                            onclick="removeCart({{ $cart_product['product']->id }})">
-                                                            <i class="ri-close-line"></i>
-                                                        </a>
-                                                    </li>
-                                                @endforeach
-                                            @endif
-                                        </ul>
-                                    </div>
-                                    <div class="cart_footer">
-                                        <div class="subtotal" id="subtotal">
-                                            <p>Phí ship</p>
-                                            <p><strong>{{ number_format(15000) }} * {{ count($cart) }} =
-                                                    {{ number_format(15000 * count($cart)) }} VND</strong></p>
-                                            <?php $cartCollect = collect($cart);
-                                            $subTotal = $cartCollect->sum(function ($cartItem) {
-                                                if (!$cartItem['product']->discount) {
-                                                    return $cartItem['quantity'] * $cartItem['product']->price;
-                                                } else {
-                                                    return $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
-                                                }
-                                            });
-                                            ?>
-                                            <p>VAT sản phẩm <small>(10%)</small></p>
-                                            <p><strong>{{ number_format($subTotal * 0.1)}} VND</strong></p>
-                                            <p>Tổng tiền</p>
-                                            <p><strong>{{ number_format($subTotal + 15000 * count($cart) + $subTotal * 0.1) }}
-                                                    VND</strong></p>
-                                        </div>
-                                        <div class="actions">
-                                            @if (Auth::check() && count($cart) > 0)
-                                            <a href="{{url('checkout')}}" class="primary_button">CheckOut</a>
-                                            @else
-                                            <a href="#" class="primary_button" onclick="checkout()">CheckOut</a>
-                                            @endif
-                                            <a href="{{ url('viewcart') }}" class="secondary_button">Đến xem giỏ
-                                                hàng</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-
-                            @if (Auth::check())
-                                <div class="profile-dropdown">
-                                    <div onclick="toggle()" class="profile-dropdown-btn">
-                                       
-                                        @if ( App\Models\Information::where('user_id', '=', Auth::user()->id)->first())
-                                        <div class="profile-img" style="background-image:url({{asset('storage/avatar/' .  App\Models\Information::where('user_id', '=', Auth::user()->id)->first()->avatar)}});border:1px solid black">  
-                                        @else     
-                                        <div class="profile-img" style="background-image:url({{asset('images/user.png')}})">
+                                @if (Auth::check())
+                                    <div class="profile-dropdown">
+                                        @if (Auth::user()->role_id == 4 && App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() > 0)
+                                            <div class="fly_item" style="top:-10px;background:red">
+                                                <span
+                                                    class="item_number"id="count_number">{{ App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() }}
+                                                </span>
+                                            </div>
                                         @endif
+
+                                        @if (Auth::user()->role_id == 2 && App\Models\OrderDetail::where('status', 0)->count() > 0)
+                                            <div class="fly_item" style="top:-10px;background:red">
+                                                <span
+                                                    class="item_number"id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
+                                                </span>
+                                            </div>
+                                        @endif
+                                        <div onclick="toggle()" class="profile-dropdown-btn">
+                                            @if (App\Models\Information::where('user_id', '=', Auth::user()->id)->first())
+                                                <div class="profile-img"
+                                                    style="background-image:url({{ asset('storage/avatar/' . App\Models\Information::where('user_id', '=', Auth::user()->id)->first()->avatar) }});border:1px solid black">
+                                                @else
+                                                    <div class="profile-img"
+                                                        style="background-image:url({{ asset('images/user.png') }})">
+                                            @endif
                                             <i class="fa-solid fa-circle"></i>
                                         </div>
 
@@ -278,7 +323,7 @@
 
                                     <ul class="profile-dropdown-list">
                                         <li class="profile-dropdown-list-item">
-                                            <a href="{{url('information/'. Auth::user()->id)}}">
+                                            <a href="{{ url('information/' . Auth::user()->id) }}">
                                                 <i class="fa-regular fa-user"></i>
                                                 Thông tin cá nhân
                                             </a>
@@ -292,49 +337,50 @@
                                             </li>
                                         @endif
                                         @if (Auth::user()->role_id == 2)
-                                        <li class="profile-dropdown-list-item">
-                                            <a href="{{ url('pageConfirm') }}">
-                                                <i class="fa-regular fa-envelope"></i>
-                                                Trang xác nhận đơn hàng
-                                            </a>
-                                        </li>
-                                    @endif
+                                            <li class="profile-dropdown-list-item">
+                                                <a href="{{ url('pageConfirm') }}">
+                                                    <i class="fa-regular fa-envelope"></i>
+                                                    Trang xác nhận đơn hàng
+                                                </a>
+                                            </li>
+                                        @endif
                                         @if (Auth::user()->role_id == 1)
-                                        <li class="profile-dropdown-list-item">
-                                            <a href="{{url('shipper')}}">
-                                                <i class="ri-run-line"></i>      
-                                                Đăng kí làm shipper
-                                            </a>
-                                        </li>
+                                            <li class="profile-dropdown-list-item">
+                                                <a href="{{ url('shipper') }}">
+                                                    <i class="ri-run-line"></i>
+                                                    Đăng kí làm shipper
+                                                </a>
+                                            </li>
                                         @endif
                                         @if (Auth::user()->role_id == 4)
-                                        <li class="profile-dropdown-list-item">
-                                            <a href="{{url('pageShip')}}">
-                                                <i class="ri-truck-line"></i>      
-                                                Check đơn hàng
-                                            </a>
-                                        </li>
+                                            <li class="profile-dropdown-list-item">
+                                                <a href="{{ url('pageShip') }}">
+                                                    <i class="ri-truck-line"></i>
+                                                    Check đơn hàng
+                                                </a>
+                                            </li>
                                         @endif
                                         <hr />
                                         <li class="profile-dropdown-list-item">
                                             <form action="{{ route('do_logout') }}" method="POST">
                                                 @csrf
-                                                <i style="margin-left: 0.88em" class="fa-solid fa-arrow-right-from-bracket"></i>
+                                                <i style="margin-left: 0.88em"
+                                                    class="fa-solid fa-arrow-right-from-bracket"></i>
                                                 <button type="submit">
                                                     Log out
                                                 </button>
                                             </form>
                                         </li>
                                     </ul>
-                                </div>
-                            @else
-                                <div class="auth login">
-                                    <a href="{{ route('login') }}" style="font-family: 'Rubik' ,sans-serif;">Đăng
-                                        nhập</a>
-                                </div>
-                            @endif
-                        <li>
-                    </ul>
+                    </div>
+                @else
+                    <div class="auth login">
+                        <a href="{{ route('login') }}" style="font-family: 'Rubik' ,sans-serif;">Đăng
+                            nhập</a>
+                    </div>
+                    @endif
+                    <li>
+                        </ul>
                 </div>
             </div>
         </div>
@@ -362,7 +408,7 @@
                                         Beauty
                                         <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>
                                     </a>
-                                    <ul style="background-image: url({{ asset('images/menu_bg1.jpg') }})">
+                                    <ul>
                                         <li><a href="#">Makeup</a></li>
                                         <li><a href="#">Skin Care</a></li>
                                         <li><a href="#">Hair Care </a></li>
@@ -373,13 +419,13 @@
                                         <li><a href="#">Personal Care</a></li>
                                     </ul>
                                 </li>
-                                <li class="has_child electronic">
+                                <li class="has_child electric">
                                     <a href="#" style="display: flex">
                                         <div class="icon_large"><i class="ri-bluetooth-connect-line"></i></div>
                                         Electronic
                                         <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>
                                     </a>
-                                    <ul style="background-image: url({{ asset('images/menu_bg2.jpg') }})">
+                                    <ul>
                                         <li><a href="#">Makeup</a></li>
                                         <li><a href="#">Skin Care</a></li>
                                         <li><a href="#">Hair Care </a></li>
@@ -390,13 +436,13 @@
                                         <li><a href="#">Personal Care</a></li>
                                     </ul>
                                 </li>
-                                <li class="has_child women">
+                                <li class="has_child woman">
                                     <a href="#" style="display: flex">
                                         <div class="icon_large"><i class="ri-t-shirt-air-line"></i></div>
                                         Women's Fashion
                                         <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>
                                     </a>
-                                    <ul style="background-image: url({{ asset('images/menu_bg3.jpg') }})">
+                                    <ul>
                                         <li><a href="#">Makeup</a></li>
                                         <li><a href="#">Skin Care</a></li>
                                         <li><a href="#">Hair Care </a></li>
@@ -436,8 +482,7 @@
                                         Home & Kitchen
                                         <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>
                                     </a>
-                                    <div
-                                        class="mega"style="background-image: url({{ asset('images/menu_bg4.jpg') }})">
+                                    <div class="mega">
                                         <div class="flexcol">
                                             <div class="row">
                                                 <h4><a href="#">Kitchen & Dining</a></h4>
@@ -543,7 +588,7 @@
         @show
         @section('modal')
         @show
-       
+
         {{-- banner --}}
 
         <div class="banners">
@@ -748,17 +793,99 @@
                 <span>Top</span>
             </a>
         </div>
-        <div class="chat" >
-            <a href="{{url('/chatify/1')}}" class="flexcol" style="bottom: 1em; right:2em">
+        <div class="chat">
+            <a href="{{ url('/chatify/1') }}" class="flexcol" style="bottom: 5em; right:2em">
                 <i class="ri-chat-1-line"></i>
                 <span>Chat</span>
             </a>
         </div>
+        <div class="menu_bottom desktop_hide">
+            <div class="container">
+                <div class="wrapper">
+                    <nav>
+                        <ul class="flexitem">
+                            <li>
+                                <a href="">
+                                    <i class="ri-bar-chart-line"></i>
+                                    <span>Trending</span>
+                                </a>
+                            </li>
+                            @if (Auth::check())
+                                <li>
+                                    <a href="{{ url('information/' . Auth::user()->id) }}">
+                                        <i class="ri-user-6-line"></i>
+                                        <span>Account</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('wishlist/' . Auth::user()->id) }}">
+                                        <i class="ri-heart-line"></i>
+                                        <span>Wishlist</span>
+                                        <div class="fly_item"><span class="item_number"
+                                                id="wishlist_number">{{ App\Models\Wishlist::where('user_id', Auth::user()->id)->count() }}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            @else
+                                <li>
+                                    <a href="{{ url('/login') }}">
+                                        <i class="ri-user-6-line"></i>
+                                        <span>Login</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="createNoti('Bạn cần phải đăng nhập')">
+                                        <i class="ri-heart-line"></i>
+                                        <span>Wishlist</span>
+                                        <div class="fly_item">
+                                            <span class="item_number" id="wishlist_number">0</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endif
+
+                            <li>
+                                <a href="" class="t_search">
+                                    <i class="ri-search-line"></i>
+                                    <span>Search</span>
+                                </a>
+                            </li>
+                            @if (Auth::check())
+                            <li>
+                                <a href="{{ url('history') }}">
+                                    <i class="ri-history-line"></i>
+                                    <span>History</span>
+                                </a>
+                            </li>
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        {{-- Thanh seach responsive --}}
+
+        <div class="search_bottom desktop_hide">
+            <div class="container">
+                <div class="wrapper search_box">
+                    <form action="" class="seach">
+                        <a href="" class="t_close search_close flexcenter"><i class="ri-close-line"></i>
+                        </a>
+                        <span class="icon_large">
+                         <i class="ri-search-line"></i>
+                         </span>
+                        <input type="search" placeholder="Tìm kiếm product">
+                        <button type="submit"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </footer>
- 
+
+    </div>
 
 
- 
+
 
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
@@ -772,10 +899,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     @if (Auth::check())
         <script>
             const notifications = document.querySelector('.notification');
             const timer = 3000;
+        </script>
+    @endif
+    @if (Auth::check() && Auth::user()->role_id == 2)
+        <script>
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('194699ac18e541ed2d38', {
+                cluster: 'ap1'
+            });
+
+            var channel = pusher.subscribe('popup-channel');
+            channel.bind('my-event', function(data) {
+                createNoti(data.name + ' đã đặt hàng');
+                document.querySelector('#count_number').innerText = data.count;
+            });
+        </script>
+    @endif
+    @if (Auth::check() && Auth::user()->role_id == 4)
+        <script>
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('194699ac18e541ed2d38', {
+                cluster: 'ap1'
+            });
+
+            var channel = pusher.subscribe('popup-confirm');
+            channel.bind('my-handle', function(data) {
+                createNoti('Đã có đơn hàng cần ship');
+                document.querySelector('#count_number').innerText = data.count;
+            });
         </script>
     @endif
     <script>
@@ -783,10 +943,31 @@
             document.querySelector('#preloader').style.display = "none";
         })
 
-        // Phần comment
+        // Phần sidebar
 
+        copyMenu();
 
+        function copyMenu() {
+            let dptCategory = document.querySelector('.dpt_cat');
+            let dptPlace = document.querySelector('.departments');
+            dptPlace.innerHTML = dptCategory.innerHTML;
 
+            let mainNav = document.querySelector('.header_nav nav');
+            let navPlace = document.querySelector('.off_canvas nav');
+            navPlace.innerHTML = mainNav.innerHTML;
+
+        }
+
+        const menuButton = document.querySelector('.trigger'),
+            closeButton = document.querySelector('.t_close'),
+            addclass = document.querySelector('.site');
+        menuButton.addEventListener('click', () => {
+            addclass.classList.toggle('showmenu');
+        });
+
+        closeButton.addEventListener('click', () => {
+            addclass.classList.remove('showmenu');
+        });
         // Tao remove toast
 
         const removeNoti = (noti) => {
@@ -820,29 +1001,6 @@
             submenu.forEach((item) => item != this ? item.closest('.has_child').classList.remove('expand') : null);
             if (this.closest('.has_child').classList != 'expand');
             this.closest('.has_child').classList.toggle('expand');
-        }
-
-        const shop_toggle = document.getElementById('shop_toggle');
-        const mega = document.querySelector('.mega');
-        const arrow_shop = document.querySelector('#arrow_shop');
-
-        // Xử lý sự kiến cho shop
-        shop_toggle.addEventListener('click', () => {
-            toggleShop();
-        });
-
-        function toggleShop() {
-            mega.classList.toggle('active');
-            arrow_shop.classList.toggle('active');
-
-            // Xử lý sự kiện khi không click vào shop
-
-            document.addEventListener('click', function(e) {
-                if (e.target !== mega && e.target !== shop_toggle) {
-                    mega.classList.remove('active');
-                    arrow_shop.classList.remove('active');
-                }
-            });
         }
 
         // Search
@@ -922,19 +1080,19 @@
 
 
         // wishlist
-        async function wishlist(id,userID){
-           
-            const res = await fetch(`http://127.0.0.1:8000/wishlist/store/${id}`,{
-                method: 'POST',
-                 headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    product_id: id,
-                    user_id : userID,
-                }),
-            }).then((response) => response.json())
+        async function wishlist(id, userID) {
+
+            const res = await fetch(`http://127.0.0.1:8000/wishlist/store/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        product_id: id,
+                        user_id: userID,
+                    }),
+                }).then((response) => response.json())
                 .then((data) => {
                     console.log(data.result);
                     message = 'Đã thêm vào danh sách yêu thích';
@@ -942,9 +1100,9 @@
                     let wishlist_number = document.querySelector('#wishlist_number');
                     wishlist_number.innerText = data.result.length;
                     let wishlist_love = document.querySelector('#wish_love');
-                    let content ='';
-                    data.result.slice(0,1).map((item)=>{
-                      content += `
+                    let content = '';
+                    data.result.slice(0, 1).map((item) => {
+                        content += `
                         <li>
                         <a href="#" id="wishlist" onclick="wishlistDelete(${item.id},${item.product_id})">
                           <span class="icon_large" style="color: #ff6b6b"><i class="ri-heart-fill"></i></span>
@@ -964,26 +1122,26 @@
                 .catch((error) => {
                     console.error("Error:", error);
                 });
-            
+
             return false;
-        
+
         }
 
-        async function wishlistDelete(id,productID,userID){
-            const res = await fetch(`http://127.0.0.1:8000/wishlist/destroy/${id}`,{
-                method: 'DELETE',
-                 headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                
-            }).then((response) => response.json())
+        async function wishlistDelete(id, productID, userID) {
+            const res = await fetch(`http://127.0.0.1:8000/wishlist/destroy/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+
+                }).then((response) => response.json())
                 .then((data) => {
                     let wishlist_number = document.querySelector('#wishlist_number');
                     wishlist_number.innerText = data.result.length;
                     let wishlist_love = document.querySelector('#wish_love');
-                    let content  ='';
-                       content += `
+                    let content = '';
+                    content += `
                         <li>
                           <a href="#" id="wishlist" onclick="wishlist(${productID},${userID})">
                           <span class="icon_large"><i class="ri-heart-line"></i></span>
@@ -1004,7 +1162,7 @@
                 .catch((error) => {
                     console.error("Error:", error);
                 });
-              
+
             return false;
         }
 
@@ -1093,7 +1251,8 @@
             item_number.innerText = data.cart.length;
             data.cart.map((cart) => {
                 if (cart.product.discount) {
-                    var price = (cart.product.price - (cart.product.price * ((cart.product.discount) / 100))) * cart.quantity
+                    var price = (cart.product.price - (cart.product.price * ((cart.product.discount) / 100))) * cart
+                        .quantity
                 } else {
                     var price = cart.product.price * cart.quantity
                 };
@@ -1103,22 +1262,27 @@
                                                 (()=>{
                                                     if((cart.product.sale) == 0){
                                                         return `
-                                                        <div class="thumbnail object_cover">
-                                                            <a href="{{ url('detail/${cart.product.id}') }}"><img src="${cart.image}"></a>
-                                                        </div>
-                                                        <div class="item_content">
-                                                            <p><a href="{{ url('detail/${cart.product.id}') }}">${(cart.product.name).substring(0,30)}</a>
-                                                            </p>       
-                                                                    `
+                                                                <div class="thumbnail object_cover">
+                                                                    <a href="{{ url('detail/${cart.product.id}') }}"><img src="${cart.image}"></a>
+                                                                </div>
+                                                                <div class="item_content">
+                                                                    <p><a href="{{ url('detail/${cart.product.id}') }}">${(cart.product.name).substring(0,30)}</a>
+                                                                    </p>       
+                                                                            `
                                                     }else{
-                                                       return ` 
-                                                       <div class = "thumbnail object_cover" ><a href = "{{ url('pageoffer/${cart.product.id}') }}"> 
-                                                        <img src = "${cart.image}"> </a> 
-                                                        </div> 
-                                                        <div class = "item_content">
-                                                        <p> <a href = "{{ url('pageoffer/${cart.product.id}') }}"> 
-                                                            ${(cart.product.name).substring(0, 30)} </a> </p>
-                                                        `
+                                                         return ` 
+                                                            <div class="thumbnail object_cover"> 
+                                                                <a href="{{ url('pageoffer/${cart.product.id}')}}">
+                                                                    <img src="${cart.image}">
+                                                                </a>  
+                                                            </div> 
+                                                            <div class="item_content">
+                                                                <p>
+                                                                <a href="{{url('pageoffer/${cart.product.id}')}}">
+                                                                    ${(cart.product.name).substring(0, 30)}
+                                                                 </a> 
+                                                                </p >
+                    `
                                                     }
                                                 })()
                                             }
@@ -1159,7 +1323,7 @@
         };
 
 
-        function checkout(){
+        function checkout() {
             message = "Bạn cần đăng nhập hoặc có sản phẩm trong giỏ hàng";
             createNoti(message);
             return false;
@@ -1200,7 +1364,6 @@
             window.addEventListener("click", function(e) {
                 if (!btn.contains(e.target)) classList.remove("active");
             });
-
         </script>
     @endif
 

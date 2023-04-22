@@ -46,8 +46,8 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach (App\Models\Order::where('user_id', Auth::user()->id)->latest()->get() as $order)
-                                                    @foreach ($order->orderDetails as $orderItem)
-                                                        @if ($orderItem->status == 0)
+                                                        @foreach ($order->orderDetails as $orderItem)
+                                                            @if ($orderItem->status == 0)
                                                                 <tr>
                                                                     <td class="flexitem">
                                                                         @if ($orderItem->sale == 0)
@@ -99,16 +99,16 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>{{ $orderItem->quantity }}</td>
-                                                                    <td>   
-                                                                       {{number_format($orderItem->total_money)}} VND
+                                                                    <td>
+                                                                        {{ number_format($orderItem->total_money) }} VND
                                                                     </td>
                                                                     <td>
                                                                         <a href="{{ url('softdelete/' . $order->id) }}">Hủy
                                                                             đơn</a>
                                                                     </td>
                                                                 </tr>
-                                                                @endif
-                                                            @endforeach
+                                                            @endif
+                                                        @endforeach
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -130,8 +130,8 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach (App\Models\Order::where('user_id', Auth::user()->id)->latest()->get() as $order)
-                                                     @foreach ($order->orderDetails as $orderItem)
-                                                        @if ($orderItem->status == 2)
+                                                        @foreach ($order->orderDetails as $orderItem)
+                                                            @if ($orderItem->status == 2)
                                                                 <tr>
                                                                     <td class="flexitem">
                                                                         @if ($orderItem->sale == 0)
@@ -183,57 +183,65 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>{{ $orderItem->quantity }}</td>
-                                                                     <td>   
-                                                                        {{number_format($orderItem->total_money)}} VND
-                                                                     </td>
                                                                     <td>
-                                                                        <div style="cursor: pointer" class="detail_ship">Xem chi
+                                                                        {{ number_format($orderItem->total_money) }} VND
+                                                                    </td>
+                                                                    <td>
+                                                                        <div style="cursor: pointer" class="detail_ship">Xem
+                                                                            chi
                                                                             tiết</div>
-                                                                            <br>
-                                                                            @if ($orderItem->ship == 1)
-                                                                            <a href="{{url('confirm/product/'. $orderItem->id)}}">Confirm</a>
-                                                                            @endif
+                                                                        <br>
+                                                                        @if ($orderItem->ship == 1)
+                                                                            <a
+                                                                                href="{{ url('confirm/product/' . $orderItem->id) }}">Confirm</a>
+                                                                        @endif
                                                                     </td>
                                                                 </tr>
                                                                 <div class="main_ship">
                                                                     <h3 class="heading_ship">Trạng thái giao hàng</h3>
-                            
+
                                                                     <div class="container_ship">
                                                                         <ul>
-                                                                            @if($orderItem->ship == 1)
-                                                                            <li>
-                                                                                <h3 class="title">Đã giao hàng</h3>
-                                                                                <p>Đơn hàng của bạn đã được shipper giao tới. Vui lòng mời bạn xuống nhận</p>
-                                                                                <span class="circle_ship"></span>
-                                                                                <span class="date">{{ date('d-m-Y'), strtotime($orderItem->time)}}</span>
-                                                                            </li>
+                                                                            @if ($orderItem->ship == 1)
+                                                                                <li>
+                                                                                    <h3 class="title">Đã giao hàng</h3>
+                                                                                    <p>Đơn hàng của bạn đã được shipper giao
+                                                                                        tới. Vui lòng mời bạn xuống nhận</p>
+                                                                                    <span class="circle_ship"></span>
+                                                                                    <span
+                                                                                        class="date">{{ date('d-m-Y'), strtotime($orderItem->time) }}</span>
+                                                                                </li>
                                                                             @endif
                                                                             <li>
                                                                                 <h3 class="title">Đang giao hàng</h3>
-                                                                                    <p>Đơn hàng của bạn đang được giao</p>
-                                                                                    <span class="circle_ship"></span>
-                                                                                    <span class="date"> {{ date('d-m-Y'), strtotime($orderItem->time_confirm)}}</span>
+                                                                                <p>Đơn hàng của bạn đang được giao</p>
+                                                                                <span class="circle_ship"></span>
+                                                                                <span class="date">
+                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time_confirm) }}</span>
                                                                             </li>
                                                                             <li>
                                                                                 <h3 class="title">Đã đóng hàng</h3>
-                                                                                <p>Đơn hàng của bạn đã được nhà cung cấp đóng hàng vào ngày {{ date('d-m-Y'), strtotime($orderItem->time)}}</p>
+                                                                                <p>Đơn hàng của bạn đã được nhà cung cấp
+                                                                                    đóng hàng vào ngày
+                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time) }}
+                                                                                </p>
                                                                                 <span class="circle_ship"></span>
                                                                                 <span class="date">
-                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time_confirm)}}
+                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time_confirm) }}
                                                                                 </span>
                                                                             </li>
                                                                         </ul>
                                                                     </div>
                                                                     <div class="overlay"></div>
                                                                 </div>
-                                                                @endif
-                                                            @endforeach
+                                                            @endif
+                                                        @endforeach
                                                     @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-                                  
+
                                 </div>
                                 <div class="content_tabs">
                                     <div class="products one cart">
@@ -251,8 +259,8 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach (App\Models\Order::where('user_id', Auth::user()->id)->latest()->get() as $order)
-                                                          @foreach ($order->orderDetails as $orderItem)
-                                                             @if ($orderItem->status == 1)
+                                                        @foreach ($order->orderDetails as $orderItem)
+                                                            @if ($orderItem->status == 1)
                                                                 <tr>
                                                                     <td class="flexitem">
                                                                         @if ($orderItem->sale == 0)
@@ -304,50 +312,58 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>{{ $orderItem->quantity }}</td>
-                                                                    <td>   
-                                                                        {{number_format($orderItem->total_money)}} VND
-                                                                     </td>
+                                                                    <td>
+                                                                        {{ number_format($orderItem->total_money) }} VND
+                                                                    </td>
                                                                     <td> {{ date('d-m-Y'), strtotime($order->updated_at) }}
                                                                     </td>
-                                                                    <td class="history_ship" style="cursor: pointer">Xem lịch sử</td>
+                                                                    <td class="history_ship" style="cursor: pointer">Xem
+                                                                        lịch sử</td>
                                                                 </tr>
                                                                 <div class="history">
                                                                     <h3 class="heading_ship">Trạng thái giao hàng</h3>
-                            
+
                                                                     <div class="container_ship">
                                                                         <ul>
                                                                             <li>
                                                                                 <h3 class="title">Đã nhận được hàng</h3>
                                                                                 <p>Bạn đã nhận được hàng</p>
                                                                                 <span class="circle_ship"></span>
-                                                                                <span class="date">{{ date('d-m-Y'), strtotime($orderItem->updated_at)}}</span>
+                                                                                <span
+                                                                                    class="date">{{ date('d-m-Y'), strtotime($orderItem->updated_at) }}</span>
                                                                             </li>
                                                                             <li>
                                                                                 <h3 class="title">Đã giao hàng</h3>
-                                                                                <p>Đơn hàng của bạn đã được shipper giao tới. Vui lòng mời bạn xuống nhận</p>
+                                                                                <p>Đơn hàng của bạn đã được shipper giao
+                                                                                    tới. Vui lòng mời bạn xuống nhận</p>
                                                                                 <span class="circle_ship"></span>
-                                                                                <span class="date">{{ date('d-m-Y'), strtotime($orderItem->time)}}</span>
+                                                                                <span
+                                                                                    class="date">{{ date('d-m-Y'), strtotime($orderItem->time) }}</span>
                                                                             </li>
                                                                             <li>
                                                                                 <h3 class="title">Đang giao hàng</h3>
-                                                                                    <p>Đơn hàng của bạn đang được giao</p>
-                                                                                    <span class="circle_ship"></span>
-                                                                                    <span class="date"> {{ date('d-m-Y'), strtotime($orderItem->time_confirm)}}</span>
+                                                                                <p>Đơn hàng của bạn đang được giao</p>
+                                                                                <span class="circle_ship"></span>
+                                                                                <span class="date">
+                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time_confirm) }}</span>
                                                                             </li>
                                                                             <li>
                                                                                 <h3 class="title">Đã đóng hàng</h3>
-                                                                                <p>Đơn hàng của bạn đã được nhà cung cấp đóng hàng vào ngày {{ date('d-m-Y'), strtotime($orderItem->time)}}</p>
+                                                                                <p>Đơn hàng của bạn đã được nhà cung cấp
+                                                                                    đóng hàng vào ngày
+                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time) }}
+                                                                                </p>
                                                                                 <span class="circle_ship"></span>
                                                                                 <span class="date">
-                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time_confirm)}}
+                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time_confirm) }}
                                                                                 </span>
                                                                             </li>
                                                                         </ul>
                                                                     </div>
                                                                     <div class="overlay"></div>
                                                                 </div>
-                                                                @endif
-                                                            @endforeach
+                                                            @endif
+                                                        @endforeach
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -370,7 +386,7 @@
                                                 <tbody>
                                                     @foreach (App\Models\Order::onlyTrashed()->where('user_id', Auth::user()->id)->latest()->get() as $order)
                                                         @foreach ($order->orderDetails as $orderItem)
-                                                             @if ($orderItem->status == 0)
+                                                            @if ($orderItem->status == 0)
                                                                 <tr>
                                                                     <td class="flexitem">
                                                                         @if ($orderItem->sale == 0)
@@ -422,15 +438,16 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>{{ $orderItem->quantity }}</td>
-                                                                    <td>   
-                                                                        {{number_format($orderItem->total_money)}} VND
-                                                                     </td>
                                                                     <td>
-                                                                        <a href="{{ url('restore/' . $order->id) }}">Đặt lại </a>
+                                                                        {{ number_format($orderItem->total_money) }} VND
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="{{ url('restore/' . $order->id) }}">Đặt
+                                                                            lại </a>
                                                                     </td>
                                                                 </tr>
-                                                                @endif
-                                                            @endforeach
+                                                            @endif
+                                                        @endforeach
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -448,15 +465,20 @@
 @endsection
 @section('javascript')
     <script>
-        const dpt_menu = document.querySelector('.dpt_menu');
-        const close_menu = document.getElementById('close_menu');
+        const dpt_menu = document.querySelectorAll('.dpt_menu');
+        const close_menu = document.querySelectorAll('#close_menu');
 
-        dpt_menu.classList.add('active');
-
-        close_menu.addEventListener('click', (e) => {
-            e.preventDefault();
-            dpt_menu.classList.toggle('active');
-        });
+        for (let i of dpt_menu) {
+            i.classList.add('active');
+        }
+        close_menu.forEach((item) => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                for (let i of dpt_menu) {
+                    i.classList.toggle('active');
+                }
+            });
+        })
 
         const tabs = document.querySelectorAll(".tabs li");
         const content = document.querySelectorAll(".content_tabs");
@@ -476,7 +498,7 @@
         let main_ship = document.querySelectorAll('.main_ship');
 
         detail_ship.forEach((tab, index) => {
-               tab.addEventListener("click", () => {
+            tab.addEventListener("click", () => {
                 main_ship.forEach(c => c.classList.remove("active"));
                 main_ship[index].classList.toggle('active');
             });
@@ -486,12 +508,10 @@
         let history = document.querySelectorAll('.history');
 
         history_ship.forEach((tab, index) => {
-               tab.addEventListener("click", () => {
-               main_ship.forEach(c => c.classList.remove("active"));
-               history[index].classList.toggle('active');
+            tab.addEventListener("click", () => {
+                main_ship.forEach(c => c.classList.remove("active"));
+                history[index].classList.toggle('active');
             });
         });
-       
-
     </script>
 @endsection

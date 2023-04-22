@@ -144,7 +144,7 @@ class reviewController extends Controller
         }
         $reviews->update();
         $data= Review::all();
-        $rateProduct = Product::find($id);
+        $rateProduct = Product::find($reviews->product_id);
         $rate = $rateProduct->reviews()->pluck('feedbacks.rate')->avg();
         $rateProduct->update([
             'rate' => $rate,

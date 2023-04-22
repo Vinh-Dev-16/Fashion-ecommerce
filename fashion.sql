@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 15, 2023 lúc 01:06 PM
+-- Thời gian đã tạo: Th4 22, 2023 lúc 01:55 PM
 -- Phiên bản máy phục vụ: 10.4.24-MariaDB
 -- Phiên bản PHP: 7.4.29
 
@@ -171,7 +171,8 @@ INSERT INTO `category_products` (`id`, `id_product`, `id_category`, `created_at`
 (8, 8, 3, '2023-03-18 08:15:06', '2023-03-18 08:15:06'),
 (9, 9, 2, '2023-03-18 08:39:12', '2023-03-18 08:39:12'),
 (10, 15, 2, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
-(11, 15, 3, '2023-04-08 08:19:29', '2023-04-08 08:19:29');
+(11, 15, 3, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
+(12, 16, 1, '2023-04-16 12:00:10', '2023-04-16 12:00:10');
 
 -- --------------------------------------------------------
 
@@ -210,6 +211,7 @@ CREATE TABLE `ch_messages` (
 
 INSERT INTO `ch_messages` (`id`, `from_id`, `to_id`, `body`, `attachment`, `seen`, `created_at`, `updated_at`) VALUES
 ('215304be-b8e7-4c80-8b5f-d4fc059193be', 1, 1, 'abc', NULL, 1, '2023-04-09 04:41:54', '2023-04-09 04:42:49'),
+('64ace999-d820-4417-8da6-6654ae1bc379', 5, 1, 'hi', NULL, 1, '2023-04-21 04:21:12', '2023-04-21 04:29:59'),
 ('97fdffb5-ce4f-4353-bf5e-f3c8a1e7d738', 1, 3, 'hi 0', NULL, 1, '2023-04-09 04:43:35', '2023-04-09 04:44:24'),
 ('f90df57b-3012-40f1-b4ae-ad39775d2bff', 3, 1, 'hi', NULL, 1, '2023-04-09 04:44:31', '2023-04-09 04:44:33');
 
@@ -313,7 +315,10 @@ INSERT INTO `images` (`id`, `path`, `product_id`, `created_at`, `updated_at`) VA
 (24, 'https://down-vn.img.susercontent.com/file/vn-11134201-23030-nol528bn2jove0', 9, '2023-03-18 08:46:21', '2023-03-18 08:46:21'),
 (25, 'https://down-vn.img.susercontent.com/file/514ae455b4fd0d0102db496ee30ddafb', 15, '2023-04-08 08:19:30', '2023-04-08 08:19:30'),
 (26, 'https://down-vn.img.susercontent.com/file/0937a2c6b76cc8396b9ad128e573b493', 15, '2023-04-08 08:19:30', '2023-04-08 08:19:30'),
-(27, 'https://down-vn.img.susercontent.com/file/sg-11134201-22090-m8j2dwol22hvc0', 15, '2023-04-08 08:19:30', '2023-04-08 08:19:30');
+(27, 'https://down-vn.img.susercontent.com/file/sg-11134201-22090-m8j2dwol22hvc0', 15, '2023-04-08 08:19:30', '2023-04-08 08:19:30'),
+(28, 'https://down-vn.img.susercontent.com/file/76948d5459b9d78579cc6054d3753540_tn', 16, '2023-04-16 00:18:18', '2023-04-16 00:18:18'),
+(29, 'https://down-vn.img.susercontent.com/file/f4cc86330b72e8a26031820ff4602597_tn', 16, '2023-04-16 00:18:18', '2023-04-16 00:18:18'),
+(30, 'https://down-vn.img.susercontent.com/file/099e61f312a2de684ebf5351b6a0212b_tn', 16, '2023-04-16 00:18:18', '2023-04-16 00:18:18');
 
 -- --------------------------------------------------------
 
@@ -428,7 +433,10 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `fullname`, `phone`, `address`, `note`, `subtotal`, `total_money`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 4, 'Mai Nêm Tét', '0123456789', 'Hà Nội', NULL, 960000, 1071000, '2023-04-15 00:19:30', '2023-04-15 00:19:30', NULL);
+(1, 4, 'Mai Nêm Tét', '0123456789', 'Hà Nội', NULL, 960000, 1071000, '2023-04-15 00:19:30', '2023-04-15 00:19:30', NULL),
+(2, 1, 'Đào Xuân Vinh', '0382282381', 'Cửu Việt 2', NULL, 1080000, 1188000, '2023-04-16 00:41:34', '2023-04-16 00:41:34', NULL),
+(3, 4, 'Mai Nêm Tét', '0123456789', 'Hà Nội', 'test', 2040000, 2274000, '2023-04-21 09:32:01', '2023-04-21 09:32:01', NULL),
+(4, 4, 'Mai Nêm Tét', '0123456789', 'Hà Nội', NULL, 540000, 609000, '2023-04-21 09:41:42', '2023-04-21 09:41:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -461,7 +469,11 @@ CREATE TABLE `order_details` (
 --
 
 INSERT INTO `order_details` (`id`, `order_id`, `product_id`, `name`, `quantity`, `size`, `color`, `sale`, `discount`, `price`, `total_money`, `status`, `ship`, `time`, `time_confirm`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 2, 'M', 'red', 1, 40, 800000, 1071000, 1, 1, '2023-04-15 04:03:53', '2023-04-15 04:02:20', '2023-04-15 00:19:30', '2023-04-15 04:04:24');
+(1, 1, 1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 2, 'M', 'red', 1, 40, 800000, 1071000, 1, 1, '2023-04-15 04:03:53', '2023-04-15 04:02:20', '2023-04-15 00:19:30', '2023-04-15 04:04:24'),
+(2, 2, 16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 2, 'L', 'green', 1, 25, 720000, 1188000, 2, 1, '2023-04-22 00:38:43', '2023-04-21 10:10:37', '2023-04-16 00:41:34', '2023-04-22 00:38:43'),
+(3, 3, 1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 2, 'M', 'red', 1, 40, 800000, 1071000, 2, 1, '2023-04-22 00:38:43', '2023-04-22 00:33:45', '2023-04-21 09:32:01', '2023-04-22 00:38:43'),
+(4, 3, 16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 2, 'M', 'green', 1, 25, 720000, 1203000, 2, 1, '2023-04-22 00:36:18', '2023-04-22 00:34:13', '2023-04-21 09:32:01', '2023-04-22 00:36:18'),
+(5, 4, 16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 1, 'M', 'green', 0, 25, 720000, 609000, 2, 1, '2023-04-22 00:36:18', '2023-04-22 00:35:49', '2023-04-21 09:41:42', '2023-04-22 00:36:18');
 
 -- --------------------------------------------------------
 
@@ -519,7 +531,7 @@ CREATE TABLE `products` (
   `sale` int(11) DEFAULT 0,
   `stock` int(11) NOT NULL,
   `sold` int(11) NOT NULL DEFAULT 0,
-  `rate` float NOT NULL,
+  `rate` float NOT NULL DEFAULT 0,
   `desce` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -531,15 +543,16 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `slug`, `price`, `brand_id`, `discount`, `sale`, `stock`, `sold`, `rate`, `desce`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 'ao-khoac-cardigan-vien-xanh-nau-frmlk-form-rong', 800000, 1, 40, 1, 10, 2, 5, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng\n - Form: Freesize, 65-75kg đổ lại mặc oke \n- Kích thước: Dài 65cm (xem trên ảnh thứ 2 của sản phẩm)\n- Phân loại: Be viền xanh, Be viền nâu\n - Chất liệu: Nỉ Bông ', '2023-01-11 05:09:46', '2023-04-15 00:19:30', NULL),
+(1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 'ao-khoac-cardigan-vien-xanh-nau-frmlk-form-rong', 800000, 1, 40, 1, 4, 8, 5, '<h4> Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng&nbsp;</h4>\r\n <p> - Form: Freesize, 65-75kg đổ lại mặc oke&nbsp;</p>\r\n<p> - Kích thước: Dài 65cm (xem trên ảnh thứ 2 của sản phẩm)&nbsp;</p>\r\n<p>- Phân loại: Be viền xanh, Be viền nâu&nbsp;</p>\r\n <p>- Chất liệu: Nỉ Bông&nbsp;</p> ', '2023-01-11 05:09:46', '2023-04-21 09:32:01', NULL),
 (2, 'Áo thun phông logo PINK tay lỡ  SANJATI Unisex', 'a', 105000, 1, 20, 0, 59, 0, 0, 'Chất liệu : thun cotton dày dặn, hình in nhiệt chắc chắc🔻Form : 3 Size ( Áo đã được cải tiến về Số Đo , Form Dáng & Mẫu Mã đẹp hơn ạ ✔️M : < 45kg , Cao < 1.6m✔️L : 46kg _ 65kg , Cao 1.6m _ 1.7m ✔️XL : 66kg _ 75kg , Cao 1.7m _ 1.75m', '2023-01-12 10:13:33', '2023-03-14 06:54:25', NULL),
 (3, 'Áo thun nam Care & Share cotton compact in Mặt Trời', 'ao-thun-nam-care-share-cotton-compact-in-mat-troi', 259000, 1, 0, 0, 90, 0, 0, 'Một công ty không cần phải lớn mới làm điều ý nghĩa\" - Coolmate đã nghĩ và tin như thế khi khởi xướng chương trình Care & Share này. Sức nhỏ làm việc nhỏ, có ít đóng góp ít, có nhiều đóng góp nhiều. Ít nhất chúng ta đã bắt tay vào làm và lan toả điều tích cực. \r\n\r\n\r\nHiểu một cách đơn giản, \"Care & Share: For A Better Childhood\" là một chương trình được xây dựng và duy trì bởi Coolmate nhằm góp sức mình giúp đỡ những trẻ em kém may mắn, giúp các em đến trường và có cuộc sống tốt hơn. Coolmate cam kết sẽ dành 10% doanh thu từ tất cả những sản phẩm trong danh mục \"Care & Share\" để đóng góp vào quỹ dành cho trẻ em có hoàn cảnh khó khăn. Coolmate mong muốn là một cầu nối để viết tiếp những ước mơ con trẻ còn dang dở, hướng tới một tương lai tốt đẹp hơn.', '2023-03-15 05:31:11', '2023-03-15 05:31:11', NULL),
 (5, 'Áo thun nữ trơn cổ V IVY moda MS 57P0155', 'ao-thun-nu-tron-co-v-ivy-moda-ms-57p0155', 490000, 3, 8, 0, 200, 0, 0, 'Áo thun cổ V, cộc tay, form suông basic phù hợp với mọi vóc dáng.Sản phẩm được tạo ra từ chất liệu Thun cao cấp, với những tính năng vượt trội như thấm hút mồ hôi tốt và có độ co dãn giúp người mặc vô cùng thoải mái. Hơn hết có thể dễ dàng mix&match được với nhiều kiểu quần khác nhau. Đấy chính là lý do để phái nữ nên có ít nhất một chiếc áo thun trong tủ đồ của bạn.', '2023-03-15 23:07:09', '2023-03-15 23:07:17', NULL),
 (6, 'Áo khoác bò, áo khoác thu đông nam Việt Nam cá tính năng động mã N51', 'ao-khoac-bo-ao-khoac-thu-dong-nam-viet-nam-ca-tinh-nang-dong-ma-n51', 500000, 2, 8, 0, 160, 0, 5, '- Phong cách Việt Nam\r\n- Form dáng : Slim Fitl\r\n- mùa thích hơp : Mùa Thu đông\r\n- Thành phần chính của vải  bò\r\n- Đặc tính của Vải : chất vải lai kaki thân thiện với môi trường, mặc tạo cảm giác thoải mái.\r\n- Độ dày : vừa phải.', '2023-03-16 07:39:27', '2023-03-16 07:39:27', NULL),
 (7, 'Áo khoác lông dáng dài của nữ phong cách sang trọng khí chất thanh lịch hàng Quảng Châu cao cấp', 'ao-khoac-long-dang-dai-cua-nu-phong-cach-sang-trong-khi-chat-thanh-lich-hang-quang-chau-cao-cap', 701000, 4, 0, 0, 56, 0, 5, '❗❗❗  Để đảm bảo hàng về kịp Tết, quý khách hàng vui lòng đặt đơn trước 23h59 ngày 01/01/2022⚜KÍCH THƯỚC⚜Chiều rộng vai 55    Ngực 134      Chiều dài áo 109       Tay áo dài 50(Đơn vị: cm, lát gạch và đo bằng tay, có thể sai số 1-2cm, chỉ mang tính chất tham khảo)✔Thời gian giao hàng của sản phẩm này là 7-15 ngày✔Khuyến khích khách hàng nhắn tin cho shop trước khi đặt hàng‼‼KHÔNG NHẬN ĐƠN NẾU BẠN CẦN GẤP💥Lưu ý:💭Đảm bảo khi nhận hàng bạn sẽ không thất vọng💭Hotline: 0937768275💌 Chúc bạn có một buổi mua sắm vui vẻ', '2023-03-16 07:42:30', '2023-03-16 07:46:17', NULL),
-(8, 'BEAUTEBYV - Áo khoác Trench Coat 2022', 'beautebyv-ao-khoac-trench-coat-2022', 1200000, 4, 30, 1, 300, 0, 0, '1. Giặt tay bằng nước lạnh.\r\n\r\n2. Trước khi giặt phải phân loại màu; cài khuy, kéo hết khóa và lộn trái sản phẩm. Tránh đổ trực tiếp xà phòng lên quần áo.\r\n\r\n3. Tuyệt đối không ngâm, không dùng chất tẩy (đặc biệt đối với vải màu).\r\n\r\n4. Đối với các sản phẩm phối màu: giặt nhanh bằng tay, không ngâm, để an toàn nhất có thể giặt bằng nước rửa chén.\r\n\r\n5. Đối với các sản phẩm có đính hoa cố định, các chất liệu len, dạ nên giặt khô.', '2023-03-18 08:15:06', '2023-03-18 08:15:06', NULL),
-(9, 'Áo khoác nam 100% cotton Tum Machines TUMS NVSCVR TEAM JACKET – BLACK', 'ao-khoac-nam-100-cotton-tum-machines-tums-nvscvr-team-jacket-–-black', 680000, 2, 30, 1, 200, 0, 5, '_ THÀNH PHẦN VẢI : 100% COTTON ( COTTON TWILL NHẬP KHẨU ), PHẦN LÓT ÁO 100% POLYESTER MANG LẠI SỰ THOÁNG MÁT TỐT NHẤT.\r\n\r\n_ TẤT CẢ HỌA TIẾT TRÊN ÁO ĐỀU ĐƯỢC DÙNG QUY CÁCH IN, THÊU MẢNG VÀ NÉT CAO CẤP, CHO SỰ SẮC NÉT, KHÔNG BONG TRÓC.\r\n\r\n_ ÁO DÙNG NÚT ĐÓNG BẰNG NHÔM CHỐNG GHỈ, 2 TÚI ÁO ĐƯỢC MAY Ở 2 BÊN SƯỜN ÁO\r\n\r\n” SAU SỰ THÀNH CÔNG CỦA WE’RE BADASS JACKET, TEAM TUMS LUÔN MUỐN TẠO RA THÊM MỘT CHIẾC JACKET MANG HƠI HƯỚNG CỦA NASCAR VỚI GIÁ THÀNH PHẢI CHĂNG, BỀN BỈ, ĐA DỤNG VÀ DỄ MẶC. VÀ TUM RACING TEAM JACKET RA ĐỜI. “\r\n\r\n_XUẤT XỨ: VIỆT NAM', '2023-03-18 08:39:12', '2023-03-18 08:39:12', NULL),
-(15, 'Áo khoác cadigan nam nữ chất cotton tổ ong', 'ao-khoac-cadigan-nam-nu-chat-cotton-to-ong', 228000, 4, 30, 0, 300, 0, 5, '<p>MÔ TẢ SẢN PHẨM ✪ Chất Liệu Vải : cotton tổ ong xuất Hàn cao cấp 100%, co giãn 4 chiều, vải mềm, mịn, thoáng mát, không xù lông. ✪ Kĩ thuật may: Đường may chuẩn chỉnh, tỉ mỉ, chắc chắn ✪ Kiểu Dáng :Form Rộng Thoải Mái ✪ Full size nam nữ : 40 - 85 kg</p>', '2023-04-08 08:19:29', '2023-04-08 08:19:29', NULL);
+(8, 'BEAUTEBYV - Áo khoác Trench Coat 2022', 'beautebyv-ao-khoac-trench-coat-2022', 1200000, 4, 30, 1, 300, 0, 0, '<p> 1 .Giặt tay bằng nước lạnh.&nbsp;</p>\r\n<p> 2. Trước khi giặt phải phân loại màu; cài khuy, kéo hết khóa và lộn trái sản phẩm. Tránh đổ trực tiếp xà phòng lên quần áo.&nbsp;</p>\r\n3. Tuyệt đối không ngâm, không dùng chất tẩy (đặc biệt đối với vải màu).&nbsp;\r\n<p> 4. Đối với các sản phẩm phối màu: giặt nhanh bằng tay, không ngâm, để an toàn nhất có thể giặt bằng nước rửa chén.&nbsp;</p>\r\n<p> 5. Đối với các sản phẩm có đính hoa cố định, các chất liệu len, dạ nên giặt khô.&nbsp;</p>', '2023-03-18 08:15:06', '2023-03-18 08:15:06', NULL),
+(9, 'Áo khoác nam 100% cotton Tum Machines TUMS NVSCVR TEAM JACKET – BLACK', 'ao-khoac-nam-100-cotton-tum-machines-tums-nvscvr-team-jacket-–-black', 680000, 2, 30, 1, 198, 2, 5, '_ THÀNH PHẦN VẢI : 100% COTTON ( COTTON TWILL NHẬP KHẨU ), PHẦN LÓT ÁO 100% POLYESTER MANG LẠI SỰ THOÁNG MÁT TỐT NHẤT.\r\n\r\n_ TẤT CẢ HỌA TIẾT TRÊN ÁO ĐỀU ĐƯỢC DÙNG QUY CÁCH IN, THÊU MẢNG VÀ NÉT CAO CẤP, CHO SỰ SẮC NÉT, KHÔNG BONG TRÓC.\r\n\r\n_ ÁO DÙNG NÚT ĐÓNG BẰNG NHÔM CHỐNG GHỈ, 2 TÚI ÁO ĐƯỢC MAY Ở 2 BÊN SƯỜN ÁO\r\n\r\n” SAU SỰ THÀNH CÔNG CỦA WE’RE BADASS JACKET, TEAM TUMS LUÔN MUỐN TẠO RA THÊM MỘT CHIẾC JACKET MANG HƠI HƯỚNG CỦA NASCAR VỚI GIÁ THÀNH PHẢI CHĂNG, BỀN BỈ, ĐA DỤNG VÀ DỄ MẶC. VÀ TUM RACING TEAM JACKET RA ĐỜI. “\r\n\r\n_XUẤT XỨ: VIỆT NAM', '2023-03-18 08:39:12', '2023-04-21 05:10:49', NULL),
+(15, 'Áo khoác cadigan nam nữ chất cotton tổ ong', 'ao-khoac-cadigan-nam-nu-chat-cotton-to-ong', 228000, 4, 30, 0, 289, 11, 5, '<p>MÔ TẢ SẢN PHẨM ✪ Chất Liệu Vải : cotton tổ ong xuất Hàn cao cấp 100%, co giãn 4 chiều, vải mềm, mịn, thoáng mát, không xù lông. ✪ Kĩ thuật may: Đường may chuẩn chỉnh, tỉ mỉ, chắc chắn ✪ Kiểu Dáng :Form Rộng Thoải Mái ✪ Full size nam nữ : 40 - 85 kg</p>', '2023-04-08 08:19:29', '2023-04-21 05:39:45', NULL),
+(16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 'ao-so-mi-tay-dai-tortune-shirt-hinh-in-lua-ky-thuat-so-doc-quyen-thoi-trang-nam-nu-unisex', 720000, 3, 25, 1, 43, 7, 0, '<h4>LƯU Ý KHI SỬ DỤNG SẢN PHẨM:</h4><p>&nbsp;- Đồ trắng, đen giặt riêng với các loại đồ màu khác</p><p>&nbsp;- Ủi và giặt nên lật mặt trái của sản phẩm, không ủi trực tiếp lên hình in/thêu&nbsp;</p><p>- Phơi quần áo ở nhiệt độ trung bình (30 độ C)&nbsp;</p><p>- Không giặt quần áo với nước tẩy&nbsp;</p><p>- Đối với sản phẩm chất liệu len, lụa, vải đan, dệt kim, lông hoặc bộ blazer nên giặt tay hoặc giặt hấp để sản phẩm bền và giữ đúng chất lượng</p>', '2023-04-16 00:18:18', '2023-04-21 09:41:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -596,7 +609,11 @@ INSERT INTO `product_attribute_value` (`id`, `product_id`, `attribute_value_id`,
 (43, 15, 7, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
 (44, 15, 9, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
 (45, 15, 10, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
-(46, 15, 11, '2023-04-08 08:19:29', '2023-04-08 08:19:29');
+(46, 15, 11, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
+(47, 16, 1, '2023-04-16 00:18:18', '2023-04-16 00:18:18'),
+(48, 16, 3, '2023-04-16 00:18:18', '2023-04-16 00:18:18'),
+(49, 16, 5, '2023-04-16 00:18:18', '2023-04-16 00:18:18'),
+(50, 16, 9, '2023-04-16 00:18:18', '2023-04-16 00:18:18');
 
 -- --------------------------------------------------------
 
@@ -630,10 +647,12 @@ INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `role_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider_id` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -648,12 +667,12 @@ CREATE TABLE `users` (
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `active_status`, `avatar`, `dark_mode`, `messenger_color`) VALUES
-(1, 2, 'vinh', 'vinhhttt@gmail.com', NULL, '$2y$10$RQcRNRMQIfjzEFklr2EEIeIOKmWmhMwd0jOVow8wGvn5ezoAnzlUG', NULL, '2023-02-05 08:18:25', '2023-04-09 04:44:51', NULL, 0, '1680861804.png', 0, NULL),
-(2, 1, 'a', 'a@gmail.com', NULL, '$2y$10$iCqUB6O.ooamGhE5X9DnLeT0XvW70Wlrnw5Zb2qOzljVH8/0pDcFm', NULL, '2023-02-22 02:52:54', '2023-02-22 02:52:54', NULL, 0, 'avatar.png', 0, NULL),
-(3, 3, '0', 'b@gmail.com', NULL, '$2y$10$28J1kQJq6OMOfELOeIpgEuuExankw2MaKI9tL4ks6hxLhe0weJx3C', NULL, '2023-03-05 23:06:38', '2023-03-06 06:42:35', NULL, 0, 'avatar.png', 0, NULL),
-(4, 1, 'test', 'test@gmail.com', NULL, '$2y$10$FK0S5rj.kNYKul4xinWcrOYAyTKS0svzOxxa8kPXPrkVYvj99SgoW', NULL, '2023-03-09 02:14:11', '2023-03-09 02:14:11', NULL, 0, 'avatar.png', 0, NULL),
-(5, 4, 'Shipper', 'ship@gmail.com', NULL, '$2y$10$PjxTb7HZt2e5fi7qmY3vDuGdXRjB/fVXAbW7VqdiCwQM6L0zO0MHS', NULL, '2023-04-10 23:07:21', '2023-04-14 02:52:43', NULL, 0, 'avatar.png', 0, '#00BCD4');
+INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `email_verified_at`, `password`, `provider`, `provider_id`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `active_status`, `avatar`, `dark_mode`, `messenger_color`) VALUES
+(1, 2, 'vinh', 'vinhhttt@gmail.com', NULL, '$2y$10$RQcRNRMQIfjzEFklr2EEIeIOKmWmhMwd0jOVow8wGvn5ezoAnzlUG', '', '', NULL, '2023-02-05 08:18:25', '2023-04-09 04:44:51', NULL, 0, '1680861804.png', 0, NULL),
+(2, 1, 'a', 'a@gmail.com', NULL, '$2y$10$iCqUB6O.ooamGhE5X9DnLeT0XvW70Wlrnw5Zb2qOzljVH8/0pDcFm', '', '', NULL, '2023-02-22 02:52:54', '2023-02-22 02:52:54', NULL, 0, 'avatar.png', 0, NULL),
+(3, 3, '0', 'b@gmail.com', NULL, '$2y$10$28J1kQJq6OMOfELOeIpgEuuExankw2MaKI9tL4ks6hxLhe0weJx3C', '', '', NULL, '2023-03-05 23:06:38', '2023-03-06 06:42:35', NULL, 0, 'avatar.png', 0, NULL),
+(4, 1, 'test', 'test@gmail.com', NULL, '$2y$10$FK0S5rj.kNYKul4xinWcrOYAyTKS0svzOxxa8kPXPrkVYvj99SgoW', '', '', NULL, '2023-03-09 02:14:11', '2023-03-09 02:14:11', NULL, 0, 'avatar.png', 0, NULL),
+(5, 4, 'Shipper', 'ship@gmail.com', NULL, '$2y$10$PjxTb7HZt2e5fi7qmY3vDuGdXRjB/fVXAbW7VqdiCwQM6L0zO0MHS', '', '', NULL, '2023-04-10 23:07:21', '2023-04-21 04:30:14', NULL, 0, 'avatar.png', 0, '#00BCD4');
 
 -- --------------------------------------------------------
 
@@ -676,7 +695,9 @@ CREATE TABLE `voucher` (
 --
 
 INSERT INTO `voucher` (`id`, `value`, `product_id`, `quantity`, `percent`, `created_at`, `updated_at`) VALUES
-(1, 'Giảm 8%', 15, 30, 8, '2023-04-08 08:19:29', '2023-04-08 08:19:29');
+(1, 'Giảm 8%', 15, 30, 8, '2023-04-08 08:19:29', '2023-04-08 08:19:29'),
+(2, 'Freeship', 16, 12, 15000, '2023-04-16 00:18:18', '2023-04-16 00:18:18'),
+(3, 'Giảm 5%', 16, 10, 5, '2023-04-16 00:18:18', '2023-04-16 00:18:18');
 
 -- --------------------------------------------------------
 
@@ -700,7 +721,11 @@ INSERT INTO `wishlist` (`id`, `product_id`, `user_id`, `created_at`, `updated_at
 (1, 2, 1, '2023-03-30 21:25:39', '2023-03-30 21:25:39'),
 (2, 8, 1, '2023-03-30 21:27:19', '2023-03-30 21:27:19'),
 (3, 7, 1, '2023-03-30 21:31:24', '2023-03-30 21:31:24'),
-(4, 1, 1, '2023-03-30 21:31:53', '2023-03-30 21:31:53');
+(4, 1, 1, '2023-03-30 21:31:53', '2023-03-30 21:31:53'),
+(6, 15, 5, '2023-04-21 06:08:08', '2023-04-21 06:08:08'),
+(7, 7, 5, '2023-04-21 06:08:15', '2023-04-21 06:08:15'),
+(8, 1, 5, '2023-04-21 06:09:06', '2023-04-21 06:09:06'),
+(14, 1, 4, '2023-04-21 09:23:56', '2023-04-21 09:23:56');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -889,7 +914,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT cho bảng `category_products`
 --
 ALTER TABLE `category_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `failed_jobs`
@@ -907,7 +932,7 @@ ALTER TABLE `feedbacks`
 -- AUTO_INCREMENT cho bảng `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT cho bảng `infoaccounts`
@@ -925,13 +950,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `personal_access_tokens`
@@ -943,13 +968,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT cho bảng `product_attribute_value`
 --
 ALTER TABLE `product_attribute_value`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`
@@ -967,13 +992,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `voucher`
 --
 ALTER TABLE `voucher`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
