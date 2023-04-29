@@ -3,7 +3,7 @@
 </h1>
 
 <p>
- ## Installation
+ ### <h3>Installation
 
  1. Clone the repo
 
