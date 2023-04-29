@@ -28,8 +28,11 @@
  6. Compile all your asset including a source map
     
         npm install && npm run dev
-        
- 7. Serve the application
+ 
+ 7. I use [Chatify](https://chatify.munafio.com) for interface real-time chat and use [Pusher](https://pusher.com) for real-time chat and notification.
+ 8. Install Paypal
+    
+ 9. Serve the application
         
         php artisan serve
 </p>
