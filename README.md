@@ -3,7 +3,7 @@
 </h1>
 
 <p>
- <h3>Installation
+ <h3>Installation</h3>
 
  1. Clone the repo
 
@@ -42,3 +42,9 @@
    + My fullname is 'Đào Xuân Vinh', I was born in 2001, I from Viet Nam.
    + I started study php about one year ago and lavarel before six month.
    + I studied at [ICT NIIT](https://niithanoi.edu.vn) with Mr.Luan, who is very pro 
+   
+<h3>Releases</h3>
+   <p font-size=10>No releases published</->
+
+<h3>Packages</h3>
+    <p>No packages published</p>
