@@ -58,21 +58,9 @@
                                 <div class="item">
                                     <h1>{{ $products->name }}</h1>
                                     <div class="content">
-                                        <div class="rating">
-                                            @if (80 *
-                                            ($products->reviews()->pluck('feedbacks.rate')->avg() /
-                                                5) ==
-                                            0)
-                                        <div class="stars" style="background-image:none;width:150px">Chưa có
-                                            đánh giá</div>
-                                        @else
-                                            <div class="stars"
-                                                style="width:{{ 80 *($products->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
-                                            </div>
-                                        @endif
-                                            <a href="" class="mini_text render_count">{{ $products->reviews->count() }}
-                                                review</a>
-                                        </div>
+                                        <div class="stars" style="width:{{ 80 * ($rate / 5) }}px "></div>
+                                        <a href="" class="mini_text render_count">{{ $products->reviews->count() }}
+                                            review</a>
                                     </div>
                                     <div class="stock_sku">
                                         <span class="avaiable">Số lượng</span>
@@ -152,22 +140,13 @@
                                                     min="1" max="{{ $products->stock }}" required>
                                                 <div class="plus circle">+</div>
                                             </div>
-                                            @if ($products->stock > 0)
                                             <div class="button_cart">
-                                                <button class="primary_button" id="addtocart"
-                                                    onclick="addCart({{ $products->id }})">Add to cart</button>
+                                                <button type="submit" onclick="addCart({{ $products->id }})"
+                                                    class="primary_button" id="addtocart">Add to cart</button>
                                             </div>
                                             <div class="button_cart" style="margin-right: 1em">
                                                 <button type="submit" class="secondary_button">Mua ngay</button>
                                             </div>
-                                        @else
-                                            <div class="button_cart">
-                                                <button class="primary_button" id="addtocart" style="opacity: .5" onclick="soldOut(this)">Add to cart</button>
-                                            </div>
-                                            <div class="button_cart" style="margin-right: 1em">
-                                                <button type="submit" class="secondary_button" style="opacity: .5" onclick="soldOut(this)">Mua ngay</button>
-                                            </div>
-                                        @endif
                                     </form>
                                 </div>
 
@@ -197,7 +176,7 @@
                                             @endif
                                         @else
                                             <li>
-                                                <div id="wishlist" onclick="createToast('Bạn phải đăng nhập')"
+                                                <div id="wishlist" onclick="createNoti('Bạn phải đăng nhập')"
                                                     style="cursor: pointer">
                                                     <span class="icon_large"><i class="ri-heart-line"></i></span>
                                                     <span id="love">Yêu thích</span>
@@ -220,11 +199,11 @@
                                         <div class="content">
                                             <ul>
                                                 <li><span>Brand:</span><a
-                                                        href="{{url('brand/'.$products->brand_id)}}"><span>{{ $products->brand->name }}</span></a>
+                                                        href=""><span>{{ $products->brand->name }}</span></a>
                                                 </li>
                                                 <li><span>Category:</span>
                                                     @foreach ($products->categories as $category)
-                                                        <a href="{{url('category/'. $category->id)}}">
+                                                        <a href="#">
                                                             <span>{{ $category->name }},</span></a>
                                                     @endforeach
                                                 </li>
@@ -455,7 +434,7 @@
                     </div>
                     <div class="products main flexwrap">
                         @foreach (App\Models\admin\Product::where('sale', '=', 0)->where('brand_id', $products->brand_id)->where('id', '!=', $products->id)->inRandomOrder()->limit(6)->get() as $product)
-                            <div class="item page_other">
+                            <div class="item">
                                 <div class="media">
                                     <div class="thumbnail object_cover">
                                         <a href="{{ url('detail/' . $product->id) }}">
@@ -648,10 +627,10 @@
                             (()=>{
                                 if(data.result.image){
                                     return `
-                                       <p>
-                                         Ảnh review trước đó: 
-                                         <img src="{{ asset('${data.result.image}') }}" style="position: static;width:160px;height:220px">    
-                                       </p>
+                                                                    <p>
+                                                            Ảnh review trước đó: 
+                                                            <img src="{{ asset('${data.result.image}') }}" style="position: static;width:160px;height:220px">    
+                                                            </p>
                                                                             `
                                 }else{
                                     return `
@@ -770,10 +749,10 @@
                     (()=>{
                         if(item.image){
                             return `
-                                    <div class="review_img object_cover">
-                                    <img src="{{ asset('${item.image}') }}" style="position: static;width:200px;height:200px">
-                                 </div>
-                                      `
+                                                                    <div class="review_img object_cover">
+                                                                        <img src="{{ asset('${item.image}') }}" style="position: static;width:200px;height:200px">
+                                                                    </div>
+                                                                    `
                         }else{
                             return `
                     `
@@ -790,14 +769,15 @@
                         (()=>{
                             if(item.name == '{{ Auth::user()->name }}' || {{ Auth::user()->role_id }}==2){
                                 return `
-                                   <div style="display:flex; gap:1em;">
-                                    <a href="#review_form" class="primary_button" style="border: none;outline:none" id="btn_edit" onclick="sendEdit(${item.id})">Sửa</a>
-                                    <button type="submit" class="secondary_button" id="btn_delete" style="border:none; outline:none" onclick="sendDelete(${item.id})"> Xóa </button>
-                                   </div>
-                                    `;
+                                                                        <div style="display:flex; gap:1em;">
+                                                                            <a href="#review_form" class="primary_button" style="border: none;outline:none" id="btn_edit"
+                                                                             onclick="sendEdit(${item.id})">Sửa</a>
+                                                                             <button type="submit" class="secondary_button" id="btn_delete" style="border:none; outline:none" onclick="sendDelete(${item.id})"> Xóa </button>
+                                                                        </div>
+                                                                        `;
                             }else{
                                 return `
-                                       `
+                    `
                             }
                         })()
                       }
@@ -838,12 +818,6 @@
             });
         })
 
-           // Check produtct stock
-
-           function soldOut(element){
-            createToast('Xin lỗi đã hết hàng');
-            return false;
-        }
 
         // slider images
 
@@ -904,10 +878,40 @@
 
     @if (!Auth::check())
         <script>
+            const review_btn = document.querySelector('#review_btn');
+            const notifications = document.querySelector('.notification');
+            const timer = 3000;
+
             review_btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                createToast('Bạn cần phải đăng nhập'); 
+                createToast();
+                console.log(1);
             })
+
+            // Tao remove toast
+
+            const removeToast = (toast) => {
+                toast.classList.add("hide");
+                if (toast.timeoutId) clearTimeout(toast.timeoutId);
+                setTimeout(() => toast.remove(), 400);
+            };
+
+
+            // Tao Toast
+
+            function createToast() {
+                const toast = document.createElement('li');
+                toast.className = `toasts error`;
+                toast.innerHTML = `
+          <div class="column">
+            <i class="fa-solid fa-bug"></i>
+            <span>Bạn phải đăng nhập mới được bình luận</span>
+          </div>
+          <i class="fa-solid fa-x"></i>
+        `
+                notifications.appendChild(toast);
+                setTimeout(() => removeToast(toast), 3000)
+            };
         </script>
     @endif
 @endsection

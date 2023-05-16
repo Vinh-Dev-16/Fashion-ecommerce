@@ -24,16 +24,7 @@ class homeController extends Controller
         $cart = session()->get('cart', []);
         return view('user.design.home', compact('products', 'categories', 'brands','cart'));
     }
-    
-    public function viewAllProducts()
-    {
-        $products = Product::orderBy('id','desc')->paginate(12);
-        $categories = Category::all();
-        $brands = Brand::all();
-        $cart = session()->get('cart', []);
-        return view('user.design.viewAllProduct', compact('products', 'categories', 'brands','cart'));
-    }
-
+ 
     public function search(Request $request)
     {
         $searches = Product::where('name', 'like', '%' . $request->data . '%')->get();

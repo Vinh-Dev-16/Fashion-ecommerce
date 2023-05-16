@@ -77,18 +77,8 @@
                                     </div>
                                     <div class="content">
                                         <div class="rating">
-                                            @if (80 *
-                                                    ($product->reviews()->pluck('feedbacks.rate')->avg() /
-                                                        5) ==
-                                                    0)
-                                                <div class="stars" style="background-image:none;width:150px">Chưa có
-                                                    đánh giá</div>
-                                            @else
-                                                <div class="stars"
-                                                    style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
-                                                </div>
-                                            @endif
-                                            <div class="mini_text">{{ $product->reviews->count() }} review</div>
+                                            <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
+                                            <div class="mini_text">{{$product->reviews->count()}}</div>
                                         </div>
                                         <h3 class="main_links"><a
                                                 href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
@@ -231,12 +221,12 @@
                 <div class="column">
                     <div class="sectop flexitem">
                         <h2><span class="circle"></span><span>View Products</span></h2>
-                        <div class="second_links"><a href="{{url('viewAllProducts')}}" class="view_all">Xem tất cả<i
+                        <div class="second_links"><a href="" class="view_all">Xem tất cả<i
                                     class="ri-arrow-right-line"></i></a></div>
                     </div>
                     <div class="products main flexwrap">
                         @foreach (App\Models\admin\Product::where('sale' , '=' , 0)->inRandomOrder()->limit(9)->get() as $product)
-                            <div class="item page_other">
+                            <div class="item">
                                 <div class="media">
                                     <div class="thumbnail object_cover">
                                         <a href="{{ url('detail/' . $product->id) }}">
@@ -302,10 +292,7 @@
                 <img src="{{asset('images/apparel4.jpg')}}">
             </div>
             <h2>Chào mừng đến với Fashion</h2>
-            <p class="mobile_hide">Web Fashion E-commerce
-                <br>
-                Nhanh tay nhanh tay! Nhận ngay deal hot
-            </p>
+            <p class="mobile_hide">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum id quam nam blanditiis odio molestiae ducimus?</p>
             <form action="" class="search">
                 <span class="icon-large"><i class="ri-mail-line"></i></span>
                 <input type="email" name="email" placeholder="Email của bạn" style="width:85%;padding: 0 2em 0 4.5em;">

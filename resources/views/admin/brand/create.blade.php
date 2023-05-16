@@ -36,14 +36,6 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group">
-                                <label for="exampleDesce">Chi tiết Brand</label>
-                                <textarea type="text" class="form-control" id="editor" name="description"
-                                    placeholder="Điền thông tin sản phẩm"></textarea>
-                                @error('description')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
@@ -64,14 +56,4 @@
     </ol>
 @endsection
 
-@section('javascript')
 
-    <script>
-            ClassicEditor
-            .create( document.querySelector( '#editor' ) )
-            .catch( error => {
-                console.error( error );
-            } );
-    </script>
-
-@endsection

@@ -72,7 +72,6 @@ class brandController extends Controller
             $rules = [
                 'name' =>'required|max:255',
                 'logo'=>'required',
-                'description' =>'required',
             ];
             $messages = [
                 'required' =>'Không được để trống trường này',

@@ -103,7 +103,7 @@
                                                                         {{ number_format($orderItem->total_money) }} VND
                                                                     </td>
                                                                     <td>
-                                                                        <a href="{{ url('softdelete/' . $orderItem->id) }}">Hủy
+                                                                        <a href="{{ url('softdelete/' . $order->id) }}">Hủy
                                                                             đơn</a>
                                                                     </td>
                                                                 </tr>
@@ -384,8 +384,8 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (App\Models\Order::where('user_id', Auth::user()->id)->latest()->get() as $order)
-                                                        @foreach (App\Models\OrderDetail::onlyTrashed()->where('order_id' , $order->id)->get() as $orderItem)
+                                                    @foreach (App\Models\Order::onlyTrashed()->where('user_id', Auth::user()->id)->latest()->get() as $order)
+                                                        @foreach ($order->orderDetails as $orderItem)
                                                             @if ($orderItem->status == 0)
                                                                 <tr>
                                                                     <td class="flexitem">
@@ -442,7 +442,7 @@
                                                                         {{ number_format($orderItem->total_money) }} VND
                                                                     </td>
                                                                     <td>
-                                                                        <a href="{{ url('restore/' . $orderItem->id) }}">Đặt
+                                                                        <a href="{{ url('restore/' . $order->id) }}">Đặt
                                                                             lại </a>
                                                                     </td>
                                                                 </tr>

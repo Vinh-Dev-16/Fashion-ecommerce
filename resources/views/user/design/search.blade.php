@@ -14,7 +14,7 @@
                         </div>
                         <div class="products main flexwrap">
                             @foreach ($searches as $product)
-                                <div class="item page_other">
+                                <div class="item">
                                     <div class="media">
                                         <div class="thumbnail object_cover">
                                             @if ($product->sale == 0)
@@ -49,18 +49,8 @@
                                     </div>
                                     <div class="content">
                                         <div class="rating">
-                                            @if (80 *
-                                                    ($product->reviews()->pluck('feedbacks.rate')->avg() /
-                                                        5) ==
-                                                    0)
-                                                <div class="stars" style="background-image:none;width:150px">Chưa có
-                                                    đánh giá</div>
-                                            @else
-                                                <div class="stars"
-                                                    style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
-                                                </div>
-                                            @endif
-                                            <div class="mini_text">{{ $product->reviews->count() }} review</div>
+                                            <div class="stars"></div>
+                                            <div class="mini_text">(160)</div>
                                         </div>
                                         @if ($product->sale == 0)
                                             <h3 class="main_links"><a

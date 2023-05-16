@@ -66,7 +66,6 @@ body {
 	color: var(--dark-color);
 	background-color: var(--while-color);
 	font-family: 'Rubik' ,sans-serif;
-	overflow-x: hidden;
 }
 
 #preloader{
@@ -86,7 +85,7 @@ body {
     position: fixed;
     top: 1.875em;
     right: 1.25em;
-	z-index: 1000000;
+	z-index: 1000;
   }
  
   .notification :where(.toasts, .column) {
@@ -1350,7 +1349,7 @@ form.search :where(span,button){
 	color: var(--primary-color);
 }
 .flexwrap .row{
-	flex: 0 0 93%;
+	flex: 0 0 82%;
 	width: 100%;
 	margin-bottom: 2em;
 }
@@ -1561,12 +1560,7 @@ form.search :where(span,button){
 	flex-direction: column;
 	width: 530px;
 }
-.products.one .row
-	{
-		flex: 0 0 50%;
-		width: 50%;	
-		margin-left: calc((90% - 530px)/2);
-	}
+
 .products .price .discount{
 	font-size: 1em;
 	font-weight: var(--fw7);
@@ -2024,17 +2018,6 @@ form label{
 
 /* brand + cat + search */
 
-.single_category .products.main .item{
-	flex: 0 42%;
-}
-.single_category .holder{
-	display: flex;
-	flex-direction: column;
-} 
-.single_category .sidebar, .single_category .section{
-	flex: 1 0 100%;
-}
-
 .filter_block{
 	margin-bottom: 1em;
 	padding-bottom: 1em;
@@ -2105,82 +2088,6 @@ input[type="range"]{
 }
 
 
-.page_title{
-	margin-bottom: 3em;
-}
-.cat_description p{
-	font-weight: var(--fw3);
-	font-size: 0.9em;
-}
-.cat_navigation{
-	font-size: 0.85em;
-	margin: 2em 0;
-	justify-content: flex-end;
-	gap: 1em;
-}
-.cat_navigation .item_filter{
-	margin-right: auto;
-}
-.cat_navigation > div{
-	position: relative;
-}
-.cat_navigation .item_filter a{
-	align-items: center;
-	text-transform: uppercase;
-}
-.cat_navigation ul{
-	display: none;
-	position: absolute;
-	left: 0;
-	min-width: var(--percent100);
-	width: max-content;
-	z-index: 10;
-}
-.cat_navigation .lable, .cat_navigation ul li{
-	display: flex;
-	gap: 0.5em;
-	padding: 0.5em 1em;
-	transition: var(--trans-color);
-	color: var(--light-text-color);
-	background-color: var(--light-bg-color);
-	cursor: pointer;
-}
-:where(.item_sortir, .item_options) .label,
-.cat_navigation ul{
-	color: var(--light-text-color);
-	background-color: var(--light-bg-color);
-	cursor: pointer;
-}
-.cat_navigation :where(label, ul li):hover{
-	color: var(--dark-color);
-}
-:where(.item_sortir, .item_options):hover ul{
-	display: block;
-}
-
-.load_more{
-	margin: 2em 0 4em;
-}
-.filter{
-	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	padding: 2em;
-	max-width: 270px;
-	width: 90%;
-	background-color: var(--while-color);
-	overflow: auto;
-	z-index: 1000;
-	box-shadow: rgb(0 0 0 /30%) 0 10px 50px;
-	visibility: hidden;
-	opacity: 0;
-}
-
-.filter.show{
-	visibility: visible;
-	opacity: 1;
-}
 
 /* View cart */
 .products.cart form{
@@ -2192,7 +2099,7 @@ input[type="range"]{
 	background-color: var(--light-bg-color);
 }
 .products.cart table :where(th, td){
-	padding: 0 1em;
+	padding: 2em 1em;
 	text-align: center;
 }
 .products.cart table :where(th, td):first-child{
@@ -2484,9 +2391,6 @@ input[type="range"]{
     justify-content: space-around;
     margin-bottom: 3rem;
     margin-top: 20px;
-	flex-direction: column;
-	gap: 10px;
-	margin-left: 20%;
 }
 .tabs li{
     font-size: 20px;
@@ -2500,7 +2404,7 @@ input[type="range"]{
     content: "";
     position: absolute;
     bottom: -20%;
-    left: 26px;
+    left: 16%;
     width: 0%;
     height: 3px;
     background: var(--primary-color);
@@ -2508,7 +2412,7 @@ input[type="range"]{
     transition:  width 0.8s ease;
 }
 .tabs li.active::after{
-    width: 8%;
+    width: 50%;
 }
 .container_tabs{
     position: relative;  
@@ -2583,7 +2487,6 @@ input[type="range"]{
 	width: 70%;
 	height: auto;
 	position: relative;
-	z-index: 2;
 }
 .container_ship ul::after{
 	position: absolute;
@@ -2721,7 +2624,7 @@ input[type="range"]{
 
 @media screen and (min-width: 481px) {
 	.products.main .item{
-		flex:0 0 43% !important;
+		flex:0 0 43%;
 	}
 	.products.one .big_image{
 		margin-bottom: 2em;
@@ -2735,11 +2638,6 @@ input[type="range"]{
 	.container_information .content .category{
 		flex-direction: row;
 	  }
-	  /* #cart_table tbody tr td:last-child{
-		position: absolute;
-		top: 0;
-		right: 0;
-	} */
 }
 @media screen  and (max-width:639px){
 	#cart_table thead{
@@ -2761,7 +2659,11 @@ input[type="range"]{
 		flex-grow:1 ;
 		min-width: var(--percent100);
 	}
-	
+	#cart_table tbody tr td:last-child{
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
 	.container_information{
 		max-width: 100%;
 	  }
@@ -2786,7 +2688,7 @@ input[type="range"]{
 	}
 	.products.mini, .banner .row
 	{
-		flex: 0 0 45%;
+		flex: 0 0 42%;
 	}
 	.checkout .item{
 		flex:  0 0 38%;
@@ -2795,10 +2697,17 @@ input[type="range"]{
 		flex: 0 0 43%;
 	}
 	.products.main .item{
-		flex:  0 0 28.33% !important;
+		flex:  0 0 29.33%;
 	}
-
-
+	.products.one .row
+	{
+		flex: 0 0 50%;
+		width: 50%;	
+		margin-left: calc((100% - 530px)/2);
+	}
+	.icon_large{
+		margin-top: -36px;
+	}
 	.products.one .is_sticky, .is_sticky{
 		position: sticky;
 		top: 2em;
@@ -2806,19 +2715,9 @@ input[type="range"]{
 	.checkout .item.right{
 		padding: 5em 0 0 2.3em;
 	}
-	.tabs{
-		flex-direction: row;
-		margin-left: 0;
-	}
-	.tabs li::after{
-		left: 16%;
-	}
-	.tabs li.active::after{
-		width: 50%;
-	}
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1100px) {
 	.container {
 		padding: 0 2em;
 	}
@@ -3003,19 +2902,7 @@ input[type="range"]{
 	}
 	.products.main .item
 	{
-		flex: 0 0 29.333% !important;
-	}
-	.products.main .page_other{
-		flex: 0 0 21.333% !important;
-	}
-	.products.one .row
-	{
-		flex: 0 0 46%;
-		width: 47%;
-		margin-left: 0;	
-	}
-	#cart_product{
-		margin-top: -36px;
+		flex: 0 0 21.333%;
 	}
 	.widgets .row{
 		flex:  0 0 25%	;
@@ -3042,35 +2929,4 @@ input[type="range"]{
 		padding-left: 2.5em;
 		margin-top: 0;
 	}
-	/* Category */
-
-	.single_category .holder{
-		flex-direction: row;
-	}
-	.single_category .sidebar{
-		flex: 1 0 20%;
-	}
-	.single_category .section{
-		flex:1 0 69%;
-	}
-	.single_category .sidebar .filter{
-		padding-right: 1.5em;
-	}
-	.single_category .sidebar .filter{
-		padding-right: 1.5em;
-		position: sticky;
-		top: 2em;
-		box-shadow: none;
-		width: var(--percent100);
-		z-index: initial;
-		visibility: visible;
-		opacity: 1;
-		padding: 0 1.5em 0 0;
-	}
-
-	.products.cart table :where(th, td){
-		padding: 2em 1em;
-		text-align: center;
-	}
-
 }

@@ -279,38 +279,12 @@ class payPalController extends Controller
     }
 
     public function softdelete($id){
-        $orderDetail = OrderDetail::find($id);
-        try{
-                $products = Product::where('id' , $orderDetail->product_id)->get();
-                foreach($products as $product){
-                    $product->sold = $product->sold - $orderDetail->quantity;
-                    $product->stock = $product->stock + $orderDetail->quantity;
-                    $product->save();
-                }
-                $orderDetail->delete();
-            return redirect()->back()->with('success', 'Đã hủy đơn hàng');
-        }catch(Exception $e){
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
-        }
+        $orders = Order::find($id);
+        $orders->delete();
+        return redirect()->back()->with('success', 'Đã hủy đơn hàng');
     }
     public function restore($id){
-       $orderDetail = OrderDetail::onlyTrashed()->find($id);
-         try{
-                $products = Product::where('id' , $orderDetail->product_id)->get();
-                foreach($products as $product){
-                    if($product->stock == 0){
-                        return redirect()->back()->with('error', 'Sản phẩm này đã hết hàng');
-                    }else{
-                        $product->sold = $product->sold + $orderDetail->quantity;
-                        $product->stock = $product->stock - $orderDetail->quantity;
-                        $product->save();
-                    }
-                $orderDetail->restore();
-            }
-       
-            return redirect()->back()->with('success', 'Đã đặt lại đơn hàng');
-        }catch(Exception $e){
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
-        }
+        Order::onlyTrashed()->find($id)->restore();
+        return back()->with('success', 'Đã đặt lại đơn');
     }  
 }

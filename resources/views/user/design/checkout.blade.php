@@ -94,8 +94,9 @@
                                 <input type="text" name="user_id" value="{{ Auth::user()->id }}" hidden>
                                 <input type="text" name="subtotal" value="{{ $subTotal }}" hidden>
                                 <p>
-                                <div class="primary_checkout">
-                                    <button class="primary_button" type="submit">Thanh toán</button></div>
+                                <div class="primary_checkout"><button class="primary_button"
+                                        type="s
+                                    ">Thanh toán</button></div>
                                 </p>
                             </form>
                         @endif
