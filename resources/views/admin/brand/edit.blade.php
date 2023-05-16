@@ -33,7 +33,11 @@
                                     value="{{$brand->logo}}" name="logo" >
                             </div>
                             <!-- /.card-body -->
-
+                            <div class="form-group">
+                                <label for="exampleName">Chi tiết Brand</label>
+                                <input type="text" class="form-control" id="exampleInputName"
+                                    value="{{$brand->description}}" name="description" >
+                            </div>
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>

@@ -12,7 +12,7 @@
                 <div class="column">
                     <div class="products main flexwrap">
                         @foreach ($wishlists as $result)
-                            <div class="item">
+                            <div class="item page_other">
                                 <form action="{{url('wishlist/delete/' .$result->id)}}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -56,7 +56,7 @@
                                         @else
                                         <div class="stars" style="width:{{ 80 * ($result->product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
                                         @endif
-                                        <div class="mini_text">(160)</div>
+                                        <div class="mini_text">({{$result->product->reviews->count()}}) </div>
                                     </div>
                                     @if ($result->product->sale == 0)
                                     <h3 class="main_links"><a

@@ -168,6 +168,24 @@ class productController extends Controller
             $products->update($input);
             $products -> categories()->sync($request->input('id_category'));
             $products -> attributevalues()->sync($request->input('attribute_value_id'));
+            $vouchers = Voucher::where('product_id', $products->id)->get();
+            for($i = 0; $i< count($request->value); $i++){
+                foreach($vouchers as $voucher){
+                    $voucher->value = $request->value[$i];
+                    $voucher->quantity = $request->quantity[$i];
+                    $voucher->percent = $request->percent[$i];
+
+                    $voucher->save();
+                }
+             }
+             $images = Image::where('product_id', $products->id)->get();
+
+             for($j = 0; $j < count($request->path); $j++) {
+                foreach($images as $image){
+                    $image->path = $request->path[$j];
+                    $image->save();
+                }
+             }
             if (Session::get('products_url')) {
                 return redirect(session('products_url'))->with('success', 'Đã sửa products thành công');
             }
@@ -209,10 +227,18 @@ class productController extends Controller
     }  
 
     public function delete($id){
-        Product::onlyTrashed()->find($id)->forceDelete();
         $products = Product::find($id);
         $products->categories()->detach();
         $products->attributevalues()->detach();
+        $images = Image::where('product_id', $products->id)->get();
+        foreach($images as $image){
+            $image->delete();
+        }
+        $vouchers = Voucher::where('product_id', $products->id)->get();
+        foreach($vouchers as $voucher){
+            $voucher->delete();
+        }
+        Product::onlyTrashed()->find($id)->forceDelete();
         return back()->with('success', 'Đã xóa product thành công');
     }
 }

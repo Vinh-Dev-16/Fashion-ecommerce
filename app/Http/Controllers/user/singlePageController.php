@@ -46,7 +46,103 @@ class singlePageController extends Controller
         $products = Product::all();
         $categories = Category::all();
         $brands = Brand::all();
+        $paginate = $brand->products()->paginate(12);
         $cart = session()->get('cart', []);
-        return view('user.design.brand', compact('brand','brands','products','categories','cart'));
+        return view('user.design.brand', compact('brand','brands','products','categories','cart','paginate'));
     } 
+
+    public function category($id){
+        $category = Category::findOrFail($id);
+        $products = Product::all();
+        $categories = Category::all();
+        $brands = Brand::all();
+        $paginate = $category->products()->paginate(12);
+        $cart = session()->get('cart', []);
+        return view('user.design.category', compact('category','brands','products','categories','cart','paginate'));
+    } 
+
+
+    public function filtering($id,$value){
+
+        switch($value){
+            case(3):
+                $brand = Brand::findOrFail($id);
+                $result = $brand->products()->orderBy('price','DESC')->get();
+                $results = collect($result, []);
+                foreach ($results as $result) {
+                    $result->images->first()->path;
+                }
+                return response()->json([
+                    'status'=> 'success',
+                    'result'=> $results,
+                ]);
+                break;
+            case (1):
+                $brand = Brand::findOrFail($id);
+                $result = $brand->products()->get();
+                $results = collect($result, []);
+                foreach ($results as $result) {
+                    $result->images->first()->path;
+                }
+                return response()->json([
+                    'status'=> 'success',
+                    'result'=> $results,
+                ]);
+                break;
+            case (2):
+                $brand = Brand::findOrFail($id);
+                $result = $brand->products()->orderBy('name','DESC')->get();
+                $results = collect($result, []);
+                foreach ($results as $result) {
+                    $result->images->first()->path;
+                }
+                return response()->json([
+                    'status'=> 'success',
+                    'result'=> $results,
+                ]);
+                break;
+        }
+    }
+
+    public function filteringCategory($id,$value){
+
+        switch($value){
+            case(3):
+                $category = Category::findOrFail($id);
+                $result = $category->products()->orderBy('price','DESC')->get();
+                $results = collect($result, []);
+                foreach ($results as $result) {
+                    $result->images->first()->path;
+                }
+                return response()->json([
+                    'status'=> 'success',
+                    'result'=> $results,
+                ]);
+                break;
+            case (1):
+                $category = Category::findOrFail($id);
+                $result = $category->products()->get();
+                $results = collect($result, []);
+                foreach ($results as $result) {
+                    $result->images->first()->path;
+                }
+                return response()->json([
+                    'status'=> 'success',
+                    'result'=> $results,
+                ]);
+                break;
+            case (2):
+                $category = Category::findOrFail($id);
+                $result = $category->products()->orderBy('name','DESC')->get();
+                $results = collect($result, []);
+                foreach ($results as $result) {
+                    $result->images->first()->path;
+                }
+                return response()->json([
+                    'status'=> 'success',
+                    'result'=> $results,
+                ]);
+                break;
+        }
+    }
 }

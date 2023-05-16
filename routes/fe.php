@@ -29,6 +29,7 @@ use Illuminate\Routing\Router;
         Route::get('confirm/product/{id}',[homeController::class,'confirmProduct'])->middleware('auth')->name('confirmProduct');
         Route::get('pageConfirm',[homeController::class,'pageConfirm'])->middleware('auth')->name('pageConfirm');
         Route::post('confirm/item',[homeController::class,'confirmItem'])->middleware('auth')->name('confirmItem');
+        Route::get('viewAllProducts',[homeController::class,'viewAllProducts'])->name('viewAllProducts');
 
         // Route Cart
 
@@ -51,6 +52,9 @@ use Illuminate\Routing\Router;
         Route::get('/detail/{id}',[singlePageController::class,'detail'])->name('detail');
         Route::get('pageoffer/{id}',[singlePageController::class,'pageOffer'])->name('pageoffer');
         Route::get('/brand/{id}',[singlePageController::class,'brand'])->name('brand');
+        Route::get('/category/{id}',[singlePageController::class,'category'])->name('categoty');
+        Route::get('/filtering/{id}/{value}',[singlePageController::class,'filtering'])->name('filtering');
+        Route::get('/filteringCategory/{id}/{value}',[singlePageController::class,'filteringCategory'])->name('filteringCategory');
 
         Route::middleware('auth')->prefix('wishlist')->group(function(){
             Route::get('/{id}',[wishlistController::class,'index'])->name('wishlist');

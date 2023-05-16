@@ -1,6 +1,6 @@
 @extends('user.layout')
 @section('title')
-    Brand {{ $brand->name }}
+    Thông tin {{ $category->name }}
 @endsection
 @section('content')
     <div class="single_category">
@@ -13,16 +13,14 @@
                                 <div class="filter_block ">
                                     <h4>Category</h4>
                                     <ul>
-                                        @foreach ($categories as $category)
-                                            @if (!($category->parent_id == 0))
+                                        @foreach ($brands as $brand)
                                                 <li>
-                                                    <input type="checkbox" name="categories[]" id="{{ $category->name }}" value="{{ $category->id}}">
-                                                    <label for="{{ $category->name }}">
+                                                    <input type="checkbox" name="brand[]" id="{{ $brand->name }}" value="{{ $brand->id}}">
+                                                    <label for="{{ $brand->name }}">
                                                         <span class="checked"></span>
-                                                        <span>{{ $category->name }}</span>
+                                                        <span>{{ $brand->name }}</span>
                                                     </label>
                                                 </li>
-                                            @endif
                                         @endforeach
                                     </ul>
                                 </div>
@@ -46,14 +44,14 @@
                                     <div class="breadcrumb">
                                         <ul class="flexitem">
                                             <li><a href="{{ url('/') }}">Home</a></li>
-                                            <li>{{ $brand->name }}</li>
+                                            <li>{{ $category->name }}</li>
                                         </ul>
                                     </div>
                                     <div class="page_title">
-                                        <h1>{{ $brand->name }}</h1>
+                                        <h1>{{ $category->name }}</h1>
                                     </div>
                                     <div class="cat_description">
-                                        <p>{!! $brand->description !!}</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, vitae. Est ullam deleniti aliquam minus in. Quasi iure officiis quod dolor corporis modi, suscipit velit amet culpa. Deserunt, sint praesentium?</p>
                                     </div>
                                     <div class="cat_navigation flexitem">
                                         <div class="item_filter desktop_hide">
@@ -71,9 +69,9 @@
                                                 <i class="ri-arrow-down-s-line"></i>
                                             </div>
                                             <ul>
-                                                <li onclick="defaultFilter(this,{{$brand->id}})" value="1">Default</li>
-                                                <li onclick="productName(this,{{$brand->id}})" value="2">Tên sản phẩm</li>
-                                                <li onclick="price(this,{{$brand->id}})" value="3">Price</li>
+                                                <li onclick="defaultFilter(this,{{$category->id}})" value="1">Default</li>
+                                                <li onclick="productName(this,{{$category->id}})" value="2">Tên sản phẩm</li>
+                                                <li onclick="price(this,{{$category->id}})" value="3">Price</li>
                                             </ul>
                                         </div>
                                     
@@ -226,7 +224,7 @@
             filtering(id, elemnet.value);
         }
        async function filtering(id, value){
-            const res = await fetch(`http://127.0.0.1:8000/filtering/${id}/${value}`)
+            const res = await fetch(`http://127.0.0.1:8000/filteringCategory/${id}/${value}`)
                 .then((response) => response.json())
                 .then((data) => {
                     showFilter(data);

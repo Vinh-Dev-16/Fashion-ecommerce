@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap/js/bootstrap.js') }}">
     <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_SANDBOX_CLIENT_ID') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <link rel="stylesheet" type="text/css" href="{{ asset('user/user.css') }}">
     <title>
         @section('title')
@@ -90,7 +91,7 @@
                                                         <h4>Danh mục sản phẩm</h4>
                                                         <ul>
                                                             @foreach ($categories->take(8) as $category)
-                                                                <li><a href="#">{{ $category->name }}</a></li>
+                                                                <li><a href="{{url('category/'. $category->id)}}">{{ $category->name }}</a></li>
                                                             @endforeach
                                                         </ul>
                                                     </div>
@@ -101,7 +102,7 @@
                                                         <ul>
                                                             <ul>
                                                                 @foreach ($categories->take(8) as $category)
-                                                                    <li><a href="#">{{ $category->name }}</a>
+                                                                    <li><a href="{{url('category/'. $category->id)}}">{{ $category->name }}</a>
                                                                     </li>
                                                                 @endforeach
                                                             </ul>
@@ -114,7 +115,7 @@
                                                         <ul>
                                                             <ul>
                                                                 @foreach ($categories->take(8) as $category)
-                                                                    <li><a href="#">{{ $category->name }}</a>
+                                                                    <li><a href="{{url('category/'. $category->id)}}">{{ $category->name }}</a>
                                                                     </li>
                                                                 @endforeach
                                                             </ul>
@@ -126,8 +127,8 @@
                                                         <h4>Brand</h4>
                                                         <ul class="brands">
                                                             <ul>
-                                                                @foreach ($categories->take(8) as $category)
-                                                                    <li><a href="#">{{ $category->name }}</a>
+                                                                @foreach ($brands->take(8) as $brand)
+                                                                    <li><a href="{{url('brand/'.$brand->id)}}">{{ $brand->name }}</a>
                                                                     </li>
                                                                 @endforeach
                                                             </ul>
@@ -272,13 +273,15 @@
                                                         VND</strong></p>
                                             </div>
                                             <div class="actions">
-                                                @if (Auth::check() && count($cart) > 0)
-                                                    <a href="{{ url('checkout') }}"
-                                                        class="primary_button">CheckOut</a>
-                                                @else
-                                                    <a href="#" class="primary_button"
-                                                        onclick="checkout()">CheckOut</a>
-                                                @endif
+                                                <div class="checkout_page">
+                                                    @if (Auth::check() && count($cart) > 0)
+                                                        <a href="{{ url('checkout') }}"
+                                                            class="primary_button">CheckOut</a>
+                                                    @else
+                                                        <a href="#" class="primary_button"
+                                                            onclick="createToast('Bạn cần đăng nhập hoặc có đơn hàng')">CheckOut</a>
+                                                    @endif
+                                                </div>
                                                 <a href="{{ url('viewcart') }}" class="secondary_button">Đến xem giỏ
                                                     hàng</a>
                                             </div>
@@ -900,12 +903,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-    @if (Auth::check())
-        <script>
-            const notifications = document.querySelector('.notification');
-            const timer = 3000;
-        </script>
-    @endif
+  
     @if (Auth::check() && Auth::user()->role_id == 2)
         <script>
             // Enable pusher logging - don't include this in production
@@ -968,7 +966,12 @@
         closeButton.addEventListener('click', () => {
             addclass.classList.remove('showmenu');
         });
+
         // Tao remove toast
+
+        const notifications = document.querySelector('.notification');
+        const toast = document.querySelector('.toasts');
+        const timer = 3000;
 
         const removeNoti = (noti) => {
             noti.classList.add("hide");
@@ -992,6 +995,31 @@
             notifications.appendChild(noti);
             setTimeout(() => removeNoti(noti), 3000)
         };
+
+          // Tao remove toast
+
+          const removeToast = (toast) => {
+                toast.classList.add("hide");
+                if (toast.timeoutId) clearTimeout(toast.timeoutId);
+                setTimeout(() => toast.remove(), 400);
+            };
+
+
+            // Tao Toast
+            
+            function createToast(toastMessage) {
+                const toast = document.createElement('li');
+                toast.className = `toasts error`;
+                toast.innerHTML = `
+                <div class="column">
+                    <i class="fa-solid fa-bug"></i>
+                    <span>${toastMessage}</span>
+                </div>
+                <i class="fa-solid fa-x"></i>
+                `
+                notifications.appendChild(toast);
+                setTimeout(() => removeToast(toast), 3000)
+            };
 
         const submenu = document.querySelectorAll('.has_child .icon_small');
         submenu.forEach((menu) => menu.addEventListener('click', togglePage));
@@ -1320,23 +1348,21 @@
             document.querySelector('#subtotal').innerHTML = card_render;
             document.querySelector('#card_body').innerHTML = render;
             document.querySelector('#card_head').innerText = `Có ${data.cart.length} sản phẩm`;
+            if(data.cart.length > 0) {
+                document.querySelector('.checkout_page').innerHTML = `
+                <a href="http://127.0.0.1:8000/checkout" class="primary_button">CheckOut</a>
+                `;
+            }else{
+                document.querySelector('.checkout_page').innerHTML = `
+                <a href="#" onclick="createToast('Bạn cần có đơn hàng hoặc đăng nhâp')" class="primary_button">CheckOut</a>
+                `;
+            }
         };
 
-
-        function checkout() {
-            message = "Bạn cần đăng nhập hoặc có sản phẩm trong giỏ hàng";
-            createNoti(message);
-            return false;
-        }
     </script>
     @if (Session::has('success') || Session::has('error'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-
-                const notifications = document.querySelector('.notification');
-                const toast = document.querySelector('.toasts');
-                const timer = 3000;
-
 
                 function removeToast(toast) {
                     toast.classList.add("hide");

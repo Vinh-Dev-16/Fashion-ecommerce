@@ -1,19 +1,16 @@
 @extends('user.layout')
 @section('title')
-    Tìm kiếm cho {{ $key }}
+  Các sản phẩm
 @endsection
 @section('content')
-    @if ($searches->count() > 0)
-        <h1 class="search_page">Kết quả tìm kiếm cho {{ $key }}</h1>
+ 
+        <h1 class="search_page">Tất cả sản phẩm</h1>
         <div class="features">
             <div class="container">
                 <div class="wrapper">
                     <div class="column">
-                        <div class="sectop flexitem">
-                            <h2><span class="circle"></span><span>Kết quả</span></h2>
-                        </div>
                         <div class="products main flexwrap">
-                            @foreach ($searches as $product)
+                            @foreach ($products as $product)
                                 <div class="item page_other">
                                     <div class="media">
                                         <div class="thumbnail object_cover">
@@ -97,11 +94,9 @@
                 </div>
             </div>
         </div>
-    @else
-        <h1 class="search_page">Không có kết quả tìm kiếm cho {{ $key }}</h1>
-    @endif
+ 
 
-    {{ $searches->links('vendor.pagination.default') }}
+    {{ $products->links('vendor.pagination.default') }}
 @endsection
 
 @section('javascript')

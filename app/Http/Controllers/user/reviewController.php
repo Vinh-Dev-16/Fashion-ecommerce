@@ -81,8 +81,10 @@ class reviewController extends Controller
             $data= Review::all();
             $rateProduct = Product::find($id);
             $rate = $rateProduct->reviews()->pluck('feedbacks.rate')->avg();
+            $count = $rateProduct->reviews->count();
             $rateProduct->update([
                 'rate' => $rate,
+                'count' => $count,
             ]);
             
             return response()->json([
@@ -146,8 +148,10 @@ class reviewController extends Controller
         $data= Review::all();
         $rateProduct = Product::find($reviews->product_id);
         $rate = $rateProduct->reviews()->pluck('feedbacks.rate')->avg();
+        $count = $rateProduct->reviews->count();
         $rateProduct->update([
             'rate' => $rate,
+            'count' => $count,
         ]);
         return response()->json([
             'result'=>$data,
