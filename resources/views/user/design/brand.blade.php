@@ -236,8 +236,6 @@
                 });
         }
 
-
-
         function showFilter(data) {
             let filter = '';
             console.log(data);

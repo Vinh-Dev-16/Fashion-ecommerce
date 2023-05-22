@@ -9,30 +9,27 @@
 
         git clone https://github.com/Vinh-Dev-16/Fashion-ecommerce.git
         
- 2. Install Composer packages
+ 2. Install all packages I use in my project
  
-        composer install
-        
- 3. Install all packages I use in my project
+        composer install --ignore-platform-reqs
  
-        composer --ignore-platform-reqs
- 
- 4. Use file fashion.sql I have upload, so if you don't want create new database you can use it. If you still want to create new database you try
+ 3. Use file fashion.sql I have upload, so if you don't want create new database you can use it. If you still want to create new database you try
  
         php artisan migrate
         
- 5. Linking Storage folder to public
+ 4. Linking Storage folder to public
     
         php artisan storage:link
         
- 6. Compile all your asset including a source map
+ 5. Compile all your asset including a source map
     
         npm install && npm run dev
  
- 7. I use [Chatify](https://chatify.munafio.com) for interface real-time chat and use [Pusher](https://pusher.com) for real-time chat and notification.
- 8. Install Paypal
+ 6. I use [Chatify](https://chatify.munafio.com) for interface real-time chat and use [Pusher](https://pusher.com) for real-time chat and notification.
+ 
+ 7. Install Paypal
     
- 9. Serve the application
+ 8. Serve the application
         
         php artisan serve
 </p>
@@ -46,8 +43,3 @@
    + I started study php about one year ago and lavarel before six month.
    + I studied at [ICT NIIT](https://niithanoi.edu.vn) with Mr.Luan, who is very pro 
    
-<h3>Releases</h3>
-   <p font-size=10>No releases published</->
-
-<h3>Packages</h3>
-    <p>No packages published</p>

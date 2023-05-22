@@ -341,8 +341,8 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="review_img object_cover">
-                                                                                    @if ($review->image)
-                                                                                        <img src="{{ asset('' . $review->image) }}"
+                                                                                    @if (!(empty($review->image)))
+                                                                                        <img src="{{ asset('storage/review/'. $review->image) }}"
                                                                                             style="position: static;width:200px;height:200px">
                                                                                     @endif
                                                                                 </div>
@@ -694,7 +694,7 @@
                                     return `
                                                             <p>
                                                     Ảnh review trước đó: 
-                                                    <img src="{{ asset('${data.result.image}') }}" style="position: static;width:160px;height:220px">    
+                                                    <img src="{{ asset('storage/review/${data.result.image}') }}" style="position: static;width:160px;height:220px">    
                                                     </p>
                                                                     `
                                 }else{
@@ -731,11 +731,9 @@
                 let rateBtn = document.querySelectorAll('input[name="rate"]');
                 let name = document.querySelector('input[name="name"]').value;
                 let email = document.querySelector('input[name="email"]').value;
-                console.log(rateBtn);
                 for (let i of rateBtn) {
                     if (i.checked) {
                         var rate = i.value;
-                        console.log(rate);
                     }
                 }
                 sendData(id, name, email, rate, title, image, content);
@@ -760,26 +758,78 @@
                 form.append('image', image);
                 const res = await fetch(`http://127.0.0.1:8000/review/update/${id}`, {
                         method: "POST",
-                        // headers: {
-                        //     "Content-Type": "application/json",
-                        //     "X-Requested-With": "XMLHttpRequest",
-                        // },
                         body: form,
                     }).then((response) => response.json())
                     .then((data) => {
                         showData(data);
-                        console.log(form_review);
-                        let form_review_user = document.querySelector('.form_review_user');
-                        form_reset.remove();
-                        
                         message = 'Đã update bình luận';
                         createNoti(message);
+
+                        let form_review_user = document.querySelector('.form_review_user');
+                        let form_reset = document.querySelector('#form_reset');
+                        if (form_reset) {
+                            // Remove the form from its parent element
+                            form_reset.parentNode.removeChild(form_reset);
+                        }
+                        form_review_user.innerHTML =
+                            `
+                            <form class="user_review"  method="POST" enctype="multipart/form-data">
+                            @csrf
+                              <div class="rating">
+                              <p>Bạn có thấy hài lòng?</p>
+                               <div class="rate_this" style="margin-bottom: 23px">
+                               <input type="radio" name="rate" id="star5" value="5">
+                               <label for="star5"><i class="ri-star-fill"></i></label>
+                               <input type="radio" name="rate" id="star4" value="4">
+                                 <label for="star4"><i class="ri-star-fill"></i></label>
+                                 <input type="radio" name="rate" id="star3" value="3">
+                                 <label for="star3"><i class="ri-star-fill"></i></label>
+                                 <input type="radio" name="rate" id="star2" value="2">
+                                <label for="star2"><i class="ri-star-fill"></i></label>
+                                <input type="radio" name="rate" id="star1" value="1">
+                                <label for="star1"><i class="ri-star-fill"></i></label>
+                                   </div>
+                                  </div>
+                                                                        <p>
+                                                                            <label>Tiêu đề</label>
+                                                                            <input type="text" name="title" required>
+                                                                        </p>
+                                                                        <p>
+                                <label>Ảnh review</label>
+                                <input type="file" name="image">
+                            </p>
+                            <p>
+                                <label>Bình luận</label>
+                                <textarea cols="30" rows="10" name="content" required></textarea>
+                            </p>
+                            <p>
+                            <input type="text" hidden name="name" value="{{ Auth::user()->name }}">
+                            <input type="text" hidden name="email" value="{{ Auth::user()->email }}">
+                             </p>
+                            <button type="submit" class="primary_button" onclick="handleCreateReview();return false;" style="border:none; outline:none">
+                                Bình luận
+                            </button>                                                             
+                `;
                     })
                     .catch((error) => {
                         alert(error.message);
                     });
 
                 return false;
+            }
+         
+            function handleCreateReview(){
+                
+                let title = document.querySelector('input[name="title"]').value;
+                let image = document.querySelector('input[name="image"]').files[0];
+                let content = document.querySelector('textarea[name="content"]').value;
+                let rate = document.querySelector('input[name="rate"]').value;
+                let name = document.querySelector('input[name="name"]').value;
+                let email = document.querySelector('input[name="email"]').value
+                sendDataCreate(name, email, rate, title, image, content);
+                message = "Đã thêm bình luận"
+                createNoti(message);
+                form_review.reset();
             }
 
 
@@ -819,7 +869,7 @@
                         if(item.image){
                             return `
                                   <div class="review_img object_cover">
-                                    <img src="{{ asset('${item.image}') }}" style="position: static;width:200px;height:200px">
+                                    <img src="{{ asset('storage/review/${item.image}') }}" style="position: static;width:200px;height:200px">
                                   </div>
                                                             `
                         }else{

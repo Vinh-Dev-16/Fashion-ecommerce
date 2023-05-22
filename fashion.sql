@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 22, 2023 lúc 01:55 PM
--- Phiên bản máy phục vụ: 10.4.24-MariaDB
--- Phiên bản PHP: 7.4.29
+-- Thời gian đã tạo: Th5 22, 2023 lúc 06:28 PM
+-- Phiên bản máy phục vụ: 10.4.28-MariaDB
+-- Phiên bản PHP: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `accounts` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -43,7 +43,7 @@ CREATE TABLE `accounts` (
 
 CREATE TABLE `attribute` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -64,7 +64,7 @@ INSERT INTO `attribute` (`id`, `value`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `attribute_value` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(255) NOT NULL,
   `attribute_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -96,8 +96,9 @@ INSERT INTO `attribute_value` (`id`, `value`, `attribute_id`, `created_at`, `upd
 
 CREATE TABLE `brands` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `logo` varchar(255) NOT NULL,
+  `description` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -106,11 +107,11 @@ CREATE TABLE `brands` (
 -- Đang đổ dữ liệu cho bảng `brands`
 --
 
-INSERT INTO `brands` (`id`, `name`, `logo`, `created_at`, `updated_at`) VALUES
-(1, 'CollMate', 'https://img.ws.mms.shopee.vn/02cc55b581a1da07745c4e19070c0f16_tn', '2023-01-13 07:02:13', '2023-01-13 07:02:13'),
-(2, 'Owen', 'https://img.ws.mms.shopee.vn/57342653dc9b639f5848dc52c99d94b0_tn', NULL, '2023-03-09 07:03:39'),
-(3, 'Ivy Moda', 'https://cf.shopee.vn/file/ef90220417fe3b7e0a3ffe7c3bbc986c_tn', '2023-03-15 22:54:26', '2023-03-15 22:54:26'),
-(4, 'Quốc Tế', 'https://cf.shopee.vn/file/b131de3bfa30b0d2322b495cb0b51be4_tn', '2023-03-16 07:43:55', '2023-03-16 07:43:55');
+INSERT INTO `brands` (`id`, `name`, `logo`, `description`, `created_at`, `updated_at`) VALUES
+(1, 'CollMate', 'https://img.ws.mms.shopee.vn/02cc55b581a1da07745c4e19070c0f16_tn', '<p><strong>Coolmate</strong> thành lập vào tháng 3/2019, Nhu (CEO), Hiệp (CTO) và Lan (CMO) khởi đầu với một nhà kho 20m2, và một Website bán hàng sơ khai, với các sản phẩm rất cơ bản dành cho nam giới như áo thun, bít tất và đồ lót. Sau 3 năm, thì ngày hôm nay Coolmate đã có sự trưởng thành đáng kể.</p><p><strong>Coolmate </strong>vẫn bán áo thun, đồ lót và bít tất, và cũng có thêm khá nhiều các sản phẩm khác trong tủ đồ nam giới như các đồ mặc đi chơi, mặc đi làm, hay chơi thể thao. Chúng tôi cũng bán cả mũ, cả khẩu trang, khăn mặt và 1 số áo in để dành tiền quyên góp cho một số quỹ từ thiện (danh mục <i>Care &amp; Share</i>). Coolmate còn có thêm dịch vụ làm các sản phẩm in ấn theo yêu cầu (dịch vụ <i>CoolxPrint</i>), và là đơn vị tiên phong với mô hình giao đồ lót định kỳ đầu tiên tại Việt Nam (dịch vụ <i>CoolSub</i>).</p>', '2023-01-13 07:02:13', '2023-05-20 08:23:37'),
+(2, 'Owen', 'https://img.ws.mms.shopee.vn/57342653dc9b639f5848dc52c99d94b0_tn', '<p>Được thành lập năm 2008, <strong>Owen </strong>là một trong <i><strong>những thương hiệu tiên phong về chất liệu</strong></i>. Giữa vô vàn các hãng thời trang không rõ nguồn gốc xuất xứ, chất lượng không có sự đảm bảo, Owen khẳng định mình là thương hiệu Việt uy tín chất lượng cao, kiến tạo chuẩn mực mới cho thời trang dành cho nam giới.</p><p>Năm 2014, <strong>Owen</strong> tiếp tục đầu tư mạnh về chất liệu thông qua sự hợp tác với Itochu - Công ty dệt may Nhật Bản chuyên cung cấp, quản lý chất liệu vải theo tiêu chuẩn khắt khe bậc nhất Nhật Bản, đi đầu về công nghệ sản xuất chất liệu mới (như vải sợi tre, sợi Nano, sợi cafe,...) Hơn cả là đối tác về cung cấp, Itochu còn là đối tác về chiến lược của thương hiệu, Itochu Group đã cố vấn toàn diện về hoạt động mở rộng thị trường, quản trị chất lượng sản phẩm và tối ưu nhân lực lãnh đạo,... Việc hợp tác toàn diện giữa thương hiệu Owen và Itochu đã không chỉ tăng sự hiện diện của thương hiệu trên thị trường bán lẻ, mà còn nới rộng và góp phần nâng tầm Owen trở thành thương hiệu thời trang nam hàng đầu Việt Nam.</p><p>Năm 2018, sau 10 năm không ngừng phát triển và cải tiến, Owen đánh dấu sự thành công vang dội với hơn 1000 đại lý, showroom và 100 cửa hàng bán lẻ tại các tỉnh và thành phố lớn, trở thành<strong> </strong><i><strong>hãng thời trang nam có độ phủ lớn nhất cả nước</strong></i><strong>.</strong> Một trong những yếu tố lớn nhất làm nên thành công của Owen chính là sự kỹ càng trong việc tuyển chọn chất liệu lẫn nghiên cứu xu hướng thời trang quốc tế, thông qua đó, Owen đã cho ra mắt nhiều bộ sưu tập đột phá, đón nhận sự hưởng ứng nồng nhiệt và là lựa chọn tin cậy của đông đảo nam giới. Năm 2018 cũng chứng kiến Owen mở rộng thương hiệu theo chiều sâu, hướng tới những đối tượng khách hàng trẻ hơn với những chiến lược tái định vị về cả thông điệp, hình ảnh thương hiệu lẫn chiến lược truyền thông.</p>', NULL, '2023-05-20 08:26:31'),
+(3, 'Ivy Moda', 'https://cf.shopee.vn/file/ef90220417fe3b7e0a3ffe7c3bbc986c_tn', '<p><strong>Ivy Moda </strong>thành lập vào tháng 10/2005 và thuộc sở hữu của doanh nhân Vũ Anh. Theo doanh nhân Vũ Anh, Ivy là tên cây trường xuân tượng trưng cho vẻ đẹp vĩnh cửu, Moda nghĩa là thời trang theo phong cách Italy. Thương hiệu nội địa này hướng tới sứ mệnh \"làm sao khi các hãng thời trang nước ngoài du nhập Việt Nam thì Ivy vẫn phát triển được”.&nbsp;</p><p>&nbsp;</p><p><strong>IVY moda </strong>lần lượt cho ra đời thời trang nam IVY men vào năm 2017 ; thời trang trẻ nhỏ IVY kids vào 2018 ; cũng là tên thương hiệu tiên phong và duy nhất tại Nước Ta hợp tác cùng ELLE .</p><p>&nbsp;</p><p>Mong muốn đem lại vẻ đẹp hiện đại và sự tự tin cho khách hàng, thông qua các dòng sản phẩm thời trang thể hiện cá tính và xu hướng, IVy Moda sở hữu các sản phẩm đa dạng, thức thời. Đến với IVy Moda người mặc sẽ có được những sản phẩm phù hợp nhất với ngoại hình và quan trọng hơn cả là cá tính của chính mình.</p>', '2023-03-15 22:54:26', '2023-05-20 08:28:21'),
+(4, 'Quốc Tế', 'https://cf.shopee.vn/file/b131de3bfa30b0d2322b495cb0b51be4_tn', '<p>Đây chỉ đơn giản là các sản phẩm đến từ quốc tế</p>', '2023-03-16 07:43:55', '2023-05-20 08:24:39');
 
 -- --------------------------------------------------------
 
@@ -120,7 +121,7 @@ INSERT INTO `brands` (`id`, `name`, `logo`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `categories` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL
@@ -181,7 +182,7 @@ INSERT INTO `category_products` (`id`, `id_product`, `id_category`, `created_at`
 --
 
 CREATE TABLE `ch_favorites` (
-  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` char(36) NOT NULL,
   `user_id` bigint(20) NOT NULL,
   `favorite_id` bigint(20) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -195,11 +196,11 @@ CREATE TABLE `ch_favorites` (
 --
 
 CREATE TABLE `ch_messages` (
-  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` char(36) NOT NULL,
   `from_id` bigint(20) NOT NULL,
   `to_id` bigint(20) NOT NULL,
-  `body` varchar(5000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `attachment` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `body` varchar(5000) DEFAULT NULL,
+  `attachment` varchar(255) DEFAULT NULL,
   `seen` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -223,11 +224,11 @@ INSERT INTO `ch_messages` (`id`, `from_id`, `to_id`, `body`, `attachment`, `seen
 
 CREATE TABLE `failed_jobs` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -239,11 +240,11 @@ CREATE TABLE `failed_jobs` (
 
 CREATE TABLE `feedbacks` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `image` text DEFAULT NULL,
+  `content` longtext NOT NULL,
   `rate` int(255) NOT NULL,
   `product_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -255,20 +256,25 @@ CREATE TABLE `feedbacks` (
 --
 
 INSERT INTO `feedbacks` (`id`, `name`, `email`, `title`, `image`, `content`, `rate`, `product_id`, `created_at`, `updated_at`) VALUES
-(1, 'test', 'test@gmail.com', 'Đánh giá', 'storage/review/1679386463.jpg', 'Sản phẩm tốt lắm nha', 5, 1, '2023-03-21 01:27:44', '2023-03-21 01:27:44'),
+(1, 'test', 'test@gmail.com', 'Đánh giá', '1679386463.jpg', 'Sản phẩm tốt lắm nha', 5, 1, '2023-03-21 01:27:44', '2023-03-21 01:27:44'),
 (2, 'vinh', 'vinhhttt@gmail.com', 'Nhận xét', NULL, 'Sản phẩm tạm ổn', 5, 1, '2023-03-22 08:02:17', '2023-03-22 08:02:17'),
 (3, 'vinh', 'vinhhttt@gmail.com', 'Nhận xét lại', NULL, 'Cũng ok', 5, 1, '2023-03-22 08:03:28', '2023-03-22 08:03:28'),
-(4, 'vinh', 'vinhhttt@gmail.com', 'Đánh giá', 'storage/review/1679497549.png', 'ok chưa', 5, 1, '2023-03-22 08:05:50', '2023-03-22 08:05:50'),
+(4, 'vinh', 'vinhhttt@gmail.com', 'Đánh giá', '1679497549.png', 'ok chưa', 5, 1, '2023-03-22 08:05:50', '2023-03-22 08:05:50'),
 (5, 'vinh', 'vinhhttt@gmail.com', 'Ok chưa', NULL, 'test', 5, 9, '2023-03-22 08:35:22', '2023-03-22 08:35:22'),
 (6, 'vinh', 'vinhhttt@gmail.com', 'Test2', NULL, 'ok chưa', 5, 9, '2023-03-22 08:37:24', '2023-03-22 08:37:24'),
-(7, 'vinh', 'vinhhttt@gmail.com', 'Vụ Án D', 'storage/review/1679499548.jpg', 'Test lại', 5, 9, '2023-03-22 08:39:08', '2023-03-22 08:39:08'),
+(7, 'vinh', 'vinhhttt@gmail.com', 'Vụ Án D', '1679499548.jpg', 'Test lại', 5, 9, '2023-03-22 08:39:08', '2023-03-22 08:39:08'),
 (8, 'vinh', 'vinhhttt@gmail.com', 'ABC', NULL, 'đasad', 5, 9, '2023-03-22 08:43:04', '2023-03-22 08:43:04'),
-(9, 'vinh', 'vinhhttt@gmail.com', 'Case', 'storage/review/1679669504.jpg', 'abc', 5, 6, '2023-03-24 07:51:44', '2023-03-24 07:51:44'),
+(9, 'vinh', 'vinhhttt@gmail.com', 'Case', '1679669504.jpg', 'abc', 5, 6, '2023-03-24 07:51:44', '2023-03-24 07:51:44'),
 (10, 'vinh', 'vinhhttt@gmail.com', 'Vụ Án', NULL, 'baby', 5, 7, '2023-03-26 01:50:56', '2023-03-26 01:50:56'),
-(11, 'test', 'test@gmail.com', 'test', 'storage/review/1681219831.png', 'male', 5, 1, '2023-04-11 03:46:32', '2023-04-11 06:30:31'),
-(13, 'test', 'test@gmail.com', 'Đánh giá', NULL, 'ABC', 5, 6, '2023-04-11 04:09:33', '2023-04-11 04:09:33'),
-(17, 'test', 'test@gmail.com', 'ye', NULL, 'yeaf', 5, 1, '2023-04-11 06:44:25', '2023-04-11 06:44:25'),
-(18, 'test', 'test@gmail.com', 'Vụ Án D', 'storage/review/1681233764.png', 'i don\'t think', 5, 15, '2023-04-11 10:22:44', '2023-04-11 10:22:44');
+(13, 'test', 'test@gmail.com', 'Đánh giá', '1684642108.jpg', 'ABC', 5, 6, '2023-04-11 04:09:33', '2023-05-20 21:08:28'),
+(18, 'test', 'test@gmail.com', 'Vụ Án D', '1681233764.png', 'i don\'t think', 5, 15, '2023-04-11 10:22:44', '2023-04-11 10:22:44'),
+(19, 'vinh', 'vinhhttt@gmail.com', 'Bình luận', '1684597186.jpg', 'Bình luận', 5, 16, '2023-05-20 08:39:46', '2023-05-20 08:39:46'),
+(20, 'vinh', 'vinhhttt@gmail.com', 'abc', '1684597490.jpg', 'abc', 5, 16, '2023-05-20 08:44:50', '2023-05-20 08:44:50'),
+(29, 'test', 'test@gmail.com', 'abc', '1684642810.png', 'ad', 5, 6, '2023-05-20 21:20:10', '2023-05-20 21:20:10'),
+(32, 'vinh', 'vinhhttt@gmail.com', 'test', '1684729734.jpg', 'ad', 5, 6, '2023-05-21 21:28:54', '2023-05-21 21:28:54'),
+(33, 'vinh', 'vinhhttt@gmail.com', 'test', '1684729735.jpg', 'ad', 5, 6, '2023-05-21 21:28:55', '2023-05-21 21:28:55'),
+(34, 'vinh', 'vinhhttt@gmail.com', 'test', '1684729966.jpg', 'test', 5, 6, '2023-05-21 21:32:46', '2023-05-21 21:32:46'),
+(35, 'vinh', 'vinhhttt@gmail.com', 'test', '1684730068.jpg', 'ad', 5, 6, '2023-05-21 21:34:28', '2023-05-21 21:34:28');
 
 -- --------------------------------------------------------
 
@@ -278,7 +284,7 @@ INSERT INTO `feedbacks` (`id`, `name`, `email`, `title`, `image`, `content`, `ra
 
 CREATE TABLE `images` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `path` varchar(255) NOT NULL,
   `product_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -329,14 +335,14 @@ INSERT INTO `images` (`id`, `path`, `product_id`, `created_at`, `updated_at`) VA
 CREATE TABLE `infoaccounts` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` int(255) NOT NULL,
-  `fullname` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fullname` text NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
   `birthday` date NOT NULL,
-  `gender` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avatar` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hobbies` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` varchar(255) DEFAULT NULL,
+  `avatar` text NOT NULL,
+  `hobbies` text NOT NULL,
+  `description` longtext NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -348,7 +354,7 @@ CREATE TABLE `infoaccounts` (
 INSERT INTO `infoaccounts` (`id`, `user_id`, `fullname`, `phone`, `address`, `birthday`, `gender`, `avatar`, `hobbies`, `description`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Đào Xuân Vinh', '0382282381', 'Cửu Việt 2', '2023-04-07', 'male', '1680861804.png', 'Ăn', '<p>Mình là Đào Xuân Vinh</p>', '2023-04-07 03:03:24', '2023-04-07 03:03:24'),
 (2, 3, 'Nguyễn Văn B', '123456789', 'Hà Nội', '2023-04-28', 'male', '1680883712.png', 'Ăn', '<p>Mình là</p>', '2023-04-07 09:08:32', '2023-04-07 09:08:32'),
-(3, 4, 'Mai Nêm Tét', '0123456789', 'Hà Nội', '2023-04-12', 'male', '1681143181.jpg', 'Ăn', '<p>test</p>', '2023-04-10 09:13:01', '2023-04-10 23:46:38'),
+(3, 4, 'Mai Nêm Tét', '0123456789', 'Hà Nội', '2023-04-12', 'male', '1684636343.jpg', 'Ăn', '<p>Minh la Test</p>', '2023-04-10 09:13:01', '2023-05-20 19:32:23'),
 (6, 5, 'Shipper', '234567891', 'Hà Nội', '2002-12-12', 'male', '1681450615.jpg', 'Ăn', '<p>Mình là shipper</p>', '2023-04-13 22:36:17', '2023-04-13 22:36:55');
 
 -- --------------------------------------------------------
@@ -359,7 +365,7 @@ INSERT INTO `infoaccounts` (`id`, `user_id`, `fullname`, `phone`, `address`, `bi
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -406,7 +412,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (42, '2023_04_09_999999_add_messenger_color_to_users', 26),
 (43, '2023_04_09_999999_create_chatify_favorites_table', 26),
 (44, '2023_04_09_999999_create_chatify_messages_table', 26),
-(45, '2023_04_13_114859_add_soft_delete_to_orders_table', 27);
+(45, '2023_04_13_114859_add_soft_delete_to_orders_table', 27),
+(46, '2023_04_24_170015_add_soft_delete_to_order_details_table', 28);
 
 -- --------------------------------------------------------
 
@@ -417,10 +424,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 CREATE TABLE `orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` int(255) NOT NULL,
-  `fullname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `note` varchar(255) DEFAULT NULL,
   `subtotal` float NOT NULL,
   `total_money` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -448,10 +455,10 @@ CREATE TABLE `order_details` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` text NOT NULL,
   `quantity` int(11) NOT NULL,
-  `size` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `color` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `size` text NOT NULL,
+  `color` text NOT NULL,
   `sale` int(11) NOT NULL,
   `discount` int(11) NOT NULL,
   `price` float NOT NULL,
@@ -461,19 +468,20 @@ CREATE TABLE `order_details` (
   `time` timestamp NULL DEFAULT NULL,
   `time_confirm` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `order_details`
 --
 
-INSERT INTO `order_details` (`id`, `order_id`, `product_id`, `name`, `quantity`, `size`, `color`, `sale`, `discount`, `price`, `total_money`, `status`, `ship`, `time`, `time_confirm`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 2, 'M', 'red', 1, 40, 800000, 1071000, 1, 1, '2023-04-15 04:03:53', '2023-04-15 04:02:20', '2023-04-15 00:19:30', '2023-04-15 04:04:24'),
-(2, 2, 16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 2, 'L', 'green', 1, 25, 720000, 1188000, 2, 1, '2023-04-22 00:38:43', '2023-04-21 10:10:37', '2023-04-16 00:41:34', '2023-04-22 00:38:43'),
-(3, 3, 1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 2, 'M', 'red', 1, 40, 800000, 1071000, 2, 1, '2023-04-22 00:38:43', '2023-04-22 00:33:45', '2023-04-21 09:32:01', '2023-04-22 00:38:43'),
-(4, 3, 16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 2, 'M', 'green', 1, 25, 720000, 1203000, 2, 1, '2023-04-22 00:36:18', '2023-04-22 00:34:13', '2023-04-21 09:32:01', '2023-04-22 00:36:18'),
-(5, 4, 16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 1, 'M', 'green', 0, 25, 720000, 609000, 2, 1, '2023-04-22 00:36:18', '2023-04-22 00:35:49', '2023-04-21 09:41:42', '2023-04-22 00:36:18');
+INSERT INTO `order_details` (`id`, `order_id`, `product_id`, `name`, `quantity`, `size`, `color`, `sale`, `discount`, `price`, `total_money`, `status`, `ship`, `time`, `time_confirm`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 2, 'M', 'red', 1, 40, 800000, 1071000, 1, 1, '2023-04-15 04:03:53', '2023-04-15 04:02:20', '2023-04-15 00:19:30', '2023-04-15 04:04:24', NULL),
+(2, 2, 16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 2, 'L', 'green', 1, 25, 720000, 1188000, 1, 1, '2023-04-22 00:38:43', '2023-04-21 10:10:37', '2023-04-16 00:41:34', '2023-05-21 21:37:01', NULL),
+(3, 3, 1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 2, 'M', 'red', 1, 40, 800000, 1071000, 2, 1, '2023-04-22 00:38:43', '2023-04-22 00:33:45', '2023-04-21 09:32:01', '2023-04-22 00:38:43', NULL),
+(4, 3, 16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 2, 'M', 'green', 1, 25, 720000, 1203000, 2, 1, '2023-04-22 00:36:18', '2023-04-22 00:34:13', '2023-04-21 09:32:01', '2023-04-22 00:36:18', NULL),
+(5, 4, 16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 1, 'M', 'green', 0, 25, 720000, 609000, 2, 1, '2023-04-22 00:36:18', '2023-04-22 00:35:49', '2023-04-21 09:41:42', '2023-04-22 00:36:18', NULL);
 
 -- --------------------------------------------------------
 
@@ -482,8 +490,8 @@ INSERT INTO `order_details` (`id`, `order_id`, `product_id`, `name`, `quantity`,
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -495,11 +503,11 @@ CREATE TABLE `password_resets` (
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
   `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -523,8 +531,8 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 
 CREATE TABLE `products` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
   `price` float NOT NULL,
   `brand_id` int(11) NOT NULL,
   `discount` float NOT NULL,
@@ -532,7 +540,8 @@ CREATE TABLE `products` (
   `stock` int(11) NOT NULL,
   `sold` int(11) NOT NULL DEFAULT 0,
   `rate` float NOT NULL DEFAULT 0,
-  `desce` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `count` int(11) NOT NULL,
+  `desce` longtext NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -542,17 +551,17 @@ CREATE TABLE `products` (
 -- Đang đổ dữ liệu cho bảng `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `slug`, `price`, `brand_id`, `discount`, `sale`, `stock`, `sold`, `rate`, `desce`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 'ao-khoac-cardigan-vien-xanh-nau-frmlk-form-rong', 800000, 1, 40, 1, 4, 8, 5, '<h4> Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng&nbsp;</h4>\r\n <p> - Form: Freesize, 65-75kg đổ lại mặc oke&nbsp;</p>\r\n<p> - Kích thước: Dài 65cm (xem trên ảnh thứ 2 của sản phẩm)&nbsp;</p>\r\n<p>- Phân loại: Be viền xanh, Be viền nâu&nbsp;</p>\r\n <p>- Chất liệu: Nỉ Bông&nbsp;</p> ', '2023-01-11 05:09:46', '2023-04-21 09:32:01', NULL),
-(2, 'Áo thun phông logo PINK tay lỡ  SANJATI Unisex', 'a', 105000, 1, 20, 0, 59, 0, 0, 'Chất liệu : thun cotton dày dặn, hình in nhiệt chắc chắc🔻Form : 3 Size ( Áo đã được cải tiến về Số Đo , Form Dáng & Mẫu Mã đẹp hơn ạ ✔️M : < 45kg , Cao < 1.6m✔️L : 46kg _ 65kg , Cao 1.6m _ 1.7m ✔️XL : 66kg _ 75kg , Cao 1.7m _ 1.75m', '2023-01-12 10:13:33', '2023-03-14 06:54:25', NULL),
-(3, 'Áo thun nam Care & Share cotton compact in Mặt Trời', 'ao-thun-nam-care-share-cotton-compact-in-mat-troi', 259000, 1, 0, 0, 90, 0, 0, 'Một công ty không cần phải lớn mới làm điều ý nghĩa\" - Coolmate đã nghĩ và tin như thế khi khởi xướng chương trình Care & Share này. Sức nhỏ làm việc nhỏ, có ít đóng góp ít, có nhiều đóng góp nhiều. Ít nhất chúng ta đã bắt tay vào làm và lan toả điều tích cực. \r\n\r\n\r\nHiểu một cách đơn giản, \"Care & Share: For A Better Childhood\" là một chương trình được xây dựng và duy trì bởi Coolmate nhằm góp sức mình giúp đỡ những trẻ em kém may mắn, giúp các em đến trường và có cuộc sống tốt hơn. Coolmate cam kết sẽ dành 10% doanh thu từ tất cả những sản phẩm trong danh mục \"Care & Share\" để đóng góp vào quỹ dành cho trẻ em có hoàn cảnh khó khăn. Coolmate mong muốn là một cầu nối để viết tiếp những ước mơ con trẻ còn dang dở, hướng tới một tương lai tốt đẹp hơn.', '2023-03-15 05:31:11', '2023-03-15 05:31:11', NULL),
-(5, 'Áo thun nữ trơn cổ V IVY moda MS 57P0155', 'ao-thun-nu-tron-co-v-ivy-moda-ms-57p0155', 490000, 3, 8, 0, 200, 0, 0, 'Áo thun cổ V, cộc tay, form suông basic phù hợp với mọi vóc dáng.Sản phẩm được tạo ra từ chất liệu Thun cao cấp, với những tính năng vượt trội như thấm hút mồ hôi tốt và có độ co dãn giúp người mặc vô cùng thoải mái. Hơn hết có thể dễ dàng mix&match được với nhiều kiểu quần khác nhau. Đấy chính là lý do để phái nữ nên có ít nhất một chiếc áo thun trong tủ đồ của bạn.', '2023-03-15 23:07:09', '2023-03-15 23:07:17', NULL),
-(6, 'Áo khoác bò, áo khoác thu đông nam Việt Nam cá tính năng động mã N51', 'ao-khoac-bo-ao-khoac-thu-dong-nam-viet-nam-ca-tinh-nang-dong-ma-n51', 500000, 2, 8, 0, 160, 0, 5, '- Phong cách Việt Nam\r\n- Form dáng : Slim Fitl\r\n- mùa thích hơp : Mùa Thu đông\r\n- Thành phần chính của vải  bò\r\n- Đặc tính của Vải : chất vải lai kaki thân thiện với môi trường, mặc tạo cảm giác thoải mái.\r\n- Độ dày : vừa phải.', '2023-03-16 07:39:27', '2023-03-16 07:39:27', NULL),
-(7, 'Áo khoác lông dáng dài của nữ phong cách sang trọng khí chất thanh lịch hàng Quảng Châu cao cấp', 'ao-khoac-long-dang-dai-cua-nu-phong-cach-sang-trong-khi-chat-thanh-lich-hang-quang-chau-cao-cap', 701000, 4, 0, 0, 56, 0, 5, '❗❗❗  Để đảm bảo hàng về kịp Tết, quý khách hàng vui lòng đặt đơn trước 23h59 ngày 01/01/2022⚜KÍCH THƯỚC⚜Chiều rộng vai 55    Ngực 134      Chiều dài áo 109       Tay áo dài 50(Đơn vị: cm, lát gạch và đo bằng tay, có thể sai số 1-2cm, chỉ mang tính chất tham khảo)✔Thời gian giao hàng của sản phẩm này là 7-15 ngày✔Khuyến khích khách hàng nhắn tin cho shop trước khi đặt hàng‼‼KHÔNG NHẬN ĐƠN NẾU BẠN CẦN GẤP💥Lưu ý:💭Đảm bảo khi nhận hàng bạn sẽ không thất vọng💭Hotline: 0937768275💌 Chúc bạn có một buổi mua sắm vui vẻ', '2023-03-16 07:42:30', '2023-03-16 07:46:17', NULL),
-(8, 'BEAUTEBYV - Áo khoác Trench Coat 2022', 'beautebyv-ao-khoac-trench-coat-2022', 1200000, 4, 30, 1, 300, 0, 0, '<p> 1 .Giặt tay bằng nước lạnh.&nbsp;</p>\r\n<p> 2. Trước khi giặt phải phân loại màu; cài khuy, kéo hết khóa và lộn trái sản phẩm. Tránh đổ trực tiếp xà phòng lên quần áo.&nbsp;</p>\r\n3. Tuyệt đối không ngâm, không dùng chất tẩy (đặc biệt đối với vải màu).&nbsp;\r\n<p> 4. Đối với các sản phẩm phối màu: giặt nhanh bằng tay, không ngâm, để an toàn nhất có thể giặt bằng nước rửa chén.&nbsp;</p>\r\n<p> 5. Đối với các sản phẩm có đính hoa cố định, các chất liệu len, dạ nên giặt khô.&nbsp;</p>', '2023-03-18 08:15:06', '2023-03-18 08:15:06', NULL),
-(9, 'Áo khoác nam 100% cotton Tum Machines TUMS NVSCVR TEAM JACKET – BLACK', 'ao-khoac-nam-100-cotton-tum-machines-tums-nvscvr-team-jacket-–-black', 680000, 2, 30, 1, 198, 2, 5, '_ THÀNH PHẦN VẢI : 100% COTTON ( COTTON TWILL NHẬP KHẨU ), PHẦN LÓT ÁO 100% POLYESTER MANG LẠI SỰ THOÁNG MÁT TỐT NHẤT.\r\n\r\n_ TẤT CẢ HỌA TIẾT TRÊN ÁO ĐỀU ĐƯỢC DÙNG QUY CÁCH IN, THÊU MẢNG VÀ NÉT CAO CẤP, CHO SỰ SẮC NÉT, KHÔNG BONG TRÓC.\r\n\r\n_ ÁO DÙNG NÚT ĐÓNG BẰNG NHÔM CHỐNG GHỈ, 2 TÚI ÁO ĐƯỢC MAY Ở 2 BÊN SƯỜN ÁO\r\n\r\n” SAU SỰ THÀNH CÔNG CỦA WE’RE BADASS JACKET, TEAM TUMS LUÔN MUỐN TẠO RA THÊM MỘT CHIẾC JACKET MANG HƠI HƯỚNG CỦA NASCAR VỚI GIÁ THÀNH PHẢI CHĂNG, BỀN BỈ, ĐA DỤNG VÀ DỄ MẶC. VÀ TUM RACING TEAM JACKET RA ĐỜI. “\r\n\r\n_XUẤT XỨ: VIỆT NAM', '2023-03-18 08:39:12', '2023-04-21 05:10:49', NULL),
-(15, 'Áo khoác cadigan nam nữ chất cotton tổ ong', 'ao-khoac-cadigan-nam-nu-chat-cotton-to-ong', 228000, 4, 30, 0, 289, 11, 5, '<p>MÔ TẢ SẢN PHẨM ✪ Chất Liệu Vải : cotton tổ ong xuất Hàn cao cấp 100%, co giãn 4 chiều, vải mềm, mịn, thoáng mát, không xù lông. ✪ Kĩ thuật may: Đường may chuẩn chỉnh, tỉ mỉ, chắc chắn ✪ Kiểu Dáng :Form Rộng Thoải Mái ✪ Full size nam nữ : 40 - 85 kg</p>', '2023-04-08 08:19:29', '2023-04-21 05:39:45', NULL),
-(16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 'ao-so-mi-tay-dai-tortune-shirt-hinh-in-lua-ky-thuat-so-doc-quyen-thoi-trang-nam-nu-unisex', 720000, 3, 25, 1, 43, 7, 0, '<h4>LƯU Ý KHI SỬ DỤNG SẢN PHẨM:</h4><p>&nbsp;- Đồ trắng, đen giặt riêng với các loại đồ màu khác</p><p>&nbsp;- Ủi và giặt nên lật mặt trái của sản phẩm, không ủi trực tiếp lên hình in/thêu&nbsp;</p><p>- Phơi quần áo ở nhiệt độ trung bình (30 độ C)&nbsp;</p><p>- Không giặt quần áo với nước tẩy&nbsp;</p><p>- Đối với sản phẩm chất liệu len, lụa, vải đan, dệt kim, lông hoặc bộ blazer nên giặt tay hoặc giặt hấp để sản phẩm bền và giữ đúng chất lượng</p>', '2023-04-16 00:18:18', '2023-04-21 09:41:42', NULL);
+INSERT INTO `products` (`id`, `name`, `slug`, `price`, `brand_id`, `discount`, `sale`, `stock`, `sold`, `rate`, `count`, `desce`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng', 'ao-khoac-cardigan-vien-xanh-nau-frmlk-form-rong', 800000, 1, 40, 1, 4, 8, 5, 6, '<h4> Áo Khoác Cardigan Viền Xanh Nâu FRMLK Form Rộng&nbsp;</h4>\r\n <p> - Form: Freesize, 65-75kg đổ lại mặc oke&nbsp;</p>\r\n<p> - Kích thước: Dài 65cm (xem trên ảnh thứ 2 của sản phẩm)&nbsp;</p>\r\n<p>- Phân loại: Be viền xanh, Be viền nâu&nbsp;</p>\r\n <p>- Chất liệu: Nỉ Bông&nbsp;</p> ', '2023-01-11 05:09:46', '2023-04-21 09:32:01', NULL),
+(2, 'Áo thun phông logo PINK tay lỡ  SANJATI Unisex', 'a', 105000, 1, 20, 0, 59, 0, 0, 0, 'Chất liệu : thun cotton dày dặn, hình in nhiệt chắc chắc🔻Form : 3 Size ( Áo đã được cải tiến về Số Đo , Form Dáng & Mẫu Mã đẹp hơn ạ ✔️M : < 45kg , Cao < 1.6m✔️L : 46kg _ 65kg , Cao 1.6m _ 1.7m ✔️XL : 66kg _ 75kg , Cao 1.7m _ 1.75m', '2023-01-12 10:13:33', '2023-03-14 06:54:25', NULL),
+(3, 'Áo thun nam Care & Share cotton compact in Mặt Trời', 'ao-thun-nam-care-share-cotton-compact-in-mat-troi', 259000, 1, 0, 0, 90, 0, 0, 0, 'Một công ty không cần phải lớn mới làm điều ý nghĩa\" - Coolmate đã nghĩ và tin như thế khi khởi xướng chương trình Care & Share này. Sức nhỏ làm việc nhỏ, có ít đóng góp ít, có nhiều đóng góp nhiều. Ít nhất chúng ta đã bắt tay vào làm và lan toả điều tích cực. \r\n\r\n\r\nHiểu một cách đơn giản, \"Care & Share: For A Better Childhood\" là một chương trình được xây dựng và duy trì bởi Coolmate nhằm góp sức mình giúp đỡ những trẻ em kém may mắn, giúp các em đến trường và có cuộc sống tốt hơn. Coolmate cam kết sẽ dành 10% doanh thu từ tất cả những sản phẩm trong danh mục \"Care & Share\" để đóng góp vào quỹ dành cho trẻ em có hoàn cảnh khó khăn. Coolmate mong muốn là một cầu nối để viết tiếp những ước mơ con trẻ còn dang dở, hướng tới một tương lai tốt đẹp hơn.', '2023-03-15 05:31:11', '2023-03-15 05:31:11', NULL),
+(5, 'Áo thun nữ trơn cổ V IVY moda MS 57P0155', 'ao-thun-nu-tron-co-v-ivy-moda-ms-57p0155', 490000, 3, 8, 0, 200, 0, 0, 0, 'Áo thun cổ V, cộc tay, form suông basic phù hợp với mọi vóc dáng.Sản phẩm được tạo ra từ chất liệu Thun cao cấp, với những tính năng vượt trội như thấm hút mồ hôi tốt và có độ co dãn giúp người mặc vô cùng thoải mái. Hơn hết có thể dễ dàng mix&match được với nhiều kiểu quần khác nhau. Đấy chính là lý do để phái nữ nên có ít nhất một chiếc áo thun trong tủ đồ của bạn.', '2023-03-15 23:07:09', '2023-03-15 23:07:17', NULL),
+(6, 'Áo khoác bò, áo khoác thu đông nam Việt Nam cá tính năng động mã N51', 'ao-khoac-bo-ao-khoac-thu-dong-nam-viet-nam-ca-tinh-nang-dong-ma-n51', 500000, 2, 8, 0, 160, 0, 5, 2, '- Phong cách Việt Nam\r\n- Form dáng : Slim Fitl\r\n- mùa thích hơp : Mùa Thu đông\r\n- Thành phần chính của vải  bò\r\n- Đặc tính của Vải : chất vải lai kaki thân thiện với môi trường, mặc tạo cảm giác thoải mái.\r\n- Độ dày : vừa phải.', '2023-03-16 07:39:27', '2023-03-16 07:39:27', NULL),
+(7, 'Áo khoác lông dáng dài của nữ phong cách sang trọng khí chất thanh lịch hàng Quảng Châu cao cấp', 'ao-khoac-long-dang-dai-cua-nu-phong-cach-sang-trong-khi-chat-thanh-lich-hang-quang-chau-cao-cap', 701000, 4, 0, 0, 56, 0, 5, 1, '❗❗❗  Để đảm bảo hàng về kịp Tết, quý khách hàng vui lòng đặt đơn trước 23h59 ngày 01/01/2022⚜KÍCH THƯỚC⚜Chiều rộng vai 55    Ngực 134      Chiều dài áo 109       Tay áo dài 50(Đơn vị: cm, lát gạch và đo bằng tay, có thể sai số 1-2cm, chỉ mang tính chất tham khảo)✔Thời gian giao hàng của sản phẩm này là 7-15 ngày✔Khuyến khích khách hàng nhắn tin cho shop trước khi đặt hàng‼‼KHÔNG NHẬN ĐƠN NẾU BẠN CẦN GẤP💥Lưu ý:💭Đảm bảo khi nhận hàng bạn sẽ không thất vọng💭Hotline: 0937768275💌 Chúc bạn có một buổi mua sắm vui vẻ', '2023-03-16 07:42:30', '2023-03-16 07:46:17', NULL),
+(8, 'BEAUTEBYV - Áo khoác Trench Coat 2022', 'beautebyv-ao-khoac-trench-coat-2022', 1200000, 4, 30, 1, 300, 0, 0, 0, '<p> 1 .Giặt tay bằng nước lạnh.&nbsp;</p>\r\n<p> 2. Trước khi giặt phải phân loại màu; cài khuy, kéo hết khóa và lộn trái sản phẩm. Tránh đổ trực tiếp xà phòng lên quần áo.&nbsp;</p>\r\n3. Tuyệt đối không ngâm, không dùng chất tẩy (đặc biệt đối với vải màu).&nbsp;\r\n<p> 4. Đối với các sản phẩm phối màu: giặt nhanh bằng tay, không ngâm, để an toàn nhất có thể giặt bằng nước rửa chén.&nbsp;</p>\r\n<p> 5. Đối với các sản phẩm có đính hoa cố định, các chất liệu len, dạ nên giặt khô.&nbsp;</p>', '2023-03-18 08:15:06', '2023-03-18 08:15:06', NULL),
+(9, 'Áo khoác nam 100% cotton Tum Machines TUMS NVSCVR TEAM JACKET – BLACK', 'ao-khoac-nam-100-cotton-tum-machines-tums-nvscvr-team-jacket-–-black', 680000, 2, 30, 1, 198, 2, 5, 1, '_ THÀNH PHẦN VẢI : 100% COTTON ( COTTON TWILL NHẬP KHẨU ), PHẦN LÓT ÁO 100% POLYESTER MANG LẠI SỰ THOÁNG MÁT TỐT NHẤT.\r\n\r\n_ TẤT CẢ HỌA TIẾT TRÊN ÁO ĐỀU ĐƯỢC DÙNG QUY CÁCH IN, THÊU MẢNG VÀ NÉT CAO CẤP, CHO SỰ SẮC NÉT, KHÔNG BONG TRÓC.\r\n\r\n_ ÁO DÙNG NÚT ĐÓNG BẰNG NHÔM CHỐNG GHỈ, 2 TÚI ÁO ĐƯỢC MAY Ở 2 BÊN SƯỜN ÁO\r\n\r\n” SAU SỰ THÀNH CÔNG CỦA WE’RE BADASS JACKET, TEAM TUMS LUÔN MUỐN TẠO RA THÊM MỘT CHIẾC JACKET MANG HƠI HƯỚNG CỦA NASCAR VỚI GIÁ THÀNH PHẢI CHĂNG, BỀN BỈ, ĐA DỤNG VÀ DỄ MẶC. VÀ TUM RACING TEAM JACKET RA ĐỜI. “\r\n\r\n_XUẤT XỨ: VIỆT NAM', '2023-03-18 08:39:12', '2023-04-21 05:10:49', NULL),
+(15, 'Áo khoác cadigan nam nữ chất cotton tổ ong', 'ao-khoac-cadigan-nam-nu-chat-cotton-to-ong', 228000, 4, 30, 0, 289, 11, 5, 1, '<p>MÔ TẢ SẢN PHẨM ✪ Chất Liệu Vải : cotton tổ ong xuất Hàn cao cấp 100%, co giãn 4 chiều, vải mềm, mịn, thoáng mát, không xù lông. ✪ Kĩ thuật may: Đường may chuẩn chỉnh, tỉ mỉ, chắc chắn ✪ Kiểu Dáng :Form Rộng Thoải Mái ✪ Full size nam nữ : 40 - 85 kg</p>', '2023-04-08 08:19:29', '2023-04-21 05:39:45', NULL),
+(16, 'Áo Sơ Mi Tay Dài Tortune Shirt Hình In Lụa Kỹ Thuật Số Độc Quyền Thời Trang Nam Nữ Unisex', 'ao-so-mi-tay-dai-tortune-shirt-hinh-in-lua-ky-thuat-so-doc-quyen-thoi-trang-nam-nu-unisex', 720000, 3, 25, 1, 43, 7, 0, 0, '<h4>LƯU Ý KHI SỬ DỤNG SẢN PHẨM:</h4><p>&nbsp;- Đồ trắng, đen giặt riêng với các loại đồ màu khác</p><p>&nbsp;- Ủi và giặt nên lật mặt trái của sản phẩm, không ủi trực tiếp lên hình in/thêu&nbsp;</p><p>- Phơi quần áo ở nhiệt độ trung bình (30 độ C)&nbsp;</p><p>- Không giặt quần áo với nước tẩy&nbsp;</p><p>- Đối với sản phẩm chất liệu len, lụa, vải đan, dệt kim, lông hoặc bộ blazer nên giặt tay hoặc giặt hấp để sản phẩm bền và giữ đúng chất lượng</p>', '2023-04-16 00:18:18', '2023-04-21 09:41:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -623,7 +632,7 @@ INSERT INTO `product_attribute_value` (`id`, `product_id`, `attribute_value_id`,
 
 CREATE TABLE `roles` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -647,20 +656,20 @@ INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `role_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `provider` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `provider_id` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `provider` varchar(100) DEFAULT NULL,
+  `provider_id` varchar(100) DEFAULT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `active_status` tinyint(1) NOT NULL DEFAULT 0,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'avatar.png',
+  `avatar` varchar(255) NOT NULL DEFAULT 'avatar.png',
   `dark_mode` tinyint(1) NOT NULL DEFAULT 0,
-  `messenger_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `messenger_color` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -682,7 +691,7 @@ INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `email_verified_at`, `pas
 
 CREATE TABLE `voucher` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(255) NOT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `percent` float NOT NULL,
@@ -926,7 +935,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT cho bảng `feedbacks`
 --
 ALTER TABLE `feedbacks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT cho bảng `images`
@@ -944,7 +953,7 @@ ALTER TABLE `infoaccounts`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`

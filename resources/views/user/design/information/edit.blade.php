@@ -40,7 +40,10 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <textarea type="text" id="editor" name="description" value="{{ old('description') }}"></textarea>
+                            <div class="input-box" style="width: 80%" >
+                                <span class="details">Sở thích</span>
+                                <input type="text" value="{{ $user->information->description }}" name="description" style="width: 100%">
+                            </div>
                         </div>
                         <div>
                             <span class="detail"> Avatar trước đó: </span>

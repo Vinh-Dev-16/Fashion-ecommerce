@@ -56,20 +56,20 @@ class reviewController extends Controller
             $input = $request->all(); 
             if(request()->hasFile('image')){
                 $file = $request->file('image');
-                $file->storeAs('review' , time().'.'.$file->getClientOriginalExtension(),'public');
                 $image = time().'.'.$file->getClientOriginalExtension();
-                    $view=  Review::create([
+                $file->storeAs('review' ,$image,'public');
+                     Review::create([
                         'name' => $input['name'],
                         'email' => $input['email'],
                         'title' => $input['title'],
-                        'image' => 'storage/review/'. $image,
+                        'image' =>  $image,
                         'content'=>$input['content'],
                         'product_id' => $product_id,
                         'rate' =>$input['rate'],
                      ]);
                   
             }else{
-                    $view = Review::create([
+                    Review::create([
                         'name' => $input['name'],
                         'email' => $input['email'],
                         'title' => $input['title'],
@@ -135,14 +135,14 @@ class reviewController extends Controller
         $reviews->rate = $input['rate'];
         $input = $request->all(); 
         if(request()->hasFile('image')){
-            $destination = 'storage/review/'. $reviews->image;
+            $destination = 'storage/review/'.$reviews->image;
             if(File::exists($destination)){
-                File::delete($destination);
+                Storage::delete('public/review/' .$reviews->image);
             }
             $file = $request->file('image');
-            $file->storeAs('review' , time().'.'.$file->getClientOriginalExtension(),'public');
-            $image = 'storage/review/'.time().'.'.$file->getClientOriginalExtension();
-            $reviews->image = $image;     
+            $image = time().'.'.$file->getClientOriginalExtension();
+            $file->storeAs('review' ,$image,'public');
+            $reviews->image = $image; 
         }
         $reviews->update();
         $data= Review::all();
@@ -169,7 +169,7 @@ class reviewController extends Controller
             $review->delete();
             $reviews = Review::all();
             $file = $review->image;
-            Storage::delete($file);
+            Storage::delete('public/review/'. $file);
             return response()->json([
                 'result'=>$reviews,
             ]);

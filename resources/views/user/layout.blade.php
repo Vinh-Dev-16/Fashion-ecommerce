@@ -1255,10 +1255,11 @@
         }
 
         // remove cart
-
-        document.querySelector('#item_remove').addEventListener('click', (e) => {
-            e.preventDefault();
-        });
+        if( document.querySelector('#item_remove')){
+            document.querySelector('#item_remove').addEventListener('click', (e) => {
+                e.preventDefault();
+            });
+        }
 
         async function removeCart(id) {
             const res = await fetch(`http://127.0.0.1:8000/removecart/${id}`)

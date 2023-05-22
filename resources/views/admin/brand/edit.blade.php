@@ -35,8 +35,8 @@
                             <!-- /.card-body -->
                             <div class="form-group">
                                 <label for="exampleName">Chi tiết Brand</label>
-                                <input type="text" class="form-control" id="exampleInputName"
-                                    value="{{$brand->description}}" name="description" >
+                                <textarea type="text" class="form-control" id="editor" name="description"
+                                    placeholder="Điền thông tin sản phẩm"></textarea>
                             </div>
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -57,3 +57,14 @@
     </ol>
 @endsection
 
+@section('javascript')
+
+    <script>
+            ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+
+@endsection

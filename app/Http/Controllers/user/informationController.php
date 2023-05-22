@@ -10,6 +10,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 class informationController extends Controller
 {
     /**
@@ -168,10 +170,10 @@ class informationController extends Controller
         if($request->hasFile('avatar')){
             $destination = 'storage/avatar/' . $information->avatar;
             if(File::exists($destination)){
-                File::delete($destination);
+                Storage::delete($information->avatar);
             }
             $file = $request->file('avatar');
-            $file->storeAs('avatar' , time().'.'.$file->getClientOriginalExtension(),'public');
+            $file->storeAs('public/avatar' , time().'.'.$file->getClientOriginalExtension());
             $image = time().'.'.$file->getClientOriginalExtension(); 
             $information->avatar = $image;
         }
