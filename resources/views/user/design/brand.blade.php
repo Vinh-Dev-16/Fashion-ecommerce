@@ -16,7 +16,7 @@
                                         @foreach ($categories as $category)
                                             @if (!($category->parent_id == 0))
                                                 <li>
-                                                    <input type="checkbox" name="categories[]" id="{{ $category->name }}" value="{{ $category->id}}">
+                                                    <input type="radio" name="categories[]" id="{{ $category->name }}" value="{{ $category->id}}">
                                                     <label for="{{ $category->name }}">
                                                         <span class="checked"></span>
                                                         <span>{{ $category->name }}</span>
@@ -37,7 +37,6 @@
                                         @endforeach
                                     </ul>
                                 </div>
-                               
                             </div>
                         </div>
                         <div class="section">
@@ -162,14 +161,13 @@
                                 </div>
                             @endforeach
                             </div>
-                           
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {{-- {{$paginate->links(('vendor.pagination.default'))}} --}}
+    {{$paginate->links(('vendor.pagination.default'))}}
 @endsection
 
 @section('javascript')
@@ -190,7 +188,7 @@
                 }
             })
         });
-
+        console.log(checkedValues);
         
 
         const FtoShow = '.filter';
@@ -210,8 +208,6 @@
                 Fpopup.classList.remove('show');
             }
         })
-
-
 
         // filtering
 

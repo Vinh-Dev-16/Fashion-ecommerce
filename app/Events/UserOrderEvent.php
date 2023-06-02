@@ -34,7 +34,7 @@ class UserOrderEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('popup-confirm');
+        return new Channel('popup-channel');
     }
 
     /**
@@ -42,6 +42,6 @@ class UserOrderEvent implements ShouldBroadcast
      * @return void
      */
     public function  broadcastAs(){
-        return 'my-handle';
+        return 'my-event';
     }
 }

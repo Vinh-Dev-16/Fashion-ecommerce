@@ -163,7 +163,7 @@
                                                 <a href="{{ url('checkout') }}" class="secondary_button">Check out</a>
                                             @else
                                                 <button class="secondary_button"
-                                                    onclick="createNoti('Bạn cần phải đăng nhập')"
+                                                    onclick="createToast('Bạn cần phải đăng nhập')"
                                                     style="border:none;outline:none;width:100%">Check out</button>
                                             @endif
                                         </div>
@@ -183,12 +183,6 @@
 @endsection
 
 @section('javascript')
-    @if (!Auth::check())
-        <script>
-            const notifications = document.querySelector('.notification');
-            const timer = 3000;
-        </script>
-    @endif
     <script>
         const dpt_menu = document.querySelectorAll('.dpt_menu');
         const close_menu = document.querySelectorAll('#close_menu');
@@ -223,6 +217,8 @@
             if (value < stock) {
                 value += 1;
                 quantity.value = value;
+            }else{
+                createToast('Đã hết hàng');
             }
             updateQuantity(id, value, el);
         }

@@ -304,7 +304,7 @@
                                         @if (Auth::user()->role_id == 2 && App\Models\OrderDetail::where('status', 0)->count() > 0)
                                             <div class="fly_item" style="top:-10px;background:red">
                                                 <span
-                                                    class="item_number"id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
+                                                    class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
                                                 </span>
                                             </div>
                                         @endif
@@ -916,7 +916,19 @@
             var channel = pusher.subscribe('popup-channel');
             channel.bind('my-event', function(data) {
                 createNoti(data.name + ' đã đặt hàng');
-                document.querySelector('#count_number').innerText = data.count;
+                let count_number = document.querySelector("#count_number");
+                if(count_number){
+                    document.querySelector('#count_number').innerText = data.count;
+                }else{
+                    let countNumber = createElement('div');
+                    countNumber.className = "fly_item";
+                    let renderNumber = `
+                    <span  class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
+                    </span>
+                    `;
+                    countNumber.innerHTML = renderNumber;
+                    document.querySelector(".profile-dropdown").appendChild(countNumber);
+                }
             });
         </script>
     @endif
@@ -932,7 +944,18 @@
             var channel = pusher.subscribe('popup-confirm');
             channel.bind('my-handle', function(data) {
                 createNoti('Đã có đơn hàng cần ship');
-                document.querySelector('#count_number').innerText = data.count;
+                if(count_number){
+                    document.querySelector('#count_number').innerText = data.count;
+                }else{
+                    let countNumber = createElement('div');
+                    countNumber.className = "fly_item";
+                    let renderNumber = `
+                    <span class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() }}
+                    </span>
+                    `;
+                    countNumber.innerHTML = renderNumber;
+                    document.querySelector(".profile-dropdown").appendChild(countNumber);
+                }
             });
         </script>
     @endif

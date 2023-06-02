@@ -160,24 +160,32 @@ class homeController extends Controller
         return view('user.design.pageShip',compact('products', 'categories', 'brands','cart'));
     }
 
+    // Shipper đã ship đơn hàng đến nơi
+
     public function confirm(Request $request){
-        try{
-            $now = new DateTime();
-            $orderDetails = OrderDetail::whereIn('id',$request->ids)->get();
-            foreach($orderDetails as $order){
-                $orderDetails = OrderDetail::where('id',$order->id)
-                ->update(
-                    [
-                        'ship' => 1,
-                        'time' => $now,
-                    ]
-                );
+        if(!(empty($request->ids))){
+            try{
+                $now = new DateTime();
+                $orderDetails = OrderDetail::whereIn('id',$request->ids)->get();
+                foreach($orderDetails as $order){
+                    $orderDetails = OrderDetail::where('id',$order->id)
+                    ->update(
+                        [
+                            'ship' => 1,
+                            'time' => $now,
+                        ]
+                    );
+                }
+                return redirect()->back()->with('success', 'Đã giao hàng');
+            }catch(Exception $e){
+                return redirect()->back()->with('error','Đã xảy ra lỗi');
             }
-            return redirect()->back()->with('success', 'Đã giao hàng');
-        }catch(Exception $e){
-            return redirect()->back()->with('error','Đã xảy ra lỗi');
+        }else{
+            return redirect()->back()->with('error','Bạn cần xác nhận đơn hàng');
         }
     }
+
+    // Người dùng đã mua hàng và đã xác nhận
 
     public function confirmProduct($id){
         try{
@@ -201,24 +209,30 @@ class homeController extends Controller
         return view('user.design.pageConfirm',compact('products', 'categories', 'brands','cart'));
     }
 
+    // Admin đã xác nhận đơn hàng
+
     public function confirmItem(Request $request){
-        try{
-            $now = new DateTime();
-            $orderDetails = OrderDetail::whereIn('id',$request->ids)->get();
-            foreach($orderDetails as $order){
-                $orderDetails = OrderDetail::where('id',$order->id)
-                ->update(
-                    [
-                        'status' => 2,
-                        'time_confirm' => $now,
-                    ]
-                );
-            } 
-            $count = OrderDetail::where('status', 2)->count();
-            event(new AdminConfirm($count));
-            return redirect()->back()->with('success', 'Đã xác nhận');
-        }catch(Exception $e){
-            return redirect()->back()->with('error','Đã xảy ra lỗi');
+        if(!(empty($request->ids))){
+            try{
+                $now = new DateTime();
+                $orderDetails = OrderDetail::whereIn('id',$request->ids)->get();
+                foreach($orderDetails as $order){
+                    $orderDetails = OrderDetail::where('id',$order->id)
+                    ->update(
+                        [
+                            'status' => 2,
+                            'time_confirm' => $now,
+                        ]
+                    );
+                } 
+                $count = OrderDetail::where('status', 2)->count();
+                event(new AdminConfirm($count));
+                return redirect()->back()->with('success', 'Đã xác nhận');
+            }catch(Exception $e){
+                return redirect()->back()->with('error','Đã xảy ra lỗi');
+            }
+        }else{
+            return redirect()->back()->with('error','Bạn cần xác nhận đơn hàng');
         }
        
     }
