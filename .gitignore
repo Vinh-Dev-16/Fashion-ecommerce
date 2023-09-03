@@ -1,7 +1,5 @@
 /node_modules
 /public/hot
-/public/storage
-/storage/*.key
 /vendor
 .env
 .env.backup
@@ -21,4 +19,3 @@ webpack.mix.js
 compose.json
 compose.lock
 tests
-/storage
