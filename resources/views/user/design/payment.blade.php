@@ -67,8 +67,8 @@
                                 <input type="text" name="subtotal" value="{{ $subTotal }}" hidden>
                                 <p>
                                 <div class="primary_checkout"><button class="primary_button"
-                                        type="s
-                                     ">Thanh toán</button></div>
+                                        type="submit"
+                                     >Thanh toán</button></div>
                                 </p>
                             </form>
                         @else

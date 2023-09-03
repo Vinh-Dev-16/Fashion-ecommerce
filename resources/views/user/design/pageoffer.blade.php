@@ -195,7 +195,7 @@
                                                 </li>
                                                 @endforeach
                                               @else
-                                                <li>    
+                                                <li>
                                                     <a href="#" id="wishlist"
                                                         onclick="wishlist({{ $products->id }},{{ Auth::user()->id }})">
                                                         <span class="icon_large"><i class="ri-heart-line"></i></span>
@@ -228,11 +228,11 @@
                                                 <div class="content">
                                                     <ul>
                                                         <li><span>Brand:</span><a
-                                                            href="{{url('brand/'.$products->brand_id)}}"><span>{{ $products->brand->name }}</span></a>
+                                                            href="{{url('brand/'.$products->brand->slug)}}"><span>{{ $products->brand->name }}</span></a>
                                                         </li>
                                                         <li><span>Category:</span>
                                                             @foreach ($products->categories as $category)
-                                                                <a href="{{url('category/'. $category->id)}}">
+                                                                <a href="{{url('category/'. $category->slug)}}">
                                                                     <span>{{ $category->name }},</span></a>
                                                             @endforeach
                                                         </li>
@@ -480,7 +480,7 @@
                                     <div class="item page_other">
                                         <div class="media">
                                             <div class="thumbnail object_cover">
-                                                <a href="{{ url('pageoffer/' . $product->id) }}">
+                                                <a href="{{ url('pageoffer/' . $product->slug) }}">
                                                     <img src="{{ $product->images->first()->path }}"
                                                         alt="{{ $product->name }}">
                                                 </a>
@@ -489,7 +489,7 @@
                                                 <ul>
                                                     <li class="active"><a href=""><i
                                                                 class="ri-heart-line"></i></a></li>
-                                                    <li><a href="{{ url('pageoffer/' . $product->id) }}"><i
+                                                    <li><a href="{{ url('pageoffer/' . $product->slug) }}"><i
                                                                 class="ri-eye-line"></i></a></li>
                                                     <li><a href=""><i class="ri-shuffle-line"></i></a></li>
                                                 </ul>
@@ -525,7 +525,7 @@
                                                 <div class="mini_text">{{ $product->reviews->count() }} review</div>
                                             </div>
                                             <h3 class="main_links"><a
-                                                    href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
+                                                    href="{{ url('detail/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
                                             </h3>
                                             <div class="price">
                                                 @if ($product->discount)
@@ -693,8 +693,8 @@
                                 if(data.result.image){
                                     return `
                                                             <p>
-                                                    Ảnh review trước đó: 
-                                                    <img src="{{ asset('storage/review/${data.result.image}') }}" style="position: static;width:160px;height:220px">    
+                                                    Ảnh review trước đó:
+                                                    <img src="{{ asset('storage/review/${data.result.image}') }}" style="position: static;width:160px;height:220px">
                                                     </p>
                                                                     `
                                 }else{
@@ -703,7 +703,7 @@
                                 }
                             })()
                             }
-                            
+
                            <p>
                            <label>Ảnh review <small>(Nếu muốn đổi)</small>)</label>
                          <input type="file" name="image" value="${data.result.file}">
@@ -717,8 +717,8 @@
                          <input type="text" hidden name="email" value="${data.result.email}">
                          </p>
                          <button id="button_review_update" onclick="handleData(${data.result.id},event)" class="primary_button"
-                         style="border:none; outline:none">Bình luận</button>                                                                
-                         </form>                          
+                         style="border:none; outline:none">Bình luận</button>
+                         </form>
                 `;
                 form_review_user.innerHTML = new_form;
 
@@ -808,7 +808,7 @@
                              </p>
                             <button type="submit" class="primary_button" onclick="handleCreateReview();return false;" style="border:none; outline:none">
                                 Bình luận
-                            </button>                                                             
+                            </button>
                 `;
                     })
                     .catch((error) => {
@@ -817,9 +817,9 @@
 
                 return false;
             }
-         
+
             function handleCreateReview(){
-                
+
                 let title = document.querySelector('input[name="title"]').value;
                 let image = document.querySelector('input[name="image"]').files[0];
                 let content = document.querySelector('textarea[name="content"]').value;
@@ -893,22 +893,22 @@
                                 `
                             }else{
                                 return ``;
-                            }  
+                            }
                         })()
                             }
                         ${
-                            (()=>{ 
+                            (()=>{
                                 if(item.name == '{{ Auth::user()->name }}' || {{ Auth::user()->role_id }}==2){
                                 return `
                                      <button type="submit" class="secondary_button" id="btn_delete" style="border:none; outline:none" onclick="sendDelete(${item.id})"> Xóa </button>
-                                  
+
                                      `;
                             }else{
                                 return ``;
                             }
                              })()
                         }
-                      
+
                     </div>
                  </li>
                 `;
@@ -918,7 +918,7 @@
                 for (let i of render_count) {
                     i.innerText = count_render.length + ' reviews';
                 }
-                // reset Form 
+                // reset Form
 
                 form_review.reset();
             }
@@ -982,7 +982,7 @@
         }
 
         //Phần deal of day
-        let countDate = new Date('29,JUN,2023 00:00:00').getTime();
+        let countDate = new Date('29,Nov,2023 00:00:00').getTime();
         let day = document.querySelectorAll('.days')
         let minute = document.querySelectorAll('.minutes');
         let hour = document.querySelectorAll('.hours');
@@ -1007,16 +1007,16 @@
                 .floor((gap % (minutes)) / (seconds));
 
             for (const i of day) {
-                i.innerHTML = d;
+                i.innerHTML = d + " d";
             }
             for (const i of minute) {
-                i.innerHTML = m;
+                i.innerHTML = m + " m";
             }
             for (const i of hour) {
-                i.innerHTML = h;
+                i.innerHTML = h + " h";
             }
             for (const i of second) {
-                i.innerHTML = s;
+                i.innerHTML = s + " s";
             }
 
         }
@@ -1066,13 +1066,13 @@
 
     @if (!Auth::check())
         <script>
-           
+
             review_btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                createToast('Bạn cần phải đăng nhập');  
+                createToast('Bạn cần phải đăng nhập');
             })
 
-          
+
         </script>
     @endif
 @endsection

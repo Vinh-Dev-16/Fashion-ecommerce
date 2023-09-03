@@ -70,6 +70,7 @@ class categoryController extends Controller
             $rules = [
                 'name' => 'required|max:255',
                 'parent_id' => 'required',
+                'slug'=> 'required',
             ];
             $messages = [
                 'required' => 'Không được để trống trường này',
@@ -108,7 +109,7 @@ class categoryController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::find($id);
+        $categories = Category::findOrFail($id);
         $category = Category::all();
         return view('admin.category.edit', compact('categories','category'));
     }

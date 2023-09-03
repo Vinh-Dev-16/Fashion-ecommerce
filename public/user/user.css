@@ -18,7 +18,7 @@
 	--secondary-light-2: rgb(127, 183, 126, 0.1);
 	--white: #fff;
 	--black: #393e46;
-  
+
 	--shadow: 0px 2px 8px 0px var(--secondary-light);
 
 	--dark: #34495e;
@@ -68,15 +68,43 @@ body {
 	font-family: 'Rubik' ,sans-serif;
 	overflow-x: hidden;
 }
-
-#preloader{
-	
-	height: 100vh;
-	width: var(--percent100);
-	position: fixed;
-	z-index: 10000;
-	filter: brightness(0.7);
-	background-size: 30% !important;
+body::-webkit-scrollbar{
+    width: 8px;
+ }
+ body::-webkit-scrollbar-thumb{
+     background: rgb(183 183 183) !important;
+     border-radius: 6px;
+ }
+#load-data {
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: var(--percent100);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index:1500;
+    cursor: wait;
+}
+#load-data>div{
+    height: 60px;
+    width: 60px;
+    border: 15px solid #45474b;
+    border-top-color: #2a88e6;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 50%;
+    animation: spin 1.5s infinite linear;
+}
+@keyframes spin{
+    100%{
+        transform: rotate(360deg);
+    }
 }
 .text-danger{
 	color: red;
@@ -88,7 +116,7 @@ body {
     right: 1.25em;
 	z-index: 1000000;
   }
- 
+
   .notification :where(.toasts, .column) {
     display: flex;
     align-items: center;
@@ -193,7 +221,7 @@ body {
   .toasts i:last-child:hover{
     color: var(--dark);
   }
-  
+
 
 a {
 	text-decoration: none;
@@ -353,7 +381,7 @@ h4 {
 	padding: 0.5em 0;
 	margin-bottom: 1.5em;
 	border-bottom: 1px solid var(--border-color);
-} 
+}
 .trigger {
 	font-size: 1.5rem;
 	display: flex;
@@ -476,7 +504,7 @@ nav .fly_item , .header_nav .mini_cart .price .fly_item{
 	position: relative;
 	width: fit-content;
   }
-  
+
   .profile-dropdown-btn {
 	display: flex;
 	align-items: center;
@@ -489,13 +517,13 @@ nav .fly_item , .header_nav .mini_cart .price .fly_item{
 	color: var(--black);
 	/* background-color: white;
 	box-shadow: var(--shadow); */
-  
+
 	cursor: pointer;
 	border: 1px solid var(--secondary);
 	transition: box-shadow 0.2s ease-in, background-color 0.2s ease-in,
 	  border 0.3s;
   }
-  
+
   .profile-dropdown-btn:hover {
 	background-color: var(--secondary-light-2);
 	box-shadow: var(--shadow);
@@ -510,7 +538,7 @@ nav .fly_item , .header_nav .mini_cart .price .fly_item{
 	border-radius: 50%;
 	background-size: cover;
   }
-  
+
   .profile-img i {
 	position: absolute;
 	right: 0;
@@ -518,12 +546,12 @@ nav .fly_item , .header_nav .mini_cart .price .fly_item{
 	font-size: 0.5rem;
 	color: var(--green);
   }
-  
+
   .profile-dropdown-btn span {
 	margin: 0 0.5rem;
 	margin-right: 0;
   }
-  
+
   .profile-dropdown-list {
 	position: absolute;
 	top: 68px;
@@ -536,20 +564,20 @@ nav .fly_item , .header_nav .mini_cart .price .fly_item{
 	box-shadow: var(--shadow);
 	transition: max-height 0.5s;
   }
-  
+
   .profile-dropdown-list hr {
 	border: 0.5px solid var(--green);
   }
-  
+
   .profile-dropdown-list.active {
 	max-height: 500px;
   }
-  
+
   .profile-dropdown-list-item {
 	padding: 0.5rem 0rem 0.5rem 1rem;
 	transition: background-color 0.2s ease-in, padding-left 0.2s;
   }
-  
+
   .profile-dropdown-list-item :where(a, form) {
 	display: flex;
 	align-items: center;
@@ -558,7 +586,7 @@ nav .fly_item , .header_nav .mini_cart .price .fly_item{
 	font-weight: 500;
 	color: var(--black);
   }
-  
+
   .profile-dropdown-list-item :where(a, form) i {
 	margin-right: 0.8rem;
 	font-size: 1.1rem;
@@ -572,7 +600,7 @@ nav .fly_item , .header_nav .mini_cart .price .fly_item{
 	border-radius: 50%;
 	transition: margin-right 0.3s;
   }
-  
+
   .profile-dropdown-list-item:hover {
 	padding-left: 1.5rem;
 	background-color: var(--secondary-light);
@@ -813,7 +841,7 @@ form.search :where(span,button){
 	width: var(--percent100);
 	height: 250px;
 	background-color: #feebde;
-	
+
 }
 .head_information .user_information{
 	display: flex;
@@ -1174,7 +1202,7 @@ form.search :where(span,button){
 	margin-left: 8.5%;
 	font-size: 26px;
 	margin-bottom: 15px;
-	text-transform: uppercase; 
+	text-transform: uppercase;
 	font-family: 'Anton', sans-serif;
 }
 
@@ -1188,7 +1216,7 @@ form.search :where(span,button){
 	position: relative;
 	font-size: 1.5em;
 	font-weight: var(--fw7);
-	text-transform: uppercase; 
+	text-transform: uppercase;
 	font-family: 'Anton', sans-serif;
 	text-align: center;
 }
@@ -1207,7 +1235,7 @@ form.search :where(span,button){
 	margin-bottom: 1.5em;
 }
 .products .offer p{
-	text-transform: uppercase; 
+	text-transform: uppercase;
 	margin-bottom: 0.5em;
 }
 .products .offer ul{
@@ -1215,8 +1243,8 @@ form.search :where(span,button){
 }
 .products .offer ul li{
 	position: relative;
-	width: 34px;
-	height: 34px;
+	width: 37px;
+	height: 37px;
 	padding:  0.5em;
 	line-height: inherit;
 	color: var(--secondary-dark-color);
@@ -1228,7 +1256,7 @@ form.search :where(span,button){
 	position: absolute;
 	right: -0.6em;
 	color: var(--light-text-color);
-} 
+}
  .products :where(.images) img{
 	transition: transform .3s;
 	height: 385px;
@@ -1281,6 +1309,11 @@ form.search :where(span,button){
 }
 .products .hoverable li.active a:hover{
 	background-color: var(--primary-color);
+}
+.products .hoverable li.active a.love{
+    background-color: var(--primary-color);
+    color: var(--while-color);
+    opacity: 1;
 }
 .products .hoverable li:not(.active){
 	transform: translateX(100%);
@@ -1491,7 +1524,7 @@ form.search :where(span,button){
 .mini_links ul{
 	font-size: var(--font-small);
 	color: var(--light-text-color);
-	margin-top: 1em;	
+	margin-top: 1em;
 }
 .banners .second_links{
 	margin-top: 2em;
@@ -1564,7 +1597,7 @@ form.search :where(span,button){
 .products.one .row
 	{
 		flex: 0 0 50%;
-		width: 50%;	
+		width: 50%;
 		margin-left: calc((90% - 530px)/2);
 	}
 .products .price .discount{
@@ -1687,7 +1720,7 @@ form.search :where(span,button){
 	background-color:transparent;
 	border: 2px solid var(--dark-color);
 	color: var(--while-color);
-} 
+}
 
  .products .sizes .variant label::before{
 	background-color: var(--while-color);
@@ -1791,7 +1824,7 @@ form.search :where(span,button){
 .products .collapse table thead th{
 	vertical-align: bottom;
 	border-bottom: 2px solid var(--border-color);
-} 
+}
 .products .collapse table :where(th,td){
 	border-bottom: 1px solid var(--border-color);
 	padding-left: 2em;
@@ -1888,7 +1921,7 @@ form p{
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 2em;
-} 
+}
 form.user_review :where(input ,textarea){
 	line-height: 1;
 	padding: 1em;
@@ -2030,7 +2063,7 @@ form label{
 .single_category .holder{
 	display: flex;
 	flex-direction: column;
-} 
+}
 .single_category .sidebar, .single_category .section{
 	flex: 1 0 100%;
 }
@@ -2356,6 +2389,31 @@ input[type="range"]{
 	margin-top: 0.5em;
 }
 
+.select-filter {
+    width: 130px;
+    padding: 3px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: transparent;
+    transition: .25s;
+}
+.select-filter:focus {
+    opacity: .7;
+}
+#cancel-filter {
+    padding: 5px 23px;
+    outline: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition:  .25s ease-in-out;
+    cursor: pointer;
+}
+#cancel-filter:hover {
+    opacity: .7;
+}
+
 /* Modal */
 .modal{
 	position: fixed;
@@ -2511,7 +2569,7 @@ input[type="range"]{
     width: 8%;
 }
 .container_tabs{
-    position: relative;  
+    position: relative;
 }
 .container_tabs .content_tabs{
     /* position: absolute; */
@@ -2761,7 +2819,7 @@ input[type="range"]{
 		flex-grow:1 ;
 		min-width: var(--percent100);
 	}
-	
+
 	.container_information{
 		max-width: 100%;
 	  }
@@ -2988,7 +3046,7 @@ input[type="range"]{
 	#model_fashion{
 		position: static;
 	}
-	.trending .products, 
+	.trending .products,
 	.products_categories .row{
 		flex: 0 0 29.333%
 	}
@@ -3012,7 +3070,7 @@ input[type="range"]{
 	{
 		flex: 0 0 46%;
 		width: 47%;
-		margin-left: 0;	
+		margin-left: 0;
 	}
 	#cart_product{
 		margin-top: -36px;

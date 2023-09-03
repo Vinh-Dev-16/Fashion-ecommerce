@@ -23,20 +23,26 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="exampleName">Tên loại sản phẩm</label>
-                                <input type="text" class="form-control" id="exampleInputName"
+                                <input type="text" class="form-control" id="slug" onkeyup="ChangeToSlug();"
                                     value="{{ $categories->name }}" name="name">
                                 @error('name')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-
+                            <div class="form-group">
+                                <label for="exampleName">Slug sản phẩm</label>
+                                <input type="text" value="{{$categories->slug}}" class="form-control" id="convert_slug" name="slug">
+                                @error('slug')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <div class="form-group">
                                 <label for="exampleName">Bố danh mục</label>
                                    <select class="form-control" name="parent_id">
                                     <option value="0"> None</option>
                                     @foreach ($category as $category)
                                       <option @if ($category->id == $categories->parent_id)
-                                            selected                                      
+                                            selected
                                         @endif value="{{$category->id}}">{{$category->name}}</option>
                                     @endforeach
                                    </select>
@@ -64,4 +70,6 @@
     </ol>
 @endsection
 
-
+@section('javascript')
+  @include('admin.category.script')
+@endsection

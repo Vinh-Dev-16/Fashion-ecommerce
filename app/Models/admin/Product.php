@@ -19,7 +19,7 @@ class Product extends Model
     use SoftDeletes;
     protected $table = 'products';
     protected $primaryKey = 'id';
-    protected $fillable = 
+    protected $fillable =
        [
         'name',
         'slug',
@@ -30,16 +30,16 @@ class Product extends Model
         'desce',
         'brand_id',
        ];
-       
+
 
     public function categories(){
         return $this->belongsToMany(Category::class,'category_products','id_product','id_category')->withTimestamps();
     }
-    
+
     public function brand(){
         return $this->belongsTo(Brand::class);
     }
-    
+
     public function images(){
         return $this->hasMany(Image::class);
     }
@@ -56,7 +56,7 @@ class Product extends Model
     public function reviews(){
         return $this->hasMany(Review::class);
     }
-    public function attributevalues()
+    public function attributevalues(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(ValueAttribute::class,'product_attribute_value', 'product_id','attribute_value_id')->withTimestamps();
     }

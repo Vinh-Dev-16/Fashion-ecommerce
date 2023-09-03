@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap/js/bootstrap.js') }}">
+
     <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_SANDBOX_CLIENT_ID') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <link rel="stylesheet" type="text/css" href="{{ asset('user/user.css') }}">
     <title>
         @section('title')
@@ -21,369 +22,377 @@
 
 <body>
 
-    <div id="preloader" style="background: #ffffff url({{ asset('images/preview.gif') }}) no-repeat center center;">
-    </div>
 
-    @if (Session::has('success'))
-        <ul class="notification">
-            <li class="success toasts">
-                <div class="column">
-                    <i class="fa fa-check"></i>
-                    <span>{{ session('success') }}</span>
-                </div>
-                <i class="fa fa-xmark"></i>
-            </li>
-        </ul>
-    @elseif (Session::has('error'))
-        <ul class="notification">
-            <li class="error toasts">
-                <div class="column">
-                    <i class="fa fa-check"></i>
-                    <span>{{ session('error') }}</span>
-                </div>
-                <i class="fa fa-xmark"></i>
-            </li>
-        </ul>
-    @endif
+<div id="load-data">
+<div></div>
+</div>
+@if (Session::has('success'))
     <ul class="notification">
+        <li class="success toasts">
+            <div class="column">
+                <i class="fa fa-check"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+            <i class="fa fa-xmark"></i>
+        </li>
     </ul>
-    {{-- Navbar --}}
-    <div id="page" class="site">
-        <aside class="site_off desktop_hide">
-            <div class="off_canvas">
-                <div class="canvas_head flexitem">
+@elseif (Session::has('error'))
+    <ul class="notification">
+        <li class="error toasts">
+            <div class="column">
+                <i class="fa fa-check"></i>
+                <span>{{ session('error') }}</span>
+            </div>
+            <i class="fa fa-xmark"></i>
+        </li>
+    </ul>
+@endif
+<ul class="notification">
+</ul>
+{{-- Navbar --}}
+<div id="page" class="site">
+    <aside class="site_off desktop_hide">
+        <div class="off_canvas">
+            <div class="canvas_head flexitem">
+                <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
+                                                                     alt="logo"
+                                                                     style="width:30px; height:30px; margin-right:5px"><span
+                            class="circle"></span><span
+                            style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
+                </div>
+                <a href="#" class="t_close flexcenter"><i class="ri-close-line"></i></a>
+            </div>
+            <div class="departments">
+
+            </div>
+            <nav></nav>
+            <div class="thetop_nav"></div>
+        </div>
+    </aside>
+    <div class="header_nav" id="top">
+        <div class="container">
+            <div class="wrapper flexitem">
+                <a href="#" class="trigger desktop_hide"><i class="ri-menu-2-line"></i></a>
+                <div class="left flexitem">
                     <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
-                                alt="logo" style="width:30px; height:30px; margin-right:5px"><span
+                                                                         alt="logo"
+                                                                         style="width:30px; height:30px; margin-right:5px"><span
                                 class="circle"></span><span
                                 style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
                     </div>
-                    <a href="#" class="t_close flexcenter"><i class="ri-close-line"></i></a>
-                </div>
-                <div class="departments">
-
-                </div>
-                <nav></nav>
-                <div class="thetop_nav"></div>
-            </div>
-        </aside>
-        <div class="header_nav" id="top">
-            <div class="container">
-                <div class="wrapper flexitem">
-                    <a href="#" class="trigger desktop_hide"><i class="ri-menu-2-line"></i></a>
-                    <div class="left flexitem">
-                        <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
-                                    alt="logo" style="width:30px; height:30px; margin-right:5px"><span
-                                    class="circle"></span><span
-                                    style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
-                        </div>
-                        <nav class="mobile_hide">
-                            <ul class="flexitem second_link">
-                                <li><a href="{{ route('home') }}">Trang chủ</a></li>
-                                <li class="has_child">
-                                    <a href="#">Shop
-                                        <i style="position: absolute " class="ri-arrow-down-s-line" id="arrow_shop"></i>
-                                    </a>
-                                    <div class="mega">
-                                        <div class="container">
-                                            <div class="wrapper">
-                                                <div class="flexcol">
-                                                    <div class="row">
-                                                        <h4>Danh mục sản phẩm</h4>
+                    <nav class="mobile_hide">
+                        <ul class="flexitem second_link">
+                            <li><a href="{{ route('home') }}">Trang chủ</a></li>
+                            <li class="has_child">
+                                <a href="#">Shop
+                                    <i style="position: absolute " class="ri-arrow-down-s-line" id="arrow_shop"></i>
+                                </a>
+                                <div class="mega">
+                                    <div class="container">
+                                        <div class="wrapper">
+                                            <div class="flexcol">
+                                                <div class="row">
+                                                    <h4>Danh mục sản phẩm</h4>
+                                                    <ul>
+                                                        @foreach ($categories->take(8) as $category)
+                                                            <li>
+                                                                <a href="{{url('category/'. $category->slug)}}">{{ $category->name }}</a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flexcol">
+                                                <div class="row">
+                                                    <h4>Túi</h4>
+                                                    <ul>
                                                         <ul>
                                                             @foreach ($categories->take(8) as $category)
-                                                                <li><a href="{{url('category/'. $category->id)}}">{{ $category->name }}</a></li>
+                                                                <li>
+                                                                    <a href="{{url('category/'. $category->slug)}}">{{ $category->name }}</a>
+                                                                </li>
                                                             @endforeach
                                                         </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="flexcol">
-                                                    <div class="row">
-                                                        <h4>Túi</h4>
-                                                        <ul>
-                                                            <ul>
-                                                                @foreach ($categories->take(8) as $category)
-                                                                    <li><a href="{{url('category/'. $category->id)}}">{{ $category->name }}</a>
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="flexcol">
-                                                    <div class="row">
-                                                        <h4>Giày</h4>
-                                                        <ul>
-                                                            <ul>
-                                                                @foreach ($categories->take(8) as $category)
-                                                                    <li><a href="{{url('category/'. $category->id)}}">{{ $category->name }}</a>
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="flexcol">
-                                                    <div class="row">
-                                                        <h4>Brand</h4>
-                                                        <ul class="brands">
-                                                            <ul>
-                                                                @foreach ($brands->take(8) as $brand)
-                                                                    <li><a href="{{url('brand/'.$brand->id)}}">{{ $brand->name }}</a>
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </ul>
-                                                        <a href="" class="view_all">Xem tất cả <i
-                                                                class="ri-arrow-right-line"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="flexcol products">
-                                                    <div class="row">
-                                                        <div class="media">
-                                                            <div class="thumbnail object_cover">
-                                                                <a href="#">
-                                                                    <img src="{{ asset('images/model.jpg') }}"
-                                                                        alt="Ảnh model fashion" id="model_fashion">
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="text_content">
-                                                            <h4>Lalala</h4>
-                                                            <a href="#" class="primary_button">Shop now</a>
-                                                        </div>
-                                                    </div>
+                                                    </ul>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="#">Nữ</a></li>
-                                <li><a href="#">Nam</a></li>
-                                <li><a href="#">Giày</a></li>
-                                <li style="position: relative"><a href="#">Túi
-                                        <div class="fly_item"><span>New!</span></div>
-                                    </a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="right">
-                        <ul class="flexitem second_links">
-                            @if (Auth::check())
-                                <li class="mobile_hide"><a href="{{ url('history') }}">
-                                        <div class="icon_large" style="margin-top: -36px">
-                                            <i class="ri-history-line"></i>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="mobile_hide"><a href="{{ url('/wishlist/' . Auth::user()->id) }}">
-                                        <div class="icon_large" style="margin-top: -36px"><i
-                                                class="ri-heart-line"></i>
-                                            <div class="fly_item"><span class="item_number"
-                                                    id="wishlist_number">{{ App\Models\Wishlist::where('user_id', Auth::user()->id)->count() }}</span>
+                                            <div class="flexcol">
+                                                <div class="row">
+                                                    <h4>Giày</h4>
+                                                    <ul>
+                                                        <ul>
+                                                            @foreach ($categories->take(8) as $category)
+                                                                <li>
+                                                                    <a href="{{url('category/'. $category->slug)}}">{{ $category->name }}</a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            @else
-                                <li class="mobile_hide" onclick="createToast('Bạn cần phải đăng nhập')">
-                                    <div>
-                                        <div class="icon_large" style="margin-top: -10px"><i
-                                                class="ri-heart-line"></i>
-                                            <div class="fly_item"><span class="item_number"
-                                                    id="wishlist_number">0</span></div>
-                                        </div>
-                                    </div>
-                                </li>
-                            @endif
-                            <li class="iscart">
-                                <a href="#">
-                                    <div class="icon_large" id="cart_product"><i
-                                            class="ri-shopping-cart-line"></i>
-                                        <div class="fly_item"><span class="item_number"
-                                                id="item_number">{{ count($cart) }}</span></div>
-                                    </div>
-                                </a>
-
-                                <div class="mini_cart" id="mini_cart">
-                                    <div class="content">
-                                        <div class="cart_head" id="card_head">
-                                            <p>Có {{ count($cart) }} sản phẩm</p>
-                                        </div>
-                                        <div class="cart_body">
-                                            <ul class="products mini" id="card_body">
-                                                @if (Session::has('cart'))
-                                                    @foreach ($cart as $cart_product)
-                                                        <li class="item" style="margin-bottom: 1em">
-                                                            <div class="thumbnail object_cover">
-                                                                <a href="#"><img
-                                                                        src="{{ $cart_product['image'] }}"></a>
-                                                            </div>
-                                                            <div class="item_content">
-                                                                @if ($cart_product['product']->sale == 0)
-                                                                    <p style="margin-bottom:0px"><a
-                                                                            href="{{ url('detail/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
-                                                                    </p>
-                                                                @else
-                                                                    <p style="margin-bottom: 0px"><a
-                                                                            href="{{ url('pageoffer/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
-                                                                    </p>
-                                                                @endif
-                                                                <span class="price">
-                                                                    <br>
-                                                                    @if ($cart_product['product']->discount)
-                                                                        <span>{{ number_format($cart_product['quantity'] * ($cart_product['product']->price - ($cart_product['product']->discount / 100) * $cart_product['product']->price)) }}
-                                                                            VND
-                                                                        </span>
-                                                                    @else
-                                                                        <span>{{ number_format($cart_product['quantity'] * $cart_product['product']->price) }}
-                                                                            VND
-                                                                        </span>
-                                                                    @endif
-                                                                    <span
-                                                                        class="fly_item"><span>{{ $cart_product['quantity'] }}x</span></span>
-                                                                </span>
-                                                            </div>
-                                                            <a href="#" class="item_remove" id="item_remove"
-                                                                onclick="removeCart({{ $cart_product['product']->id }})">
-                                                                <i class="ri-close-line"></i>
+                                            <div class="flexcol">
+                                                <div class="row">
+                                                    <h4>Brand</h4>
+                                                    <ul class="brands">
+                                                        <ul>
+                                                            @foreach ($brands->take(8) as $brand)
+                                                                <li>
+                                                                    <a href="{{url('brand/'.$brand->slug)}}">{{ $brand->name }}</a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </ul>
+                                                    <a href="" class="view_all">Xem tất cả <i
+                                                            class="ri-arrow-right-line"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="flexcol products">
+                                                <div class="row">
+                                                    <div class="media">
+                                                        <div class="thumbnail object_cover">
+                                                            <a href="#">
+                                                                <img src="{{ asset('images/model.jpg') }}"
+                                                                     alt="Ảnh model fashion" id="model_fashion">
                                                             </a>
-                                                        </li>
-                                                    @endforeach
-                                                @endif
-                                            </ul>
-                                        </div>
-                                        <div class="cart_footer">
-                                            <div class="subtotal" id="subtotal">
-                                                <p>Phí ship</p>
-                                                <p><strong>{{ number_format(15000) }} * {{ count($cart) }} =
-                                                        {{ number_format(15000 * count($cart)) }} VND</strong></p>
-                                                <?php $cartCollect = collect($cart);
-                                                $subTotal = $cartCollect->sum(function ($cartItem) {
-                                                    if (!$cartItem['product']->discount) {
-                                                        return $cartItem['quantity'] * $cartItem['product']->price;
-                                                    } else {
-                                                        return $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
-                                                    }
-                                                });
-                                                ?>
-                                                <p>VAT sản phẩm <small>(10%)</small></p>
-                                                <p><strong>{{ number_format($subTotal * 0.1) }} VND</strong></p>
-                                                <p>Tổng tiền</p>
-                                                <p><strong>{{ number_format($subTotal + 15000 * count($cart) + $subTotal * 0.1) }}
-                                                        VND</strong></p>
-                                            </div>
-                                            <div class="actions">
-                                                <div class="checkout_page">
-                                                    @if (Auth::check() && count($cart) > 0)
-                                                        <a href="{{ url('checkout') }}"
-                                                            class="primary_button">CheckOut</a>
-                                                    @else
-                                                        <a href="#" class="primary_button"
-                                                            onclick="createToast('Bạn cần đăng nhập hoặc có đơn hàng')">CheckOut</a>
-                                                    @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="text_content">
+                                                        <h4>Lalala</h4>
+                                                        <a href="#" class="primary_button">Shop now</a>
+                                                    </div>
                                                 </div>
-                                                <a href="{{ url('viewcart') }}" class="secondary_button">Đến xem giỏ
-                                                    hàng</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </li>
-                            <li>
+                            <li><a href="#">Nữ</a></li>
+                            <li><a href="#">Nam</a></li>
+                            <li><a href="#">Giày</a></li>
+                            <li style="position: relative"><a href="#">Túi
+                                    <div class="fly_item"><span>New!</span></div>
+                                </a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="right">
+                    <ul class="flexitem second_links">
+                        @if (Auth::check())
+                            <li class="mobile_hide"><a href="{{ url('history') }}">
+                                    <div class="icon_large" style="margin-top: -36px">
+                                        <i class="ri-history-line"></i>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="mobile_hide"><a href="{{ url('/wishlist/' . Auth::user()->id) }}">
+                                    <div class="icon_large" style="margin-top: -36px"><i
+                                            class="ri-heart-line"></i>
+                                        <div class="fly_item"><span class="item_number"
+                                                                    id="wishlist_number">{{ App\Models\Wishlist::where('user_id', Auth::user()->id)->count() }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        @else
+                            <li class="mobile_hide" onclick="createToast('Bạn cần phải đăng nhập')">
+                                <div>
+                                    <div class="icon_large" style="margin-top: -10px"><i
+                                            class="ri-heart-line"></i>
+                                        <div class="fly_item"><span class="item_number"
+                                                                    id="wishlist_number">0</span></div>
+                                    </div>
+                                </div>
+                            </li>
+                        @endif
+                        <li class="iscart">
+                            <a href="#">
+                                <div class="icon_large" id="cart_product"><i
+                                        class="ri-shopping-cart-line"></i>
+                                    <div class="fly_item"><span class="item_number"
+                                                                id="item_number">{{ count($cart) }}</span></div>
+                                </div>
+                            </a>
 
-                                @if (Auth::check())
-                                    <div class="profile-dropdown">
-                                        @if (Auth::user()->role_id == 4 && App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() > 0)
-                                            <div class="fly_item" style="top:-10px;background:red">
-                                                <span
-                                                    class="item_number"id="count_number">{{ App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() }}
-                                                </span>
+                            <div class="mini_cart" id="mini_cart">
+                                <div class="content">
+                                    <div class="cart_head" id="card_head">
+                                        <p>Có {{ count($cart) }} sản phẩm</p>
+                                    </div>
+                                    <div class="cart_body">
+                                        <ul class="products mini" id="card_body">
+                                            @if (Session::has('cart'))
+                                                @foreach ($cart as $cart_product)
+                                                    <li class="item" style="margin-bottom: 1em">
+                                                        <div class="thumbnail object_cover">
+                                                            <a href="#"><img
+                                                                    src="{{ $cart_product['image'] }}"></a>
+                                                        </div>
+                                                        <div class="item_content">
+                                                            @if ($cart_product['product']->sale == 0)
+                                                                <p style="margin-bottom:0px"><a
+                                                                        href="{{ url('detail/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
+                                                                </p>
+                                                            @else
+                                                                <p style="margin-bottom: 0px"><a
+                                                                        href="{{ url('pageoffer/' . $cart_product['product']->id) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
+                                                                </p>
+                                                            @endif
+                                                            <span class="price">
+                                                                    <br>
+                                                                    @if ($cart_product['product']->discount)
+                                                                    <span>{{ number_format($cart_product['quantity'] * ($cart_product['product']->price - ($cart_product['product']->discount / 100) * $cart_product['product']->price)) }}
+                                                                            VND
+                                                                        </span>
+                                                                @else
+                                                                    <span>{{ number_format($cart_product['quantity'] * $cart_product['product']->price) }}
+                                                                            VND
+                                                                        </span>
+                                                                @endif
+                                                                    <span
+                                                                        class="fly_item"><span>{{ $cart_product['quantity'] }}x</span></span>
+                                                                </span>
+                                                        </div>
+                                                        <a href="#" class="item_remove" id="item_remove"
+                                                           onclick="removeCart({{ $cart_product['product']->id }})">
+                                                            <i class="ri-close-line"></i>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            @endif
+                                        </ul>
+                                    </div>
+                                    <div class="cart_footer">
+                                        <div class="subtotal" id="subtotal">
+                                            <p>Phí ship</p>
+                                            <p><strong>{{ number_format(15000) }} * {{ count($cart) }} =
+                                                    {{ number_format(15000 * count($cart)) }} VND</strong></p>
+                                            <?php $cartCollect = collect($cart);
+                                            $subTotal = $cartCollect->sum(function ($cartItem) {
+                                                if (!$cartItem['product']->discount) {
+                                                    return $cartItem['quantity'] * $cartItem['product']->price;
+                                                } else {
+                                                    return $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
+                                                }
+                                            });
+                                            ?>
+                                            <p>VAT sản phẩm <small>(10%)</small></p>
+                                            <p><strong>{{ number_format($subTotal * 0.1) }} VND</strong></p>
+                                            <p>Tổng tiền</p>
+                                            <p>
+                                                <strong>{{ number_format($subTotal + 15000 * count($cart) + $subTotal * 0.1) }}
+                                                    VND</strong></p>
+                                        </div>
+                                        <div class="actions">
+                                            <div class="checkout_page">
+                                                @if (Auth::check() && count($cart) > 0)
+                                                    <a href="{{ url('checkout') }}"
+                                                       class="primary_button">CheckOut</a>
+                                                @else
+                                                    <a href="#" class="primary_button"
+                                                       onclick="createToast('Bạn cần đăng nhập hoặc có đơn hàng')">CheckOut</a>
+                                                @endif
                                             </div>
-                                        @endif
+                                            <a href="{{ url('viewcart') }}" class="secondary_button">Đến xem giỏ
+                                                hàng</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
 
-                                        @if (Auth::user()->role_id == 2 && App\Models\OrderDetail::where('status', 0)->count() > 0)
-                                            <div class="fly_item" style="top:-10px;background:red">
+                            @if (Auth::check())
+                                <div class="profile-dropdown">
+                                    @if (Auth::user()->role_id == 4 && App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() > 0)
+                                        <div class="fly_item" style="top:-10px;background:red">
+                                                <span
+                                                    class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() }}
+                                                </span>
+                                        </div>
+                                    @endif
+
+                                    @if (Auth::user()->role_id == 2 && App\Models\OrderDetail::where('status', 0)->count() > 0)
+                                        <div class="fly_item" style="top:-10px;background:red">
                                                 <span
                                                     class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
                                                 </span>
-                                            </div>
-                                        @endif
-                                        <div onclick="toggle()" class="profile-dropdown-btn">
-                                            @if (App\Models\Information::where('user_id', '=', Auth::user()->id)->first())
-                                                <div class="profile-img"
-                                                    style="background-image:url({{ asset('storage/avatar/' . App\Models\Information::where('user_id', '=', Auth::user()->id)->first()->avatar) }});border:1px solid black">
+                                        </div>
+                                    @endif
+                                    <div onclick="toggle()" class="profile-dropdown-btn">
+                                        @if (App\Models\Information::where('user_id', '=', Auth::user()->id)->first())
+                                            <div class="profile-img"
+                                                 style="background-image:url({{ asset('storage/avatar/' . App\Models\Information::where('user_id', '=', Auth::user()->id)->first()->avatar) }});border:1px solid black">
                                                 @else
                                                     <div class="profile-img"
-                                                        style="background-image:url({{ asset('images/user.png') }})">
-                                            @endif
-                                            <i class="fa-solid fa-circle"></i>
-                                        </div>
+                                                         style="background-image:url({{ asset('images/user.png') }})">
+                                                        @endif
+                                                        <i class="fa-solid fa-circle"></i>
+                                                    </div>
 
-                                        <span>{{ Auth::user()->name }}
+                                                    <span>{{ Auth::user()->name }}
                                             <i class="fa-solid fa-angle-down"></i>
                                         </span>
-                                    </div>
+                                            </div>
 
-                                    <ul class="profile-dropdown-list">
-                                        <li class="profile-dropdown-list-item">
-                                            <a href="{{ url('information/' . Auth::user()->id) }}">
-                                                <i class="fa-regular fa-user"></i>
-                                                Thông tin cá nhân
-                                            </a>
-                                        </li>
-                                        @if (!(Auth::user()->role_id == 1) && !(Auth::user()->role_id == 4))
-                                            <li class="profile-dropdown-list-item">
-                                                <a href="{{ url('/admin/dashboard') }}">
-                                                    <i class="fa-regular fa-envelope"></i>
-                                                    Trang dashboard
-                                                </a>
-                                            </li>
-                                        @endif
-                                        @if (Auth::user()->role_id == 2)
-                                            <li class="profile-dropdown-list-item">
-                                                <a href="{{ url('pageConfirm') }}">
-                                                    <i class="fa-regular fa-envelope"></i>
-                                                    Trang xác nhận đơn hàng
-                                                </a>
-                                            </li>
-                                        @endif
-                                        @if (Auth::user()->role_id == 1)
-                                            <li class="profile-dropdown-list-item">
-                                                <a href="{{ url('shipper') }}">
-                                                    <i class="ri-run-line"></i>
-                                                    Đăng kí làm shipper
-                                                </a>
-                                            </li>
-                                        @endif
-                                        @if (Auth::user()->role_id == 4)
-                                            <li class="profile-dropdown-list-item">
-                                                <a href="{{ url('pageShip') }}">
-                                                    <i class="ri-truck-line"></i>
-                                                    Check đơn hàng
-                                                </a>
-                                            </li>
-                                        @endif
-                                        <hr />
-                                        <li class="profile-dropdown-list-item">
-                                            <form action="{{ route('do_logout') }}" method="POST">
-                                                @csrf
-                                                <i style="margin-left: 0.88em"
-                                                    class="fa-solid fa-arrow-right-from-bracket"></i>
-                                                <button type="submit">
-                                                    Log out
-                                                </button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                    </div>
-                @else
-                    <div class="auth login">
-                        <a href="{{ route('login') }}" style="font-family: 'Rubik' ,sans-serif;">Đăng
-                            nhập</a>
-                    </div>
-                    @endif
-                    <li>
-                        </ul>
+                                            <ul class="profile-dropdown-list">
+                                                <li class="profile-dropdown-list-item">
+                                                    <a href="{{ url('information/' . Auth::user()->id) }}">
+                                                        <i class="fa-regular fa-user"></i>
+                                                        Thông tin cá nhân
+                                                    </a>
+                                                </li>
+                                                @if (!(Auth::user()->role_id == 1) && !(Auth::user()->role_id == 4))
+                                                    <li class="profile-dropdown-list-item">
+                                                        <a href="{{ url('/admin/dashboard') }}">
+                                                            <i class="fa-regular fa-envelope"></i>
+                                                            Trang dashboard
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                @if (Auth::user()->role_id == 2)
+                                                    <li class="profile-dropdown-list-item">
+                                                        <a href="{{ url('pageConfirm') }}">
+                                                            <i class="fa-regular fa-envelope"></i>
+                                                            Trang xác nhận đơn hàng
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                @if (Auth::user()->role_id == 1)
+                                                    <li class="profile-dropdown-list-item">
+                                                        <a href="{{ url('shipper') }}">
+                                                            <i class="ri-run-line"></i>
+                                                            Đăng kí làm shipper
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                @if (Auth::user()->role_id == 4)
+                                                    <li class="profile-dropdown-list-item">
+                                                        <a href="{{ url('pageShip') }}">
+                                                            <i class="ri-truck-line"></i>
+                                                            Check đơn hàng
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                <hr/>
+                                                <li class="profile-dropdown-list-item">
+                                                    <form action="{{ route('do_logout') }}" method="POST">
+                                                        @csrf
+                                                        <i style="margin-left: 0.88em"
+                                                           class="fa-solid fa-arrow-right-from-bracket"></i>
+                                                        <button type="submit">
+                                                            Log out
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                    </div>
+                                    @else
+                                        <div class="auth login">
+                                            <a href="{{ route('login') }}" style="font-family: 'Rubik' ,sans-serif;">Đăng
+                                                nhập</a>
+                                        </div>
+                                    @endif
+                    </ul>
                 </div>
             </div>
         </div>
@@ -575,7 +584,7 @@
                         <form action="{{ url('searchpage') }}" class="search">
                             <span class="icon_large"><i class="ri-search-line" style="margin-bottom:16px"></i></span>
                             <input type="search" placeholder="Tìm kiếm tên sản phẩm" name="search"
-                                id="search_product">
+                                   id="search_product">
                             <button type="submit">Search</button>
                         </form>
                         <ul class="search_results">
@@ -770,7 +779,8 @@
                     <div class="flexcol">
                         <div class="logo">
                             <a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
-                                    alt="logo" style="width:30px; height:30px; margin-right:5px"><span
+                                                               alt="logo"
+                                                               style="width:30px; height:30px; margin-right:5px"><span
                                     class="circle"></span><span
                                     style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
                         </div>
@@ -825,7 +835,7 @@
                                         <i class="ri-heart-line"></i>
                                         <span>Wishlist</span>
                                         <div class="fly_item"><span class="item_number"
-                                                id="wishlist_number">{{ App\Models\Wishlist::where('user_id', Auth::user()->id)->count() }}</span>
+                                                                    id="wishlist_number">{{ App\Models\Wishlist::where('user_id', Auth::user()->id)->count() }}</span>
                                         </div>
                                     </a>
                                 </li>
@@ -854,12 +864,12 @@
                                 </a>
                             </li>
                             @if (Auth::check())
-                            <li>
-                                <a href="{{ url('history') }}">
-                                    <i class="ri-history-line"></i>
-                                    <span>History</span>
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="{{ url('history') }}">
+                                        <i class="ri-history-line"></i>
+                                        <span>History</span>
+                                    </a>
+                                </li>
                             @endif
                         </ul>
                     </nav>
@@ -885,275 +895,283 @@
         </div>
     </footer>
 
-    </div>
+</div>
 
 
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script src="{{asset('user/main.js')}}"></script>   --}}
+{{-- CDN Ajax --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
+{{-- CDN jquery --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-    <script src="{{asset('user/main.js')}}"></script>   --}}
-    {{-- CDN Ajax --}}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
-    {{-- CDN jquery --}}
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-  
-    @if (Auth::check() && Auth::user()->role_id == 2)
-        <script>
-            // Enable pusher logging - don't include this in production
-            Pusher.logToConsole = true;
-
-            var pusher = new Pusher('194699ac18e541ed2d38', {
-                cluster: 'ap1'
-            });
-
-            var channel = pusher.subscribe('popup-channel');
-            channel.bind('my-event', function(data) {
-                createNoti(data.name + ' đã đặt hàng');
-                let count_number = document.querySelector("#count_number");
-                if(count_number){
-                    document.querySelector('#count_number').innerText = data.count;
-                }else{
-                    let countNumber = createElement('div');
-                    countNumber.className = "fly_item";
-                    let renderNumber = `
-                    <span  class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
-                    </span>
-                    `;
-                    countNumber.innerHTML = renderNumber;
-                    document.querySelector(".profile-dropdown").appendChild(countNumber);
-                }
-            });
-        </script>
-    @endif
-    @if (Auth::check() && Auth::user()->role_id == 4)
-        <script>
-            // Enable pusher logging - don't include this in production
-            Pusher.logToConsole = true;
-
-            var pusher = new Pusher('194699ac18e541ed2d38', {
-                cluster: 'ap1'
-            });
-
-            var channel = pusher.subscribe('popup-confirm');
-            channel.bind('my-handle', function(data) {
-                createNoti('Đã có đơn hàng cần ship');
-                if(count_number){
-                    document.querySelector('#count_number').innerText = data.count;
-                }else{
-                    let countNumber = createElement('div');
-                    countNumber.className = "fly_item";
-                    let renderNumber = `
-                    <span class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() }}
-                    </span>
-                    `;
-                    countNumber.innerHTML = renderNumber;
-                    document.querySelector(".profile-dropdown").appendChild(countNumber);
-                }
-            });
-        </script>
-    @endif
+@if (Auth::check() && Auth::user()->role_id == 2)
     <script>
-        window.addEventListener('load', () => {
-            document.querySelector('#preloader').style.display = "none";
-        })
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
 
-        // Phần sidebar
-
-        copyMenu();
-
-        function copyMenu() {
-            let dptCategory = document.querySelector('.dpt_cat');
-            let dptPlace = document.querySelector('.departments');
-            dptPlace.innerHTML = dptCategory.innerHTML;
-
-            let mainNav = document.querySelector('.header_nav nav');
-            let navPlace = document.querySelector('.off_canvas nav');
-            navPlace.innerHTML = mainNav.innerHTML;
-
-        }
-
-        const menuButton = document.querySelector('.trigger'),
-            closeButton = document.querySelector('.t_close'),
-            addclass = document.querySelector('.site');
-        menuButton.addEventListener('click', () => {
-            addclass.classList.toggle('showmenu');
+        var pusher = new Pusher('194699ac18e541ed2d38', {
+            cluster: 'ap1'
         });
 
-        closeButton.addEventListener('click', () => {
-            addclass.classList.remove('showmenu');
+        var channel = pusher.subscribe('popup-channel');
+        channel.bind('my-event', function (data) {
+            createNoti(data.name + ' đã đặt hàng');
+            let count_number = document.querySelector("#count_number");
+            if (count_number) {
+                document.querySelector('#count_number').innerText = data.count;
+            } else {
+                let countNumber = createElement('div');
+                countNumber.className = "fly_item";
+                let renderNumber = `
+                    <span  class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
+                </span>
+`;
+                countNumber.innerHTML = renderNumber;
+                document.querySelector(".profile-dropdown").appendChild(countNumber);
+            }
+        });
+    </script>
+@endif
+@if (Auth::check() && Auth::user()->role_id == 4)
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('194699ac18e541ed2d38', {
+            cluster: 'ap1'
         });
 
-        // Tao remove toast
+        var channel = pusher.subscribe('popup-confirm');
+        channel.bind('my-handle', function (data) {
+            createNoti('Đã có đơn hàng cần ship');
+            if (count_number) {
+                document.querySelector('#count_number').innerText = data.count;
+            } else {
+                let countNumber = createElement('div');
+                countNumber.className = "fly_item";
+                let renderNumber = `
+                    <span class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() }}
+                </span>
+`;
+                countNumber.innerHTML = renderNumber;
+                document.querySelector(".profile-dropdown").appendChild(countNumber);
+            }
+        });
+    </script>
+@endif
+<script>
+    window.addEventListener('load', () => {
+        $("#load-data").fadeOut("slow");
+        $("#page").fadeIn("slow");
+    })
 
-        const notifications = document.querySelector('.notification');
-        const toast = document.querySelector('.toasts');
-        const timer = 3000;
+    function block_screen() {
+        $("#load-data").fadeIn("slow");
+        $("#page").fadeOut("slow");
+    }
 
-        const removeNoti = (noti) => {
-            noti.classList.add("hide");
-            if (noti.timeoutId) clearTimeout(noti.timeoutId);
-            setTimeout(() => noti.remove(), 400);
-        };
+    function unblock_screen() {
+        $("#page").fadeIn("slow");
+        $("#load-data").fadeOut("slow");
+    }
+
+    // Phần sidebar
+
+    copyMenu();
+
+    function copyMenu() {
+        let dptCategory = document.querySelector('.dpt_cat');
+        let dptPlace = document.querySelector('.departments');
+        dptPlace.innerHTML = dptCategory.innerHTML;
+
+        let mainNav = document.querySelector('.header_nav nav');
+        let navPlace = document.querySelector('.off_canvas nav');
+        navPlace.innerHTML = mainNav.innerHTML;
+
+    }
+
+    const menuButton = document.querySelector('.trigger'),
+        closeButton = document.querySelector('.t_close'),
+        addclass = document.querySelector('.site');
+    menuButton.addEventListener('click', () => {
+        addclass.classList.toggle('showmenu');
+    });
+
+    closeButton.addEventListener('click', () => {
+        addclass.classList.remove('showmenu');
+    });
+
+    // Tao remove toast
+
+    const notifications = document.querySelector('.notification');
+    const toast = document.querySelector('.toasts');
+    const timer = 3000;
+
+    const removeNoti = (noti) => {
+        noti.classList.add("hide");
+        if (noti.timeoutId) clearTimeout(noti.timeoutId);
+        setTimeout(() => noti.remove(), 400);
+    };
 
 
-        // Tao Toast
+    // Tao Toast
 
-        function createNoti(message) {
-            const noti = document.createElement('li');
-            noti.className = `toasts success`;
-            noti.innerHTML = `
+    function createNoti(message) {
+        const noti = document.createElement('li');
+        noti.className = `toasts success`;
+        noti.innerHTML = `
                         <div class="column">
                             <i class="fa-solid fa-check"></i>
                             <span>${message}</span>
                         </div>
                         <i class="fa-solid fa-x"></i>
                         `
-            notifications.appendChild(noti);
-            setTimeout(() => removeNoti(noti), 3000)
-        };
+        notifications.appendChild(noti);
+        setTimeout(() => removeNoti(noti), 3000)
+    };
 
-          // Tao remove toast
+    // Tao remove toast
 
-          const removeToast = (toast) => {
-                toast.classList.add("hide");
-                if (toast.timeoutId) clearTimeout(toast.timeoutId);
-                setTimeout(() => toast.remove(), 400);
-            };
+    const removeToast = (toast) => {
+        toast.classList.add("hide");
+        if (toast.timeoutId) clearTimeout(toast.timeoutId);
+        setTimeout(() => toast.remove(), 400);
+    };
 
 
-            // Tao Toast
-            
-            function createToast(toastMessage) {
-                const toast = document.createElement('li');
-                toast.className = `toasts error`;
-                toast.innerHTML = `
+    // Tao Toast
+
+    function createToast(toastMessage) {
+        const toast = document.createElement('li');
+        toast.className = `toasts error`;
+        toast.innerHTML = `
                 <div class="column">
                     <i class="fa-solid fa-bug"></i>
                     <span>${toastMessage}</span>
                 </div>
                 <i class="fa-solid fa-x"></i>
                 `
-                notifications.appendChild(toast);
-                setTimeout(() => removeToast(toast), 3000)
-            };
+        notifications.appendChild(toast);
+        setTimeout(() => removeToast(toast), 3000)
+    };
 
-        const submenu = document.querySelectorAll('.has_child .icon_small');
-        submenu.forEach((menu) => menu.addEventListener('click', togglePage));
+    const submenu = document.querySelectorAll('.has_child .icon_small');
+    submenu.forEach((menu) => menu.addEventListener('click', togglePage));
 
-        function togglePage(e) {
-            e.preventDefault();
-            submenu.forEach((item) => item != this ? item.closest('.has_child').classList.remove('expand') : null);
-            if (this.closest('.has_child').classList != 'expand');
-            this.closest('.has_child').classList.toggle('expand');
-        }
+    function togglePage(e) {
+        e.preventDefault();
+        submenu.forEach((item) => item != this ? item.closest('.has_child').classList.remove('expand') : null);
+        if (this.closest('.has_child').classList != 'expand') ;
+        this.closest('.has_child').classList.toggle('expand');
+    }
 
-        // Search
+    // Search
 
-        const search = document.getElementById('search_product');
-        const search_result = document.querySelector('.search_results');
-        const searchURL = `http://127.0.0.1:8000/search`;
+    const search = document.getElementById('search_product');
+    const search_result = document.querySelector('.search_results');
+    const searchURL = `http://127.0.0.1:8000/search`;
 
-        searchProduct();
+    searchProduct();
 
-        // Lấy Value ở ô input
+    // Lấy Value ở ô input
 
-        function searchProduct() {
-            search.addEventListener('keyup', function(e) {
-                if (e.target.value) {
-                    send(e.target.value.trim());
-                    search_result.style.display = 'block';
-                } else {
-                    search_result.style.display = 'none';
-                }
+    function searchProduct() {
+        search.addEventListener('keyup', function (e) {
+            if (e.target.value) {
+                send(e.target.value.trim());
+                search_result.style.display = 'block';
+            } else {
+                search_result.style.display = 'none';
+            }
+        })
+
+        document.addEventListener('click', (e) => {
+            if (e.target != search_result) {
+                search_result.style.display = "none";
+            }
+        })
+    }
+
+    // Search dữ liệu
+
+    async function send(data) {
+        const res = await fetch(`${searchURL}?data=${data}`)
+            .then((response) => response.json())
+            .then((data) => {
+                show(data);
             })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
 
-            document.addEventListener('click', (e) => {
-                if (e.target != search_result) {
-                    search_result.style.display = "none";
-                }
-            })
-        }
+    // Show Data
 
-        // Search dữ liệu
-
-        async function send(data) {
-            const res = await fetch(`${searchURL}?data=${data}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    show(data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-        }
-
-        // Show Data
-
-        function show(data) {
-            console.log(data.results);
-            if (data.results.length > 0) {
-                let output = '';
-                data.results.slice(0, 5).map(function(item) {
-                    if (item.sale == 0) {
-                        item.images.slice(0, 1).map((image) => {
-                            output += `
+    function show(data) {
+        console.log(data.results);
+        if (data.results.length > 0) {
+            let output = '';
+            data.results.slice(0, 5).map(function (item) {
+                if (item.sale == 0) {
+                    item.images.slice(0, 1).map((image) => {
+                        output += `
                             <a href="{{ url('detail/${item.id}') }}">
                                 <li><img src="${image.path}" alt="${item.name}">
-                                <span>${(item.name).substring(0,30)}</span>
+                                <span>${(item.name).substring(0, 30)}</span>
                         </li>
                             </a>
                         `
-                        });
-                    } else {
-                        item.images.slice(0, 1).map((image) => {
-                            output += `
+                    });
+                } else {
+                    item.images.slice(0, 1).map((image) => {
+                        output += `
                             <a href="{{ url('pageoffer/${item.id}') }}">
                                 <li><img src="${image.path}" alt="${item.name}">
-                                <span>${(item.name).substring(0,50)}</span>
+                                <span>${(item.name).substring(0, 50)}</span>
                         </li>
                             </a>
                         `
-                        });
-                    }
-                });
-                search_result.innerHTML = output;
-            } else {
-                search_result.innerHTML = '<li> <span> Không tìm thấy sản phẩm </span></li>';
-            }
+                    });
+                }
+            });
+            search_result.innerHTML = output;
+        } else {
+            search_result.innerHTML = '<li> <span> Không tìm thấy sản phẩm </span></li>';
         }
+    }
 
 
-        // wishlist
-        async function wishlist(id, userID) {
+    // wishlist
+    async function wishlist(id, userID) {
 
-            const res = await fetch(`http://127.0.0.1:8000/wishlist/store/${id}`, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        product_id: id,
-                        user_id: userID,
-                    }),
-                }).then((response) => response.json())
-                .then((data) => {
-                    console.log(data.result);
-                    message = 'Đã thêm vào danh sách yêu thích';
-                    createNoti(message);
-                    let wishlist_number = document.querySelector('#wishlist_number');
-                    wishlist_number.innerText = data.result.length;
-                    let wishlist_love = document.querySelector('#wish_love');
-                    let content = '';
-                    data.result.slice(0, 1).map((item) => {
-                        content += `
+        const res = await fetch(`http://127.0.0.1:8000/wishlist/store/${id}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                product_id: id,
+                user_id: userID,
+            }),
+        }).then((response) => response.json())
+            .then((data) => {
+                console.log(data.result);
+                message = 'Đã thêm vào danh sách yêu thích';
+                createNoti(message);
+                let wishlist_number = document.querySelector('#wishlist_number');
+                wishlist_number.innerText = data.result.length;
+                let wishlist_love = document.querySelector('#wish_love');
+                let content = '';
+                data.result.slice(0, 1).map((item) => {
+                    content += `
                         <li>
                         <a href="#" id="wishlist" onclick="wishlistDelete(${item.id},${item.product_id})">
                           <span class="icon_large" style="color: #ff6b6b"><i class="ri-heart-fill"></i></span>
@@ -1167,38 +1185,38 @@
                          </a>
                          </li>
                         `;
-                    });
-                    wishlist_love.innerHTML = content;
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
                 });
+                wishlist_love.innerHTML = content;
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
 
-            return false;
+        return false;
 
-        }
+    }
 
-        async function wishlistDelete(id, productID, userID) {
-            const res = await fetch(`http://127.0.0.1:8000/wishlist/destroy/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
+    async function wishlistDelete(id, productID, userID) {
+        const res = await fetch(`http://127.0.0.1:8000/wishlist/destroy/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
 
-                }).then((response) => response.json())
-                .then((data) => {
-                    let wishlist_number = document.querySelector('#wishlist_number');
-                    wishlist_number.innerText = data.result.length;
-                    let wishlist_love = document.querySelector('#wish_love');
-                    let content = '';
-                    content += `
+        }).then((response) => response.json())
+            .then((data) => {
+                let wishlist_number = document.querySelector('#wishlist_number');
+                wishlist_number.innerText = data.result.length;
+                let wishlist_love = document.querySelector('#wish_love');
+                let content = '';
+                content += `
                         <li>
                           <a href="#" id="wishlist" onclick="wishlist(${productID},${userID})">
                           <span class="icon_large"><i class="ri-heart-line"></i></span>
                           <span id="love" >Yêu thích</span>
                           </a>
-                         </li> 
+                         </li>
                         <li>
                         <a href="">
                          <span class="icon_large"><i class="ri-share-line"></i></span>
@@ -1206,138 +1224,139 @@
                          </a>
                          </li>
                         `;
-                    wishlist_love.innerHTML = content;
-                    message = 'Đã xóa khỏi danh sách yêu thích';
-                    createNoti(message);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-
-            return false;
-        }
-
-
-        // add to Cart
-
-        function addCart(id) {
-            let colorRadio = document.getElementsByName('color');
-            for (let i of colorRadio) {
-                if (i.checked) {
-                    var color = i.value;
-                }
-            }
-            let sizeRadio = document.getElementsByName('size');
-            for (let i of sizeRadio) {
-                if (i.checked) {
-                    var size = i.value;
-                }
-            }
-            let quantity = document.querySelector("input[name='stock']").value;
-            if (color == undefined && size == undefined) {
-                message = "Phải chọn color và size";
+                wishlist_love.innerHTML = content;
+                message = 'Đã xóa khỏi danh sách yêu thích';
                 createNoti(message);
-            } else if (size == undefined) {
-                message = "Phải chọn size";
-                createNoti(message);
-            } else if (color == undefined) {
-                message = "Phải chọn color";
-                createNoti(message);
-            }
-            sendCart(id, color, size, quantity)
-            console.log(id, color, size, quantity)
-            return false;
-        }
-
-        async function sendCart(id, color, size, quantity) {
-            const res = await fetch(`http://127.0.0.1:8000/cart/${id}`, {
-
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-Requested-With": "XMLHttpRequest",
-                    },
-                    body: JSON.stringify({
-                        color: parseInt(color),
-                        size: parseInt(size),
-                        quantity: parseInt(quantity),
-                    }),
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                    showCart(data);
-                    message = "Đã thêm vào giỏ hàng";
-                    createNoti(message)
-                    let form_cart = document.querySelector('#form_cart');
-                    console.log(form_cart);
-                    form_cart.reset();
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-        }
-
-        // remove cart
-        if( document.querySelector('#item_remove')){
-            document.querySelector('#item_remove').addEventListener('click', (e) => {
-                e.preventDefault();
+            })
+            .catch((error) => {
+                console.error("Error:", error);
             });
-        }
 
-        async function removeCart(id) {
-            const res = await fetch(`http://127.0.0.1:8000/removecart/${id}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    showCart(data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-        }
+        return false;
+    }
 
-        function showCart(data) {
-            console.log(data);
-            let render = '';
-            let card_render = '';
-            let item_number = document.querySelector('#item_number');
-            item_number.innerText = data.cart.length;
-            data.cart.map((cart) => {
-                if (cart.product.discount) {
-                    var price = (cart.product.price - (cart.product.price * ((cart.product.discount) / 100))) * cart
-                        .quantity
-                } else {
-                    var price = cart.product.price * cart.quantity
-                };
-                render += `
+
+    // add to Cart
+
+    function addCart(id) {
+        let colorRadio = document.getElementsByName('color');
+        for (let i of colorRadio) {
+            if (i.checked) {
+                var color = i.value;
+            }
+        }
+        let sizeRadio = document.getElementsByName('size');
+        for (let i of sizeRadio) {
+            if (i.checked) {
+                var size = i.value;
+            }
+        }
+        let quantity = document.querySelector("input[name='stock']").value;
+        if (color == undefined && size == undefined) {
+            message = "Phải chọn color và size";
+            createNoti(message);
+        } else if (size == undefined) {
+            message = "Phải chọn size";
+            createNoti(message);
+        } else if (color == undefined) {
+            message = "Phải chọn color";
+            createNoti(message);
+        }
+        sendCart(id, color, size, quantity)
+        console.log(id, color, size, quantity)
+        return false;
+    }
+
+    async function sendCart(id, color, size, quantity) {
+        const res = await fetch(`http://127.0.0.1:8000/cart/${id}`, {
+
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+            },
+            body: JSON.stringify({
+                color: parseInt(color),
+                size: parseInt(size),
+                quantity: parseInt(quantity),
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                showCart(data);
+                message = "Đã thêm vào giỏ hàng";
+                createNoti(message)
+                let form_cart = document.querySelector('#form_cart');
+                console.log(form_cart);
+                form_cart.reset();
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+
+    // remove cart
+    if (document.querySelector('#item_remove')) {
+        document.querySelector('#item_remove').addEventListener('click', (e) => {
+            e.preventDefault();
+        });
+    }
+
+    async function removeCart(id) {
+        const res = await fetch(`http://127.0.0.1:8000/removecart/${id}`)
+            .then((response) => response.json())
+            .then((data) => {
+                showCart(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+
+    function showCart(data) {
+        console.log(data);
+        let render = '';
+        let card_render = '';
+        let item_number = document.querySelector('#item_number');
+        item_number.innerText = data.cart.length;
+        data.cart.map((cart) => {
+            if (cart.product.discount) {
+                var price = (cart.product.price - (cart.product.price * ((cart.product.discount) / 100))) * cart
+                    .quantity
+            } else {
+                var price = cart.product.price * cart.quantity
+            }
+            ;
+            render += `
                                         <li class="item" style="margin-bottom: 1em">
                                             ${
-                                                (()=>{
-                                                    if((cart.product.sale) == 0){
-                                                        return `
+                (() => {
+                    if ((cart.product.sale) == 0) {
+                        return `
                                                                 <div class="thumbnail object_cover">
                                                                     <a href="{{ url('detail/${cart.product.id}') }}"><img src="${cart.image}"></a>
                                                                 </div>
                                                                 <div class="item_content">
-                                                                    <p><a href="{{ url('detail/${cart.product.id}') }}">${(cart.product.name).substring(0,30)}</a>
-                                                                    </p>       
+                                                                    <p><a href="{{ url('detail/${cart.product.id}') }}">${(cart.product.name).substring(0, 30)}</a>
+                                                                    </p>
                                                                             `
-                                                    }else{
-                                                         return ` 
-                                                            <div class="thumbnail object_cover"> 
+                    } else {
+                        return `
+                                                            <div class="thumbnail object_cover">
                                                                 <a href="{{ url('pageoffer/${cart.product.id}')}}">
                                                                     <img src="${cart.image}">
-                                                                </a>  
-                                                            </div> 
+                                                                </a>
+                                                            </div>
                                                             <div class="item_content">
                                                                 <p>
                                                                 <a href="{{url('pageoffer/${cart.product.id}')}}">
                                                                     ${(cart.product.name).substring(0, 30)}
-                                                                 </a> 
+                                                                 </a>
                                                                 </p >
                     `
-                                                    }
-                                                })()
-                                            }
+                    }
+                })()
+            }
                                                 <span class="price">
                                                     <span>${price.toLocaleString('vi-VN')} VND</span>
                                                     <span class="fly_item"><span>${cart.quantity}x</span></span>
@@ -1345,80 +1364,80 @@
                                             </div>
                                             <a href="#" class="item_remove" id="item_remove" onclick="removeCart(${cart.product.id})">
                                                     <i class="ri-close-line" ></i>
-                                                </a>  
+                                                </a>
                                         </li>
             `;
-                let ship = (15000 * data.cart.length).toLocaleString('vi-VN');
-                console.log(data.cart.length)
-                const caculator = data.cart.reduce((total, cartItem) => {
-                    if (cart.product.discount) {
-                        return total + cartItem.quantity * (cartItem.product.price - ((cartItem.product
-                            .price) * ((cartItem.product.discount) / 100)));
-                    } else {
-                        return total + cartItem.quantity * (cartItem.product.price);
-                    }
-                }, 0);
-                let total = caculator.toLocaleString('vi-VN')
+            let ship = (15000 * data.cart.length).toLocaleString('vi-VN');
+            console.log(data.cart.length)
+            const caculator = data.cart.reduce((total, cartItem) => {
+                if (cart.product.discount) {
+                    return total + cartItem.quantity * (cartItem.product.price - ((cartItem.product
+                        .price) * ((cartItem.product.discount) / 100)));
+                } else {
+                    return total + cartItem.quantity * (cartItem.product.price);
+                }
+            }, 0);
+            let total = caculator.toLocaleString('vi-VN')
 
-                card_render = `
+            card_render = `
                                             <p>Phí ship</p>
                                             <p><strong> ${(15000).toLocaleString('vi-VN')} * ${data.cart.length} = ${ship}  VND</strong></p>
                                             <p>Tổng tiền</p>
                                             <p><strong>${(caculator + (15000 * data.cart.length)).toLocaleString('vi-VN')}
                                                     VND</strong></p>
                                         `
-            })
+        })
 
-            document.querySelector('#subtotal').innerHTML = card_render;
-            document.querySelector('#card_body').innerHTML = render;
-            document.querySelector('#card_head').innerText = `Có ${data.cart.length} sản phẩm`;
-            if(data.cart.length > 0) {
-                document.querySelector('.checkout_page').innerHTML = `
+        document.querySelector('#subtotal').innerHTML = card_render;
+        document.querySelector('#card_body').innerHTML = render;
+        document.querySelector('#card_head').innerText = `Có ${data.cart.length} sản phẩm`;
+        if (data.cart.length > 0) {
+            document.querySelector('.checkout_page').innerHTML = `
                 <a href="http://127.0.0.1:8000/checkout" class="primary_button">CheckOut</a>
                 `;
-            }else{
-                document.querySelector('.checkout_page').innerHTML = `
+        } else {
+            document.querySelector('.checkout_page').innerHTML = `
                 <a href="#" onclick="createToast('Bạn cần có đơn hàng hoặc đăng nhâp')" class="primary_button">CheckOut</a>
                 `;
+        }
+    };
+
+</script>
+@if (Session::has('success') || Session::has('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            function removeToast(toast) {
+                toast.classList.add("hide");
+                if (toast.timeoutId) clearTimeout(toast.timeoutId);
+                setTimeout(() => toast.remove(), 400);
             }
-        };
 
+            setTime();
+
+            function setTime() {
+                setTimeout(() => removeToast(toast), 3000)
+            }
+        });
     </script>
-    @if (Session::has('success') || Session::has('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+@endif
+@if (Auth::check())
+    <script>
+        let profileDropdownList = document.querySelector(".profile-dropdown-list");
+        let btn = document.querySelector(".profile-dropdown-btn");
 
-                function removeToast(toast) {
-                    toast.classList.add("hide");
-                    if (toast.timeoutId) clearTimeout(toast.timeoutId);
-                    setTimeout(() => toast.remove(), 400);
-                }
+        let classList = profileDropdownList.classList;
 
-                setTime();
+        const toggle = () => classList.toggle("active");
 
-                function setTime() {
-                    setTimeout(() => removeToast(toast), 3000)
-                }
-            });
-        </script>
-    @endif
-    @if (Auth::check())
-        <script>
-            let profileDropdownList = document.querySelector(".profile-dropdown-list");
-            let btn = document.querySelector(".profile-dropdown-btn");
+        window.addEventListener("click", function (e) {
+            if (!btn.contains(e.target)) classList.remove("active");
+        });
+    </script>
+@endif
 
-            let classList = profileDropdownList.classList;
-
-            const toggle = () => classList.toggle("active");
-
-            window.addEventListener("click", function(e) {
-                if (!btn.contains(e.target)) classList.remove("active");
-            });
-        </script>
-    @endif
-
-    @section('javascript')
-    @show
+@section('javascript')
+@show
 </body>
 
 </html>

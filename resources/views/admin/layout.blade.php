@@ -278,7 +278,7 @@
                             <!-- small box -->
                             <div class="small-box bg-danger">
                                 <div class="inner">
-                                    <h3>{{App\Models\admin\Product::count()}}</h3>                                        
+                                    <h3>{{App\Models\admin\Product::count()}}</h3>
                                     <p>Sản phẩm</p>
                                 </div>
                                 <div class="icon">
@@ -357,7 +357,6 @@
     <script src="{{ asset('plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
     <!-- ChartJS -->
     <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
-
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -380,20 +379,20 @@
         @if (Session::has('success') || Session::has('error'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-    
+
                 const notifications = document.querySelector('.notification');
                 const toast = document.querySelector('.toasts');
                 const timer = 3000;
-    
-    
+
+
                 function removeToast(toast) {
                     toast.classList.add("hide");
                     if (toast.timeoutId) clearTimeout(toast.timeoutId);
                     setTimeout(() => toast.remove(), 400);
                 }
-    
+
                 setTime();
-    
+
                 function setTime() {
                     setTimeout(() => removeToast(toast), 3000)
                 }

@@ -24,7 +24,7 @@ class homeController extends Controller
         $cart = session()->get('cart', []);
         return view('user.design.home', compact('products', 'categories', 'brands','cart'));
     }
-    
+
     public function viewAllProducts()
     {
         $products = Product::orderBy('id','desc')->paginate(12);
@@ -63,7 +63,7 @@ class homeController extends Controller
                 }
             }]
         ])->paginate(12);
-       
+
         return view('user.design.search',compact('searches','key','products','categories','brands','cart'));
     }
 
@@ -99,7 +99,7 @@ class homeController extends Controller
             $request->validate($rules, $messages);
         }
 
-      
+
         $file = $request->file('avatar');
         $file->storeAs('avatar' , time().'.'.$file->getClientOriginalExtension(),'public');
         $image = time().'.'.$file->getClientOriginalExtension();
@@ -224,7 +224,7 @@ class homeController extends Controller
                             'time_confirm' => $now,
                         ]
                     );
-                } 
+                }
                 $count = OrderDetail::where('status', 2)->count();
                 event(new AdminConfirm($count));
                 return redirect()->back()->with('success', 'Đã xác nhận');
@@ -234,7 +234,7 @@ class homeController extends Controller
         }else{
             return redirect()->back()->with('error','Bạn cần xác nhận đơn hàng');
         }
-       
+
     }
 }
-   
+

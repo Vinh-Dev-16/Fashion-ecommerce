@@ -18,12 +18,12 @@
                                     <div class="media">
                                         <div class="thumbnail object_cover">
                                             @if ($product->sale == 0)
-                                                <a href="{{ url('detail/' . $product->id) }}">
+                                                <a href="{{ url('detail/' . $product->slug) }}">
                                                     <img src="{{ $product->images->first()->path }}"
                                                         alt="{{ $product->name }}">
                                                 </a>
                                             @else
-                                                <a href="{{ url('pageoffer/' . $product->id) }}">
+                                                <a href="{{ url('pageoffer/' . $product->slug) }}">
                                                     <img src="{{ $product->images->first()->path }}"
                                                         alt="{{ $product->name }}">
                                                 </a>
@@ -33,10 +33,10 @@
                                             <ul>
                                                 <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
                                                 @if ($product->sale == 0)
-                                                    <li><a href="{{ url('detail/' . $product->id) }}"><i
+                                                    <li><a href="{{ url('detail/' . $product->slug) }}"><i
                                                                 class="ri-eye-line"></i></a></li>
                                                 @else
-                                                    <li><a href="{{ url('pageoffer/' . $product->id) }}"><i
+                                                    <li><a href="{{ url('pageoffer/' . $product->slug) }}"><i
                                                                 class="ri-eye-line"></i></a></li>
                                                 @endif
                                                 <li><a href=""><i class="ri-shuffle-line"></i></a></li>
@@ -64,11 +64,11 @@
                                         </div>
                                         @if ($product->sale == 0)
                                             <h3 class="main_links"><a
-                                                    href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
+                                                    href="{{ url('detail/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
                                             </h3>
                                         @else
                                             <h3 class="main_links"><a
-                                                    href="{{ url('pageoffer/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
+                                                    href="{{ url('pageoffer/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
                                             </h3>
                                         @endif
                                         <div class="price">

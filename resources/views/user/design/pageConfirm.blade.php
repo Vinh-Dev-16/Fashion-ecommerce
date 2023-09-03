@@ -43,13 +43,13 @@
                                                     <td class="flexitem">
                                                         @if ($orderItem->sale == 0)
                                                             <div class="thumbnail">
-                                                                <a href="{{ url('detail/' . $orderItem->product_id) }}"><img
+                                                                <a href="{{ url('detail/' . $orderItem->product->slug) }}"><img
                                                                         src="{{ $orderItem->product->images->first()->path }}"
                                                                         alt="{{ $orderItem->name }}"></a>
                                                             </div>
                                                             <div class="content">
                                                                 <strong>
-                                                                    <a href="{{ url('detail/' . $orderItem->product_id) }}">{{ $orderItem->name }}
+                                                                    <a href="{{ url('detail/' . $orderItem->product->slug) }}">{{ $orderItem->name }}
                                                                     </a>
                                                                 </strong>
                                                                 <p style="margin-bottom: 1px">Color:
@@ -58,14 +58,14 @@
                                                             </div>
                                                         @else
                                                             <div class="thumbnail">
-                                                                <a href="{{ url('pageoffer/' . $orderItem->product_id) }}"><img
+                                                                <a href="{{ url('pageoffer/' . $orderItem->product->slug) }}"><img
                                                                         src="{{ $orderItem->product->images->first()->path }}"
                                                                         alt="{{ $orderItem->name }}"></a>
                                                             </div>
                                                             <div class="content">
                                                                 <strong>
                                                                     <a
-                                                                        href="{{ url('pageoffer/' . $orderItem->product_id) }}">{{ $orderItem->name }}
+                                                                        href="{{ url('pageoffer/' . $orderItem->product->slug) }}">{{ $orderItem->name }}
                                                                     </a>
                                                                 </strong>
                                                                 <p style="margin-bottom: 1px">Color:
@@ -76,7 +76,7 @@
                                                     </td>
                                                     @if ($orderItem->order->note)
                                                         <td>
-                                                            {{$orderItem->order->note}}    
+                                                            {{$orderItem->order->note}}
                                                         </td>
                                                     @else
                                                         <td>Không có</td>

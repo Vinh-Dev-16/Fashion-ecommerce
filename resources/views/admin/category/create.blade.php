@@ -3,7 +3,7 @@
     Trang tạo mới Category
 @endsection
 @section('content')
- 
+
     <div class="col-md-12">
         <div class="product">
             <div class="card">
@@ -22,10 +22,17 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="exampleName">Tên danh mục</label>
-                                <input type="text" class="form-control" id="exampleInputName"
+                                <input type="text" class="form-control" id="slug" onkeyup="ChangeToSlug();"
                                     placeholder="Điền tên danh mục" name="name">
                                 @error('name')
                                     <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleName">Slug danh mục</label>
+                                <input type="text" class="form-control" id="convert_slug" name="slug">
+                                @error('slug')
+                                <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="form-group">
@@ -60,3 +67,6 @@
     </ol>
 @endsection
 
+@section('script')
+  @include('admin.category.script')
+@endsection

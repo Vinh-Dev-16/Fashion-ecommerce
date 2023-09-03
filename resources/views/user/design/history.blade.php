@@ -53,14 +53,14 @@
                                                                         @if ($orderItem->sale == 0)
                                                                             <div class="thumbnail">
                                                                                 <a
-                                                                                    href="{{ url('detail/' . $orderItem->product_id) }}"><img
+                                                                                    href="{{ url('detail/' . $orderItem->product->slug) }}"><img
                                                                                         src="{{ $orderItem->product->images->first()->path }}"
                                                                                         alt="{{ $orderItem->name }}"></a>
                                                                             </div>
                                                                             <div class="content">
                                                                                 <strong>
                                                                                     <a
-                                                                                        href="{{ url('detail/' . $orderItem->product_id) }}">{{ $orderItem->name }}
+                                                                                        href="{{ url('detail/' . $orderItem->product->slug) }}">{{ $orderItem->name }}
                                                                                     </a>
                                                                                 </strong>
                                                                                 <p style="margin-bottom: 1px">Color:
@@ -70,14 +70,14 @@
                                                                         @else
                                                                             <div class="thumbnail">
                                                                                 <a
-                                                                                    href="{{ url('pageoffer/' . $orderItem->product_id) }}"><img
+                                                                                    href="{{ url('pageoffer/' . $orderItem->product->slug) }}"><img
                                                                                         src="{{ $orderItem->product->images->first()->path }}"
                                                                                         alt="{{ $orderItem->name }}"></a>
                                                                             </div>
                                                                             <div class="content">
                                                                                 <strong>
                                                                                     <a
-                                                                                        href="{{ url('pageoffer/' . $orderItem->product_id) }}">{{ $orderItem->name }}
+                                                                                        href="{{ url('pageoffer/' . $orderItem->product->slug) }}">{{ $orderItem->name }}
                                                                                     </a>
                                                                                 </strong>
                                                                                 <p style="margin-bottom: 1px">Color:

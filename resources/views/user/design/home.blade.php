@@ -1,6 +1,6 @@
 @extends('user.layout')
 @section('title')
-  Fashion 
+  Fashion
 @endsection
 @section('content')
     {{-- Slider --}}
@@ -26,7 +26,7 @@
                 <div class="wrapper flexitem">
                     @foreach ($brands as $brand)
                         <div class="item">
-                            <a href="{{ url('brand/' . $brand->id) }}">
+                            <a href="{{ url('brand/' . $brand->slug) }}">
                                 <img src="{{ $brand->logo }}" alt="{{ $brand->name }}">
                             </a>
                         </div>
@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="media">
                                         <div class="images">
-                                            <a href="{{ url('pageoffer/' . $product->id) }}">
+                                            <a href="{{ url('pageoffer/' . $product->slug) }}">
                                                 <img src="{{ $product->images->first()->path }}"
                                                     alt="{{ $product->name }}">
                                             </a>
@@ -68,7 +68,7 @@
                                         <div class="hoverable">
                                             <ul>
                                                 <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                                <li><a href="{{url('pageoffer/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
+                                                <li><a href="{{url('pageoffer/' . $product->slug)}}"><i class="ri-eye-line"></i></a></li>
                                                 <li><a href=""><i class="ri-shuffle-line"></i></a></li>
                                             </ul>
                                         </div>
@@ -91,7 +91,7 @@
                                             <div class="mini_text">{{ $product->reviews->count() }} review</div>
                                         </div>
                                         <h3 class="main_links"><a
-                                                href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
+                                                href="{{ url('detail/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
                                         </h3>
                                         <div class="price">
                                             <span
@@ -119,14 +119,14 @@
                             <div class="item">
                                 <div class="media">
                                     <div class="thumbnail " style="object-fit: cover">
-                                        <a href="{{ url('pageoffer/' . $product->id) }}">
+                                        <a href="{{ url('pageoffer/' . $product->slug) }}">
                                             <img src="{{ $product->images->first()->path }}" style="height: 100%">
                                         </a>
                                     </div>
                                     <div class="hoverable">
                                         <ul>
                                             <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="{{url('detail/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
+                                            <li><a href="{{url('detail/' . $product->slug)}}"><i class="ri-eye-line"></i></a></li>
                                             <li><a href=""><i class="ri-shuffle-line"></i></a></li>
                                         </ul>
                                     </div>
@@ -137,13 +137,13 @@
                                 </div>
                                 <div class="content">
                                     <h3 class="main_links"><a
-                                            href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
+                                            href="{{ url('detail/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
                                     </h3>
                                     <div class="rating">
                                         @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
-                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div>
                                         @else
-                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
                                         @endif
                                         <div class="mini_text">{{$product->reviews->count()}} review</div>
                                     </div>
@@ -170,14 +170,14 @@
                             <div class="item">
                                 <div class="media">
                                     <div class="thumbnail " style="object-fit: cover">
-                                        <a href="{{ url('pageoffer/' . $product->id) }}">
+                                        <a href="{{ url('pageoffer/' . $product->slug) }}">
                                             <img src="{{ $product->images->first()->path }}" style="height: 100%">
                                         </a>
                                     </div>
                                     <div class="hoverable">
                                         <ul>
                                             <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="{{url('detail/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
+                                            <li><a href="{{url('detail/' . $product->slug)}}"><i class="ri-eye-line"></i></a></li>
                                             <li><a href=""><i class="ri-shuffle-line"></i></a></li>
                                         </ul>
                                     </div>
@@ -188,13 +188,13 @@
                                 </div>
                                 <div class="content">
                                     <h3 class="main_links"><a
-                                            href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
+                                            href="{{ url('detail/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
                                     </h3>
                                     <div class="rating">
                                         @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
-                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div>
                                         @else
-                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
                                         @endif
                                         <div class="mini_text">{{$product->reviews->count()}} review</div>
                                     </div>
@@ -239,14 +239,14 @@
                             <div class="item page_other">
                                 <div class="media">
                                     <div class="thumbnail object_cover">
-                                        <a href="{{ url('detail/' . $product->id) }}">
+                                        <a href="{{ url('detail/' . $product->slug) }}">
                                             <img src="{{ $product->images->first()->path }}" alt="{{ $product->name }}">
                                         </a>
                                     </div>
                                     <div class="hoverable">
                                         <ul>
                                             <li class="active"><a href=""><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="{{url('detail/' . $product->id)}}"><i class="ri-eye-line"></i></a></li>
+                                            <li><a href="{{url('detail/' . $product->slug)}}"><i class="ri-eye-line"></i></a></li>
                                             <li><a href=""><i class="ri-shuffle-line"></i></a></li>
                                         </ul>
                                     </div>
@@ -258,14 +258,14 @@
                                 <div class="content">
                                     <div class="rating">
                                         @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
-                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div> 
+                                        <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div>
                                         @else
-                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div> 
+                                        <div class="stars" style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
                                         @endif
                                         <div class="mini_text">{{$product->reviews->count()}} review</div>
                                     </div>
                                     <h3 class="main_links"><a
-                                            href="{{ url('detail/' . $product->id) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
+                                            href="{{ url('detail/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
                                     </h3>
                                     <div class="price">
                                         @if ($product->discount)
@@ -292,7 +292,7 @@
             </div>
         </div>
     </div>
- 
+
 @endsection
 
 @section('modal')
@@ -323,8 +323,8 @@
     <script>
         if(window.sessionStorage.getItem('close')){
             window.onload = function(){
-            document.querySelector('.site').classList.remove('showmodal')    
-            }; 
+            document.querySelector('.site').classList.remove('showmodal')
+            };
         }else{
             window.onload  = function (){
             document.querySelector('.site').classList.toggle('showmodal')

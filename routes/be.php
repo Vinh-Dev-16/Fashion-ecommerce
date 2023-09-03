@@ -16,7 +16,7 @@ use App\Http\Controllers\admin\imagesController;
 |
 */
 
-Route::middleware('auth', 'is_admin')->prefix('/admin')->group(function () {
+Route::middleware('auth', 'is_admin')->prefix('admin')->group(function () {
   Route::get('/dashboard', function () {
     return view('admin.dashboard.index');
   })->name('admin.dashboard.index');
@@ -48,7 +48,7 @@ Route::middleware('auth', 'is_admin')->prefix('/admin')->group(function () {
   // Route Category
 
 
-  Route::prefix('/category')->group(function () {
+  Route::prefix('category')->group(function () {
     Route::get('/index', [categoryController::class, 'index'])->name('admin.category.index');
     Route::get('create', [categoryController::class, 'create'])->name('admin.category.create');
     Route::post('store', [categoryController::class, 'store'])->name('admin.category.store');
