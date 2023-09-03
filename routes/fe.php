@@ -5,6 +5,7 @@ use App\Http\Controllers\user\cartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\user\homeController;
 use App\Http\Controllers\user\informationController;
+use App\Http\Controllers\user\brandController;
 use App\Http\Controllers\user\singlePageController;
 use App\Http\Controllers\user\wishlistController;
 use App\Http\Controllers\user\payPalController;
@@ -51,13 +52,18 @@ use Illuminate\Routing\Router;
 
         Route::get('/detail/{slug}',[singlePageController::class,'detail'])->name('detail');
         Route::get('pageoffer/{slug}',[singlePageController::class,'pageOffer'])->name('pageoffer');
-        Route::get('/brand/{id}',[singlePageController::class,'brand'])->name('brand');
 
         //route Category
 
         Route::prefix('category')->group(function(){
             Route::get('/{slug}',[categoryController::class,'index'])->name('category.index');
             Route::post('list_data', [categoryController::class, 'listData'])->name('category.list_data');
+        });
+
+        // Router Brand
+        Route::prefix('brand')->group(function(){
+            Route::get('/{slug}',[brandController::class,'index'])->name('brand.index');
+            Route::post('list_data', [brandController::class, 'listData'])->name('brand.list_data');
         });
 
         Route::middleware('auth')->prefix('wishlist')->group(function(){

@@ -3,7 +3,7 @@
     Trang tạo mới Brand
 @endsection
 @section('content')
- 
+
     <div class="col-md-12">
         <div class="product">
             <div class="card">
@@ -22,10 +22,17 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="exampleName">Tên brand</label>
-                                <input type="text" class="form-control" id="exampleInputName"
+                                <input type="text" class="form-control"id="slug" onkeyup="ChangeToSlug();"
                                     placeholder="Điền tên brand" name="name">
                                 @error('name')
                                     <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleName">Slug brand</label>
+                                <input type="text" class="form-control" id="convert_slug" name="slug">
+                                @error('slug')
+                                <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="form-group">
@@ -65,13 +72,6 @@
 @endsection
 
 @section('javascript')
-
-    <script>
-            ClassicEditor
-            .create( document.querySelector( '#editor' ) )
-            .catch( error => {
-                console.error( error );
-            } );
-    </script>
+    @include('admin.brand.script')
 
 @endsection

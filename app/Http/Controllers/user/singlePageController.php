@@ -39,17 +39,5 @@ class singlePageController extends Controller
     }
 
 
-    // Page Brand
-
-    public function brand($id){
-        $brand = Brand::findOrFail($id);
-        $products = Product::all();
-        $categories = Category::all();
-        $brands = Brand::all();
-        $paginate = $brand->products()->paginate(12);
-        $cart = session()->get('cart', []);
-        return view('user.design.brand', compact('brand','brands','products','categories','cart','paginate'));
-    }
-
 
 }

@@ -3,7 +3,7 @@
     Trang sửa Brand
 @endsection
 @section('content')
-  
+
 
     <div class="col-md-12">
         <div class="product">
@@ -24,8 +24,15 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="exampleName">Tên brand sản phẩm</label>
-                                <input type="text" class="form-control" id="exampleInputName" value="{{ $brand->name }}"
+                                <input type="text" class="form-control" id="slug" onkeyup="ChangeToSlug()" value="{{ $brand->name }}"
                                     name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleName">Slug brand</label>
+                                <input type="text" class="form-control" value="{{$brand->slug}}" id="convert_slug" name="slug">
+                                @error('slug')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="exampleName">Logo brand</label>
@@ -59,12 +66,6 @@
 
 @section('javascript')
 
-    <script>
-            ClassicEditor
-            .create( document.querySelector( '#editor' ) )
-            .catch( error => {
-                console.error( error );
-            } );
-    </script>
+    @include('admin.brand.script')
 
 @endsection

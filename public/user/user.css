@@ -1243,8 +1243,8 @@ form.search :where(span,button){
 }
 .products .offer ul li{
 	position: relative;
-	width: 37px;
-	height: 37px;
+	width: 39px;
+	height: 39px;
 	padding:  0.5em;
 	line-height: inherit;
 	color: var(--secondary-dark-color);

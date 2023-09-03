@@ -39,7 +39,6 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        event(new Registered($user));
         Auth::login($user);
         return redirect('/');
     }
@@ -69,7 +68,7 @@ class AuthController extends Controller
 
 
 
-    public function logout()
+    public function logout(): \Illuminate\Http\RedirectResponse
     {
 
         Auth::logout();
@@ -81,10 +80,10 @@ class AuthController extends Controller
     }
 
     public function callback($provider){
-      
-        $getInfo = Socialite::driver($provider)->user(); 
-        $user = $this->createUser($getInfo,$provider); 
-        auth()->login($user); 
+
+        $getInfo = Socialite::driver($provider)->user();
+        $user = $this->createUser($getInfo,$provider);
+        auth()->login($user);
         return redirect()->to('/');
       }
       function createUser($getInfo,$provider){
