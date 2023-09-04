@@ -71,7 +71,7 @@ use Illuminate\Routing\Router;
         // Route viewAllProduct
         Route::prefix('view-all-product')->group(function(){
             Route::get('',[viewAllProductController::class,'index'])->name('view-all-product');
-            Route::post('list_data', [viewAllProductController::class, 'listData'])->name('view_all_product.list_data');
+            Route::get('list_data', [viewAllProductController::class, 'listData'])->name('view_all_product.list_data');
         });
 
 

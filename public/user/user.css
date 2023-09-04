@@ -1194,6 +1194,10 @@ form.search :where(span,button){
 	}
 }
 
+.active-link.active{
+    color: #0abf30;
+}
+
 .brand_home{
 	margin-top: 30px;
 }
@@ -1838,6 +1842,32 @@ form.search :where(span,button){
 .products .collapse .expand >a::before{
 	content: '-';
 }
+/*view all product*/
+.filter-view-all-product .filter-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.filter-view-all-product .filter-content .filter-content-item {
+    width: 18%;
+}
+.filter-view-all-product .filter-content .filter-content-item .filter-content-item-title {
+    margin-top: 15px;
+}
+.filter-view-all-product .filter-content .filter-content-item .filter-content-item-title h4 {
+    text-align: center;
+}
+.filter-view-all-product .filter-content .filter-content-item .filter-content-item-content {
+    margin-top: 15px;
+}
+.filter-content-item-content-price select {
+    width: 100%;
+    padding: 3px 13px;
+    height: 36px;
+}
+
 /* review */
 
 .products .reviews h4{

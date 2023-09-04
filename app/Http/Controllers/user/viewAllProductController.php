@@ -10,10 +10,33 @@ class viewAllProductController extends Controller
 {
     public function index(Request $request)
     {
-        $products = Product::paginate(4);
+        $products = Product::query();
         if ($request->ajax()) {
-            return view('user.design.view_all_product.list_data', compact('products'));
+            if ($request->sort) {
+                switch ($request->sort) {
+                    case '1':
+                        $products->orderBy('id', 'desc');
+                        break;
+                    case '2':
+                        $products->orderByRaw('price - ((price * discount) / 100) asc');
+                        break;
+                    case '3':
+                        $products->orderByRaw('price - ((price * discount) / 100) desc');
+                        break;
+                    case '4':
+                        $products->orderBy('name', 'asc');
+                        break;
+                    case '5':
+                        $products->orderBy('name', 'desc');
+                        break;
+                }
+            }
+                $products = $products->paginate(4);
+            return view('user.design.view_all_product.list_data', compact('products'))->render();
         }
+            $products = $products->paginate(4);
         return view('user.design.view_all_product.index', compact('products'));
     }
+
+
 }

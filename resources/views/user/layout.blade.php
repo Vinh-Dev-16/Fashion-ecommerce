@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"/>
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap/js/bootstrap.js') }}">
 
     <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_SANDBOX_CLIENT_ID') }}"></script>
@@ -82,7 +83,7 @@
                     </div>
                     <nav class="mobile_hide">
                         <ul class="flexitem second_link">
-                            <li><a href="{{ route('home') }}">Trang chủ</a></li>
+                            <li><a href="{{ route('home') }}" class="active-link {{ request()->is('/') ? 'active' : '' }}">Trang chủ</a></li>
                             <li class="has_child">
                                 <a href="#">Shop
                                     <i style="position: absolute " class="ri-arrow-down-s-line" id="arrow_shop"></i>
@@ -1076,7 +1077,6 @@
 
     const search = document.getElementById('search_product');
     const search_result = document.querySelector('.search_results');
-    const searchURL = `http://127.0.0.1:8000/search`;
 
     searchProduct();
 
@@ -1102,7 +1102,7 @@
     // Search dữ liệu
 
     async function send(data) {
-        const res = await fetch(`${searchURL}?data=${data}`)
+        const res = await fetch(`{{route('search')}}?data=${data}`)
             .then((response) => response.json())
             .then((data) => {
                 show(data);
