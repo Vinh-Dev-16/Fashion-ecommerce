@@ -19,20 +19,10 @@ class homeController extends Controller
     public function home()
     {
         $products = Product::all();
-        $categories = Category::all();
-        $brands = Brand::all();
-        $cart = session()->get('cart', []);
-        return view('user.design.home', compact('products', 'categories', 'brands','cart'));
+        return view('user.design.home', compact('products'));
     }
 
-    public function viewAllProducts()
-    {
-        $products = Product::orderBy('id','desc')->paginate(12);
-        $categories = Category::all();
-        $brands = Brand::all();
-        $cart = session()->get('cart', []);
-        return view('user.design.viewAllProduct', compact('products', 'categories', 'brands','cart'));
-    }
+
 
     public function search(Request $request)
     {
@@ -69,11 +59,8 @@ class homeController extends Controller
 
     public function shipper()
     {
-        $products = Product::all();
-        $categories = Category::all();
-        $brands = Brand::all();
-        $cart = session()->get('cart', []);
-        return view('user.design.shipper', compact('products', 'categories', 'brands','cart'));
+
+        return view('user.design.shipper');
     }
 
     public function shipperStore(Request $request){

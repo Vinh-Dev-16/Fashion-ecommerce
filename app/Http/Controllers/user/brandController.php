@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\admin\Brand;
 use App\Models\admin\Category;
 use App\Models\admin\Product;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 
 class brandController extends Controller
@@ -58,5 +59,39 @@ class brandController extends Controller
         $products = $products->get();
         $cart = session()->get('cart', []);
         return view('user.design.brand.list_data', compact('products', 'cart', 'brand'))->render();
+    }
+
+    public function love(Request $request)
+    {
+        try {
+
+            $whislist = Wishlist::where('product_id',$request->product_id)->where('user_id', $request->user_id)->first();
+            if($whislist){
+                $whislist->delete();
+                $count = Wishlist::where('user_id', $request->user_id)->count();
+                return [
+                    'status' => config('contains.STATUS_SUCCESS'),
+                    'message' => "Đã xóa khỏi danh sách yêu thích",
+                    'count' => $count,
+                ];
+            } else {
+                Wishlist::create([
+                    'product_id' => $request->product_id,
+                    'user_id' => $request->user_id,
+                ]);
+                $count = Wishlist::where('user_id', $request->user_id)->count();
+                return [
+                    'status' => config('contains.STATUS_SUCCESS'),
+                    'message' => "Đã thêm vào danh sách yêu thích",
+                    'count' => $count,
+                ];
+            }
+        } catch (\Throwable $th) {
+            return [
+                'status' => config('contains.STATUS_ERROR'),
+                'message' => $th->getMessage(),
+            ];
+        }
+
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\user\singlePageController;
 use App\Http\Controllers\user\wishlistController;
 use App\Http\Controllers\user\payPalController;
 use App\Http\Controllers\user\categoryController;
+use App\Http\Controllers\user\viewAllProductController;
 use Illuminate\Routing\Router;
 
 /*
@@ -30,7 +31,6 @@ use Illuminate\Routing\Router;
         Route::get('confirm/product/{id}',[homeController::class,'confirmProduct'])->middleware('auth')->name('confirmProduct');
         Route::get('pageConfirm',[homeController::class,'pageConfirm'])->middleware('auth')->name('pageConfirm');
         Route::post('confirm/item',[homeController::class,'confirmItem'])->middleware('auth')->name('confirmItem');
-        Route::get('viewAllProducts',[homeController::class,'viewAllProducts'])->name('viewAllProducts');
 
         // Route Cart
 
@@ -58,17 +58,28 @@ use Illuminate\Routing\Router;
         Route::prefix('category')->group(function(){
             Route::get('/{slug}',[categoryController::class,'index'])->name('category.index');
             Route::post('list_data', [categoryController::class, 'listData'])->name('category.list_data');
+            Route::post('love',[categoryController::class,'love'])->name('category.love');
         });
 
         // Router Brand
         Route::prefix('brand')->group(function(){
             Route::get('/{slug}',[brandController::class,'index'])->name('brand.index');
             Route::post('list_data', [brandController::class, 'listData'])->name('brand.list_data');
+            Route::post('love',[brandController::class,'love'])->name('brand.love');
         });
 
+        // Route viewAllProduct
+        Route::prefix('view-all-product')->group(function(){
+            Route::get('',[viewAllProductController::class,'index'])->name('view-all-product');
+            Route::post('list_data', [viewAllProductController::class, 'listData'])->name('view_all_product.list_data');
+        });
+
+
+//        Route whishlist
         Route::middleware('auth')->prefix('wishlist')->group(function(){
             Route::get('/{id}',[wishlistController::class,'index'])->name('wishlist');
             Route::post('store/{id}',[wishlistController::class,'store'])->name('wishlist.store');
+            Route::post('love',[wishlistController::class,'love'])->name('wishlist.love');
             Route::delete('destroy/{id}',[wishlistController::class,'destroy'])->name('wishlist.destroy');
             Route::delete('delete/{id}',[wishlistController::class,'delete'])->name('wishlist.delete');
         });

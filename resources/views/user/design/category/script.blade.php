@@ -80,4 +80,30 @@
             }
         })
     }
+
+    function love(product_id) {
+        $.ajax({
+            url: "{{ route('category.love') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                product_id: product_id,
+                user_id: $('#user_id').val(),
+            },
+            success: function(data) {
+                if (data.status == 0) {
+                    createToast(data.message);
+                }else {
+                    createNoti(data.message);
+                    $('#wishlist_number').text(data.count);
+                    list_data();
+                }
+
+            },
+            error: function(error) {
+                createToast('Không thể thêm vào danh sách yêu thích');
+            }
+        })
+    }
+
 </script>

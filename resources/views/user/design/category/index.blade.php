@@ -42,6 +42,9 @@
                             </div>
                         </div>
                         <input type="hidden" value="{{$category->slug}}" id="slug">
+                        @if(Auth::check())
+                        <input type="hidden" value="{{Auth::user()->id}}" id="user_id">
+                        @endif
                         <div class="section">
                             <div class="row">
                                 <div class="cat_head">

@@ -231,7 +231,7 @@
                 <div class="column">
                     <div class="sectop flexitem">
                         <h2><span class="circle"></span><span>View Products</span></h2>
-                        <div class="second_links"><a href="{{url('viewAllProducts')}}" class="view_all">Xem tất cả<i
+                        <div class="second_links"><a href="{{url('view-all-product')}}" class="view_all">Xem tất cả<i
                                     class="ri-arrow-right-line"></i></a></div>
                     </div>
                     <div class="products main flexwrap">
