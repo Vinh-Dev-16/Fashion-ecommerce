@@ -17,7 +17,7 @@ class brandController extends Controller
         if ($request->ajax()) {
             return $this->listData($request);
         }
-        $paginate = $brand->products()->paginate(1);
+        $paginate = $brand->products()->paginate(12);
         return view('user.design.brand.index', compact('brand','paginate'));
     }
 
@@ -55,7 +55,7 @@ class brandController extends Controller
             }
         }
 
-        $products = $products->paginate(1);
+        $products = $products->paginate(12);
         return view('user.design.brand.list_data', compact('products', 'brand'))->render();
     }
 
