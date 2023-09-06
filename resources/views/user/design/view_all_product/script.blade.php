@@ -28,7 +28,7 @@
         $('body').on('click', '.pagination a', function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            window.history.pushState("", "", url);
+
             paginate(url);
         });
     });
@@ -41,9 +41,17 @@
             data: {
                 _token: "{{ csrf_token() }}",
                 sort: $('#select-sort').val(),
+                category: $('#select-category').val(),
+                brand: $('#select-brand').val(),
+                price: $('#select-price').val(),
+                color: $('#select-color').val(),
+                size: $('#select-size').val(),
             },
             success: function(data) {
-                $('#show-data').html(data);
+                $('#show-data').fadeOut(400, function() {
+                    $(this).html(data);
+                    $(this).fadeIn(400);
+                });
             },
             error: function(error) {
                 createToast('Đã xảy ra lỗi');
@@ -53,11 +61,37 @@
 
     $('#select-sort').on('change', function() {
         var url = $(this).attr('href');
+        // window.history.pushState("", "", url);
+        paginate(url);
+    })
+    $('#select-category').on('change', function() {
+        var url = $(this).attr('href');
         window.history.pushState("", "", url);
         paginate(url);
     })
 
+    $('#select-price').on('change', function() {
+        var url = $(this).attr('href');
+        window.history.pushState("", "", url);
+        paginate(url);
+    })
+    $('#select-color').on('change', function() {
+        var url = $(this).attr('href');
+        window.history.pushState("", "", url);
+        paginate(url);
+    })
 
+    $('#select-brand').on('change', function() {
+        var url = $(this).attr('href');
+        window.history.pushState("", "", url);
+        paginate(url);
+    })
+
+    $('#select-size').on('change', function() {
+        var url = $(this).attr('href');
+        window.history.pushState("", "", url);
+        paginate(url);
+    })
     const dpt_menu = document.querySelectorAll('.dpt_menu');
     const close_menu = document.querySelectorAll('#close_menu');
 

@@ -23,11 +23,10 @@
                                    <select id="select-price" class="js-states form-control">
                                        <option></option>
                                        <option value="1">Dưới 100.000đ</option>
-                                       <option value="2">100.000đ - 200.000đ</option>
-                                       <option value="3">200.000đ - 300.000đ</option>
-                                       <option value="4">300.000đ - 400.000đ</option>
-                                       <option value="5">400.000đ - 500.000đ</option>
-                                       <option value="6">Trên 500.000đ</option>
+                                       <option value="2">100.000đ - 500.000đ</option>
+                                       <option value="3">500.000đ - 1.000.000đ</option>
+                                       <option value="4">1.000.000đ - 5.000.000đ</option>
+                                       <option value="5">Trên 5.000.000đ</option>
                                    </select>
                                 </div>
                             </div>

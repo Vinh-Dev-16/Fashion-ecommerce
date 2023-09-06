@@ -408,7 +408,7 @@
                     <div class="dpt_cat">
                         <div class="dpt_head">
                             <div class="main_text">Mại zô Mại zô</div>
-                            <div class="mini_text mobile_hide">Tất cả {{ $products->count() }} sản phẩm</div>
+                            <div class="mini_text mobile_hide">Tất cả {{ \App\Models\admin\Product::count()  }} sản phẩm</div>
                             <a href="" class="dpt_trigger mobile_hide" id="close_menu">
                                 <i class="ri-menu-3-line ri_xl"></i>
                             </a>

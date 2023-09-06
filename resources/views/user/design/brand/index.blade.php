@@ -32,7 +32,7 @@
                                     <ul class="bycolor variant flexitem">
                                         @foreach (App\Models\admin\ValueAttribute::where('attribute_id', '=', '2')->get() as $color)
                                             <li>
-                                                <input type="radio" class="select-color" name="color" id="{{ $color->value }}">
+                                                <input type="radio" class="select-color" name="color" value="{{$color->id}}" id="{{ $color->value }}">
                                                 <label for="{{ $color->value }}" class="circle"
                                                        style="background-color:{{ $color->value }};margin-right:0.3em;"></label>
                                             </li>

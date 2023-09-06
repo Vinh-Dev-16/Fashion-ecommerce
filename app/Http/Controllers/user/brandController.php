@@ -11,15 +11,14 @@ use Illuminate\Http\Request;
 
 class brandController extends Controller
 {
-    public function index($slug): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request, $slug)
     {
         $brand = Brand::where('slug', $slug)->firstOrFail();
-        $products = Product::all();
-        $categories = Category::all();
-        $brands = Brand::all();
-        $paginate = $brand->products()->paginate(12);
-        $cart = session()->get('cart', []);
-        return view('user.design.brand.index', compact('brand','brands','products','categories','cart','paginate'));
+        if ($request->ajax()) {
+            return $this->listData($request);
+        }
+        $paginate = $brand->products()->paginate(1);
+        return view('user.design.brand.index', compact('brand','paginate'));
     }
 
     public function listData(Request $request): string
@@ -42,10 +41,10 @@ class brandController extends Controller
         if (!empty($request->select_filter)) {
             switch ($request->select_filter) {
                 case '1':
-                    $products->orderBy('price', 'asc');
+                    $products->orderByRaw('price - ((price * discount) / 100) asc');
                     break;
                 case '2':
-                    $products->orderBy('price', 'desc');
+                    $products->orderByRaw('price - ((price * discount) / 100) desc');
                     break;
                 case '3':
                     $products->orderBy('name', 'asc');
@@ -56,9 +55,8 @@ class brandController extends Controller
             }
         }
 
-        $products = $products->get();
-        $cart = session()->get('cart', []);
-        return view('user.design.brand.list_data', compact('products', 'cart', 'brand'))->render();
+        $products = $products->paginate(1);
+        return view('user.design.brand.list_data', compact('products', 'brand'))->render();
     }
 
     public function love(Request $request)

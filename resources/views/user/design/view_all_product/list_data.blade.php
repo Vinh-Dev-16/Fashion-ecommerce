@@ -1,3 +1,4 @@
+@if(count($products) > 0)
 <div class="products main flexwrap" >
     @foreach ($products as $product)
         <div class="item page_other">
@@ -72,3 +73,6 @@
     @endforeach
 </div>
 {{ $products->render('vendor.pagination.default') }}
+@else
+    <h2 style="text-align: center; color:  #ff6b6b">Không có kết quả</h2>
+@endif

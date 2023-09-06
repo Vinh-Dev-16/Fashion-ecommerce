@@ -1,8 +1,15 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', () => {
-        list_data();
+        var url = $(this).attr('href');
+        window.history.pushState("", "", url);
+        list_data(url);
     })
+    $('body').on('click', '.pagination a', function (e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        list_data(url);
+    });
     const FtoShow = '.filter';
     const Fpopup = document.querySelector(FtoShow);
     const Ftrigger = document.querySelector('.filter_trigger');
@@ -40,27 +47,32 @@
     })
 
     $('.select-color').change(function() {
-        list_data();
+        var url = $(this).attr('href');
+        window.history.pushState("", "", url);
+        list_data(url);
     })
     $('#cancel-filter').click(function() {
         $('#cancel-filter').val('1');
         $('input[name="color"]').prop('checked', false);
         $('input[name="categories[]"]').prop('checked', false);
-        list_data();
+        var url = $(this).attr('href');
+        window.history.pushState("", "", url);
+        list_data(url);
     })
     $('#select-filter').change(function() {
-        list_data();
+        var url = $(this).attr('href');
+        window.history.pushState("", "", url);
+        list_data(url);
     })
 
-    async function list_data() {
-        block_screen();
+    async function list_data(url) {
         let selectedValues = [];
         $('input[name="categories[]"]:checked').each(function() {
             selectedValues.push($(this).val());
         });
         $.ajax({
-            url: "{{ route('brand.list_data') }}",
-            method: "POST",
+            url: url,
+            method: "GET",
             data: {
                 _token: "{{ csrf_token() }}",
                 slug: $('#slug').val(),
@@ -70,8 +82,10 @@
                 select_filter: $('#select-filter').val(),
             },
             success: function(data) {
-                unblock_screen();
-                $('#show-data').html(data);
+                $('#show-data').fadeOut(400, function() {
+                    $(this).html(data);
+                    $(this).fadeIn(400);
+                });
                 $('#cancel-filter').val('');
             },
             error: function(error) {

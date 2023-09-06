@@ -101,6 +101,7 @@
             </div>
         @endforeach
     </div>
+    {{$products->links('vendor.pagination.default')}}
 @else
     <h2 style="text-align: center; color:  #ff6b6b">Không có kết quả</h2>
 
