@@ -41,7 +41,7 @@ Route::get('auth/redirect/{provider}',[AuthController::class, 'redirect'])->name
 Route::get('callback/{provider}',[AuthController::class, 'callback'])->name('callback');
 
 Route::post('/register',[AuthController::class, 'register'])->name('do_register');
-Route::post('/login',[AuthController::class, 'login'])->name('do_login');
+Route::post('/do-login',[AuthController::class, 'login'])->name('do_login');
 Route::post('/logout',[AuthController::class, 'logout'])->name('do_logout');
 
 Route::get('/verification/{id}',[authController::class,'verification'])->name('verification');

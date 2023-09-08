@@ -1115,7 +1115,6 @@
     // Show Data
 
     function show(data) {
-        console.log(data.results);
         if (data.results.length > 0) {
             let output = '';
             data.results.slice(0, 5).map(function (item) {
