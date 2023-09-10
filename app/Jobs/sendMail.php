@@ -2,12 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Mail\verifyMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class sendMail implements ShouldQueue
 {
@@ -18,9 +20,12 @@ class sendMail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public $data;
+    public $user;
+    public function __construct($data, $user)
     {
-        //
+            $this->data = $data;
+            $this->user = $user;
     }
 
     /**
@@ -30,6 +35,6 @@ class sendMail implements ShouldQueue
      */
     public function handle()
     {
-        //
+        Mail::to($this->user->email)->send(new verifyMail($this->data));
     }
 }

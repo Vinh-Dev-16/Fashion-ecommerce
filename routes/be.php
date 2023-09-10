@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\admin\permissionController;
+use App\Http\Controllers\admin\roleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\productController;
 use App\Http\Controllers\admin\categoryController;
@@ -16,22 +18,43 @@ use App\Http\Controllers\admin\imagesController;
 |
 */
 
-Route::middleware('auth', 'is_admin')->prefix('admin')->group(function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth'] ], function () {
   Route::get('/dashboard', function () {
     return view('admin.dashboard.index');
   })->name('admin.dashboard.index');
 
-  Route::middleware('account_manager')->prefix('/account')->group(function () {
-    Route::get('/index', [userController::class, 'index'])->name('admin.account.index');
-    Route::patch('update/{id}', [userController::class, 'update'])->name('admin.account.update');
-    Route::get('edit/{id}', [userController::class, 'edit'])->name('admin.account.edit');
-    Route::delete('delete/{id}', [userController::class, 'delete'])->name('admin.account.delete');
-    Route::get('viewrestore', [userController::class,'viewrestore'])->name('admin.account.viewrestore');
-    Route::get('restore/{id}', [userController::class, 'restore'])->name('admin.account.restore');
-    Route::delete('delete/{id}', [userController::class, 'delete'])->name('admin.account.delete');
-  });
+    Route::group(['prefix' => 'role' , 'middleware' => ['role:admin']], function () {
+        Route::get('index',[roleController::class,'index'])->name('admin.role.index');
+        Route::get('create',[roleController::class,'create'])->name('admin.role.create');
+        Route::post('store',[roleController::class,'store'])->name('admin.role.store');
+        Route::get('edit/{slug}',[roleController::class,'edit'])->name('admin.role.edit');
+        Route::patch('update/{id}',[roleController::class,'update'])->name('admin.role.update');
+        Route::get('destroy/{id}',[roleController::class,'destroy'])->name('admin.role.destroy');
+    });
 
-  // Router Products
+    Route::group(['prefix' => 'permission', 'middleware' => ['role:admin']], function () {
+        Route::get('index',[permissionController::class,'index'])->name('admin.permission.index');
+        Route::get('create',[permissionController::class,'create'])->name('admin.permission.create');
+        Route::post('store',[permissionController::class,'store'])->name('admin.permission.store');
+        Route::get('edit/{slug}',[permissionController::class,'edit'])->name('admin.permission.edit');
+        Route::patch('update/{id}',[permissionController::class,'update'])->name('admin.permission.update');
+        Route::get('destroy/{id}',[permissionController::class,'destroy'])->name('admin.permission.destroy');
+
+    });
+
+    Route::group(['prefix' => 'user'] , function () {
+        Route::get('index',[userController::class,'index'])->name('admin.user.index');
+        Route::get('role/{id}', [userController::class,'role'])->name('admin.user.role');
+        Route::post('doRole/{id}', [userController::class,'doRole'])->name('admin.user.doRole');
+        Route::post('doPermission/{id}', [userController::class,'doPermission'])->name('admin.user.doPermission');
+        Route::get('permission/{id}', [userController::class, 'permission'])->name('admin.user.permission');
+        Route::get('destroy/{id}', [userController::class, 'destroy'])->name('admin.account.destroy');
+        Route::get('viewrestore', [userController::class,'viewrestore'])->name('admin.account.viewrestore');
+        Route::get('restore/{id}', [userController::class, 'restore'])->name('admin.account.restore');
+        Route::get('delete/{id}', [userController::class, 'delete'])->name('admin.account.delete');
+    });
+
+    // Route Products
 
   Route::prefix('/product')->group(function () {
     Route::get('/index', [productController::class, 'index'])->name('admin.product.index');

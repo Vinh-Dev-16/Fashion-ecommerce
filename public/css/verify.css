@@ -8,6 +8,20 @@
     align-items: center;
     flex-direction: column;
     color: black;
+    animation-name: modal-open;
+    animation-duration: 0.3s;
+}
+
+
+@keyframes modal-open {
+    from {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .container-verify {
@@ -55,4 +69,25 @@
 }
 .otpHref:hover {
     opacity: .7;
+}
+.close-verify {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 1.25em;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #453c5c ;
+    color: white;
+    transition: 0.25s ease-in-out;
+}
+.close-verify i {
+    padding: 5px;
+}
+.close-verify:hover {
+    opacity: .7;
+}
+.wrapper-verify.close {
+    display: none !important;
 }

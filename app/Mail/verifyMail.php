@@ -29,6 +29,6 @@ class verifyMail extends Mailable
      */
     public function build()
     {
-        return $this->view('send_mail')->subject('Verify your email address')->with('data',$this->data);
+        return $this->view('send_mail')->subject('Xác thực tài khoản của bạn')->with('data',$this->data);
     }
 }

@@ -12,8 +12,22 @@ class Role extends Model
 
     protected $table = 'roles';
     protected  $primaryKey = 'id';
+    protected $fillable = [
+        'name' => 'name',
+        'slug' => 'slug',
+    ];
 
-    public function users(){
-        return $this->hasMany(User::class);
+    public function permissions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+
+        return $this->belongsToMany(Permission::class,'roles_permissions')->withTimestamps();
+
+    }
+
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+
+        return $this->belongsToMany(User::class,'users_roles')->withTimestamps();
+
     }
 }

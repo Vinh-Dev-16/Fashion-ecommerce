@@ -198,7 +198,7 @@
         .catch( error => {
             console.error( error );
         } );
-            // Slug
+
 
     </script>
 @endsection

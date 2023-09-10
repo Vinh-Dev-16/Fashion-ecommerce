@@ -11,11 +11,11 @@ use App\Models\Wishlist;
 use App\Models\Information;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\HasPermissionTrait as HasPermissionTrait;
 
-
-class User extends Authenticatable 
+class User extends Authenticatable
 {
-    use  HasApiTokens,HasFactory, Notifiable;
+    use  HasApiTokens,HasFactory, Notifiable, HasPermissionTrait;
     use SoftDeletes;
 
     /**
@@ -26,8 +26,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'role_id',
         'password',
+        'email_verified_at',
     ];
 
     /**
@@ -53,19 +53,18 @@ class User extends Authenticatable
     public function getJWTIdentifier(){
         return $this->getKey();
     }
-    public function getJWTCustomClaims(){
+    public function getJWTCustomClaims(): array
+    {
         return [];
     }
 
-    public function roles(){
-        return $this->belongsTo(Role::class, 'role_id');
-    }
-
-    public function whislists(){
+    public function whislists(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany(Wishlist::class);
     }
 
-    public function information(){
+    public function information(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
         return $this->hasOne(Information::class, 'user_id');
     }
 }

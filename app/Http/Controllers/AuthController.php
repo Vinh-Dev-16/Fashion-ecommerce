@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\sendMail;
+use App\Models\VerifyEmail;
+use Carbon\Traits\Timestamp;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
@@ -61,12 +66,13 @@ class AuthController extends Controller
                 200
             );
         }
-//        try {
+        try {
             $remember = $request->remember_me == 1 ? true : false;
             $credentials = request(['email', 'password']);
             if (Auth::attempt($credentials, $remember)) {
                 $user = Auth::user();
                 if ($user->email_verified_at == null) {
+                    $this->sendOTP($user);
                     return response()->json(
                         [
                             'status' => 1,
@@ -75,6 +81,24 @@ class AuthController extends Controller
                         ],
                         200
                     );
+                } else {
+                    if ($user->hasRole('user','shipper')) {
+                        return response()->json(
+                            [
+                                'status' => 2,
+                                'message' => 'Đăng nhập thành công',
+                            ],
+                            200
+                        );
+                    } else {
+                        return response()->json(
+                            [
+                                'status' => 4,
+                                'message' => 'Đăng nhập thành công',
+                            ],
+                            200
+                        );
+                    }
                 }
             } else {
                 return response()->json(
@@ -85,13 +109,75 @@ class AuthController extends Controller
                     200
                 );
             }
-//        } catch (Exception $e) {
-//            return redirect('/login')->with('error', 'Đã xảy ra lỗi');
-//        }
+        } catch (Exception $e) {
+            return redirect('/login')->with('error', 'Đã xảy ra lỗi');
+        }
 
 
     }
 
+    public function sendOTP($user): void
+    {
+        $otp = rand(100000, 999999);
+        $time = time();
+
+        $verifyEmail = VerifyEmail::updateOrCreate(
+            ['email' => $user->email],
+            [
+                'email' => $user->email,
+                'otp' => $otp,
+                'user_id' => $user->id,
+                'set_up_time' => $time,
+            ]
+        );
+        $data = [
+            'title' => 'Mã OTP của FASHION',
+            'body' => 'Mã OTP của bạn là:' . $otp,
+        ];
+        sendMail::dispatch($data, $user)->delay(now()->addSecond(6));
+    }
+    public function verifiedOTP(Request $request) {
+        $user = User::where('email' , '=', $request->email)->first();
+
+        if (!( VerifyEmail::where('otp' , $request->otp)->first())) {
+            return response()->json(['success' => false, 'message' => 'Nhập sai mã  OTP']);
+        } else {
+            $otpData =  VerifyEmail::where('otp' , $request->otp)->first();
+            $currentTime = time();
+            $time = $otpData->setup_time;
+            if ($currentTime >= $time && $time >= $currentTime - (90+5) ) {
+                if (Session::get('password')) {
+                    $user->update([
+                        'password' => Hash::make(session('password')),
+                        'email_verify_at' => with(Carbon::now())->toDateTimeString(),
+                    ]);
+                    session()->forget('password');
+                } else {
+                    $user->update([
+                        'email_verify_at' => with(Carbon::now())->toDateTimeString(),
+                    ]);
+                }
+                $user->save();
+                if ($user->hasRole('user')) {
+                    return response()->json(
+                        [
+                            'success' => true,
+                            'message' => 'Đã xác thực thành công',
+                            'role' => 'user',
+                        ]);
+                } else {
+                    return response()->json(
+                        [
+                            'success' => true,
+                            'message' => 'Đã xác thực thành công',
+                            'role' => 'other',
+                        ]);
+                }
+            }else {
+                return response()->json(['success' => false, 'message' => 'Đã quá thời gian']);
+            }
+        }
+    }
 
     public function logout(): \Illuminate\Http\RedirectResponse
     {

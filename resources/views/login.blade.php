@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
@@ -10,17 +10,17 @@
         Login
     </title>
     <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
     <!-- Nucleo Icons -->
-    <link href="{{ asset('css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/nucleo-icons.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/nucleo-svg.css') }}" rel="stylesheet"/>
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="{{ asset('css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/nucleo-svg.css') }}" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet">
     <!-- CSS Files -->
-    <link id="pagestyle" href="{{ asset('css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/verify.css') }}" rel="stylesheet" />
+    <link id="pagestyle" href="{{ asset('css/argon-dashboard.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/verify.css') }}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -78,7 +78,9 @@
                                     </div>
                                 </form>
                                 <div class="text-center">
-                                    <button class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0" onclick="do_login()">Đăng nhập</button>
+                                    <button class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0" onclick="do_login()">
+                                        Đăng nhập
+                                    </button>
                                 </div>
                             </div>
                             <div class="card-footer text-center pt-0 px-lg-2 px-1">
@@ -98,19 +100,21 @@
                     </div>
                     <div
                         class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-                        <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
-                             style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
+                        <div
+                            class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
+                            style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
           background-size: cover;">
                             <span class="mask bg-gradient-primary opacity-6"></span>
-                            <h4 class="mt-5 text-white font-weight-bolder position-relative">"Thời trang và hơn thế nữa"</h4>
-                            <p class="text-white position-relative">The more effortless the writing looks, the more
-                                effort the writer actually put into the process.</p>
+                            <h4 class="mt-5 text-white font-weight-bolder position-relative">"Thời trang và hơn thế
+                                nữa"</h4>
+                            <p class="text-white position-relative">Thời trang có thể tạo ra một phong cách, nhưng phong cách thực sự tạo ra thời trang.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="show-modal" style="position: absolute !important; top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 10000000;">
+        <div id="show-modal"
+             style="display: none; position: absolute !important; top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 10000000; background-color: rgba(0, 0, 0, 0.5); width: 100%;height: 100%;">
 
         </div>
     </section>
@@ -118,7 +122,7 @@
 <!--   Core JS Files   -->
 
 <script src="{{ asset('js/core/popper.min.js') }}"></script>
-<script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js"></script>
 <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>
 <script src="{{ asset('js/plugins/smooth-scrollbar.min.js') }}"></script>
 <script src="{{ asset('js/plugins/chartjs.min.js') }}"></script>
@@ -129,6 +133,12 @@
 <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="{{ asset('js/argon-dashboard.min.js') }}"></script>
 <script>
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     const notifications = document.querySelector('.notification');
     const toast = document.querySelector('.toasts');
@@ -190,7 +200,7 @@
         Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
 
-    $('input[name="remember_me"]').on('change', function() {
+    $('input[name="remember_me"]').on('change', function () {
         if ($(this).is(':checked')) {
             $(this).val(1);
         }
@@ -206,38 +216,50 @@
                 password: $('input[name="password"]').val(),
                 remember_me: $('input[name="remember_me"]').val(),
             },
-            beforeSend: function() {
-               $(document).find('div.text-danger').text('');
+            beforeSend: function () {
+                $(document).find('div.text-danger').text('');
             },
-            success: function(data) {
+            success: function (data) {
                 switch (data.status) {
                     case 0:
-                    $.each(data.message, function(prefix, val) {
-                        $('div.' + prefix + '_error').text(val[0]);
-                    });
-                    break;
+                        $.each(data.message, function (prefix, val) {
+                            $('div.' + prefix + '_error').text(val[0]);
+                        });
+                        break;
                     case 1:
                         createToast(data.message)
                         $('#show-modal').html(data.view);
-                        $('#modal-verify').modal('show');
-                    break;
+                        $('#show-modal').show();
+                        break;
+                    case 2:
+                        window.location.href = "{{ route('home') }}";
+                        break;
                     case 3:
                         createToast(data.message);
-                    break;
+                        break;
+                    case 4:
+                        window.location.href = "{{ route('admin.dashboard.index') }}";
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 createToast('Không thể đăng nhập');
             }
         })
     }
-</script>
 
+    if (document.querySelector('.close-verify')) {
+        document.querySelector('.close-verify').addEventListener('click', function (e) {
+            e.preventDefault();
+            alert('Vui lòng xác thực tài khoản để tiếp tục');
+            document.querySelector('#show-modal').style.display = 'none !important';
+        });
+    }
+</script>
 
 
 @if (Session::has('success') || Session::has('error'))
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
 
 
             function removeToast(toast) {
@@ -245,6 +267,7 @@
                 if (toast.timeoutId) clearTimeout(toast.timeoutId);
                 setTimeout(() => toast.remove(), 400);
             }
+
             setTime();
 
             function setTime() {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Information;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
@@ -10,16 +11,12 @@ use Exception;
 use Illuminate\Support\Facades\Session;
 class userController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $accounts = User::orderBy('role_id')->paginate(6);
-        Session::put('admin_url', request()->fullUrl());
-        return view('admin.account.index', compact('accounts'));
+        Session::put('user-url', request()->fullUrl());
+        $users = User::paginate(6);
+        return view('admin.user.index',compact('users'));
     }
 
     /**
@@ -27,73 +24,49 @@ class userController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function role($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {   
-        $accounts = User::find($id);
+        $user = User::find($id);
         $roles = Role::all();
-        return view('admin.account.edit', compact('accounts','roles'));
+        return view('admin.user.role', compact('roles', 'user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function doRole(Request $request, $id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        try{
-        $accounts = User::find($id);
-        $input  = $request->all();
-        unset($input['_token']);
-        $accounts->update($input);
-        if (Session::get('admin_url')) {
-            return redirect(session('admin_url'))->with('success', 'Đã sửa vai trò thành công');
-        }
-        }catch(Exception $e){
-            return redirect()->back()>with('error', 'Đã xảy ra lỗi');
-        }
+        $user = User::find($id);
+        $user->roles()->sync($request->role_id);
+        $users = User::paginate(6);
+        return view('admin.user.index', compact('users'))->with('success', 'Đã sửa role');
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function permission($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
+        $user = User::find($id);
+        $permissions = Permission::all();
+        return view('admin.user.permission', compact('permissions', 'user'));
+    }
+
+    public function doPermission($id, Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
+        $user = User::find($id);
+        $permissionIDs = $request->permission_id;
+
+        if (empty($permissionIDs)) {
+            $user->permissions()->detach();
+        } elseif(count($permissionIDs) > count($user->permissions)) {
+            foreach ($permissionIDs as $permission){
+                $user->permissions()->attach($permission);
+            }
+        } else {
+            foreach ($permissionIDs as $permission){
+                $user->permissions()->sync($permission);
+            }
+        }
+
+        $users = User::paginate(6);
+        return view('admin.user.index', compact('users'))->with('success', 'Đã sửa permission');
+    }
+
     public function destroy($id)
     {
         $accounts = User::find($id);
@@ -105,7 +78,7 @@ class userController extends Controller
         }
     }
 
-     // Phần restore 
+     // Phần restore
      public function viewRestore(){
         $restores = User::onlyTrashed()->paginate(6);
         return view('admin.account.restore', compact('restores'));
@@ -114,7 +87,7 @@ class userController extends Controller
     public function restore($id){
         User::onlyTrashed()->find($id)->restore();
         return back()->with('success', 'Đã restore user thành công');
-    }  
+    }
 
     public function delete($id){
         User::onlyTrashed()->find($id)->forceDelete();

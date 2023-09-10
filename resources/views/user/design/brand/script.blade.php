@@ -1,5 +1,9 @@
 <script>
-
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     document.addEventListener('DOMContentLoaded', () => {
         var url = $(this).attr('href');
         window.history.pushState("", "", url);
