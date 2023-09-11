@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
@@ -10,15 +10,16 @@
         Register
     </title>
     <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
     <!-- Nucleo Icons -->
-    <link href="{{ asset('css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/nucleo-icons.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/nucleo-svg.css') }}" rel="stylesheet"/>
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="{{ asset('css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/nucleo-svg.css') }}" rel="stylesheet"/>
     <!-- CSS Files -->
-    <link id="pagestyle" href="{{ asset('css/argon-dashboard.css') }}" rel="stylesheet" />
+    <link id="pagestyle" href="{{ asset('css/argon-dashboard.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/verify.css') }}" rel="stylesheet"/>
 </head>
 
 <body class="">
@@ -43,11 +44,15 @@
         </li>
     </ul>
 @endif
+<ul class="notification">
+</ul>
 <!-- Navbar -->
 <nav
     class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3 navbar-transparent mt-4">
     <div class="container">
         <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="{{route('admin.dashboard.index')}}">
+            <img src="{{ asset('images/logoCart.png') }}" alt="Fashion Logo"
+                 class="navbar-brand-img h-100" style="opacity: .8; width: 40px">
             Fashion
         </a>
     </div>
@@ -74,40 +79,40 @@
                         <h5>Đăng kí</h5>
                     </div>
                     <div class="card-body">
-                        <form role="form" action="{{ url('/do-register') }}" method="POST">
+                        <form role="form" action="" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <input type="text" class="form-control" placeholder="Tên đăng nhập"
                                        name="name" aria-label="Name">
                             </div>
-                            @error('name')
-                            <div class="text-danger" style="color:red; margin-bottom:10px;">{{ $message }}
+                            <div class="text-danger error-text name_error" style="color:red; margin-bottom:10px;">
                             </div>
-                            @enderror
                             <div class="mb-3">
                                 <input type="email" class="form-control" placeholder="Email của bạn"
                                        name="email" aria-label="Email">
                             </div>
-                            @error('email')
-                            <div class="text-danger" style=" color:red">{{ $message }}</div>
-                            @enderror
+                            <div class="text-danger error-text email_error" style=" color:red"></div>
                             <div class="mb-3">
                                 <input type="password" class="form-control" placeholder="Nhập password"
                                        name="password" aria-label="Password">
                             </div>
-                            @error('password')
-                            <div class="text-danger" style=" color:red">{{ $message }}</div>
-                            @enderror
-                            <div class="text-center">
-                                <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Đăng
-                                    kí</button>
-                            </div>
-                            <p class="text-sm mt-3 mb-0">Bạn đã có tài khoản? <a href="{{ url('/login') }}"
-                                                                                     class="text-dark font-weight-bolder">Đăng nhập</a></p>
+                            <div class="text-danger error-text password_error" style=" color:red"></div>
                         </form>
+                        <div class="text-center">
+                            <button type="submit" id="btn-register" class="btn bg-gradient-dark w-100 my-4 mb-2">Đăng
+                                kí
+                            </button>
+                        </div>
+                        <p class="text-sm mt-3 mb-0">Bạn đã có tài khoản? <a href="{{ url('/login') }}"
+                                                                             class="text-dark font-weight-bolder">Đăng
+                                nhập</a></p>
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="show-modal"
+             style="display: none; position: absolute !important; top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 10000000; background-color: rgba(0, 0, 0, 0.5); width: 100%;height: 100%;">
+
         </div>
     </div>
 </main>
@@ -139,7 +144,8 @@
                     Copyright ©
                     <script>
                         document.write(new Date().getFullYear())
-                    </script>  Xuan Vinh.
+                    </script>
+                    Xuan Vinh.
                 </p>
             </div>
         </div>
@@ -153,7 +159,67 @@
 <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>
 <script src="{{ asset('js/plugins/smooth-scrollbar.min.js') }}"></script>
 <script src="{{ asset('js/plugins/chartjs.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.min.js"></script>
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    const notifications = document.querySelector('.notification');
+    const toast = document.querySelector('.toasts');
+    const timer = 3000;
+
+    const removeSuccess = (message) => {
+        message.classList.add("hide");
+        if (message.timeoutId) clearTimeout(message.timeoutId);
+        setTimeout(() => message.remove(), 400);
+    };
+
+
+    // Tao Toast
+
+    function createSuccess(message) {
+        const noti = document.createElement('li');
+        noti.className = `toasts success`;
+        noti.innerHTML = `
+                        <div class="column">
+                         <i class="fa fa-check"></i>
+                            <span>${message}</span>
+                        </div>
+                           <i class="fa fa-xmark"></i>
+                        `
+        notifications.appendChild(noti);
+        setTimeout(() => removeSuccess(message), 3000)
+    };
+
+    // Tao remove toast
+
+    const removeToast = (toast) => {
+        toast.classList.add("hide");
+        if (toast.timeoutId) clearTimeout(toast.timeoutId);
+        setTimeout(() => toast.remove(), 400);
+    };
+
+
+    // Tao Toast
+
+    function createToast(toastMessage) {
+        const toast = document.createElement('li');
+        toast.className = `toasts error`;
+        toast.innerHTML = `
+                <div class="column">
+                   <i class="ri-bug-line"></i>
+                    <span>${toastMessage}</span>
+                </div>
+                  <i class="fa fa-xmark"></i>
+                `
+        notifications.appendChild(toast);
+        setTimeout(() => removeToast(toast), 3000)
+    }
+
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
         var options = {
@@ -161,21 +227,59 @@
         }
         Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
+
+    $('#btn-register').click(function (e) {
+        e.preventDefault();
+        var name = $("input[name='name']").val();
+        var email = $("input[name='email']").val();
+        var password = $("input[name='password']").val();
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('do_register') }}",
+            data: {
+                name: name,
+                email: email,
+                password: password,
+            },
+            beforeSend: function () {
+                $(document).find('div.text-danger').text('');
+            },
+            success: function (data) {
+                switch (data.status) {
+                    case 0:
+                        $.each(data.message, function (prefix, val) {
+                            $('div.' + prefix + '_error').text(val[0]);
+                        });
+                        break;
+
+                    case 1:
+                        createToast(data.message);
+                        break;
+                    case 2:
+                        createSuccess(data.message);
+                        setTimeout(() => {
+                            window.location.href = '{{ route('login') }}';
+                        }, 2000);
+                        break;
+                }
+            },
+            error: function (error) {
+                createToast('Không thể đăng nhập');
+            }
+        })
+    })
+
 </script>
 @if (Session::has('success') || Session::has('error'))
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-
-            const notifications = document.querySelector('.notification');
-            const toast = document.querySelector('.toasts');
-            const timer = 3000;
-
+        document.addEventListener('DOMContentLoaded', function () {
 
             function removeToast(toast) {
                 toast.classList.add("hide");
                 if (toast.timeoutId) clearTimeout(toast.timeoutId);
                 setTimeout(() => toast.remove(), 400);
             }
+
             setTime();
 
             function setTime() {

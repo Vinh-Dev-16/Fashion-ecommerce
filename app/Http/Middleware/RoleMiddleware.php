@@ -30,7 +30,7 @@ class RoleMiddleware
         if($permission != null && $request->user()->can($permission)) {
             $can_access = true;
         }
-        return $can_access ? $next($request) : abort(401);
+        return $can_access ? $next($request) : redirect('403')->with('error', 'Không có quyền truy cập ');
 
     }
 }

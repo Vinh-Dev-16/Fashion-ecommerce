@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\sendMail;
+use App\Models\Role;
 use App\Models\VerifyEmail;
 use Carbon\Traits\Timestamp;
 use Illuminate\Http\Request;
@@ -22,30 +23,52 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            $rules = [
-                'name' => 'required',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|confirmed|min:6',
-                'password_confirmation' => 'required|same:password'
-            ];
-            $messages = [
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+        ],
+            [
                 'required' => 'Không được để trống trường này',
                 'min' => 'Mật khẩu tối thiểu phải 6 kí tự',
-                'confirmed' => 'Mật khẩu nhập phải trùng khớp',
                 'email' => 'Phải nhập đúng định dạng email',
-                'same:password' => 'Mật khẩu nhập phải trùng khớp',
-                'unique:users' => 'Đã bị trùng email',
-            ];
-            $request->validate($rules, $messages);
+                'email.unique' => 'Đã bị trùng email',
+                'name.unique' => 'Đã bị trùng tên đăng nhập',
+            ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'status' => 0,
+                    'message' => $validator->errors()->toArray(),
+                ],
+                200
+            );
         }
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        Auth::login($user);
-        return redirect('/');
+//        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+           $user->roles()->attach(Role::where('name', 'user')->first());
+            return response()->json(
+                [
+                    'status' => 2,
+                    'message' => 'Đăng kí thành công',
+                ],
+                200
+            );
+//        } catch (Exception $e) {
+//            return response()->json(
+//                [
+//                    'status' => 1,
+//                    'message' => 'Đã xảy ra lỗi',
+//                ],
+//                200
+//            );
+//        }
+
     }
 
     public function login(Request $request)
@@ -82,7 +105,7 @@ class AuthController extends Controller
                         200
                     );
                 } else {
-                    if ($user->hasRole('user','shipper')) {
+                    if ($user->hasRole('user', 'shipper')) {
                         return response()->json(
                             [
                                 'status' => 2,
@@ -136,16 +159,19 @@ class AuthController extends Controller
         ];
         sendMail::dispatch($data, $user)->delay(now()->addSecond(6));
     }
-    public function verifiedOTP(Request $request) {
-        $user = User::where('email' , '=', $request->email)->first();
 
-        if (!( VerifyEmail::where('otp' , $request->otp)->first())) {
+    public function verifiedOTP(Request $request)
+    {
+        $user = User::where('email', '=', $request->email)->first();
+
+        if (!(VerifyEmail::where('otp', $request->otp)->first())) {
+            Auth::logout();
             return response()->json(['success' => false, 'message' => 'Nhập sai mã  OTP']);
         } else {
-            $otpData =  VerifyEmail::where('otp' , $request->otp)->first();
+            $otpData = VerifyEmail::where('otp', $request->otp)->first();
             $currentTime = time();
-            $time = $otpData->setup_time;
-            if ($currentTime >= $time && $time >= $currentTime - (90+5) ) {
+            $time = $otpData->set_up_time;
+            if ($currentTime >= $time && $time >= $currentTime - (90 + 5)) {
                 if (Session::get('password')) {
                     $user->update([
                         'password' => Hash::make(session('password')),
@@ -173,7 +199,8 @@ class AuthController extends Controller
                             'role' => 'other',
                         ]);
                 }
-            }else {
+            } else {
+                Auth::logout();
                 return response()->json(['success' => false, 'message' => 'Đã quá thời gian']);
             }
         }

@@ -69,13 +69,13 @@ trait HasPermissionTrait {
     public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
 
-        return $this->belongsToMany(Role::class,'users_roles');
+        return $this->belongsToMany(Role::class,'users_roles')->withTimestamps();
 
     }
     public function permissions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
 
-        return $this->belongsToMany(Permission::class,'users_permissions');
+        return $this->belongsToMany(Permission::class,'users_permissions')->withTimestamps();
 
     }
 }

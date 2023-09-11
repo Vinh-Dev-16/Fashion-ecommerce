@@ -27,6 +27,13 @@ Route::get('/welcome', function () {
 
 // })->where('any', '.*');
 
+Route::get('/403', function(){
+    return view('403');
+})->name('403');
+
+Route::fallback(function () {
+    return view('404');
+})->name('404');
 
 Route::get('/register', function(){
     return view('register');

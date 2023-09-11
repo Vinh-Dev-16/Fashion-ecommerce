@@ -18,7 +18,7 @@ use App\Http\Controllers\admin\imagesController;
 |
 */
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth'] ], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor'] ], function () {
   Route::get('/dashboard', function () {
     return view('admin.dashboard.index');
   })->name('admin.dashboard.index');
@@ -42,7 +42,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'] ], function () {
 
     });
 
-    Route::group(['prefix' => 'user'] , function () {
+    Route::group(['prefix' => 'user', 'middleware' => ['role:admin']] , function () {
         Route::get('index',[userController::class,'index'])->name('admin.user.index');
         Route::get('role/{id}', [userController::class,'role'])->name('admin.user.role');
         Route::post('doRole/{id}', [userController::class,'doRole'])->name('admin.user.doRole');

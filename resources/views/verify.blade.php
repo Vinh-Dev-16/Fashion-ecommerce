@@ -3,7 +3,7 @@
     <div class="overlay"></div>
     <div class="container-verify"  style="position: relative" >
         <p>Mã đã gửi đến {{$user->email}}</p>
-        <h1>Enter OTP</h1>
+        <h1>Điền mã OTP</h1>
         <form method="post" id="verificationForm">
             @csrf
             <input id="email" value="{{$user->email}}" name="email" type="email" hidden="hidden">
@@ -128,7 +128,7 @@
                             window.location.href = '{{route('admin.dashboard.index')}}'
                         }
                     } else {
-                        createToast( 'Mã OTP không chính xác');
+                        createToast(data.message);
                         setTimeout(() => {
                             window.location.href = '{{ route('login') }}';
                         }, 2000);

@@ -211,7 +211,6 @@
             url: "{{ route('do_login') }}",
             method: "POST",
             data: {
-                _token: "{{ csrf_token() }}",
                 email: $('input[name="email"]').val(),
                 password: $('input[name="password"]').val(),
                 remember_me: $('input[name="remember_me"]').val(),
@@ -282,3 +281,22 @@
 </body>
 
 </html>
+@if (Session::has('success') || Session::has('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            function removeToast(toast) {
+                toast.classList.add("hide");
+                if (toast.timeoutId) clearTimeout(toast.timeoutId);
+                setTimeout(() => toast.remove(), 400);
+            }
+
+            setTime();
+
+            function setTime() {
+                setTimeout(() => removeToast(toast), 3000)
+            }
+        });
+    </script>
+@endif
