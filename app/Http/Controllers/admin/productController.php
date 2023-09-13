@@ -16,25 +16,32 @@ use Illuminate\Support\Facades\Session;
 
 class productController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(Request $request)
     {
         // Sắp xếp theo số lượng tồn kho để khi stock = 0 thì xử lý
-        $products = Product::orderBy('stock')->paginate(6);
-        Session::put('products_url', request()->fullUrl());
-        $categories = Category::all();
-        return view('admin.product.index', compact('products', 'categories'));
+        $products = Product::query();
+        if ($request->ajax()) {
+            return $this->listData($request);
+        }
+        $products = $products->paginate(6);
+        return view('admin.product.index', compact('products',));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function listData(Request $request): string
+    {
+        $products = Product::query();
+        if (!empty($request->search)) {
+            $products->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('price', 'like', '%' . $request->search . '%')
+                ->orWhere('stock', 'like', '%' . $request->search . '%')
+                ->orWhere('discount', 'like', '%' . $request->search . '%');
+        }
+
+        $products = $products->paginate(6);
+        return view('admin.product.list_data', compact('products'))->render();
+    }
+
     public function create()
     {
         $brands = Brand::all();
@@ -45,12 +52,6 @@ class productController extends Controller
         return view('admin.product.create', compact('brands', 'categories', 'sizes', 'colors', 'brands'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
 
     public function store(Request $request)
     {
@@ -100,32 +101,6 @@ class productController extends Controller
         }
     }
 
-    public function search(Request $request)
-    {
-        $output = "";
-        $searches = Product::where('name', 'like', '%' . $request->search . '%')->get();
-
-        foreach ($searches as $result) {
-            $output .=
-                '<tr>
-               <td>' . $result->id . '</td>
-               <td>' . Str::of($result->name)->words(4) . '</td>
-               <td>' . number_format($result->price) . ' VND</td>
-               <td>' . $result->discount . '%</td>
-               <td>' . $result->stock . '</td>
-               <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">' . '
-                   <a href="' . route('admin.product.edit', $result->id) . '" title="Sửa Product"
-                   style="border: none;outline:none">
-                   <i class="fa-solid fa-pen" style=" font-size:22px;"></i></a>
-                   <a href="' . route('admin.product.destroy', $result->id) . '" title="Xoa Product"
-                   style="border:none;outline:none">
-                   <i class="fa-solid fa-trash"
-                   style="color: #f4f4f; font-size:22px;"></i></a>
-              ' . '</td>
-           </tr>';
-        }
-        return response()->json($output);
-    }
 
     /**
      * Display the specified resource.

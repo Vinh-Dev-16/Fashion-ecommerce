@@ -85,7 +85,7 @@ class viewAllProductController extends Controller
             $products = $products->paginate(4);
             return view('user.design.view_all_product.list_data', compact('products'))->render();
         }
-            $products = $products->paginate(4   );
+            $products = $products->paginate(4);
         return view('user.design.view_all_product.index', compact('products'));
     }
 
