@@ -2,6 +2,14 @@
 @section('title')
     Trang Dashboard
 @endsection
+@section('breadcrumbs')
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white"
+                                               href="{{url('admin/dashboard')}}">Home</a></li>
+        <li class="breadcrumb-item text-sm text-white active" aria-current="page">Dashboard</li>
+    </ol>
+    <h6 class="font-weight-bolder text-white mb-0">Trang chủ</h6>
+@endsection
 @section('content')
     <div class="row mt-4">
         <div class="col-lg-12 mb-lg-0 mb-4">
@@ -149,9 +157,66 @@
             </div>
         </div>
     </div>
+
+    {{-- Chart   --}}
+    <div class="row mt-4">
+        <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Biểu đồ doanh thu</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-6 mb-lg-0 mb-4"></div>
+    </div>
 @endsection
-@section('breadcumb')
-    <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-    </ol>
+
+
+@section('javascript')
+    <script>
+        var ctx1 = document.getElementById("myChart").getContext("2d");
+        var _month = JSON.parse('{!! json_encode($months) !!}');
+        var _sold = JSON.parse('{!! json_encode($sold) !!}');
+        const data = {
+            labels: _month,
+            datasets: [{
+                label: 'Số sản phẩm đã bán',
+                data: _sold,
+                fill: false,
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                borderColor: [
+                    'rgb(75, 192, 192)',
+                ],
+                borderWidth: 1,
+                tension: 0.1,
+                hoverBackgroundColor: 'rgb(75, 192, 192)',
+            }]
+        };
+        new Chart(ctx1, {
+            type: 'line',
+            data: data,
+            options: {
+                animations: {
+                    tension: {
+                        duration: 1000,
+                        easing: 'linear',
+                        from: 1,
+                        to: 0,
+                        loop: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 @endsection

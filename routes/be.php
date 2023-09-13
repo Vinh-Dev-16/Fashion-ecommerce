@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\dashboardController;
 use App\Http\Controllers\admin\permissionController;
 use App\Http\Controllers\admin\roleController;
 use Illuminate\Support\Facades\Route;
@@ -19,9 +20,8 @@ use App\Http\Controllers\admin\imagesController;
 */
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor'] ], function () {
-  Route::get('/dashboard', function () {
-    return view('admin.dashboard.index');
-  })->name('admin.dashboard.index');
+
+    Route::get('dashboard', [dashboardController::class, 'index'])->name('admin.dashboard.index');
 
     Route::group(['prefix' => 'role' , 'middleware' => ['role:admin']], function () {
         Route::get('index',[roleController::class,'index'])->name('admin.role.index');

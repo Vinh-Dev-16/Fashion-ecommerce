@@ -25,7 +25,7 @@
 
 
 <div id="load-data">
-<div></div>
+    <div></div>
 </div>
 @if (Session::has('success'))
     <ul class="notification">
@@ -83,7 +83,8 @@
                     </div>
                     <nav class="mobile_hide">
                         <ul class="flexitem second_link">
-                            <li><a href="{{ route('home') }}" class="active-link {{ request()->is('/') ? 'active' : '' }}">Trang chủ</a></li>
+                            <li><a href="{{ route('home') }}"
+                                   class="active-link {{ request()->is('/') ? 'active' : '' }}">Trang chủ</a></li>
                             <li class="has_child">
                                 <a href="#">Shop
                                     <i style="position: absolute " class="ri-arrow-down-s-line" id="arrow_shop"></i>
@@ -312,13 +313,13 @@
                                         </div>
                                     @endif
 
-                                    @if (Auth::user()->role_id == 2 && App\Models\OrderDetail::where('status', 0)->count() > 0)
+                                    @can('confirm-order')
                                         <div class="fly_item" style="top:-10px;background:red">
                                                 <span
                                                     class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
                                                 </span>
                                         </div>
-                                    @endif
+                                    @endcan
                                     <div onclick="toggle()" class="profile-dropdown-btn">
                                         @if (App\Models\Information::where('user_id', '=', Auth::user()->id)->first())
                                             <div class="profile-img"
@@ -342,38 +343,41 @@
                                                         Thông tin cá nhân
                                                     </a>
                                                 </li>
-                                                @if (!(Auth::user()->role_id == 1) && !(Auth::user()->role_id == 4))
+                                                @can('view-dashboard')
                                                     <li class="profile-dropdown-list-item">
                                                         <a href="{{ url('/admin/dashboard') }}">
                                                             <i class="fa-regular fa-envelope"></i>
                                                             Trang dashboard
                                                         </a>
                                                     </li>
-                                                @endif
-                                                @if (Auth::user()->role_id == 2)
-                                                    <li class="profile-dropdown-list-item">
+                                                @endcan
+                                                @can('confirm-order')
+                                                    <li class="profile-dropdown-list-item" style="position: relative">
                                                         <a href="{{ url('pageConfirm') }}">
                                                             <i class="fa-regular fa-envelope"></i>
                                                             Trang xác nhận đơn hàng
                                                         </a>
+                                                        <div class="fly_item" style="top:-10px;background:red">
+                                                        <span
+                                                            class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
+                                                        </span>
+                                                        </div>
                                                     </li>
-                                                @endif
-                                                @if (Auth::user()->role_id == 1)
-                                                    <li class="profile-dropdown-list-item">
-                                                        <a href="{{ url('shipper') }}">
-                                                            <i class="ri-run-line"></i>
-                                                            Đăng kí làm shipper
-                                                        </a>
-                                                    </li>
-                                                @endif
-                                                @if (Auth::user()->role_id == 4)
+                                                @endcan
+                                                <li class="profile-dropdown-list-item">
+                                                    <a href="{{ url('shipper') }}">
+                                                        <i class="ri-run-line"></i>
+                                                        Đăng kí làm shipper
+                                                    </a>
+                                                </li>
+                                                @can('confirm-shipper')
                                                     <li class="profile-dropdown-list-item">
                                                         <a href="{{ url('pageShip') }}">
                                                             <i class="ri-truck-line"></i>
                                                             Check đơn hàng
                                                         </a>
                                                     </li>
-                                                @endif
+                                                @endcan
                                                 <hr/>
                                                 <li class="profile-dropdown-list-item">
                                                     <form action="{{ route('do_logout') }}" method="POST">
@@ -392,7 +396,7 @@
                                             <a href="{{ route('login') }}" style="font-family: 'Rubik' ,sans-serif;">Đăng
                                                 nhập</a>
                                         </div>
-                                    @endif
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -408,7 +412,9 @@
                     <div class="dpt_cat">
                         <div class="dpt_head">
                             <div class="main_text">Mại zô Mại zô</div>
-                            <div class="mini_text mobile_hide">Tất cả {{ \App\Models\admin\Product::count()  }} sản phẩm</div>
+                            <div class="mini_text mobile_hide">Tất cả {{ \App\Models\admin\Product::count()  }} sản
+                                phẩm
+                            </div>
                             <a href="" class="dpt_trigger mobile_hide" id="close_menu">
                                 <i class="ri-menu-3-line ri_xl"></i>
                             </a>
@@ -912,61 +918,61 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
-@if (Auth::check() && Auth::user()->role_id == 2)
-    <script>
-        // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
+@can('confirm-order')
+<script>
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
 
-        var pusher = new Pusher('194699ac18e541ed2d38', {
-            cluster: 'ap1'
-        });
+    var pusher = new Pusher('194699ac18e541ed2d38', {
+        cluster: 'ap1'
+    });
 
-        var channel = pusher.subscribe('popup-channel');
-        channel.bind('my-event', function (data) {
-            createNoti(data.name + ' đã đặt hàng');
-            let count_number = document.querySelector("#count_number");
-            if (count_number) {
-                document.querySelector('#count_number').innerText = data.count;
-            } else {
-                let countNumber = createElement('div');
-                countNumber.className = "fly_item";
-                let renderNumber = `
+    var channel = pusher.subscribe('popup-channel');
+    channel.bind('my-event', function (data) {
+        createNoti(data.name + ' đã đặt hàng');
+        let count_number = document.querySelector("#count_number");
+        if (count_number) {
+            document.querySelector('#count_number').innerText = data.count;
+        } else {
+            let countNumber = createElement('div');
+            countNumber.className = "fly_item";
+            let renderNumber = `
                     <span  class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
-                </span>
+            </span>
 `;
-                countNumber.innerHTML = renderNumber;
-                document.querySelector(".profile-dropdown").appendChild(countNumber);
-            }
-        });
-    </script>
-@endif
-@if (Auth::check() && Auth::user()->role_id == 4)
-    <script>
-        // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
+            countNumber.innerHTML = renderNumber;
+            document.querySelector(".profile-dropdown").appendChild(countNumber);
+        }
+    });
+</script>
+@endcan
+@can('can-shipper')
+<script>
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
 
-        var pusher = new Pusher('194699ac18e541ed2d38', {
-            cluster: 'ap1'
-        });
+    var pusher = new Pusher('194699ac18e541ed2d38', {
+        cluster: 'ap1'
+    });
 
-        var channel = pusher.subscribe('popup-confirm');
-        channel.bind('my-handle', function (data) {
-            createNoti('Đã có đơn hàng cần ship');
-            if (count_number) {
-                document.querySelector('#count_number').innerText = data.count;
-            } else {
-                let countNumber = createElement('div');
-                countNumber.className = "fly_item";
-                let renderNumber = `
+    var channel = pusher.subscribe('popup-confirm');
+    channel.bind('my-handle', function (data) {
+        createNoti('Đã có đơn hàng cần ship');
+        if (count_number) {
+            document.querySelector('#count_number').innerText = data.count;
+        } else {
+            let countNumber = createElement('div');
+            countNumber.className = "fly_item";
+            let renderNumber = `
                     <span class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() }}
-                </span>
+            </span>
 `;
-                countNumber.innerHTML = renderNumber;
-                document.querySelector(".profile-dropdown").appendChild(countNumber);
-            }
-        });
-    </script>
-@endif
+            countNumber.innerHTML = renderNumber;
+            document.querySelector(".profile-dropdown").appendChild(countNumber);
+        }
+    });
+</script>
+@endcan
 <script>
     window.addEventListener('load', () => {
         $("#load-data").fadeOut("slow");

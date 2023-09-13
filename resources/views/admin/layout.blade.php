@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
     <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
     <title>
         @section('title')
         @show
@@ -138,7 +139,7 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Thao tác</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link " href="{{route('home')}}">
@@ -179,7 +180,7 @@
                     <div class="input-group">
                             <span class="input-group-text text-body"><i class="fas fa-search"
                                                                         aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" placeholder="Type here...">
+                        <input type="text" class="form-control" placeholder="Fashion...">
                     </div>
                 </div>
                 <ul class="navbar-nav  justify-content-end">
@@ -363,7 +364,7 @@
         <div class="card-body pt-sm-3 pt-0 overflow-auto">
             <!-- Sidebar Backgrounds -->
             <div>
-                <h6 class="mb-0">Sidebar Colors</h6>
+                <h6 class="mb-0">Màu thanh bar</h6>
             </div>
             <a href="javascript:void(0)" class="switch-trigger background-color">
                 <div class="badge-colors my-2 text-start">
@@ -383,21 +384,21 @@
             </a>
             <!-- Sidenav Type -->
             <div class="mt-3">
-                <h6 class="mb-0">Sidenav Type</h6>
-                <p class="text-sm">Choose between 2 different sidenav types.</p>
+                <h6 class="mb-0">Chọn màu sidenav bar</h6>
+                <p class="text-sm">Chọn 1 trong 2 loại sau</p>
             </div>
             <div class="d-flex">
                 <button class="btn bg-gradient-primary w-100 px-3 mb-2 active me-2" data-class="bg-white"
-                        onclick="sidebarType(this)">White
+                        onclick="sidebarType(this)">Trắng
                 </button>
                 <button class="btn bg-gradient-primary w-100 px-3 mb-2" data-class="bg-default"
-                        onclick="sidebarType(this)">Dark
+                        onclick="sidebarType(this)">Đen
                 </button>
             </div>
             <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
             <!-- Navbar Fixed -->
             <div class="d-flex my-3">
-                <h6 class="mb-0">Navbar Fixed</h6>
+                <h6 class="mb-0">Ẩn thanh Navbar</h6>
                 <div class="form-check form-switch ps-0 ms-auto my-auto">
                     <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed"
                            onclick="navbarFixed(this)">
@@ -405,7 +406,7 @@
             </div>
             <hr class="horizontal dark my-sm-4">
             <div class="mt-2 mb-5 d-flex">
-                <h6 class="mb-0">Light / Dark</h6>
+                <h6 class="mb-0">Trắng / Đen</h6>
                 <div class="form-check form-switch ps-0 ms-auto my-auto">
                     <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
                            onclick="darkMode(this)">
@@ -427,6 +428,9 @@
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
+"></script>
 <script>
     {{--        event--}}
     //     Pusher.logToConsole = true;
