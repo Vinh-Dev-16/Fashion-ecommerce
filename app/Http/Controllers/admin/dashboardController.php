@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ChangeOrderStatus;
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\MonthHelper;
+use Illuminate\Support\Str;
 
 
 class dashboardController extends Controller
@@ -14,6 +17,9 @@ class dashboardController extends Controller
     {
         $sold = [];
         $month = [];
+        $productName = [];
+        $productView = [];
+        $price = [];
         $recentMonths = DB::table('order_details')
             ->select(
                 DB::raw('YEAR(time) as year'),
@@ -23,6 +29,7 @@ class dashboardController extends Controller
             ->groupBy('year', 'month')
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')
+            ->where('status', '1')
             ->limit(5)
             ->get();
         $recentMonths = $recentMonths->reverse();
@@ -34,6 +41,38 @@ class dashboardController extends Controller
             $months[] = $monthName;
             $sold[] = $totalQuantity;
         }
-        return view('admin.dashboard.index', compact('sold', 'months'));
+
+        $productViews = DB::table('products')
+            ->select(
+                DB::raw('name'),
+                DB::raw('view')
+            )
+            ->orderBy('view', 'desc')
+            ->limit(6)
+            ->get();
+        $productViews = $productViews->reverse();
+        foreach ($productViews as $item) {
+            $productName[] = Str::of($item->name)->words(5, '...');
+            $productView[] = $item->view;
+        }
+
+        $getPrice = DB::table('order_details')
+            ->select(
+                DB::raw('YEAR(time) as year'),
+                DB::raw('MONTH(time) as month'),
+                DB::raw('SUM(total_money) as total_money')
+            )
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->where('status', '1')
+            ->limit(5)
+            ->get();
+        $getPrice = $getPrice->reverse();
+
+        foreach ($getPrice as $item) {
+            $price[] = $item->total_money;
+        }
+        return view('admin.dashboard.index', compact('sold', 'months' , 'productName', 'productView', 'price'));
     }
 }

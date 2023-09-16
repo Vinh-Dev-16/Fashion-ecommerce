@@ -45,7 +45,7 @@ class AuthController extends Controller
                 200
             );
         }
-//        try {
+        try {
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -59,15 +59,15 @@ class AuthController extends Controller
                 ],
                 200
             );
-//        } catch (Exception $e) {
-//            return response()->json(
-//                [
-//                    'status' => 1,
-//                    'message' => 'Đã xảy ra lỗi',
-//                ],
-//                200
-//            );
-//        }
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'status' => 1,
+                    'message' => 'Đã xảy ra lỗi',
+                ],
+                200
+            );
+        }
 
     }
 
@@ -105,7 +105,7 @@ class AuthController extends Controller
                         200
                     );
                 } else {
-                    if ($user->hasRole('user', 'shipper')) {
+                    if (!$user->can('view-dashboard')) {
                         return response()->json(
                             [
                                 'status' => 2,

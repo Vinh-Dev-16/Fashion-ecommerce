@@ -129,29 +129,18 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="examplePrice">Voucher</label>
-                            <select class="tag_multiple" name="value[]" multiple="multiple"
+                            <label for="examplePrice">Chất liệu sản phẩm</label>
+                            <select class="tag_multiple" name="material[]" multiple="multiple"
                                     style="width: 100%">
                             </select>
-                            @error('value')
+                            @error('material')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="examplePrice">Giá Voucher</label>
-                            <select class="tag_multiple" name="percent[]" multiple="multiple"
-                                    style="width: 100%">
-                            </select>
-                            @error('percent')
-                            <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="examplePrice">Số lượng Voucher</label>
-                            <select class="tag_multiple" name="quantity[]" multiple="multiple"
-                                    style="width: 100%">
-                            </select>
-                            @error('quantity')
+                            <label for="exampleTags">Tag sản phẩm</label>
+                            <input type="text" class="form-control" id="exampleTags" name="tags">
+                            @error('tags')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>

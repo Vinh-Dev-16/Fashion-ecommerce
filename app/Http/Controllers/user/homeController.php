@@ -18,8 +18,9 @@ class homeController extends Controller
 {
     public function home()
     {
+        $cart = session()->get('cart', []);
         $products = Product::all();
-        return view('user.design.home', compact('products'));
+        return view('user.design.home', compact('products', 'cart'));
     }
 
 

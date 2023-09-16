@@ -3,19 +3,16 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\admin\Product;
-use App\Models\admin\Category;
-use App\Models\admin\Brand;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\DB;
-class singlePageController extends Controller
-{
 
-    public function detail(Request $request, $slug)
+class detailController extends Controller
+{
+    public function index(Request $request ,$slug): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
+        $cart = session()->get('cart', []);
         $products = Product::where('slug', $slug)->firstOrFail();
         if (Cookie::has('view')) {
             $view = json_decode($request->cookie('view'), true);
@@ -30,10 +27,6 @@ class singlePageController extends Controller
         }
         Session::put('pageoffer_url', request()->fullUrl());
         $rate = $products->reviews()->pluck('feedbacks.rate')->avg();
-        return view('user.design.detail', compact('products', 'rate'));
+        return view('user.design.detail', compact('products', 'rate', 'cart'));
     }
-
-
-
-
 }

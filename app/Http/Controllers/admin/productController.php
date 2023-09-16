@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Models\admin\Brand;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use App\Models\admin\Product;
 use Illuminate\Support\Str;
@@ -53,40 +55,22 @@ class productController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(Request $request, ProductRequest $productRequest)
     {
-        if ($request->isMethod('Post')) {
-            $rules = [
-                'name' => 'required|max:255',
-                'price' => 'required|integer',
-                'stock' => 'required|integer',
-                'desce' => 'required',
-                'brand_id' => 'required',
-                'value' => 'required',
-                'percent' => 'required',
-                'path' => 'required',
-                'quantity' => 'required',
-            ];
-            $messages = [
-                'required' => 'Không được để trống trường này',
-                'integer' => 'Trường nhập vào phải là số',
-            ];
-            $request->validate($rules, $messages);
-        }
+       $validate = $productRequest->validated();
+
         try {
             $input = $request->all();
             unset($input['_token']);
             $products = Product::create($input);
             $products->categories()->attach($request->input('id_category'));
             $products->attributevalues()->attach($request->input('attribute_value_id'));
-            for ($i = 0; $i < count($request->value); $i++) {
-                Voucher::create([
-                    'value' => $request->value[$i],
-                    'product_id' => $products->id,
-                    'quantity' => $request->quantity[$i],
-                    'percent' => $request->percent[$i],
-                ]);
-            }
+             for ($i = 0; $i < count($request->material); $i++) {
+                 Material::create([
+                      'name' => $request->material[$i],
+                      'product_id' => $products->id,
+                 ]);
+                }
             for ($j = 0; $j < count($request->path); $j++) {
                 Image::create([
                     'path' => $request->path[$j],
@@ -101,97 +85,85 @@ class productController extends Controller
         }
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit($slug)
     {
         $brands = Brand::all();
         $categories = Category::all();
-        $products = Product::find($id);
+        $product = Product::where('slug', $slug)->first();
         $colors = ValueAttribute::where('attribute_id', '=', '2')->get();
         $sizes = ValueAttribute::where('attribute_id', '=', 1)->get();
-        $selects = $products->categories()->pluck('categories.name', 'categories.id');
-        $options = $products->attributevalues()->pluck('attribute_value.id', 'attribute_value.value');
-        return view('admin.product.edit', compact('products', 'categories', 'brands', 'selects', 'colors', 'sizes', 'options'));
+        $selects = $product->categories()->pluck('categories.name', 'categories.id');
+        $options = $product->attributevalues()->pluck('attribute_value.id', 'attribute_value.value');
+        return view('admin.product.edit', compact('product', 'categories', 'brands', 'selects', 'colors', 'sizes', 'options'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(Request $request, $id, ProductRequest $productRequest)
     {
+        $validate = $productRequest->validated();
         try {
-            $products = Product::find($id);
+            $product = Product::find($id);
             $input = $request->all();
             unset($input['_token']);
-            $products->update($input);
-            $products->categories()->sync($request->input('id_category'));
-            $products->attributevalues()->sync($request->input('attribute_value_id'));
-            $vouchers = Voucher::where('product_id', $products->id)->get();
-            if (!empty($request->value)) {
-                for ($i = 0; $i < count($request->value); $i++) {
-                    foreach ($vouchers as $voucher) {
-                        $voucher->value = $request->value[$i];
-                        $voucher->quantity = $request->quantity[$i];
-                        $voucher->percent = $request->percent[$i];
-                        $voucher->save();
+            $product->update($input);
+            $product->categories()->sync($request->input('id_category'));
+            $product->attributevalues()->sync($request->input('attribute_value_id'));
+
+            $images = Image::where('product_id', $product->id)->get();
+
+            $materials = Material::where('product_id', $product->id)->get();
+
+            if (!empty($materials)) {
+                for ($i = 0; $i < count($request->material); $i++) {
+                    foreach ($materials as $material) {
+                     $material->update([
+                            'name' => $request->material[$i],
+                            'product_id' => $product->id,
+                        ]);
                     }
                 }
-            }
-            $images = Image::where('product_id', $products->id)->get();
-
-            for ($j = 0; $j < count($request->path); $j++) {
-                foreach ($images as $image) {
-                    $image->path = $request->path[$j];
-                    $image->save();
+            } else {
+                for ($i = 0; $i < count($request->material); $i++) {
+                    Material::create([
+                        'name' => $request->material[$i],
+                        'product_id' => $product->id,
+                    ]);
                 }
             }
-            if (Session::get('products_url')) {
-                return redirect(session('products_url'))->with('success', 'Đã sửa products thành công');
+
+            if (!empty($images)) {
+                for ($j = 0; $j < count($request->path); $j++) {
+                    foreach ($images as $image) {
+                        $image->update([
+                            'path' => $request->path[$j],
+                            'product_id' => $product->id,
+                        ]);
+                    }
+                }
+            } else {
+                for ($j = 0; $j < count($request->path); $j++) {
+                    Image::create([
+                        'path' => $request->path[$j],
+                        'product_id' => $product->id,
+                    ]);
+                }
             }
+
+
+          return redirect()->route('admin.product.index')->with('success', 'Đã cập nhật sản phẩm thành công');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $products = Product::find($id);
         if ($products->orderDetails->count() > 0) {
-            if (Session::get('products_url')) {
-                return redirect(session('products_url'))->with('error', 'Sản phẩm đang có đơn đặt hàng');
-            }
+            return back()->with('error', 'Không thể xóa vì đã có đơn hàng');
         } else {
             $products->delete();
-            if (Session::get('products_url')) {
-                return redirect(session('products_url'))->with('success', 'Đã xóa mềm products thành công');
-            }
+            return redirect()->route('admin.product.index')->with('success', 'Đã xóa sản phẩm thành công');
         }
     }
 

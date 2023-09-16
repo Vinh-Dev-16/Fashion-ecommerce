@@ -51,16 +51,16 @@ class payPalController extends Controller
             'image' => Product::find($request->product_id)->images->first()->path,
             'voucher' => $request->voucher,
         ]);
-        session()->put('payment', $payment); 
+        session()->put('payment', $payment);
         $payments = session()->get('payment',[]);
-        return view('user.design.payment',compact('brands','products','categories','cart','payments','product'));                
+        return view('user.design.payment',compact('brands','products','categories','cart','payments','product'));
     }
-    
-    public function voucher($voucher){
-       
+
+    public function voucher(Request $request){
+
         $payment = collect(session('payment'),[]);
         $payment = $payment->toArray();
-        $payment[0]['voucher'] = $voucher;
+        $payment[0]['voucher'] = $request->voucher;
         session()->put('payment',$payment);
         return response()->json([
             'result' => $payment,
@@ -98,7 +98,7 @@ class payPalController extends Controller
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();
-        
+
         $paymentCollect = collect(session('payment',[]));
         foreach($paymentCollect as $payment){
             $product = Product::find($payment['product']->id);
@@ -126,7 +126,7 @@ class payPalController extends Controller
         });
         $order = collect(session('order',[]));
         $order = $order->toArray();
-        
+
         foreach($paymentCollect as $payment){
             array_push($order,[
               'product' => $payment['product'],
@@ -172,10 +172,10 @@ class payPalController extends Controller
                 }
             }
 
-            return view('user.design.payment',compact('brands','products','categories','cart','payments','product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');  
+            return view('user.design.payment',compact('brands','products','categories','cart','payments','product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
 
         } else {
-            return view('user.design.payment',compact('brands','products','categories','cart','payments','product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');  
+            return view('user.design.payment',compact('brands','products','categories','cart','payments','product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
         }
     }
 
@@ -191,9 +191,9 @@ class payPalController extends Controller
         $provider->getAccessToken();
         $response = $provider->capturePaymentOrder($request['token']);
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            
+
             $orders = session()->get('order', []);
-        
+
             try{
                 DB::beginTransaction();
                 foreach($orders as $order){
@@ -206,7 +206,7 @@ class payPalController extends Controller
                         'subtotal' => $order['subtotal'],
                         'total_money' => $order['total'],
                     ]);
-                 
+
                 }
 
                 $orderCollect = collect($orders);
@@ -236,12 +236,12 @@ class payPalController extends Controller
                 DB::rollBack();
                 return back()->with('error','Đã xảy ra lỗi về thanh toán');
             };
-            
-          
-            
+
+
+
             session()->forget('payment');
             session()->forget('order');
-    
+
             return redirect()
                 ->route('history')
                 ->with('success', 'Thanh toán thành công');
@@ -267,7 +267,7 @@ class payPalController extends Controller
         foreach($payments as $payment){
             $product = Product::find($payment['product']->id);
         }
-        return view('user.design.payment',compact('brands','products','categories','cart','payments','product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');  
+        return view('user.design.payment',compact('brands','products','categories','cart','payments','product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
     }
 
     public function history(){
@@ -275,7 +275,7 @@ class payPalController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-        return view('user.design.history',compact('brands','products','categories','cart'))->with('success','Đã thanh toán thành công');        
+        return view('user.design.history',compact('brands','products','categories','cart'))->with('success','Đã thanh toán thành công');
     }
 
     public function softdelete($id){
@@ -307,10 +307,10 @@ class payPalController extends Controller
                     }
                 $orderDetail->restore();
             }
-       
+
             return redirect()->back()->with('success', 'Đã đặt lại đơn hàng');
         }catch(Exception $e){
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
-    }  
+    }
 }

@@ -65,11 +65,13 @@
                                 </p>
                                 <input type="text" name="user_id" value="{{ Auth::user()->id }}" hidden>
                                 <input type="text" name="subtotal" value="{{ $subTotal }}" hidden>
-                                <p>
-                                <div class="primary_checkout"><button class="primary_button"
-                                        type="submit"
-                                     >Thanh toán</button></div>
-                                </p>
+                              <p>
+                                <div class="primary_checkout">
+                                    <button class="primary_button"
+                                            type="submit">Thanh toán</button>
+                                </div>
+                              </p>
+
                             </form>
                         @else
                             <form action="{{ url('/process-transaction') }}" method="POST">
@@ -110,8 +112,8 @@
                                 <input type="text" name="subtotal" value="{{ $subTotal }}" hidden>
                                 <p>
                                 <div class="primary_checkout"><button class="primary_button"
-                                        type="s
-                                     ">Thanh toán</button></div>
+                                        type="submit">Thanh toán</button></div>
+
                                 </p>
                             </form>
                         @endif
@@ -190,18 +192,23 @@
             });
         })
         let total = document.querySelector('.total');
-        console.log(total.text);
         let voucher = document.querySelector('#voucher_item');
-        voucher.addEventListener('change', (e) => {
-            const res = fetch(`http://127.0.0.1:8000/payment/voucher/${e.target.value}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    showVoucher(data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
+
+        $(document).ready(function() {
+            $('#voucher_item').change(function() {
+                let voucher_item = $(this).val();
+                $.ajax({
+                    url: "{{ url('/voucher') }}",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        voucher: voucher_item,
+                    },
+                    success: function(data) {
+                        showVoucher(data);
+                    }
                 });
-        })
+            });
+        });
 
         function showVoucher(data) {
             console.log(data)

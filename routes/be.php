@@ -62,7 +62,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor']
     Route::post('store', [productController::class, 'store'])->name('admin.product.store');
     Route::delete('destroy/{id}', [productController::class, 'destroy'])->name('admin.product.destroy');
     Route::patch('update/{id}', [productController::class, 'update'])->name('admin.product.update');
-    Route::get('edit/{id}', [productController::class, 'edit'])->name('admin.product.edit');
+    Route::get('edit/{slug}', [productController::class, 'edit'])->name('admin.product.edit');
     Route::get('list_data', [productController::class, 'listData'])->name('admin.product.list_data');
     Route::get('viewrestore', [productController::class, 'viewrestore'])->name('admin.product.viewrestore');
     Route::get('restore/{id}', [productController::class, 'restore'])->name('admin.product.restore');

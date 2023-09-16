@@ -13,7 +13,7 @@ class categoryController extends Controller
 {
     public function index(Request $request,$slug)
     {
-
+        $cart = session()->get('cart', []);
        if ($request->ajax()) {
            $category = Category::where('slug', $slug)->first();
            $products =$category->products();
@@ -49,7 +49,7 @@ class categoryController extends Controller
         }
         $category = Category::where('slug', $slug)->first();
         $paginate = $category->products()->paginate(12);
-        return view('user.design.category.index', compact('category',  'paginate'));
+        return view('user.design.category.index', compact('category',  'paginate', 'cart'));
     }
 
 

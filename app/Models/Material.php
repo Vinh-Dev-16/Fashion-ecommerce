@@ -2,26 +2,22 @@
 
 namespace App\Models;
 
-use App\Models\admin\Brand;
 use App\Models\admin\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Voucher extends Model
+class Material extends Model
 {
     use HasFactory;
-
-    protected $table = 'voucher';
+    protected $table = 'materials';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'value',
+        'name',
         'product_id',
-        'quantity',
-        'percent',
     ];
 
-    public function brand(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(Product::class);
     }
 }

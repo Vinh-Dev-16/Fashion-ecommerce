@@ -45,6 +45,33 @@
                                 <textarea type="text" class="form-control" id="editor" name="description"
                                     placeholder="Điền thông tin sản phẩm"></textarea>
                             </div>
+                            <div class="form-group">
+                                <label for="examplePrice">Voucher</label>
+                                <select class="tag_multiple" name="value[]" multiple="multiple"
+                                        style="width: 100%">
+                                    @foreach ($products->vouchers as $voucher)
+                                        <option value="{{$voucher->value}}" selected> {{$voucher->value}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="examplePrice">Giá Voucher</label>
+                                <select class="tag_multiple" name="percent[]" multiple="multiple"
+                                        style="width: 100%">
+                                    @foreach ($products->vouchers as $voucher)
+                                        <option value="{{$voucher->percent}}" selected> {{$voucher->percent}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="examplePrice">Số lượng Voucher</label>
+                                <select class="tag_multiple" name="quantity[]" multiple="multiple"
+                                        style="width: 100%">
+                                    @foreach ($products->vouchers as $voucher)
+                                        <option value="{{$voucher->quantity}}" selected> {{$voucher->quantity}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>

@@ -10,33 +10,22 @@ use Illuminate\Http\Request;
 
 class wishlistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($id)
+
+    public function index($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $wishlists = Wishlist::where('user_id',$id)->paginate(12);
-        $products = Product::all();
-        $categories = Category::all();
-        $brands = Brand::all();
         $cart = session()->get('cart', []);
-        return view('user.design.wishlist',compact('wishlists','products', 'categories', 'brands','cart'));
+        $wishlists = Wishlist::where('user_id',$id)->paginate(12);
+        return view('user.design.wishlist',compact('wishlists', 'cart'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         //
     }
 
 
-    public function store(Request $request): \Illuminate\Http\Response
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         Wishlist::create([
             'product_id' => $request->product_id,

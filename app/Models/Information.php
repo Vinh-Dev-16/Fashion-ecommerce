@@ -8,7 +8,7 @@ use App\Models\User;
 class Information extends Model
 {
     use HasFactory;
-    protected $table = 'infoaccounts';
+    protected $table = 'info_accounts';
     protected $primaryKey = 'id';
     protected $fillable = [
         'user_id',

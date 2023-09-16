@@ -11,6 +11,7 @@ class viewAllProductController extends Controller
 {
     public function index(Request $request)
     {
+        $cart = session()->get('cart', []);
         $products = Product::query();
         if ($request->ajax()) {
             if ($request->sort) {
@@ -83,10 +84,10 @@ class viewAllProductController extends Controller
             }
 
             $products = $products->paginate(4);
-            return view('user.design.view_all_product.list_data', compact('products'))->render();
+            return view('user.design.view_all_product.list_data', compact('products', 'cart'))->render();
         }
             $products = $products->paginate(4);
-        return view('user.design.view_all_product.index', compact('products'));
+        return view('user.design.view_all_product.index', compact('products', 'cart'));
     }
 
 

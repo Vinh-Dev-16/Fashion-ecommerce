@@ -17,8 +17,9 @@ class brandController extends Controller
         if ($request->ajax()) {
             return $this->listData($request);
         }
+        $cart = session()->get('cart', []);
         $paginate = $brand->products()->paginate(12);
-        return view('user.design.brand.index', compact('brand','paginate'));
+        return view('user.design.brand.index', compact('brand','paginate', 'cart'));
     }
 
     public function listData(Request $request): string

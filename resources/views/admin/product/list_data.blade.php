@@ -25,15 +25,29 @@
                     <p class="text-xs text-center  mb-0">{{$i++}}</p>
                 </td>
                 <td>
-                    <a href="{{url('detail/' . $product->slug)}}" class="d-flex px-2">
-                        <div>
-                            <img src="{{$product->images[0]->path}}"
-                                 class="avatar avatar-sm rounded-circle me-2" alt="spotify">
-                        </div>
-                        <div class="my-auto">
-                            <h6 class="mb-0 text-sm">{{ Illuminate\Support\Str::of($product->name)->words(8) }}</h6>
-                        </div>
-                    </a>
+                    @if($product->sale == 1)
+                        <a href="{{ url('pageoffer/' . $product->slug) }}" class="d-flex px-2">
+                            <div>
+                                <img src="{{ $product->images[0]->path }}"
+                                     class="avatar avatar-sm rounded-circle me-2" alt="spotify">
+                            </div>
+                            <div class="my-auto">
+                                <h6 class="mb-0 text-sm">
+                                    {{ Illuminate\Support\Str::of($product->name)->words(8) }}</h6>
+                            </div>
+                        </a>
+                    @else
+                        <a href="{{ url('detail/' . $product->slug) }}" class="d-flex px-2">
+                            <div>
+                                <img src="{{ $product->images[0]->path }}"
+                                     class="avatar avatar-sm rounded-circle me-2" alt="spotify">
+                            </div>
+                            <div class="my-auto">
+                                <h6 class="mb-0 text-sm">
+                                    {{ Illuminate\Support\Str::of($product->name)->words(8) }}</h6>
+                            </div>
+                        </a>
+                    @endif
                 </td>
                 <td>
                     <p class="text-xs text-center  mb-0"

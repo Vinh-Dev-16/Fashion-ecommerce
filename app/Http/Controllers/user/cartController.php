@@ -19,44 +19,45 @@ use PhpParser\ErrorHandler\Collecting;
 class cartController extends Controller
 {
 
-    public function viewCart(){
-        $products = Product::all();
-        $categories = Category::all();
-        $brands = Brand::all();
+    public function viewCart(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
         $cart = session()->get('cart', []);
-        return view('user.design.cart',compact('brands','products','categories','cart'));
+        return view('user.design.cart', compact('cart'));
     }
 
-    public function addToCart(Request $request, $id)
+    public function addToCart(Request $request)
     {
+        $product_id = $request->product_id;
         $cart = collect(session('cart', []));
-        $foundIndex = $cart->search(function ($item, $index) use ($id) {
-            return $item['product']->id == $id;
+        $foundIndex = $cart->search(function ($item, $index) use ($product_id) {
+            return $item['product']->id == $product_id;
         });
         $cart = $cart->toArray();
         if ($foundIndex !== false && $foundIndex >= 0) {
             $cart[$foundIndex]['quantity'] += ($request->quantity);
         } else {
-            array_push($cart, [
-                'product' => Product::find($id),
+            $cart[] = [
+                'product' => Product::find($product_id),
                 'quantity' => $request->quantity,
                 'size' => ValueAttribute::find($request->size)->value,
                 'color' => ValueAttribute::find($request->color)->value,
-                'image' => Product::find($id)->images->first()->path,
-            ]);
+                'image' => Product::find($product_id)->images->first()->path,
+            ];
         }
         session()->put('cart', $cart);
-        return response()->json([
-            'cart'=>$cart,
-        ]);
+        $count = count(session('cart', []));
+        return [
+            'view' => view('user.cart', compact('cart'))->render(),
+            'count' => $count,
+        ];
     }
 
-    public function removeCart($id){        
+    public function removeCart($id){
         $cart = collect(session('cart', []));
         $tmpCart = $cart->filter(function ($item) use ($id) {
             return $item['product']->id != $id;
         })->values();
-        session()->put('cart', $tmpCart->toArray());        
+        session()->put('cart', $tmpCart->toArray());
         return response()->json([
             'cart'=>$tmpCart,
         ]);
@@ -88,7 +89,7 @@ class cartController extends Controller
         $cart = $tmpCart->filter(function ($item) use ($id) {
             return $item['product']->id != $id;
         })->values();
-        session()->put('cart', $cart->toArray()); 
+        session()->put('cart', $cart->toArray());
         $products = Product::all();
         $categories = Category::all();
         $brands = Brand::all();
@@ -100,12 +101,12 @@ class cartController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-        
-        return view('user.design.checkout',compact('brands','products','categories','cart'));                
+
+        return view('user.design.checkout',compact('brands','products','categories','cart'));
     }
 
     public function process(Request $request){
-        
+
 
         if ($request->isMethod('POST')) {
             $rules = [
@@ -137,21 +138,21 @@ class cartController extends Controller
         $order = $order->toArray();
 
         foreach($cartCollect as $cartItem){
-            array_push($order,[
-              'product' => $cartItem['product'],
-              'quantity' => $cartItem['quantity'],
-              'size' => $cartItem['size'],
-              'color' => $cartItem['color'],
-              'image' => $cartItem['image'],
-              'voucher' => $request->voucher,
-              'user_id' => $request->user_id,
-              'phone' => $request->phone,
-              'address' => $request->address,
-              'subtotal' => $request->subtotal,
-              'fullname' => $request->fullname,
-              'total' => $totalMoney,
-              'note' => $request->note,
-            ]);
+            $order[] = [
+                'product' => $cartItem['product'],
+                'quantity' => $cartItem['quantity'],
+                'size' => $cartItem['size'],
+                'color' => $cartItem['color'],
+                'image' => $cartItem['image'],
+                'voucher' => $request->voucher,
+                'user_id' => $request->user_id,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'subtotal' => $request->subtotal,
+                'fullname' => $request->fullname,
+                'total' => $totalMoney,
+                'note' => $request->note,
+            ];
         }
 
         session()->put('order',$order);
@@ -204,9 +205,9 @@ class cartController extends Controller
         $provider->getAccessToken();
         $response = $provider->capturePaymentOrder($request['token']);
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            
+
             $orders = session()->get('order', []);
-           
+
             try{
                 DB::beginTransaction();
                             $orderCreate = Order::create([
@@ -226,7 +227,7 @@ class cartController extends Controller
                     } else {
                         $totalMoney = $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
                     }
-                    $finalTotal = $totalMoney + ($totalMoney * 0.1) + 15000;  
+                    $finalTotal = $totalMoney + ($totalMoney * 0.1) + 15000;
                     OrderDetail::create([
                         'order_id' => $orderCreate->id,
                         'product_id' => $cartItem['product']->id,
@@ -257,7 +258,7 @@ class cartController extends Controller
             event(new UserOrderEvent($name,$count));
             session()->forget('cart');
             session()->forget('order');
- 
+
             return redirect()
                 ->route('history')
                 ->with('success', 'Thanh toán thành công');
@@ -278,6 +279,6 @@ class cartController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-        return view('user.design.checkout',compact('brands','products','categories','cart'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');  
+        return view('user.design.checkout',compact('brands','products','categories','cart'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
     }
 }

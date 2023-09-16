@@ -24,6 +24,10 @@ class OrderDetail extends Model
        'color',
        'price',
        'total_money',
+        'status',
+        'time',
+        'time_confirm',
+        'ship',
     ];
 
     public function order(){

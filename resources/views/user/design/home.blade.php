@@ -341,7 +341,7 @@
             document.querySelector('.site').classList.remove('showmodal');
         });
         //Phần deal of day
-        let countDate = new Date('29,Jun,2023 00:00:00').getTime();
+        let countDate = new Date('29,October,2023 00:00:00').getTime();
 
         function countDown() {
             let now = new Date().getTime();
