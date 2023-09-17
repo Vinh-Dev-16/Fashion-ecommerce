@@ -63,9 +63,9 @@
                 </div>
                 <div class="footer">
                     <ul class="mini_text">
-                        <li>Cotton, Polyester</li>
-                        <li>100% nguyên chất</li>
-                        <li>Phong cách</li>
+                       @foreach ($product->materials as $material)
+                           <li>{{$material->name}}</li>
+                       @endforeach
                     </ul>
                 </div>
             </div>

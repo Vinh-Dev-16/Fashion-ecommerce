@@ -110,44 +110,50 @@ class productController extends Controller
             $product->attributevalues()->sync($request->input('attribute_value_id'));
 
             $images = Image::where('product_id', $product->id)->get();
+            $imageNames = $request->path; 
 
-            $materials = Material::where('product_id', $product->id)->get();
+            $existingMaterials = Material::where('product_id', $product->id)->get();
+            $materialNames = $request->material;
+            
+  
+            $existingMaterialNames = $existingMaterials->pluck('name')->toArray();
+            
+            foreach ($materialNames as $materialName) {
 
-            if (!empty($materials)) {
-                for ($i = 0; $i < count($request->material); $i++) {
-                    foreach ($materials as $material) {
-                     $material->update([
-                            'name' => $request->material[$i],
-                            'product_id' => $product->id,
-                        ]);
-                    }
-                }
-            } else {
-                for ($i = 0; $i < count($request->material); $i++) {
+                if (in_array($materialName, $existingMaterialNames)) {
+            
+                    Material::where('product_id', $product->id)
+                        ->where('name', $materialName)
+                        ->update(['name' => $materialName]);
+                } else {
+
                     Material::create([
-                        'name' => $request->material[$i],
+                        'name' => $materialName,
                         'product_id' => $product->id,
                     ]);
                 }
             }
+       
+            Material::where('product_id', $product->id)
+                ->whereNotIn('name', $materialNames)
+                ->delete();
 
-            if (!empty($images)) {
-                for ($j = 0; $j < count($request->path); $j++) {
-                    foreach ($images as $image) {
-                        $image->update([
-                            'path' => $request->path[$j],
-                            'product_id' => $product->id,
-                        ]);
-                    }
-                }
-            } else {
-                for ($j = 0; $j < count($request->path); $j++) {
+           $existingImageNames = $images->pluck('path')->toArray();
+            foreach ($imageNames as $imageName) {
+                if (in_array($imageName, $existingImageNames)) {
+                    Image::where('product_id', $product->id)
+                        ->where('path', $imageName)
+                        ->update(['path' => $imageName]);
+                } else {
                     Image::create([
-                        'path' => $request->path[$j],
+                        'path' => $imageName,
                         'product_id' => $product->id,
                     ]);
                 }
             }
+            Image::where('product_id', $product->id)
+                ->whereNotIn('path', $imageNames)
+                ->delete();
 
 
           return redirect()->route('admin.product.index')->with('success', 'Đã cập nhật sản phẩm thành công');

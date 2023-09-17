@@ -11,62 +11,23 @@ use Illuminate\Http\Request;
 class wishlistController extends Controller
 {
 
-    public function index($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request, $id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $cart = session()->get('cart', []);
+        if ($request->ajax()) {
+            $wishlists = Wishlist::where('user_id',$id)->paginate(12);
+            return view('user.design.wishlist.list_data',compact('wishlists', 'cart'));
+        }
         $wishlists = Wishlist::where('user_id',$id)->paginate(12);
-        return view('user.design.wishlist',compact('wishlists', 'cart'));
+        return view('user.design.wishlist.index',compact('wishlists', 'cart'));
     }
 
-
-    public function create()
+    public function delete(Request $request): array
     {
-        //
-    }
-
-
-    public function store(Request $request): \Illuminate\Http\JsonResponse
-    {
-        Wishlist::create([
-            'product_id' => $request->product_id,
-            'user_id' => $request->user_id,
-        ]);
-        $wishlists = Wishlist::where('user_id', $request->user_id)->get();
-        return response()->json([
-            'result' => $wishlists,
-        ]);
-    }
-
-
-
-
-
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $user_id = Wishlist::find($id)->user_id;
-        Wishlist::find($id)->delete();
-        $wishlists = Wishlist::where('user_id', $user_id)->get();
-        return response()->json([
-            'result' => $wishlists,
-        ]);
-    }
-    public function delete($id)
-    {
-        Wishlist::find($id)->delete();
-        return redirect()->back()->with('success','Đã xóa thành công');
+        $wishlist = Wishlist::findOrFail($request->id);
+        $wishlist->delete();
+        return [
+            'success' => true,
+        ];
     }
 }

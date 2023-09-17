@@ -123,7 +123,7 @@
                         <label for="exampleSale">Sản phẩm Sale</label>
                         <select class="form-control" name="sale">
                             <option @if ($product->sale == 1) selected @endif value="1">Sale</option>
-                            <option value="0">Không sale</option>
+                            <option @if ($product->sale == 0) selected @endif value="0">Không sale</option>
                         </select>
                         @error('sale')
                         <div class="text-danger">{{ $message }}</div>

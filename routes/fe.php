@@ -37,10 +37,10 @@ use Illuminate\Routing\Router;
         // Route Cart
 
         Route::post('cart',[cartController::class,'addToCart'])->name('cart');
-        Route::get('remove_cart/{id}',[cartController::class,'removeCart'])->name('remove_cart');
+        Route::post('remove_cart',[cartController::class,'removeCart'])->name('remove_cart');
         Route::get('view_cart',[cartController::class,'viewCart'])->name('view_cart');
-        Route::get('delete_cart/{id}',[cartController::class,'deleteCart'])->name('delete_cart');
-        Route::get('updateQuantity/{id}/{quantity}',[cartController::class,'updateQuantity'])->name('updateQuantity');
+        Route::post('delete_cart',[cartController::class,'deleteCart'])->name('delete_cart');
+        Route::post('updateQuantity',[cartController::class,'updateQuantity'])->name('update_quantity');
 
         // Cart checkout action
 
@@ -52,10 +52,7 @@ use Illuminate\Routing\Router;
 
         // Route Detail
 
-        Route::prefix('detail')->group(function(){
-            Route::get('/{slug}',[detailController::class,'index'])->name('detail.index');
-//            Route::post('love',[singlePageController::class,'love'])->name('love');
-        });
+
 
         //route Category
 
@@ -76,7 +73,10 @@ use Illuminate\Routing\Router;
             Route::get('/{slug}',[pageOfferController::class,'index'])->name('pageoffer');
             Route::post('love',[pageOfferController::class,'love'])->name('page_offer.love');
         });
-
+        Route::prefix('detail')->group(function(){
+            Route::get('/{slug}',[detailController::class,'index'])->name('detail.index');
+            Route::post('love',[detailController::class,'love'])->name('detail.love');
+        });
 
         // Route viewAllProduct
         Route::prefix('view-all-product')->group(function(){
@@ -84,14 +84,10 @@ use Illuminate\Routing\Router;
             Route::get('list_data', [viewAllProductController::class, 'listData'])->name('view_all_product.list_data');
         });
 
-
 //        Route whishlist
         Route::middleware('auth')->prefix('wishlist')->group(function(){
             Route::get('/{id}',[wishlistController::class,'index'])->name('wishlist');
-            Route::post('store',[wishlistController::class,'store'])->name('wishlist.store');
-            Route::post('love',[wishlistController::class,'love'])->name('wishlist.love');
-            Route::delete('destroy/{id}',[wishlistController::class,'destroy'])->name('wishlist.destroy');
-            Route::delete('delete/{id}',[wishlistController::class,'delete'])->name('wishlist.delete');
+            Route::post('delete',[wishlistController::class,'delete'])->name('wishlist.delete');
         });
 
         // Route infomation user

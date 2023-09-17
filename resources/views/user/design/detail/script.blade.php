@@ -41,8 +41,8 @@
 
     addToCart.addEventListener('click', (e) => {
         e.preventDefault();
-    })
-    function add($product_id) {
+    });
+    function add_cart($product_id) {
         var color = $('input[name="color"]:checked').val() ? color = $('input[name="color"]:checked').val() : createToast('Bạn chưa chọn màu');
         var size = $('input[name="size"]:checked').val() ? size = $('input[name="size"]:checked').val() : createToast('Bạn chưa chọn size');
         var stock = $('#stock').val() ? quantity = $('#stock').val() : createToast('Bạn chưa chọn số lượng');
@@ -96,7 +96,6 @@
     }
 
 
-
     const dpt_menu = document.querySelectorAll('.dpt_menu');
     const close_menu = document.querySelectorAll('#close_menu');
 
@@ -111,6 +110,13 @@
             }
         });
     })
+
+    // Check produtct stock
+
+    function soldOut(element) {
+        createToast('Xin lỗi đã hết hàng');
+        return false;
+    }
 
     // slider images
 
@@ -139,67 +145,6 @@
         }
     });
 
-    // Check produtct stock
-
-    function soldOut(element) {
-        createToast('Xin lỗi đã hết hàng');
-        return false;
-    }
-
-    //Phần deal of day
-    let countDate = new Date('29,Nov,2023 00:00:00').getTime();
-    let day = document.querySelectorAll('.days')
-    let minute = document.querySelectorAll('.minutes');
-    let hour = document.querySelectorAll('.hours');
-    let second = document.querySelectorAll('.seconds');
-
-    function countDown() {
-        let now = new Date().getTime();
-
-        gap = countDate - now;
-
-        let seconds = 1000;
-        let minutes = seconds * 60;
-        let hours = minutes * 60;
-        let days = hours * 24;
-        let d = Math.floor(gap / (days)) < 10 ? '0' + Math.floor(gap / (days)) : Math.floor(gap / days);
-        let h = Math.floor((gap % (days)) / (hours)) < 10 ? '0' + Math.floor((gap % (days)) / (hours)) : Math.floor((
-            gap %
-            (days)) / (hours));
-        let m = Math.floor((gap % (hours)) / (minutes)) < 10 ? '0' + Math.floor((gap % (hours)) / (minutes)) : Math
-            .floor((gap % (hours)) / (minutes));
-        let s = Math.floor((gap % (minutes)) / (seconds)) < 10 ? '0' + Math.floor((gap % (minutes)) / (seconds)) : Math
-            .floor((gap % (minutes)) / (seconds));
-
-        for (const i of day) {
-            i.innerHTML = d + " d";
-        }
-        for (const i of minute) {
-            i.innerHTML = m + " m";
-        }
-        for (const i of hour) {
-            i.innerHTML = h + " h";
-        }
-        for (const i of second) {
-            i.innerHTML = s + " s";
-        }
-
-    }
-
-    setInterval(() => {
-        countDown()
-    }, 1000);
-
-    let stocks = document.querySelectorAll('.products .stock');
-    for (let i = 0; i < stocks.length; i++) {
-        let stock = stocks[i].dataset.stock,
-            avaiable = stocks[i].querySelector('.qty_available').innerHTML,
-            sold = stocks[i].querySelector('.qty_sold').innerHTML,
-            percent = sold * 100 / stock;
-
-        stocks[i].querySelector('.available').style.width = percent + '%';
-    }
-    ;
 
     // Check stock
     let quantity = document.querySelector('#stock');
@@ -220,7 +165,6 @@
             value += 1;
             quantity.value = value;
         }
-
     });
 
     quantity.addEventListener('change', (e) => {

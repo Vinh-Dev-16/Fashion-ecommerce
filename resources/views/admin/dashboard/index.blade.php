@@ -229,6 +229,18 @@
             </div>
         </div>
     </div>
+    <div class="row mt-4">
+        <div class="col-lg-12 mb-lg-0 mb-4">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Biểu đồ về lượt bình luận</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2" style="width: 100%; height: 100%; min-height: 550px">
+                    <canvas id="bar-chart-rate" ></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -352,5 +364,42 @@
             }
         });
 
+        var ctx4 = document.getElementById("bar-chart-rate").getContext("2d");
+        var _comment = JSON.parse('{!! json_encode($comment) !!}');
+        var _productNameByComment = JSON.parse('{!! json_encode($productNameByComment) !!}');
+        const data4 = {
+            labels: _productNameByComment,
+            datasets: [{
+                label: 'Số lượt bình luận',
+                data: _comment,
+                fill: false,
+                backgroundColor: [
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderColor: [
+                    'rgb(153, 102, 255)',
+                ],
+                borderWidth: 1,
+                tension: 0.1,
+                hoverBackgroundColor:  'rgb(153, 102, 255)',
+            }]
+        };
+
+        new Chart(ctx4, {
+            type: 'bar',
+            data: data4,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    },
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     </script>
 @endsection

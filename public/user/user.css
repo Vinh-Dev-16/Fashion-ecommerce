@@ -1469,10 +1469,10 @@ form .button input:hover {
     height: 30px;
     position: absolute;
     z-index: 10;
-    top: -15px;
-    left: -15px;
-    font-size: 30px;
-    color: #ff6b6b;
+    top: 3px;
+    left: 3px;
+    font-size: 24px;
+    color: black;
     transition: transform .25s linear;
     border: none;
     outline: none;

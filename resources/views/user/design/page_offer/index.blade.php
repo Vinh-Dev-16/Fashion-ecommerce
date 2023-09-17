@@ -169,8 +169,7 @@
                                                 </div>
                                                 @if ($product->stock > 0)
                                                     <div class="button_cart">
-                                                        <button class="primary_button" id="addtocart"
-                                                                onclick="add_to_cart({{ $product->id }})">Giỏ hàng
+                                                        <button class="primary_button" id="add_to_cart" onclick="add({{$product->id}})">Giỏ hàng
                                                         </button>
                                                     </div>
                                                     <div class="button_cart" style="margin-right: 1em">
@@ -567,4 +566,5 @@
 
 @section('javascript')
     @include('user.design.page_offer.script')
+
 @endsection

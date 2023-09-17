@@ -20,6 +20,8 @@ class dashboardController extends Controller
         $productName = [];
         $productView = [];
         $price = [];
+        $productNameByComment = [];
+        $comment = [];
         $recentMonths = DB::table('order_details')
             ->select(
                 DB::raw('YEAR(time) as year'),
@@ -73,6 +75,21 @@ class dashboardController extends Controller
         foreach ($getPrice as $item) {
             $price[] = $item->total_money;
         }
-        return view('admin.dashboard.index', compact('sold', 'months' , 'productName', 'productView', 'price'));
+
+        $productComments = DB::table('products')
+            ->select(
+                DB::raw('name'),
+                DB::raw('count')
+            )
+            ->orderBy('count', 'desc')
+            ->limit(6)
+            ->get();
+        $productComments = $productComments->reverse();
+        foreach ($productComments as $item) {
+            $productNameByComment[] = Str::of($item->name)->words(5, '...');
+            $comment[] = $item->count;
+        }
+
+        return view('admin.dashboard.index', compact('sold', 'months' , 'productName', 'productView', 'price', 'productNameByComment', 'comment'));
     }
 }

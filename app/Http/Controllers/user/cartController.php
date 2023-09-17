@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\admin\ValueAttribute;
 use App\Models\admin\Category;
 use App\Models\admin\Brand;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Illuminate\Http\Request;
 use App\Models\Information;
@@ -19,18 +21,27 @@ use PhpParser\ErrorHandler\Collecting;
 class cartController extends Controller
 {
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function viewCart(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $cart = session()->get('cart', []);
-        return view('user.design.cart', compact('cart'));
+        return view('user.design.view_cart.index', compact('cart'));
     }
 
-    public function addToCart(Request $request)
+    public function addToCart(Request $request): array
     {
         $product_id = $request->product_id;
+        $size = $request->size;
+        $color = $request->color;
         $cart = collect(session('cart', []));
-        $foundIndex = $cart->search(function ($item, $index) use ($product_id) {
-            return $item['product']->id == $product_id;
+        $foundIndex = $cart->search(function ($item, $index) use ($product_id, $size, $color) {
+            if ($item['product']->id == $product_id) {
+                return $item['size'] == $size || $item['color'] == $color;
+            }
+            return false;
         });
         $cart = $cart->toArray();
         if ($foundIndex !== false && $foundIndex >= 0) {
@@ -52,18 +63,26 @@ class cartController extends Controller
         ];
     }
 
-    public function removeCart($id){
-        $cart = collect(session('cart', []));
-        $tmpCart = $cart->filter(function ($item) use ($id) {
-            return $item['product']->id != $id;
+    public function removeCart(Request $request): array
+    {
+        $product_id = $request->product_id;
+        $cartCollect = collect(session('cart', []));
+        $tmpCart = $cartCollect->filter(function ($item) use ($product_id) {
+            return $item['product']->id != $product_id;
         })->values();
         session()->put('cart', $tmpCart->toArray());
-        return response()->json([
-            'cart'=>$tmpCart,
-        ]);
+        $count = count(session('cart', []));
+        $cart = session()->get('cart', []);
+        return [
+            'view' => view('user.cart', compact('cart'))->render(),
+            'count' => $count,
+        ];
     }
 
-    public function updateQuantity($id ,$quantity){
+    public function updateQuantity(): string
+    {
+        $id = request()->get('id');
+        $quantity = request()->get('quantity');
         $cart = collect(session('cart', []));
         $foundIndex = $cart->search(function ($item, $index) use ($id) {
             return $item['product']->id == $id;
@@ -76,27 +95,28 @@ class cartController extends Controller
 
         session()->put('cart', $cart);
 
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $cart,
-            'cart_item' => $cart[$foundIndex]
-        ]);
+        return view('user.design.view_cart.list_data' , compact('cart'))->render();
     }
 
-    public function deleteCart($id){
+    public function deleteCart(Request $request): array
+    {
+        $id = request()->get('id');
         $tmpCart = collect(session('cart', []));
-        $cart = $tmpCart->filter(function ($item) use ($id) {
-            return $item['product']->id != $id;
+        $cartProduct = $tmpCart->filter(function ($item, $index) use ($id) {
+            return $index != $id;
         })->values();
-        session()->put('cart', $cart->toArray());
-        $products = Product::all();
-        $categories = Category::all();
-        $brands = Brand::all();
-        return view('user.design.cart',compact('cart','brands','products','categories'));
+        session()->put('cart', $cartProduct->toArray());
+        $count = count(session('cart', []));
+        $cart = session()->get('cart', []);
+        return [
+            'view' => view('user.design.view_cart.list_data' , compact('cart'))->render(),
+            'count' => $count,
+            'html' => view('user.cart', compact('cart'))->render(),
+        ];
     }
 
-    public function checkout(){
+    public function checkout(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
         $products = Product::all();
         $categories = Category::all();
         $brands = Brand::all();
@@ -105,6 +125,9 @@ class cartController extends Controller
         return view('user.design.checkout',compact('brands','products','categories','cart'));
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function process(Request $request){
 
 
@@ -193,12 +216,8 @@ class cartController extends Controller
         }
     }
 
-     /**
-     * success transaction.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function success(Request $request)
+
+    public function success(Request $request): \Illuminate\Http\RedirectResponse
     {
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
@@ -268,12 +287,8 @@ class cartController extends Controller
                 ->with('error', $response['message'] ?? 'Đã xảy ra lỗi');
         }
     }
-     /**
-     * cancel transaction.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function cancel(Request $request)
+
+    public function cancel(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $products = Product::all();
         $categories = Category::all();
