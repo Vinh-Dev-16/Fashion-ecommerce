@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class wishlistController extends Controller
 {
 
-    public function index(Request $request, $id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request, $id)
     {
         $cart = session()->get('cart', []);
         if ($request->ajax()) {

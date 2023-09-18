@@ -84,5 +84,5 @@
     </div>
     {{ $wishlists->links('vendor.pagination.default')}}
 @else
-    <h1 class="search_page">Bạn chưa có phim yêu thích nào</h1>
+    <h1 class="search_page">Bạn chưa có sản phẩm yêu thích nào</h1>
 @endif

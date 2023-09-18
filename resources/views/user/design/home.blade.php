@@ -23,7 +23,7 @@
         <h3> Brand Fashion </h3>
         <div class="brand">
             <div class="container">
-                <div class="wrapper flexitem">
+                <div class="wrapper flexitem" style="justify-content: left; gap: 20px">
                     @foreach ($brands as $brand)
                         <div class="item">
                             <a href="{{ url('brand/' . $brand->slug) }}">
