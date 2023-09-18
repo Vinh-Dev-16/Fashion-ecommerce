@@ -41,7 +41,7 @@
                                         <label for="address">Address<span></span></label>
                                         <input type="text" name="address" value="{{ $information->address }}">
                                     </p>
-                                    @if ($product->vouchers->count() > 0)
+                                    @if ($product->brand->vouchers->count() > 0)
                                         <p>
                                             <label for="voucher">Chọn voucher giảm giá<span></span></label>
                                             <select name="voucher"
@@ -49,7 +49,7 @@
                                      width: 106%;"
                                                 id="voucher_item">
                                                 <option selected>Chọn voucher</option>
-                                                @foreach ($product->vouchers as $voucher)
+                                                @foreach ($product->brand->vouchers as $voucher)
                                                     @if ($voucher->quantity > 0)
                                                         <option value="{{ $voucher->percent }}">{{ $voucher->value }}
                                                         </option>
@@ -96,7 +96,7 @@
                                      width: 106%;"
                                             id="voucher_item">
                                             <option>Chọn voucher</option>
-                                            @foreach ($product->vouchers as $voucher)
+                                            @foreach ($product->brand->vouchers as $voucher)
                                                 @if ($voucher->quantity > 0)
                                                     <option value="{{ $voucher->percent }}">{{ $voucher->value }}</option>
                                                 @endif

@@ -22,8 +22,12 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                <button style="border:none; outline:none;font-size:16px;font-weight:600"
+                                                <button class="secondary_button" style="border:none; outline:none;font-size:16px;font-weight:600; padding: 11px 34px; margin-bottom: 6px"
                                                     type="submit">Xác nhận </button>
+                                                <br>
+                                                <button class="primary_button" id="checkBoxAll" style="border: none; outline: none;padding: 11px 23px;font-size:16px;font-weight:600">
+                                                    Chọn tất cả
+                                                </button>
                                             </th>
                                             <th>Sản phẩm</th>
                                             <th>Note</th>
@@ -129,5 +133,16 @@
                 }
             });
         })
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checkAllBtn = document.getElementById('checkBoxAll');
+
+
+        checkAllBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = true;
+            });
+        });
+
     </script>
 @endsection

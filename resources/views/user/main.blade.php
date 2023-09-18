@@ -11,6 +11,7 @@
         channel.bind('my-event', function (data) {
             createNoti(data.name + ' đã đặt hàng');
             let count_number = document.querySelector("#count_number");
+            let count_number_confirm = document.querySelector("#count_number_confirm");
             if (count_number) {
                 document.querySelector('#count_number').innerText = data.count;
             } else {
@@ -19,7 +20,9 @@
                 let renderNumber = `
                     <span  class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
                 </span>
-`;
+                `;
+                let count = {{ App\Models\OrderDetail::where('status', 0)->count() }};
+                count_number_confirm.innerText =count;
                 countNumber.innerHTML = renderNumber;
                 document.querySelector(".profile-dropdown").appendChild(countNumber);
             }
@@ -48,6 +51,9 @@
                 </span>
 `;
                 countNumber.innerHTML = renderNumber;
+                let count_number_ship = document.querySelector("#count_number_ship");
+                let count = {{ App\Models\OrderDetail::where('status', 0)->count() }};
+                count_number_ship.innerText =count;
                 document.querySelector(".profile-dropdown").appendChild(countNumber);
             }
         });
