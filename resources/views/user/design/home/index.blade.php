@@ -335,7 +335,7 @@
                 <input type="email" name="email" placeholder="Email của bạn" style="width:85%;padding: 0 2em 0 4.5em;">
                 <button>Đăng kí</button>
             </form>
-            <a href="" class="mini_text again">Không show nó lần nữa</a>
+            <a href="" class="mini_text again">Không hiển thị nó lần nữa</a>
             <a href="#" class="t_close modalclose flexcenter">
                 <i class="ri-close-line"></i>
             </a>

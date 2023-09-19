@@ -2199,7 +2199,7 @@ form .button input:hover {
 .products .review_block_head .rate_sum {
     position: relative;
     font-size: 4em;
-    font-weight: --fw7;
+    font-weight: 700;
     padding-right: 0.5em;
 }
 

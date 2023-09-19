@@ -16,7 +16,7 @@
         <div class="card-header pb-0">
             <h6>Bảng danh mục</h6>
             <div class="mb-4 mt-4 d-flex align-items- justify-content-between">
-                @can('create-product')
+                @can('create-category')
                     <a class="btn bg-gradient-dark mb-0" href="{{route('admin.category.create')}}">
                         <i class="fas fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;
                         Thêm danh mục</a>

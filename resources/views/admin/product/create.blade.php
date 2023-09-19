@@ -16,18 +16,13 @@
 
     <div class="card mb-4">
         <div class="card-header pb-0">
-            <h6>Thêm sản phẩm</h6>
+            <h6>Sửa sản phẩm</h6>
         </div>
-        <div class="card-body px-3 pt-2 pb-2">
-            <div class="card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Form tạo mới</h3>
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form action="{{ route('admin.product.store') }}" method="POST">
-                    @csrf
-                    @method('POST')
+        @can('create-product')
+            <form action="{{route('admin.product.create')}}" method="POST">
+                @csrf
+                @method('PATCH')
+                <div class="card-body px-3 pt-2 pb-2">
                     <div class="card-body">
                         <div class="form-group">
                             <label for="exampleName">Tên sản phẩm</label>
@@ -166,8 +161,9 @@
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
+                </div>
                 </form>
-            </div>
+        @endcan
         </div>
     </div>
 @endsection

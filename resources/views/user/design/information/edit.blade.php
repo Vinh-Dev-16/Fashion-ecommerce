@@ -42,7 +42,9 @@
                             </div>
                             <div class="input-box" style="width: 80%" >
                                 <span class="details">Sở thích</span>
-                                <input type="text" value="{{ $user->information->description }}" name="description" style="width: 100%">
+                                <textarea  name="description" style="width: 100%" id="editor">
+                                    {{ $user->information->description }}
+                                </textarea>
                             </div>
                         </div>
                         <div>
@@ -146,27 +148,5 @@
     </div>
 @endsection
 @section('javascript')
-    <script>
-        let myEditor;
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch(error => {
-                console.error(error);
-            });
-
-        const dpt_menu = document.querySelectorAll('.dpt_menu');
-        const close_menu = document.querySelectorAll('#close_menu');
-
-        for (let i of dpt_menu) {
-            i.classList.add('active');
-        }
-        close_menu.forEach((item) => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                for (let i of dpt_menu) {
-                    i.classList.toggle('active');
-                }
-            });
-        })
-    </script>
+    @include('user.design.information.script')
 @endsection

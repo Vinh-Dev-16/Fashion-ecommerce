@@ -31,13 +31,13 @@
                 @endif
             </td>
             <td class="align-middle text-center ms-auto text-end" style="width: 20%">
-                @can('delete-product')
+                @can('delete-category')
                     <a class="btn btn-link text-danger text-gradient px-3 mb-0"
                        onclick="return confirmation(this)"
                        href="{{url('admin/category/destroy/'. $category->id)}}"><i
                             class="far fa-trash-alt me-2" aria-hidden="true"></i>Xóa</a>
                 @endcan
-                @can('edit-product')
+                @can('edit-category')
                     <a class="btn btn-link text-dark px-3 mb-0"
                        href="{{url('admin/category/edit/'. $category->slug)}}"><i
                             class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Sửa</a>
