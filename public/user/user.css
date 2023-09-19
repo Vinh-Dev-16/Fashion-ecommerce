@@ -1169,6 +1169,9 @@ form .button input:hover {
     width: 150px;
     height: 150px;
     border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .brand .item img {

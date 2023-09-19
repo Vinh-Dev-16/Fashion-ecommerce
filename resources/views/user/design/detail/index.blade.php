@@ -475,8 +475,9 @@
                                                     <div class="stars"
                                                          style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
                                                     </div>
+                                                    <div class="mini_text">{{ $product->reviews->count() }} đánh giá
+                                                    </div>
                                                 @endif
-                                                <div class="mini_text">{{ $product->reviews->count() }} review</div>
                                             </div>
                                             <h3 class="main_links"><a
                                                     href="{{ url('detail/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>

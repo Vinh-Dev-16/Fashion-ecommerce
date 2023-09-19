@@ -18,9 +18,9 @@
                 love: has_love,
             },
             success: function (data) {
-                $('#wish_love').fadeOut(400, function () {
+                $('#wish_love').fadeOut(300, function () {
                     $(this).html(data.view);
-                    $(this).fadeIn(400);
+                    $(this).fadeIn(300);
                 });
                 $('#wishlist_number').text(data.count);
                 if (data.status == 0) {
@@ -57,9 +57,9 @@
                     quantity: stock,
                 },
                 success: function (data) {
-                    $('#mini_cart').fadeOut(400, function () {
+                    $('#mini_cart').fadeOut(300, function () {
                         $(this).html(data.view);
-                        $(this).fadeIn(400);
+                        $(this).fadeIn(300);
                     });
                     $('#item_number').text(data.count);
                     $('#card_head').text(data.count);
@@ -81,9 +81,9 @@
                 product_id: $product_id,
             },
             success: function (data) {
-                $('#mini_cart').fadeOut(400, function () {
+                $('#mini_cart').fadeOut(200, function () {
                     $(this).html(data.view);
-                    $(this).fadeIn(400);
+                    $(this).fadeIn(200);
                 });
                 $('#item_number').text(data.count);
                 $('#card_head').text(data.count);

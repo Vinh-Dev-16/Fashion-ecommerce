@@ -20,7 +20,7 @@ class homeController extends Controller
     {
         $cart = session()->get('cart', []);
         $products = Product::all();
-        return view('user.design.home', compact('products', 'cart'));
+        return view('user.design.home.index', compact('products', 'cart'));
     }
 
 

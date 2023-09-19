@@ -27,9 +27,9 @@
                 search: $('#search-product').val(),
             },
             success: function (data) {
-                $('#show-data').fadeOut(400, function() {
+                $('#show-data').fadeOut(200, function() {
                     $(this).html(data);
-                    $(this).fadeIn(400);
+                    $(this).fadeIn(200);
                 });
             },
             error: function (error) {

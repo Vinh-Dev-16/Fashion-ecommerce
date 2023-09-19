@@ -45,8 +45,9 @@
                                             <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div>
                                         @else
                                             <div class="stars" style="width:{{ 80 * ($result->product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
+                                            <div class="mini_text">({{$result->product->reviews->count()}}) đánh giá</div>
                                         @endif
-                                        <div class="mini_text">({{$result->product->reviews->count()}}) </div>
+
                                     </div>
                                     @if ($result->product->sale == 0)
                                         <h3 class="main_links"><a

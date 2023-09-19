@@ -1,112 +1,44 @@
 @extends('admin.layout')
 @section('title')
-    Trang Category
+    Trang danh mục
+@endsection
+@section('breadcrumbs')
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white"
+                                               href="{{url('admin/dashboard')}}">Home</a></li>
+        <li class="breadcrumb-item text-sm text-white active" aria-current="page">Danh mục</li>
+    </ol>
+    <h6 class="font-weight-bolder text-white mb-0">Trang chủ</h6>
 @endsection
 @section('content')
     {{-- Content --}}
-    <div class="col-md-12" style="display:flex;align-items: center;justify-content:center">
-        <div class="product col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN CATEGORY</h2>
-                    <h3 class="card-title"><a href="{{ route('admin.category.create') }}">Tạo mới category</a></h3>
-
-                    <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" id="search" class="form-control float-right"
-                                placeholder="Search tên">
-
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+    <div class="card mb-4">
+        <div class="card-header pb-0">
+            <h6>Bảng danh mục</h6>
+            <div class="mb-4 mt-4 d-flex align-items- justify-content-between">
+                @can('create-product')
+                    <a class="btn bg-gradient-dark mb-0" href="{{route('admin.category.create')}}">
+                        <i class="fas fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;
+                        Thêm danh mục</a>
+                @endcan
+                <div class="input-group d-flex justify-content-end" style="width: 300px">
+                    <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                    <input type="text" id="search-category" class="form-control" placeholder="Tìm kiếm...">
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên loại sản phẩm</th>
-                                <th>Bố của nó</th>
-                                <th>CRUD</th>
-                            </tr>
-                        </thead>
-                        <tbody class="infor_category">
-                            <tr>
-                                @foreach ($categories as $category)
-                                    <td>{{ $category->id }}</td>
-                                    <td>{{ $category->name }}</td>
-                                    <td>
-                                        @if ($category->parent_id == 0)
-                                            <p>Không có</p>
-                                        @elseif ($parent = \App\Models\admin\Category::find($category->parent_id))
-                                            {{ $parent->name }}
-                                        @endif
-                                    </td>
-                                    <td class="table_crud" style="display:flex;justify-content:flex-start;">
-
-                                        <a href="{{ url('admin/category/edit/' . $category->id) }}" title="Sửa Category"
-                                            style="border: none;outline:none">
-                                            <i class="fa-solid fa-pen" style="color: green; font-size:25px;"></i></a>
-                                        <a href="{{ url('admin/category/destroy' . $category->id) }}" type="submit"
-                                            title="Xóa Category" onclick=" return confirm ('Bạn có muốn xóa không?')"
-                                            style="border: none;outline:none;padding:0 13px;background:transparent"><i
-                                                class="fa-solid fa-trash" style="color: red; font-size:25px;"></i><a>
-                                    </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                        <tbody id="search_result"></tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
             </div>
         </div>
+        <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0" id="show-data">
+                @include('admin.category.list_data')
+            </div>
+            <!-- /.card-body -->
+        </div>
     </div>
-    <div class="col-md-12" style="display: flex;justify-content: center;
-      align-items: center;">
-        {{ $categories->links() }}
     </div>
 @endsection
 
-@section('breadcumb')
-    <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active">Category</li>
-    </ol>
-@endsection
+
 
 @section('javascript')
-    <script>
-        function searchCategory() {
-            $(document).ready(function() {
-                $("#search").keyup(function() {
-                    console.log(1);
-                    $input = $(this).val();
-                    if ($input) {
-                        $('.infor_category').hide();
-                        $('#search_result').show();
-                    } else {
-                        $('.infor_category').show();
-                        $('#search_result').hide();
-                    }
-                    $.ajax({
-                        url: "{{ URL::to('admin/category/search') }}",
-                        method: "GET",
-                        data: {
-                            'search': $input
-                        },
-                        success: function(data) {
-                            $("#search_result").html(data);
-                        }
-                    });
-                })
-            })
-        }
-        searchCategory();
-    </script>
+    @include('admin.category.script')
 @endsection

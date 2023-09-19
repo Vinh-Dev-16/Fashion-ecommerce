@@ -82,9 +82,9 @@
                 select_filter: $('#select-filter').val(),
             },
             success: function(data) {
-                $('#show-data').fadeOut(400, function() {
+                $('#show-data').fadeOut(300, function() {
                     $(this).html(data);
-                    $(this).fadeIn(400);
+                    $(this).fadeIn(300);
                 });
                 $('#cancel-filter').val('');
             },

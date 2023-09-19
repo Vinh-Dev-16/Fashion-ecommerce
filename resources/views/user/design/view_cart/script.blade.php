@@ -70,13 +70,13 @@
             type: 'POST',
             data: data,
             success: function (response) {
-                $('#show-data').fadeOut(400, function () {
+                $('#show-data').fadeOut(300, function () {
                     $(this).html(response.view);
-                    $(this).fadeIn(400);
+                    $(this).fadeIn(300);
                 });
-                $('#mini_cart').fadeOut(400, function () {
+                $('#mini_cart').fadeOut(300, function () {
                     $(this).html(response.html);
-                    $(this).fadeIn(400);
+                    $(this).fadeIn(300);
                 });
                 $('#item_number').text(response.count);
                 $('#card_head').text(response.count);

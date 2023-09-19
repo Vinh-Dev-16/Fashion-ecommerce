@@ -79,7 +79,7 @@
                                         <div class="price">
                                             @if ($product->discount)
                                                 <span
-                                                    class="current">{{ number_format(floor($product->price - ($product->price * $product->discount) / 100)) }}
+                                                    class="current">{{number_format(floor($product->price - ($product->price * $product->discount) / 100), 0, '.', '.') }}
                                                     VND</span>
                                                 <span class="normal mini_text">{{ number_format($product->price) }}
                                                     VND</span>
@@ -169,7 +169,8 @@
                                                 </div>
                                                 @if ($product->stock > 0)
                                                     <div class="button_cart">
-                                                        <button class="primary_button" id="add_to_cart" onclick="add({{$product->id}})">Giỏ hàng
+                                                        <button class="primary_button" id="add_to_cart"
+                                                                onclick="add({{$product->id}})">Giỏ hàng
                                                         </button>
                                                     </div>
                                                     <div class="button_cart" style="margin-right: 1em">
@@ -190,7 +191,7 @@
                                         </form>
                                         <div class="wish_share">
                                             <ul class="flexitem second_links" id="wish_love">
-                                               @include('user.design.page_offer.wishlist')
+                                                @include('user.design.page_offer.wishlist')
                                             </ul>
                                         </div>
                                     </div>
@@ -500,8 +501,9 @@
                                                     <div class="stars"
                                                          style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
                                                     </div>
+                                                    <div class="mini_text">{{ $product->reviews->count() }} đánh giá
+                                                    </div>
                                                 @endif
-                                                <div class="mini_text">{{ $product->reviews->count() }} review</div>
                                             </div>
                                             <h3 class="main_links"><a
                                                     href="{{ url('detail/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(9) }}</a>
@@ -551,7 +553,8 @@
                                         @endphp
                                         @foreach($tags as $key=>$tag)
                                             <li>
-                                                <a class="tag-link" href="{{url('tag/'.$tag)}}" class="me-2">{{$tag}}</a>
+                                                <a class="tag-link" href="{{url('tag/'.$tag)}}"
+                                                   class="me-2">{{$tag}}</a>
                                             </li>
                                         @endforeach
                                     @endif
@@ -562,7 +565,7 @@
                 </div>
             </div>
         </div>
-        @endsection
+@endsection
 
 @section('javascript')
     @include('user.design.page_offer.script')

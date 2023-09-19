@@ -52,9 +52,9 @@
                 size: $('#select-size').val(),
             },
             success: function(data) {
-                $('#show-data').fadeOut(400, function() {
+                $('#show-data').fadeOut(300, function() {
                     $(this).html(data);
-                    $(this).fadeIn(400);
+                    $(this).fadeIn(300);
                 });
             },
             error: function(error) {

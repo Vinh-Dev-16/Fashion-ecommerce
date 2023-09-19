@@ -20,12 +20,12 @@
                                             @if ($product->sale == 0)
                                                 <a href="{{ url('detail/' . $product->slug) }}">
                                                     <img src="{{ $product->images->first()->path }}"
-                                                        alt="{{ $product->name }}">
+                                                         alt="{{ $product->name }}">
                                                 </a>
                                             @else
                                                 <a href="{{ url('pageoffer/' . $product->slug) }}">
                                                     <img src="{{ $product->images->first()->path }}"
-                                                        alt="{{ $product->name }}">
+                                                         alt="{{ $product->name }}">
                                                 </a>
                                             @endif
                                         </div>
@@ -43,7 +43,8 @@
                                             </ul>
                                         </div>
                                         @if ($product->discount)
-                                            <div class="discount circle flexcenter"><span>{{ $product->discount }}%</span>
+                                            <div class="discount circle flexcenter">
+                                                <span>{{ $product->discount }}%</span>
                                             </div>
                                         @endif
                                     </div>
@@ -54,13 +55,14 @@
                                                         5) ==
                                                     0)
                                                 <div class="stars" style="background-image:none;width:150px">Chưa có
-                                                    đánh giá</div>
+                                                    đánh giá
+                                                </div>
                                             @else
                                                 <div class="stars"
-                                                    style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
+                                                     style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
                                                 </div>
+                                                <div class="mini_text">{{ $product->reviews->count() }} đánh giá</div>
                                             @endif
-                                            <div class="mini_text">{{ $product->reviews->count() }} review</div>
                                         </div>
                                         @if ($product->sale == 0)
                                             <h3 class="main_links"><a
@@ -84,9 +86,9 @@
                                         </div>
                                         <div class="footer">
                                             <ul class="mini_text">
-                                            @foreach ($product->materials as $material)
-                                                <li>{{$material->name}}</li>
-                                            @endforeach
+                                                @foreach ($product->materials as $material)
+                                                    <li>{{$material->name}}</li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                     </div>

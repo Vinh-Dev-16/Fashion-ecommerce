@@ -36,7 +36,9 @@
                                     </li>
                                 @endif
                             @else
-                                <li class="active"><a href="javascript:void(0)" onclick="createToast('Bạn cần phải đăng nhập')"><i class="ri-heart-line"></i></a></li>
+                                <li class="active"><a href="javascript:void(0)"
+                                                      onclick="createToast('Bạn cần phải đăng nhập')"><i
+                                            class="ri-heart-line"></i></a></li>
                             @endif
                             @if ($product->sale == 0)
                                 <li><a href="{{ url('detail/' . $product->slug) }}"><i
@@ -66,8 +68,8 @@
                             <div class="stars"
                                  style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
                             </div>
+                            <div class="mini_text">{{ $product->reviews->count() }} đánh giá</div>
                         @endif
-                        <div class="mini_text">{{ $product->reviews->count() }} review</div>
                     </div>
                     @if ($product->sale == 0)
                         <h3 class="main_links"><a
@@ -93,8 +95,8 @@
                     <div class="footer">
                         <ul class="mini_text">
                             @foreach ($product->materials as $material)
-                            <li>{{$material->name}}</li>
-                             @endforeach
+                                <li>{{$material->name}}</li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>

@@ -9,61 +9,35 @@ use Illuminate\Support\Facades\Session;
 
 class categoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|string|\Illuminate\Contracts\Foundation\Application
     {
         $categories = Category::paginate(6);
-        Session::put('category_url', request()->fullUrl());
+        if ($request->ajax()) {
+            return $this->listData($request);
+        }
         return view('admin.category.index', compact('categories'));
     }
 
 
-    public function search(Request $request)
+    public function listData(Request $request): string
     {
-        $output = "";
-        $searches = Category::where('name', 'like', '%' . $request->search . '%')->get();
-
-        foreach ($searches as $result) {
-            $name = $result->parent_id == 0? '<p>Không có</p>' : Category::find($result->parent_id)->name;
-            $output .=
-                '<tr>
-               <td>' . $result->id . '</td>
-               <td>' . $result->name . '</td>
-               <td>'. $name. '</td>
-               <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">' . '
-                   <a href="' . route('admin.category.edit', $result->id) . '" title="Sửa Category"
-                   style="border: none;outline:none">
-                   <i class="fa-solid fa-pen" style=" font-size:22px;"></i></a>
-                   <a href="' . route('admin.category.destroy', $result->id) . '" title="Xoa Category"
-                   style="border:none;outline:none">
-                   <i class="fa-solid fa-trash"
-                   style="font-size:22px;"></i></a>
-              ' . '</td>
-           </tr>';
+        $categories = Category::query();
+        if (!empty($request->search)) {
+            $categories->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('slug', 'like', '%' . $request->search . '%');
         }
-        return response($output);
+        $categories = $categories->paginate(6);
+        return view('admin.category.list_data', compact('categories'))->render();
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $categories = Category::all();
         return view('admin.category.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         if ($request->isMethod('POST')) {
@@ -82,45 +56,20 @@ class categoryController extends Controller
             $input = $request->all();
             unset($input['_token']);
             Category::create($input);
-            if (Session::get('category_url')) {
-                return redirect(session('category_url'))->with('success', 'Đã thêm category thành công');
-            }
+            return redirect()->route('admin.category.index')->with('success', 'Đã thêm category thành công');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $categories = Category::findOrFail($id);
         $category = Category::all();
         return view('admin.category.edit', compact('categories','category'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         try {
@@ -128,26 +77,17 @@ class categoryController extends Controller
             $input = $request->all();
             unset($input['_token']);
             $categories->update($input);
-            if (Session::get('category_url')) {
-                return redirect(session('category_url'))->with('success', 'Đã sửa category thành công');
-            }
+            return redirect()->route('admin.category.index')->with('success', 'Đã sửa category thành công');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $categories = Category::find($id);
         $categories->delete();
-        if (Session::get('category_url')) {
-            return redirect(session('category_url'))->with('success', 'Đã xóa category thành công');
-        }
+        return redirect()->route('admin.category.index')->with('success', 'Đã xóa category thành công');
     }
 }

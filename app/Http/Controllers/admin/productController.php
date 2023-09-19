@@ -59,7 +59,7 @@ class productController extends Controller
     {
        $validate = $productRequest->validated();
 
-        try {
+        // try {
             $input = $request->all();
             unset($input['_token']);
             $products = Product::create($input);
@@ -80,9 +80,9 @@ class productController extends Controller
             if (Session::get('products_url')) {
                 return redirect(session('products_url'))->with('success', 'Đã thêm products thành công');
             }
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
-        }
+        // } catch (Exception $e) {
+        //     return redirect()->back()->with('error', 'Đã xảy ra lỗi');
+        // }
     }
 
     public function edit($slug)
