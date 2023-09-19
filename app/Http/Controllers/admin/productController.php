@@ -59,7 +59,7 @@ class productController extends Controller
     {
        $validate = $productRequest->validated();
 
-        // try {
+         try {
             $input = $request->all();
             unset($input['_token']);
             $products = Product::create($input);
@@ -77,12 +77,10 @@ class productController extends Controller
                     'product_id' => $products->id,
                 ]);
             }
-            if (Session::get('products_url')) {
-                return redirect(session('products_url'))->with('success', 'Đã thêm products thành công');
-            }
-        // } catch (Exception $e) {
-        //     return redirect()->back()->with('error', 'Đã xảy ra lỗi');
-        // }
+            return redirect()->route('admin.product.index')->with('success', 'Đã thêm sản phẩm thành công');
+         } catch (Exception $e) {
+             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
+         }
     }
 
     public function edit($slug)
@@ -110,18 +108,18 @@ class productController extends Controller
             $product->attributevalues()->sync($request->input('attribute_value_id'));
 
             $images = Image::where('product_id', $product->id)->get();
-            $imageNames = $request->path; 
+            $imageNames = $request->path;
 
             $existingMaterials = Material::where('product_id', $product->id)->get();
             $materialNames = $request->material;
-            
-  
+
+
             $existingMaterialNames = $existingMaterials->pluck('name')->toArray();
-            
+
             foreach ($materialNames as $materialName) {
 
                 if (in_array($materialName, $existingMaterialNames)) {
-            
+
                     Material::where('product_id', $product->id)
                         ->where('name', $materialName)
                         ->update(['name' => $materialName]);
@@ -133,7 +131,7 @@ class productController extends Controller
                     ]);
                 }
             }
-       
+
             Material::where('product_id', $product->id)
                 ->whereNotIn('name', $materialNames)
                 ->delete();

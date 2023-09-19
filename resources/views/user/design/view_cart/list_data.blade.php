@@ -161,12 +161,17 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        @if (Auth::check())
+                                    
+                                        @if (Auth::check() && count($cart) > 0)
                                             <a href="{{ url('checkout') }}" class="secondary_button">Check out</a>
-                                        @else
+                                        @elseif (!Auth::check())
                                             <button class="secondary_button"
                                                     onclick="createToast('Bạn cần phải đăng nhập')"
                                                     style="border:none;outline:none;width:100%">Check out</button>
+                                        @elseif (count($cart) == 0) 
+                                            <button class="secondary_button"
+                                            onclick="createToast('Bạn cần có sản phẩm')"
+                                            style="border:none;outline:none;width:100%">Check out</button>
                                         @endif
                                     </div>
                                 </div>
