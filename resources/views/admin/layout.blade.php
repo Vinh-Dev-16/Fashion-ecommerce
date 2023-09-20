@@ -136,16 +136,43 @@
                 </a>
             </li>
             @endcan
-            <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/confirm/index') ? 'active' : '' }}"
-                   href="{{url('admin/confirm/index')}}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ri-filter-2-line text-success text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Confirm</span>
-                </a>
-            </li>
+            @can('view-attribute')
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('admin/attribute/index') ? 'active' : '' }}"
+                       href="{{route('admin.attribute.index')}}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ri-stock-line mb-1  text-success text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Thuộc tính</span>
+                    </a>
+                </li>
+            @endcan
+            @can('view-value')
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('admin/value/index') ? 'active' : '' }}"
+                       href="{{route('admin.value.index')}}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ri-strikethrough mb-1  text-danger text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Giá trị thuộc tính</span>
+                    </a>
+                </li>
+            @endcan
+            @can('view-image')
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('admin/images/index') ? 'active' : '' }}"
+                       href="{{url('admin/images/index')}}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ri-image-line mb-1  text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Ảnh sản phẩm</span>
+                    </a>
+                </li>
+            @endcan
+
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Thao tác</h6>
             </li>

@@ -81,14 +81,17 @@ class brandController extends Controller
             unset($input['_token']);
             $brands->update($input);
             if (!empty($input['value'])) {
+                $vouchers = Voucher::where('brand_id', $id)->get();
                 for ($i = 0; $i < count($input['value']); $i++) {
-                    $data = [
-                        'brand_id' => $brands->id,
-                        'value' => $input['value'][$i],
-                        'quantity' => $input['quantity'][$i],
-                        'percent' => $input['percent'][$i],
-                    ];
-                    Voucher::update($data);
+                    foreach ($vouchers as $voucher) {
+                        if ($voucher->id == $input['id'][$i]) {
+                            $voucher->update([
+                                'value' => $input['value'][$i],
+                                'quantity' => $input['quantity'][$i],
+                                'percent' => $input['percent'][$i],
+                            ]);
+                        }
+                    }
                 }
             }
             return redirect()->route('admin.brand.index')->with('success', 'Đã cập nhật brand thành công');
