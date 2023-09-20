@@ -79,6 +79,7 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
+            @can('view-user')
             <li class="nav-item has-submenu">
                 <a class="nav-link" href="#">
                     <div
@@ -98,6 +99,8 @@
                     @endif
                 </ul>
             </li>
+            @endcan
+            @can('view-product')
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('admin/product/index') ? 'active' : '' }}"
                    href="{{route('admin.product.index')}}">
@@ -108,6 +111,8 @@
                     <span class="nav-link-text ms-1">Sản phẩm</span>
                 </a>
             </li>
+            @endcan
+            @can('view-category')
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('admin/category/index') ? 'active' : '' }}"
                    href="{{url('admin/category/index')}}">
@@ -118,16 +123,19 @@
                     <span class="nav-link-text ms-1">Category</span>
                 </a>
             </li>
+            @endcan
+            @can('view-brand')
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/group/index') ? 'active' : '' }}"
-                   href="{{url('admin/group/index')}}">
+                <a class="nav-link {{ request()->is('admin/brand/index') ? 'active' : '' }}"
+                   href="{{url('admin/brand/index')}}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ri-group-2-line text-dark text-sm opacity-10"></i>
+                        <i class="ri-handbag-line mb-1  text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Group</span>
+                    <span class="nav-link-text ms-1">Brand</span>
                 </a>
             </li>
+            @endcan
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('admin/confirm/index') ? 'active' : '' }}"
                    href="{{url('admin/confirm/index')}}">

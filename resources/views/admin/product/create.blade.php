@@ -7,7 +7,7 @@
         <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white"
                                                href="{{url('admin/dashboard')}}">Home</a></li>
         <li class="breadcrumb-item text-sm text-white active" aria-current="page"><a
-                href="{{route('admin.product.index')}}" class="opacity-5 text-white>"></a>Role
+                href="{{route('admin.product.index')}}" class="opacity-5 text-white>"></a>Sản phẩm
         </li>
     </ol>
     <h6 class="font-weight-bolder text-white mb-0">Thêm sản phẩm</h6>
@@ -16,7 +16,7 @@
 
     <div class="card mb-4">
         <div class="card-header pb-0">
-            <h6>Sửa sản phẩm</h6>
+            <h6>Thêm sản phẩm</h6>
         </div>
         @can('create-product')
             <form action="{{route('admin.product.create')}}" method="POST">
@@ -156,16 +156,17 @@
                             @enderror
                         </div>
                     </div>
-                    <!-- /.card-body -->
-
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
                 </div>
-                </form>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+            </form>
         @endcan
-        </div>
     </div>
+
 @endsection
 
 

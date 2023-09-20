@@ -24,7 +24,7 @@ class permissionController extends Controller
             $roles = Role::all();
             return view('admin.permission.create', compact('roles'));
         } else {
-            return abort(403);
+            return view('403')->with('error', 'Bạn không có quyền truy cập vào đây');
         }
     }
 

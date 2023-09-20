@@ -32,7 +32,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
         Route::get('destroy/{id}',[roleController::class,'destroy'])->name('admin.role.destroy');
     });
 
-    Route::group(['prefix' => 'permission', 'middleware' => ['role:admin']], function () {
+    Route::group(['prefix' => 'permission' , 'middleware' => ['role:admin']], function () {
         Route::get('index',[permissionController::class,'index'])->name('admin.permission.index');
         Route::get('create',[permissionController::class,'create'])->name('admin.permission.create');
         Route::post('store',[permissionController::class,'store'])->name('admin.permission.store');
@@ -56,7 +56,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
 
     // Route Products
 
-  Route::prefix('/product')->group(function () {
+  Route::prefix('/product')->middleware('role:admin|editor|manager')->group(function () {
     Route::get('/index', [productController::class, 'index'])->name('admin.product.index');
     Route::get('create', [productController::class, 'create'])->name('admin.product.create');
     Route::post('store', [productController::class, 'store'])->name('admin.product.store');
@@ -71,7 +71,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
   // Route Category
 
 
-  Route::prefix('category')->group(function () {
+  Route::prefix('category')->middleware('role:admin|editor|manager')->group(function () {
     Route::get('/index', [categoryController::class, 'index'])->name('admin.category.index');
     Route::get('create', [categoryController::class, 'create'])->name('admin.category.create');
     Route::post('store', [categoryController::class, 'store'])->name('admin.category.store');
@@ -82,7 +82,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
   });
 
   //  Route về brand
-  Route::prefix('/brand')->group(function () {
+  Route::prefix('/brand')->middleware('role:admin|editor|manager')->group(function () {
     Route::get('/index', [brandController::class, 'index'])->name('admin.brand.index');
     Route::get('create', [brandController::class, 'create'])->name('admin.brand.create');
     Route::post('store', [brandController::class, 'store'])->name('admin.brand.store');
@@ -93,7 +93,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
   });
   // Route về attribute
 
-  Route::prefix('/attribute')->group(function () {
+  Route::prefix('/attribute')->middleware('role:admin|editor|manager')->group(function () {
     Route::get('/index', [attributeController::class, 'index'])->name('admin.attribute.index');
     Route::get('create', [attributeController::class, 'create'])->name('admin.attribute.create');
     Route::post('store', [attributeController::class, 'store'])->name('admin.attribute.store');
@@ -104,7 +104,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
 
   // Route attribute value
 
-  Route::prefix('/value')->group(function () {
+  Route::prefix('/value')->middleware('role:admin|editor|manager')->group(function () {
     Route::get('/index', [valueController::class, 'index'])->name('admin.value.index');
     Route::get('create', [valueController::class, 'create'])->name('admin.value.create');
     Route::post('store', [valueController::class, 'store'])->name('admin.value.store');
@@ -116,7 +116,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
 
   // Route về Images Product
 
-  Route::prefix('/images')->group(function () {
+  Route::prefix('/images')->middleware('role:admin|editor|manager')->group(function () {
     Route::get('/index', [imagesController::class, 'index'])->name('admin.images.index');
     Route::get('create', [imagesController::class, 'create'])->name('admin.images.create');
     Route::patch('update/{id}', [imagesController::class, 'update'])->name('admin.images.update');

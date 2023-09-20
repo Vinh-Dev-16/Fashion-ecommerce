@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 use App\Models\admin\Category;
 use Exception;
 use Illuminate\Http\Request;
@@ -38,25 +39,14 @@ class categoryController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(Request $request, CategoryRequest $categoryRequest): \Illuminate\Http\RedirectResponse
     {
-        if ($request->isMethod('POST')) {
-            $rules = [
-                'name' => 'required|max:255',
-                'parent_id' => 'required',
-                'slug'=> 'required',
-            ];
-            $messages = [
-                'required' => 'Không được để trống trường này',
-                'max' => 'Đã vượt qua số từ cho phép',
-            ];
-            $request->validate($rules, $messages);
-        }
+        $categoryRequest->validated();
         try {
             $input = $request->all();
             unset($input['_token']);
             Category::create($input);
-            return redirect()->route('admin.category.index')->with('success', 'Đã thêm category thành công');
+            return redirect()->route('admin.category.index')->with('success', 'Đã thêm danh mục thành công');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
@@ -70,14 +60,15 @@ class categoryController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, CategoryRequest $categoryRequest): \Illuminate\Http\RedirectResponse
     {
+        $categoryRequest->validated();
         try {
             $categories = Category::find($id);
             $input = $request->all();
             unset($input['_token']);
             $categories->update($input);
-            return redirect()->route('admin.category.index')->with('success', 'Đã sửa category thành công');
+            return redirect()->route('admin.category.index')->with('success', 'Đã sửa danh mục thành công');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
@@ -88,6 +79,6 @@ class categoryController extends Controller
     {
         $categories = Category::find($id);
         $categories->delete();
-        return redirect()->route('admin.category.index')->with('success', 'Đã xóa category thành công');
+        return redirect()->route('admin.category.index')->with('success', 'Đã xóa danh mục thành công');
     }
 }
