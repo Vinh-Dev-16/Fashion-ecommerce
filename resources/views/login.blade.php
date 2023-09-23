@@ -51,6 +51,8 @@
     <section>
         <div class="page-header min-vh-100">
             <div class="container">
+                <div id="show-modal">
+                </div>
                 <div class="row">
                     <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
                         <div class="card card-plain">
@@ -112,10 +114,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="show-modal"
-             style="display: none; position: absolute !important; top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 10000000; background-color: rgba(0, 0, 0, 0.5); width: 100%;height: 100%;">
-
         </div>
     </section>
 </main>
@@ -228,7 +226,8 @@
                     case 1:
                         createToast(data.message)
                         $('#show-modal').html(data.view);
-                        $('#show-modal').show();
+                        $('#verify-modal').modal('show');
+                        $('#overlay-verify').css('display', 'block');
                         break;
                     case 2:
                         window.location.href = "{{ route('home') }}";
@@ -246,13 +245,8 @@
         })
     }
 
-    if (document.querySelector('.close-verify')) {
-        document.querySelector('.close-verify').addEventListener('click', function (e) {
-            e.preventDefault();
-            alert('Vui lòng xác thực tài khoản để tiếp tục');
-            document.querySelector('#show-modal').style.display = 'none !important';
-        });
-    }
+
+
 </script>
 
 
@@ -273,6 +267,8 @@
                 setTimeout(() => removeToast(toast), 3000)
             }
         });
+
+
     </script>
 @endif
 <!-- Github buttons -->
@@ -281,22 +277,4 @@
 </body>
 
 </html>
-@if (Session::has('success') || Session::has('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
 
-
-            function removeToast(toast) {
-                toast.classList.add("hide");
-                if (toast.timeoutId) clearTimeout(toast.timeoutId);
-                setTimeout(() => toast.remove(), 400);
-            }
-
-            setTime();
-
-            function setTime() {
-                setTimeout(() => removeToast(toast), 3000)
-            }
-        });
-    </script>
-@endif

@@ -1823,7 +1823,17 @@ form .button input:hover {
 }
 
 /* detail */
-
+#owl-demo .item{
+    margin: 3px;
+}
+#owl-demo .item img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.swiper-slide-thumb-active {
+    border: 3px solid #e25252 !important;
+}
 
 .breadcrumb {
     font-size: var(--font-small);

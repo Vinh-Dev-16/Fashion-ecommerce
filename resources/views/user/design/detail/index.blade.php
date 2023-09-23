@@ -50,7 +50,10 @@
                                                     <img src="{{ $image->path }}" alt="{{ $product->name }}">"
                                                 </li>
                                             @endforeach
+
                                         </ul>
+                                        <div class="swiper-button-next-small"></div>
+                                        <div class="swiper-button-prev-small"></div>
                                     </div>
                                 </div>
                             </div>

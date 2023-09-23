@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
     <title>
-        Register
+        Đăng kí tài khoản
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
@@ -110,10 +110,7 @@
                 </div>
             </div>
         </div>
-        <div id="show-modal"
-             style="display: none; position: absolute !important; top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 10000000; background-color: rgba(0, 0, 0, 0.5); width: 100%;height: 100%;">
-
-        </div>
+        <div id="show-modal"></div>
     </div>
 </main>
 <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
@@ -251,7 +248,6 @@
                             $('div.' + prefix + '_error').text(val[0]);
                         });
                         break;
-
                     case 1:
                         createToast(data.message);
                         break;

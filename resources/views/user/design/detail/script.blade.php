@@ -121,16 +121,16 @@
     // slider images
 
     var productThumb = new Swiper('.small_image', {
-        loop: true,
-        spaceBetween: 10,
-        slidesPerview: 3,
-        freeMode: true,
-        watchSlidesProgress: true,
+       
         breakpoints: {
             481: {
                 spaceBetween: 32,
             }
-        }
+        },
+        navigation: {
+            nextEl: '.swiper-button-next-small',
+            prevEl: '.swiper-button-prev-small',
+        },
     });
 
     var productBig = new Swiper('.big_image', {

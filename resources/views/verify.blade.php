@@ -1,33 +1,44 @@
 
-<div class="wrapper-verify hide modal" id="modal-verify" tabindex="-1" role="dialog" aria-labelledby="modal-verify-label" aria-hidden="true" >
-    <div class="overlay"></div>
-    <div class="container-verify"  style="position: relative" >
-        <p>Mã đã gửi đến {{$user->email}}</p>
-        <h1>Điền mã OTP</h1>
-        <form method="post" id="verificationForm">
-            @csrf
-            <input id="email" value="{{$user->email}}" name="email" type="email" hidden="hidden">
-            <div class="otp-field">
-                <input type="text" name="otp" maxlength="1"/>
-                <input type="text" name="otp" maxlength="1"/>
-                <input type="text" name="otp" maxlength="1"/>
-                <input type="text" name="otp" maxlength="1"/>
-                <input type="text" name="otp" maxlength="1"/>
-                <input type="text" name="otp" maxlength="1"/>
+<!-- Modal -->
+<div class="modal fade" id="verify-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <!-- Modal body -->
+            <div class="modal-body container-verify" style="position: relative">
+                <p>Mã đã gửi đến {{$user->email}}</p>
+                <h1>Điền mã OTP</h1>
+                <form method="post" id="verificationForm">
+                    @csrf
+                    <input id="email" value="{{$user->email}}" name="email" type="email" hidden="hidden">
+                    <div class="otp-field">
+                        <input type="text" name="otp" maxlength="1"/>
+                        <input type="text" name="otp" maxlength="1"/>
+                        <input type="text" name="otp" maxlength="1"/>
+                        <input type="text" name="otp" maxlength="1"/>
+                        <input type="text" name="otp" maxlength="1"/>
+                        <input type="text" name="otp" maxlength="1"/>
+                    </div>
+                </form>
+                <p class="time" style="margin: 20px 0"></p>
+
+                <a class="otpHref" href="">Gửi lại mã OTP</a>
+                <a href="javascript:void(0)" class="close-verify" data-dismiss="modal">
+                    <i class="ri-close-line"></i>
+                </a>
             </div>
-        </form>
-        <p class="time" style="margin: 20px 0px"></p>
 
-        <a class="otpHref" href="">Gửi lại mã OTP</a>
-        <a href="" class="close-verify" data-dismiss="modal">
-            <i class="ri-close-line"></i>
-        </a>
+            <!-- Modal footer -->
+
+        </div>
     </div>
+    <div class="overlay-verify"></div>
 </div>
+<script defer>
 
-<script>
-
-
+    $('.close-verify').click(function () {
+        $('#verify-modal').modal('hide');
+    });
 
     function timer_verify() {
         let seconds = 30;
@@ -57,11 +68,10 @@
 
     timer_verify();
 
-    const inputs = document.querySelectorAll(".otp-field input");
-    inputs.forEach((input, index) => {
-        input.dataset.index = index;
-        input.addEventListener("keyup", handleOtp);
-        input.addEventListener("paste", handleOnPasteOtp);
+    $(".otp-field input").each(function(index, input) {
+        $(input).data("index", index);
+        $(input).on("keyup", handleOtp);
+        $(input).on("paste", handleOnPasteOtp);
     });
 
     function handleOtp(e) {
@@ -72,13 +82,13 @@
         input.value = "";
         input.value = isValidInput ? value[0] : "";
         let fieldIndex = input.dataset.index;
-        if (fieldIndex < inputs.length - 1 && isValidInput) {
+        if (fieldIndex < inputVerify.length - 1 && isValidInput) {
             input.nextElementSibling.focus();
         }
         if (e.key === "Backspace" && fieldIndex > 0) {
             input.previousElementSibling.focus();
         }
-        if (fieldIndex == inputs.length - 1 && isValidInput) {
+        if (fieldIndex == inputVerify.length - 1 && isValidInput) {
             submit();
         }
     }
@@ -86,15 +96,15 @@
     function handleOnPasteOtp(e) {
         const data = e.clipboardData.getData("text");
         const value = data.split("");
-        if (value.length === inputs.length) {
-            inputs.forEach((input, index) => (input.value = value[index]));
+        if (value.length === inputVerify.length) {
+            inputVerify.forEach((input, index) => (input.value = value[index]));
             submit();
         }
     }
 
     function submit() {
         let otp = "";
-        inputs.forEach((input) => {
+        inputVerify.forEach((input) => {
             otp += input.value;
             input.disabled = true;
             input.classList.add("disabled");
@@ -139,5 +149,4 @@
                 })
         ;
     }
-
 </script>
