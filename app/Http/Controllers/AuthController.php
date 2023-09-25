@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\forgotPasswordRequest;
 use App\Jobs\sendMail;
 use App\Models\Role;
 use App\Models\VerifyEmail;
@@ -175,13 +176,14 @@ class AuthController extends Controller
                 if (Session::get('password')) {
                     $user->update([
                         'password' => Hash::make(session('password')),
-                        'email_verify_at' => with(Carbon::now())->toDateTimeString(),
                     ]);
                     session()->forget('password');
+                    return [
+                        'status' => 1,
+                        'message' => 'Đã đổi mật khẩu thành công',
+                    ];
                 } else {
-                    $user->update([
-                        'email_verify_at' => with(Carbon::now())->toDateTimeString(),
-                    ]);
+                    $user->email_verified_at = with(Carbon::now())->toDateTimeString();
                 }
                 $user->save();
                 if ($user->hasRole('user')) {
@@ -203,6 +205,80 @@ class AuthController extends Controller
                 Auth::logout();
                 return response()->json(['success' => false, 'message' => 'Đã quá thời gian']);
             }
+        }
+    }
+
+    public function reSendOTP(Request $request): array
+    {
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
+        $otpData = VerifyEmail::where('email', $email)->first();
+        $currentTime = time();
+        $time = $otpData->set_up_time;
+
+        if ($currentTime >= $time && $time >= $currentTime - (90+5) ) {
+            return [
+                'status' => 0,
+                'message' => 'Thời gian chờ giữa 2 lần gửi OTP là 90s',
+            ];
+        } else {
+            $this->sendOTP($user);
+            return [
+                'status' => 1,
+                'message' => 'Gửi lại mã OTP thành công',
+                'view' => view('verify', compact('user'))->render(),
+            ];
+        }
+    }
+
+    public function forgotPassword(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
+        return view('forgot_password');
+    }
+
+    public function handleForgotPassword(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+            're_password' => 'required|same:password',
+        ], [
+            'email.required' => 'Không được để trống trường email này',
+            'email' => 'Phải nhập đúng định dạng email',
+            'password.required' => 'Không được để trống trường mật khẩu này',
+            'password.min' => 'Mật khẩu tối thiểu phải 6 kí tự',
+            're_password.required' => 'Không được để trống trường nhập lại mật khẩu này',
+            're_password.same' => 'Mật khẩu nhập lại không khớp',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'status' => 0,
+                    'message' => $validator->errors()->toArray(),
+                ],
+                200
+            );
+        }
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            session(['password' => $request->password]);
+            $this->sendOTP($user);
+            return response()->json(
+                [
+                    'status' => 1,
+                    'message' => 'Gửi mã OTP thành công',
+                    'view' => view('verify', compact('user'))->render(),
+                ],
+                200
+            );
+        } else {
+            return response()->json(
+                [
+                    'status' => 2,
+                    'message' => 'Email không tồn tại',
+                ],
+                200
+            );
         }
     }
 

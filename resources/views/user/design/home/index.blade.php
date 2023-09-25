@@ -80,7 +80,7 @@
                                     <div class="content">
                                         <div class="rating">
                                             @if (80 *
-                                                    ($product->reviews()->pluck('feedbacks.rate')->avg() /
+                                                    ($product->feedbacks()->pluck('feedbacks.rate')->avg() /
                                                         5) ==
                                                     0)
                                                 <div class="stars" style="background-image:none;width:150px">Chưa có
@@ -88,9 +88,9 @@
                                                 </div>
                                             @else
                                                 <div class="stars"
-                                                     style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
+                                                     style="width:{{ 80 *($product->feedbacks()->pluck('feedbacks.rate')->avg() /5) }}px ">
                                                 </div>
-                                                <div class="mini_text">{{ $product->reviews->count() }} đánh giá</div>
+                                                <div class="mini_text">{{ $product->feedbacks->count() }} đánh giá</div>
                                             @endif
                                         </div>
                                         <h3 class="main_links"><a
@@ -148,14 +148,14 @@
                                                     href="{{ url('detail/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
                                             </h3>
                                             <div class="rating">
-                                                @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                                @if (80 * ($product->feedbacks()->pluck('feedbacks.rate')->avg() / 5) == 0)
                                                     <div class="stars" style="background-image:none;width:150px">Chưa có
                                                         đánh giá
                                                     </div>
                                                 @else
                                                     <div class="stars"
-                                                         style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
-                                                    <div class="mini_text">{{$product->reviews->count()}} đánh giá</div>
+                                                         style="width:{{ 80 * ($product->feedbacks()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
+                                                    <div class="mini_text">{{$product->feedbacks->count()}} đánh giá</div>
                                                 @endif
                                             </div>
                                             <div class="price">
@@ -206,14 +206,14 @@
                                                     href="{{ url('detail/' . $product->slug) }}">{{ Illuminate\Support\Str::of($product->name)->words(4) }}</a>
                                             </h3>
                                             <div class="rating">
-                                                @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                                @if (80 * ($product->feedbacks()->pluck('feedbacks.rate')->avg() / 5) == 0)
                                                     <div class="stars" style="background-image:none;width:150px">Chưa có
                                                         đánh giá
                                                     </div>
                                                 @else
                                                     <div class="stars"
-                                                         style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
-                                                    <div class="mini_text">{{$product->reviews->count()}} đánh giá</div>
+                                                         style="width:{{ 80 * ($product->feedbacks()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
+                                                    <div class="mini_text">{{$product->feedbacks->count()}} đánh giá</div>
                                                 @endif
                                             </div>
                                             <div class="price">
@@ -277,14 +277,14 @@
                                 </div>
                                 <div class="content">
                                     <div class="rating">
-                                        @if (80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                        @if (80 * ($product->feedbacks()->pluck('feedbacks.rate')->avg() / 5) == 0)
                                             <div class="stars" style="background-image:none;width:150px">Chưa có đánh
                                                 giá
                                             </div>
                                         @else
                                             <div class="stars"
-                                                 style="width:{{ 80 * ($product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
-                                            <div class="mini_text">{{$product->reviews->count()}} đánh giá</div>
+                                                 style="width:{{ 80 * ($product->feedbacks()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
+                                            <div class="mini_text">{{$product->feedbacks->count()}} đánh giá</div>
                                         @endif
                                     </div>
                                     <h3 class="main_links"><a

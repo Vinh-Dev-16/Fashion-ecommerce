@@ -55,8 +55,8 @@
 @endif
 <div class="min-height-300 bg-primary position-absolute w-100"></div>
 <aside
-    class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 ps bg-white"
-    id="sidenav-main">
+        class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 ps bg-white"
+        id="sidenav-main">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
            aria-hidden="true" id="iconSidenav"></i>
@@ -73,75 +73,75 @@
                 <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}"
                    href="{{ url('admin/dashboard') }}">
                     <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ri-home-2-line text-primary text-sm opacity-10" style="margin-top: -5px"></i>
                     </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
             @can('view-user')
-            <li class="nav-item has-submenu">
-                <a class="nav-link" href="#">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ri-file-user-line text-primary text-sm opacity-10" style="margin-top: -5px"></i>
-                    </div>
-                    <span class="nav-link-text ms-1 active">Quản lý người dùng</span>
-                </a>
-                <ul class="submenu collapse" style="list-style: none">
-                    @if(Auth::user()->hasRole('admin'))
-                    <li><a class="nav-link {{ request()->is('admin/user/index') ? 'active' : '' }}"
-                           href="{{ url('admin/user/index') }}">Trang tài khoản </a></li>
-                    <li><a class="nav-link {{ request()->is('admin/role/index') ? 'active' : '' }}"
-                           href="{{ url('admin/role/index') }}">Vai trò </a></li>
-                    <li><a class="nav-link {{ request()->is('admin/permission/index') ? 'active' : '' }}"
-                           href="{{ url('admin/permission/index') }}">Quyền </a></li>
-                    @endif
-                </ul>
-            </li>
+                <li class="nav-item has-submenu">
+                    <a class="nav-link" href="#">
+                        <div
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ri-file-user-line text-primary text-sm opacity-10" style="margin-top: -5px"></i>
+                        </div>
+                        <span class="nav-link-text ms-1 active">Quản lý người dùng</span>
+                    </a>
+                    <ul class="submenu collapse" style="list-style: none">
+                        @if(Auth::user()->hasRole('admin'))
+                            <li><a class="nav-link {{ request()->is('admin/user/index') ? 'active' : '' }}"
+                                   href="{{ url('admin/user/index') }}">Trang tài khoản </a></li>
+                            <li><a class="nav-link {{ request()->is('admin/role/index') ? 'active' : '' }}"
+                                   href="{{ url('admin/role/index') }}">Vai trò </a></li>
+                            <li><a class="nav-link {{ request()->is('admin/permission/index') ? 'active' : '' }}"
+                                   href="{{ url('admin/permission/index') }}">Quyền </a></li>
+                        @endif
+                    </ul>
+                </li>
             @endcan
             @can('view-product')
-            <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/product/index') ? 'active' : '' }}"
-                   href="{{route('admin.product.index')}}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ri-shirt-line text-success text-sm opacity-10" style="margin-top: -5px"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sản phẩm</span>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('admin/product/index') ? 'active' : '' }}"
+                       href="{{route('admin.product.index')}}">
+                        <div
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ri-shirt-line text-success text-sm opacity-10" style="margin-top: -5px"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Sản phẩm</span>
+                    </a>
+                </li>
             @endcan
             @can('view-category')
-            <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/category/index') ? 'active' : '' }}"
-                   href="{{url('admin/category/index')}}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ri-clipboard-line mb-1 text-info text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Category</span>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('admin/category/index') ? 'active' : '' }}"
+                       href="{{url('admin/category/index')}}">
+                        <div
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ri-clipboard-line mb-1 text-info text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Category</span>
+                    </a>
+                </li>
             @endcan
             @can('view-brand')
-            <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/brand/index') ? 'active' : '' }}"
-                   href="{{url('admin/brand/index')}}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ri-handbag-line mb-1  text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Brand</span>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('admin/brand/index') ? 'active' : '' }}"
+                       href="{{url('admin/brand/index')}}">
+                        <div
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ri-handbag-line mb-1  text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Brand</span>
+                    </a>
+                </li>
             @endcan
             @can('view-attribute')
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('admin/attribute/index') ? 'active' : '' }}"
                        href="{{route('admin.attribute.index')}}">
                         <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ri-stock-line mb-1  text-success text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Thuộc tính</span>
@@ -153,7 +153,7 @@
                     <a class="nav-link {{ request()->is('admin/value/index') ? 'active' : '' }}"
                        href="{{route('admin.value.index')}}">
                         <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ri-strikethrough mb-1  text-danger text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Giá trị thuộc tính</span>
@@ -165,7 +165,7 @@
                     <a class="nav-link {{ request()->is('admin/images/index') ? 'active' : '' }}"
                        href="{{url('admin/images/index')}}">
                         <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ri-image-line mb-1  text-dark text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Ảnh sản phẩm</span>
@@ -179,7 +179,7 @@
             <li class="nav-item">
                 <a class="nav-link " href="{{route('home')}}">
                     <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ri-pages-line text-success text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Trang người dùng</span>
@@ -191,7 +191,7 @@
                     <button type="submit"
                             style="outline: none; border: none; background-color: transparent;display: flex;">
                         <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ri-login-box-line text-warning text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1" style="font-size:14px; margin-top:4px;">Log Out</span>
@@ -273,7 +273,7 @@
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Người dùng</p>
                                     <h5 class="font-weight-bolder">
-                                      {{\App\Models\User::count()}}
+                                        {{\App\Models\User::count()}}
                                     </h5>
                                     <p class="mb-0">
                                         <span class="text-primary text-sm font-weight-bolder">Tổng người dùng</span>
@@ -321,7 +321,7 @@
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Đánh giá</p>
                                     <h5 class="font-weight-bolder">
-                                        {{\App\Models\admin\Review::count()}}
+                                        {{\App\Models\admin\FeedBack::count()}}
                                     </h5>
                                     <p class="mb-0">
                                         <span class="text-secondary text-sm font-weight-bolder">Tổng đánh giá</span>
@@ -537,6 +537,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
     iconNavbarSidenav.addEventListener('click', (e) => {
         bodyShow.classList.toggle('g-sidenav-pinned');
     });
+
     function ChangeToSlug() {
         var slug;
 

@@ -14,7 +14,7 @@ class pageOfferController extends Controller
     {
         $cart = session()->get('cart', []);
         $product = Product::where('slug', $slug)->firstOrFail();
-        $rate = $product->reviews()->pluck('feedbacks.rate')->avg();
+        $rate = $product->feedbacks()->pluck('feedbacks.rate')->avg();
         if (Cookie::has('view')) {
             $view = json_decode($request->cookie('view'), true);
             if (!in_array($product->id, $view)) {

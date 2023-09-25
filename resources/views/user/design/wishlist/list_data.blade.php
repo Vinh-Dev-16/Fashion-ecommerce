@@ -41,11 +41,11 @@
                                 </div>
                                 <div class="content">
                                     <div class="rating">
-                                        @if (80 * ($result->product->reviews()->pluck('feedbacks.rate')->avg() / 5) == 0)
+                                        @if (80 * ($result->product->feedbacks()->pluck('feedbacks.rate')->avg() / 5) == 0)
                                             <div class="stars" style="background-image:none;width:150px">Chưa có đánh giá</div>
                                         @else
-                                            <div class="stars" style="width:{{ 80 * ($result->product->reviews()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
-                                            <div class="mini_text">({{$result->product->reviews->count()}}) đánh giá</div>
+                                            <div class="stars" style="width:{{ 80 * ($result->product->feedbacks()->pluck('feedbacks.rate')->avg() / 5) }}px "></div>
+                                            <div class="mini_text">({{$result->product->feedbacks->count()}}) đánh giá</div>
                                         @endif
 
                                     </div>

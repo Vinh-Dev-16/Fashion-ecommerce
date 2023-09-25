@@ -22,7 +22,7 @@
                 </form>
                 <p class="time" style="margin: 20px 0"></p>
 
-                <a class="otpHref" href="">Gửi lại mã OTP</a>
+                <a class="re-send-otp otpHref" href="javascript:void(0)">Gửi lại mã OTP</a>
                 <a href="javascript:void(0)" class="close-verify" data-dismiss="modal">
                     <i class="ri-close-line"></i>
                 </a>
@@ -68,43 +68,68 @@
 
     timer_verify();
 
-    $(".otp-field input").each(function(index, input) {
-        $(input).data("index", index);
-        $(input).on("keyup", handleOtp);
-        $(input).on("paste", handleOnPasteOtp);
+    var inputs = document.querySelectorAll(".otp-field input");
+    inputs.forEach((input, index) => {
+        input.dataset.index = index;
+        input.addEventListener("keyup", handleOtp);
+        input.addEventListener("paste", handleOnPasteOtp);
     });
 
-    function handleOtp(e) {
+    $('.re-send-otp').click(function () {
+        $.ajax({
+            url: '{{route('resendOTP')}}',
+            type: 'POST',
+            data: {
+                email: $('#email').val(),
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    $('.otp-field input').val('');
+                    $('#show-modal').html(data.view);
+                    timer_verify();
+                    $('#verify-modal').modal('show');
+                    createSuccess(data.message);
+                } else {
+                    createToast(data.message);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    })
 
+    function handleOtp(e) {
         const input = e.target;
         let value = input.value;
         let isValidInput = value.match(/[0-9a-z]/gi);
         input.value = "";
         input.value = isValidInput ? value[0] : "";
         let fieldIndex = input.dataset.index;
-        if (fieldIndex < inputVerify.length - 1 && isValidInput) {
+        if (fieldIndex < inputs.length - 1 && isValidInput) {
             input.nextElementSibling.focus();
         }
         if (e.key === "Backspace" && fieldIndex > 0) {
             input.previousElementSibling.focus();
         }
-        if (fieldIndex == inputVerify.length - 1 && isValidInput) {
+        if (fieldIndex == inputs.length - 1 && isValidInput) {
             submit();
         }
     }
 
     function handleOnPasteOtp(e) {
+        const inputs = document.querySelectorAll(".otp-field input");
         const data = e.clipboardData.getData("text");
         const value = data.split("");
-        if (value.length === inputVerify.length) {
-            inputVerify.forEach((input, index) => (input.value = value[index]));
+        if (value.length === inputs.length) {
+            inputs.forEach((input, index) => (input.value = value[index]));
             submit();
         }
     }
 
     function submit() {
         let otp = "";
-        inputVerify.forEach((input) => {
+        inputs.forEach((input) => {
             otp += input.value;
             input.disabled = true;
             input.classList.add("disabled");
@@ -137,7 +162,13 @@
                         } else {
                             window.location.href = '{{route('admin.dashboard.index')}}'
                         }
-                    } else {
+                    }else if(data.status == 1 ) {
+                        createSuccess(data.message);
+                        setTimeout(() => {
+                            window.location.href = '{{ route('login') }}';
+                        }, 2000);
+                    }
+                    else {
                         createToast(data.message);
                         setTimeout(() => {
                             window.location.href = '{{ route('login') }}';

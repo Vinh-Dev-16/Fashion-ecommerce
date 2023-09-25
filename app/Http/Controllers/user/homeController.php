@@ -14,12 +14,19 @@ use App\Models\User;
 use DateTime;
 use App\Models\Wishlist;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+
 class homeController extends Controller
 {
     public function home()
     {
         $cart = session()->get('cart', []);
         $products = Product::all();
+        if (Auth::check()) {
+            if (Auth::user()->email_verified_at == null) {
+                Auth::logout();
+            }
+        }
         return view('user.design.home.index', compact('products', 'cart'));
     }
 

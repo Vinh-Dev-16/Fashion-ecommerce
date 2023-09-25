@@ -61,7 +61,7 @@
                                     <div class="content">
                                         <div class="rating">
                                             @if (80 *
-                                            ($product->reviews()->pluck('feedbacks.rate')->avg() /
+                                            ($product->feedbacks()->pluck('feedbacks.rate')->avg() /
                                                 5) ==
                                             0)
                                                 <div class="stars" style="background-image:none;width:150px">Chưa có
@@ -69,12 +69,12 @@
                                                 </div>
                                             @else
                                                 <div class="stars"
-                                                     style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
+                                                     style="width:{{ 80 *($product->feedbacks()->pluck('feedbacks.rate')->avg() /5) }}px ">
                                                 </div>
                                             @endif
                                             <a href=""
-                                               class="mini_text render_count">{{ $product->reviews->count() }}
-                                                review</a>
+                                               class="mini_text render_count">{{ $product->feedbacks->count() }}
+                                                đánh giá</a>
                                         </div>
                                         <div class="price">
                                             @if ($product->discount)
@@ -225,7 +225,7 @@
                                                 </div>
                                             </li>
                                             <li class="has_child">
-                                                <a href="#0" class="icon_small">Bảng size </a>
+                                                <a href="#" class="icon_small">Bảng size </a>
                                                 <div class="content">
                                                     <div class="table">
                                                         <table style="width:100%">
@@ -275,7 +275,7 @@
                                             </li>
                                             <li class="has_child">
                                                 <a href="#" class="icon_small">Đánh giá<span
-                                                        class="mini_text render_count">{{ $product->reviews->count() }}</span></a>
+                                                        class="mini_text render_count">{{ $product->feedbacks->count() }}</span></a>
                                                 <div class="content">
                                                     <div class="reviews">
                                                         <h4>Bình luận của mọi người</h4>
@@ -285,7 +285,7 @@
                                                                     <span class="rate_sum">{{ round($rate, 1) }}
                                                                         sao</span>
                                                                     <span class="render_count">Trên
-                                                                        {{ $product->reviews->count() }} đánh
+                                                                        {{ $product->feedbacks->count() }} đánh
                                                                         giá</span>
                                                                 </div>
                                                                 @if (Auth::check())
@@ -299,7 +299,7 @@
                                                                     <div class="review_block_body">
                                                                         <ul id="review_ul">
 
-                                                                            @foreach ($product->reviews()->orderBy('created_at', 'desc')->limit(6)->get() as $review)
+                                                                            @foreach ($product->feedbacks()->orderBy('created_at', 'desc')->limit(6)->get() as $review)
                                                                                 <li class="item">
                                                                                     <div class="review_form">
                                                                                         <p class="person">Bình luận bởi
@@ -365,7 +365,7 @@
                                                                             <div class="form_review_user">
                                                                                 <form class="user_review"
                                                                                       id="create_review"
-                                                                                      action="{{ url('/review/store/' . $product->id) }}"
+                                                                                      action="{{ url('/feedback/store/' . $product->id) }}"
                                                                                       method="POST"
                                                                                       enctype="multipart/form-data">
                                                                                     @csrf
@@ -432,8 +432,7 @@
                                                                                             type="submit"
                                                                                             class="primary_button"
                                                                                             style="border:none; outline:none">
-                                                                                        Bình
-                                                                                        luận
+                                                                                        Đánh giá
                                                                                     </button>
                                                                                 </form>
                                                                             </div>
@@ -442,6 +441,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
                                             </li>
                                         </ul>
                                     </div>
@@ -491,7 +491,7 @@
                                             </div>
                                             <div class="rating">
                                                 @if (80 *
-                                                        ($product->reviews()->pluck('feedbacks.rate')->avg() /
+                                                        ($product->feedbacks()->pluck('feedbacks.rate')->avg() /
                                                             5) ==
                                                         0)
                                                     <div class="stars" style="background-image:none;width:150px">Chưa có
@@ -499,9 +499,9 @@
                                                     </div>
                                                 @else
                                                     <div class="stars"
-                                                         style="width:{{ 80 *($product->reviews()->pluck('feedbacks.rate')->avg() /5) }}px ">
+                                                         style="width:{{ 80 *($product->feedbacks()->pluck('feedbacks.rate')->avg() /5) }}px ">
                                                     </div>
-                                                    <div class="mini_text">{{ $product->reviews->count() }} đánh giá
+                                                    <div class="mini_text">{{ $product->feedbacks->count() }} đánh giá
                                                     </div>
                                                 @endif
                                             </div>

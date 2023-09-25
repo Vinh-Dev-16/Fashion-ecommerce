@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
     <title>
-        Login
+        Đăng nhập
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
@@ -142,27 +142,27 @@
     const toast = document.querySelector('.toasts');
     const timer = 3000;
 
-    const removeSuccess = (message) => {
-        message.classList.add("hide");
-        if (message.timeoutId) clearTimeout(message.timeoutId);
-        setTimeout(() => message.remove(), 400);
+    const removeSuccess = (success) => {
+        success.classList.add("hide");
+        if (success.timeoutId) clearTimeout(success.timeoutId);
+        setTimeout(() => success.remove(), 400);
     };
 
 
     // Tao Toast
 
     function createSuccess(message) {
-        const noti = document.createElement('li');
-        noti.className = `toasts success`;
-        noti.innerHTML = `
+        const success = document.createElement('li');
+        success.className = `toasts success`;
+        success.innerHTML = `
                         <div class="column">
                          <i class="fa fa-check"></i>
                             <span>${message}</span>
                         </div>
                            <i class="fa fa-xmark"></i>
                         `
-        notifications.appendChild(noti);
-        setTimeout(() => removeSuccess(message), 3000)
+        notifications.appendChild(success);
+        setTimeout(() => removeSuccess(success), 3000)
     };
 
     // Tao remove toast
@@ -227,7 +227,6 @@
                         createToast(data.message)
                         $('#show-modal').html(data.view);
                         $('#verify-modal').modal('show');
-                        $('#overlay-verify').css('display', 'block');
                         break;
                     case 2:
                         window.location.href = "{{ route('home') }}";

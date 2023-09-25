@@ -5,7 +5,7 @@ namespace App\Models\admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\admin\Product;
-class Review extends Model
+class FeedBack extends Model
 {
     use HasFactory;
     protected $table = 'feedbacks';
@@ -14,7 +14,6 @@ class Review extends Model
         'name',
         'email',
         'title',
-        'image',
         'rate',
         'content',
         'product_id',

@@ -5,6 +5,11 @@
         }
     });
 
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
     function wishlist() {
         let user_id = $('#user_id').val();
         let product_id = $('#product_id').val();
@@ -95,6 +100,55 @@
         });
     }
 
+    // feedback
+
+    function send_feed_back(product_id)
+    {
+        let rate = $('input[name="rate"]:checked').val();
+        let title = $('input[name="title"]').val();
+        let content = $('textarea[name="content"]').val();
+        let name = $('input[name="name"]').val();
+        let email = $('input[name="email"]').val();
+        $.ajax({
+            url: "{{ route('detail.feedback.store') }}",
+            method: "POST",
+            data: {
+                product_id: product_id,
+                rate: rate,
+                title: title,
+                content: content,
+                name: name,
+                email: email,
+            },
+
+            success: function (data) {
+                switch (data.status) {
+                    case 0:
+                        createToast('Bạn cần phải đăng nhập');
+                        break;
+                    case 1:
+                        createToast('Bạn đã đánh giá sản phẩm này');
+                        break;
+                    case 2:
+                        $('#review_form').fadeOut(300, function () {
+                            $(this).html(data.view);
+                            $(this).fadeIn(300);
+                        });
+                        createNoti('Đã gửi đánh giá');
+                        break;
+                }
+                $('#review_form').fadeOut(300, function () {
+                    $(this).html(data.view);
+                    $(this).fadeIn(300);
+                });
+                createNoti('Đã gửi đánh giá');
+            },
+            error: function (data) {
+                createToast('Đã xảy ra lỗi');
+            }
+        });
+    }
+
 
     const dpt_menu = document.querySelectorAll('.dpt_menu');
     const close_menu = document.querySelectorAll('#close_menu');
@@ -121,7 +175,7 @@
     // slider images
 
     var productThumb = new Swiper('.small_image', {
-       
+
         breakpoints: {
             481: {
                 spaceBetween: 32,
@@ -135,6 +189,12 @@
 
     var productBig = new Swiper('.big_image', {
         loop: true,
+        spaceBetween: 10,
+        centeredSlides: true,
+        autoplay: {
+            delay: 5500,
+            disableOnInteraction: false,
+        },
         autoHeight: true,
         navigation: {
             nextEl: '.swiper-button-next',

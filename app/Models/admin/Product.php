@@ -10,7 +10,7 @@ use App\Models\admin\Category;
 use App\Models\admin\Image;
 use App\Models\admin\ValueAttribute;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\admin\Review;
+use App\Models\admin\FeedBack;
 use App\Models\OrderDetail;
 use App\Models\Voucher;
 use App\Models\Wishlist;
@@ -63,9 +63,9 @@ class Product extends Model
         return $this->hasMany(Wishlist::class);
     }
 
-    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function feedbacks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(FeedBack::class);
     }
 
     public function attributevalues(): \Illuminate\Database\Eloquent\Relations\BelongsToMany

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\user\reviewController;
+use App\Http\Controllers\user\feedBackController;
 use App\Http\Controllers\user\cartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\user\homeController;
@@ -76,6 +76,7 @@ use Illuminate\Routing\Router;
         Route::prefix('detail')->group(function(){
             Route::get('/{slug}',[detailController::class,'index'])->name('detail.index');
             Route::post('love',[detailController::class,'love'])->name('detail.love');
+            Route::post('feedback/store',[detailController::class,'store'])->name('detail.feedback.store');
         });
 
         // Route viewAllProduct
@@ -101,11 +102,11 @@ use Illuminate\Routing\Router;
 
         // Route comment
 
-        Route::middleware('auth')->prefix('/review')->group(function(){
-            Route::post('/store/{id}',[reviewController::class,'store'])->name('review.store');
-            Route::delete('/destroy/{id}',[reviewController::class,'destroy'])->name('review.destroy');
-            Route::get('edit/{id}',[reviewController::class,'edit'])->name('review.edit');
-            Route::post('update/{id}',[reviewController::class,'update'])->name('review.update');
+        Route::middleware('auth')->prefix('/feedback')->group(function(){
+            Route::post('/store/{id}',[feedBackController::class,'store'])->name('feedback.store');
+            Route::delete('/destroy/{id}',[feedBackController::class,'destroy'])->name('feedback.destroy');
+            Route::get('edit/{id}',[feedBackController::class,'edit'])->name('feedback.edit');
+            Route::post('update/{id}',[feedBackController::class,'update'])->name('feedback.update');
         });
 
         // Route payment
