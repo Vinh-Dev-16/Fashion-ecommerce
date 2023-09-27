@@ -80,6 +80,7 @@ use Illuminate\Routing\Router;
             Route::post('love',[detailController::class,'love'])->name('detail.love');
             Route::post('feedback/store',[detailController::class,'store'])->name('detail.feedback.store');
             Route::post('feedback/destroy',[detailController::class,'destroy'])->name('detail.feedback.destroy');
+            Route::post('feedback/load_images',[detailController::class,'loadImages'])->name('detail.feedback.load_images');
         });
 
         // Route viewAllProduct

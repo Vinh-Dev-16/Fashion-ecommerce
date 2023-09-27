@@ -121,6 +121,22 @@ class detailController extends Controller
         }
     }
 
+    public function loadImages(Request $request) {
+        if ($request->hasFile('fileInput')) {
+            $file = $request->file('fileInput');
+
+            $uniqueFileName = uniqid() . '_' . $file->getClientOriginalName();
+
+            $file->storeAs('cache', $uniqueFileName, 'public');
+            $imageNames = 'storage/cache/' . $uniqueFileName;
+
+
+            return response()->json(['status' => 'success', 'url' => $imageNames]);
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'Không có tệp nào được tải lên'], 400);
+    }
+
     public function destroy()
     {
         $id = request()->id;

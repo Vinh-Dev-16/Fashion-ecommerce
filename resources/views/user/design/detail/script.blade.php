@@ -111,6 +111,99 @@
         });
     }
 
+
+    // upload image
+
+    const form = document.querySelector("#form-upload-image"),
+        fileInput = document.querySelector(".file-input"),
+        progressArea = document.querySelector(".progress-area"),
+        uploadedArea = document.querySelector(".uploaded-area");
+    form.addEventListener("click", () =>{
+        fileInput.click();
+    });
+    fileInput.onchange = ({target})=>{
+        let file = target.files[0];
+        if(file){
+            let fileName = file.name;
+            if(fileName.length >= 12){
+                let splitName = fileName.split('.');
+                fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
+            }
+            uploadFile(fileName);
+        }
+    }
+    function uploadFile(name) {
+        let data = new FormData();
+        data.append("fileInput", fileInput.files[0]);
+
+        $.ajax({
+            type: "POST",
+            url: "{{ route('detail.feedback.load_images') }}",
+            data: data,
+            processData: false,
+            contentType: false,
+            xhr: function () {
+                let xhr = new XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function (e) {
+                    if (e.lengthComputable) {
+                        let fileLoaded = Math.floor((e.loaded / e.total) * 100);
+                        let fileTotal = Math.floor(e.total / 1000);
+                        let fileSize;
+                        if (fileTotal < 1024) {
+                            fileSize = fileTotal + " KB";
+                        } else {
+                            fileSize = (e.loaded / (1024 * 1024)).toFixed(2) + " MB";
+                        }
+                        let progressHTML = `<li class="row-image">
+                                <i class="fas fa-file-alt"></i>
+                                <div class="content">
+                                  <div class="details">
+                                    <span class="name">${name} • Uploading</span>
+                                    <span class="percent">${fileLoaded}%</span>
+                                  </div>
+                                  <div class="progress-bar">
+                                    <div class="progress" style="width: ${fileLoaded}%"></div>
+                                  </div>
+                                </div>
+                              </li>`;
+                        uploadedArea.classList.add("onprogress");
+                        progressArea.innerHTML = progressHTML;
+                        if (e.loaded == e.total) {
+                            progressArea.innerHTML = "";
+                            let uploadedHTML = `<li class="row-image">
+                                  <div class="content upload">
+                                    <i class="fas fa-file-alt"></i>
+                                    <div class="details">
+                                      <span class="name">${name} • Uploaded</span>
+                                      <span class="size">${fileSize}</span>
+                                    </div>
+                                  </div>
+                                  <i class="fas fa-check"></i>
+                                </li>`;
+                            uploadedArea.classList.remove("onprogress");
+                            uploadedArea.insertAdjacentHTML("afterbegin", uploadedHTML);
+                        }
+                    }
+                });
+                return xhr;
+            },
+            success: function (response) {
+                if (response.status === 'success') {
+                    let imageUrl = response.url
+
+                    let imageHTML = `<img src="{{ asset('') }}${imageUrl}" alt="ảnh đã upload">`;
+
+                   $('#show-image-upload').html(imageHTML);
+                } else {
+                    createToast(response.message);
+                }
+            },
+            error: function (error) {
+                createToast('Đã xảy ra lỗi');
+            },
+        });
+    }
+
     // feedback
 
     function send_feed_back(product_id)
