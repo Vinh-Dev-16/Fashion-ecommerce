@@ -45,7 +45,7 @@ class detailController extends Controller
             $count = Wishlist::where('user_id', $request->user_id)->count();
             return [
                 'status ' => 1,
-                'view' => view('user.design.page_offer.wishlist', compact('product'))->render(),
+                'view' => view('user.design.detail.wishlist', compact('product'))->render(),
                 'count' => $count,
             ];
         } else {
@@ -57,6 +57,29 @@ class detailController extends Controller
                 'count' => $count,
             ];
         }
+    }
+
+    public function like(Request $request)
+    {
+        $feedback = FeedBack::findOrFail($request->id);
+        if ($request->like == 1) {
+            $feedback->increment('like');
+            $count = $feedback->like;
+            return [
+                'status' => 1,
+                'count' => $count,
+                'message' => 'Thích thành công',
+            ];
+        } else {
+            $feedback->decrement('like');
+            $count = $feedback->like;
+            return [
+                'status' => 0,
+                'count' => $count,
+                'message' => 'Bỏ thích thành công',
+            ];
+        }
+
     }
 
     public function feedBack(Request $request): array

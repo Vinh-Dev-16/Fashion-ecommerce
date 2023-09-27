@@ -262,6 +262,27 @@
             }
         });
     }
+
+    function like_feedback(id) {
+        $.ajax({
+            url: "{{ route('detail.feedback.like') }}",
+            method: "POST",
+            data: {
+                id: id,
+                like: 1,
+            },
+            success: function (data) {
+                $('.like-feedback').css('color','blue');
+                $('.like-feedback').attr('onclick','unlike_feedback('+id+')');
+                $('#count-like').text(data.count);
+                createNoti(data.message);
+            },
+            error: function (data) {
+                createToast('Đã xảy ra lỗi');
+            }
+        });
+    }
+
     function confirmation(eve, id) {
         swal({
             title: 'Bạn có chắc là xóa nó chứ?',

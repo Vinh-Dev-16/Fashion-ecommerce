@@ -81,6 +81,7 @@ use Illuminate\Routing\Router;
             Route::post('feedback/store',[detailController::class,'store'])->name('detail.feedback.store');
             Route::post('feedback/destroy',[detailController::class,'destroy'])->name('detail.feedback.destroy');
             Route::post('feedback/load_images',[detailController::class,'loadImages'])->name('detail.feedback.load_images');
+            Route::post('feedback/like',[detailController::class,'like'])->name('detail.feedback.like');
         });
 
         // Route viewAllProduct
