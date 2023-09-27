@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\admin\FeedBack;
 use App\Models\admin\Product;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Validator;
 
 class pageOfferController extends Controller
 {
@@ -53,5 +55,80 @@ class pageOfferController extends Controller
             ];
       }
 
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'rate' => 'required',
+        ], [
+            'title.required' => 'Không được để trống tiêu đề',
+            'title.max' => 'Tiêu đề không được quá 255 ký tự',
+            'content.required' => 'Không được để trống nội dung',
+            'rate.required' => 'Không được để trống đánh giá',
+        ]);
+        if ($validator->fails()) {
+            return [
+                'status' => 0,
+                'message' => $validator->errors()->toArray(),
+            ];
+        }
+        try {
+            $input = $request->all();
+            FeedBack::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'title' => $input['title'],
+                'content' => $input['content'],
+                'product_id' => $input['product_id'],
+                'rate' => $input['rate'],
+            ]);
+            $count = FeedBack::where('product_id', $input['product_id'])->count();
+            $rateStar = FeedBack::where('product_id', $input['product_id'])->pluck('rate')->avg();
+            $rate = round($rateStar, 1);
+            Product::where('id', $input['product_id'])->update([
+                'rate' => $rate,
+                'count' => $count,
+            ]);
+            $product = Product::findOrFail($request->product_id);
+            return [
+                'status' => 1,
+                'message' => 'Gửi đánh giá thành công',
+                'count' => $count,
+                'rate' => $rate,
+                'html' => view('user.design.page_offer.rating', compact('product', 'rate', 'count'))->render(),
+                'view' => view('user.design.page_offer.feedback', compact('count', 'rate', 'product'))->render(),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status' => 2,
+                'message' => 'Đã xảy ra lỗi',
+            ];
+        }
+    }
+
+    public function destroy()
+    {
+        $id = request()->id;
+        $feedback = FeedBack::findOrFail($id);
+        $product = Product::findOrFail($feedback->product_id);
+        $feedback->delete();
+        $count = FeedBack::where('product_id', $feedback->product_id)->count();
+        $rateStar = FeedBack::where('product_id', $feedback->product_id)->pluck('rate')->avg();
+        $rate = round($rateStar, 1);
+        Product::where('id', $feedback->product_id)->update([
+            'rate' => $rate,
+            'count' => $count,
+        ]);
+        return [
+            'status' => 1,
+            'message' => 'Xóa đánh giá thành công',
+            'count' => $count,
+            'rate' => $rate,
+            'html' => view('user.design.page_offer.rating', compact('product', 'rate', 'count'))->render(),
+            'view' => view('user.design.page_offer.feedback', compact('count', 'rate', 'product'))->render(),
+        ];
     }
 }

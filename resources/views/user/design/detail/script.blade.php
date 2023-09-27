@@ -1,3 +1,4 @@
+<script src="https://cdn.ckeditor.com/ckeditor5/45.0.0/classic/ckeditor.js"></script>
 <script>
     $.ajaxSetup({
         headers: {
@@ -5,11 +6,21 @@
         }
     });
 
-    ClassicEditor
-        .create( document.querySelector( '#editor' ) )
-        .catch( error => {
-            console.error( error );
-        } );
+    $(document).ready(function () {
+        ClassicEditor
+            .create(document.querySelector('#editor'),{
+                simpleUpload: {
+                    uploadUrl: '', // Đặt URL tải lên là rỗng để tắt tính năng tải lên
+                }
+            })
+            .then( newEditor => {
+                editor = newEditor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+
     function wishlist() {
         let user_id = $('#user_id').val();
         let product_id = $('#product_id').val();
@@ -104,9 +115,9 @@
 
     function send_feed_back(product_id)
     {
+        let editorContent = editor.getData();
         let rate = $('input[name="rate"]:checked').val();
         let title = $('input[name="title"]').val();
-        let content = $('textarea[name="content"]').val();
         let name = $('input[name="name"]').val();
         let email = $('input[name="email"]').val();
         $.ajax({
@@ -116,39 +127,84 @@
                 product_id: product_id,
                 rate: rate,
                 title: title,
-                content: content,
+                content: editorContent,
                 name: name,
                 email: email,
             },
-
+            beforeSend: function () {
+                $(document).find('div.text-danger').text('');
+            },
             success: function (data) {
                 switch (data.status) {
                     case 0:
-                        createToast('Bạn cần phải đăng nhập');
-                        break;
-                    case 1:
-                        createToast('Bạn đã đánh giá sản phẩm này');
+                        $.each(data.message, function (prefix, val) {
+                            $('div.' + prefix + '_error').text(val[0]);
+                        });
                         break;
                     case 2:
-                        $('#review_form').fadeOut(300, function () {
+                        createToast(data.message);
+                        break;
+                    case 1:
+                        $('#review_ul').fadeOut(300, function () {
                             $(this).html(data.view);
                             $(this).fadeIn(300);
                         });
-                        createNoti('Đã gửi đánh giá');
+                        editor.setData('');
+                        $('.user_review')[0].reset();
+                        $('.render_count').text(data.count + ' đánh giá');
+                        $('.rate_sum').text(data.rate  + ' sao');
+                        $('.count_feedback').text(data.count);
+                        $('.rate_count_start').text(data.rate);
+                        $('#show_rating').html(data.html);
+                        createNoti(data.message);
                         break;
                 }
-                $('#review_form').fadeOut(300, function () {
-                    $(this).html(data.view);
-                    $(this).fadeIn(300);
-                });
-                createNoti('Đã gửi đánh giá');
             },
             error: function (data) {
                 createToast('Đã xảy ra lỗi');
             }
         });
     }
+    function confirmation(eve, id) {
+        swal({
+            title: 'Bạn có chắc là xóa nó chứ?',
+            text: 'Bạn không thể rollback nó',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willCancle) => {
+                if (willCancle) {
+                    delete_rate(id);
+                }
+            })
+        return false;
+    }
 
+   function delete_rate(id){
+        $.ajax({
+            url: "{{ route('detail.feedback.destroy') }}",
+            method: "POST",
+            data: {
+                id: id,
+            },
+            success: function (data) {
+                $('#review_ul').fadeOut(300, function () {
+                    $(this).html(data.view);
+                    $(this).fadeIn(300);
+                });
+                $('.render_count').text(data.count + ' đánh giá');
+                $('.rate_sum').text(data.rate  + ' sao');
+                $('.count_feedback').text(data.count);
+                $('.rate_count_start').text(data.rate);
+                $('#show_rating').html(data.html);
+                createNoti(data.message);
+            },
+            error: function (data) {
+                createToast('Đã xảy ra lỗi');
+            }
+        });
+    }
 
     const dpt_menu = document.querySelectorAll('.dpt_menu');
     const close_menu = document.querySelectorAll('#close_menu');

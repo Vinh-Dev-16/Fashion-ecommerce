@@ -31,7 +31,7 @@
                         <label for="star1"><i
                                 class="ri-star-fill"></i></label>
                     </div>
-                 <div style="color:red;" class="text-danger error-text rate_error"></div>
+                    <div style="color:red;" class="text-danger error-text rate_error"></div>
                 </div>
                 <p style="margin-bottom: 20px">
                     <label>Tiêu đề</label>

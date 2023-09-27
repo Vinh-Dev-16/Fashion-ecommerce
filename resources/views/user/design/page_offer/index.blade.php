@@ -59,22 +59,8 @@
                                     <h1>{{ $product->name }}</h1>
 
                                     <div class="content">
-                                        <div class="rating">
-                                            @if (80 *
-                                            ($product->feedbacks()->pluck('feedbacks.rate')->avg() /
-                                                5) ==
-                                            0)
-                                                <div class="stars" style="background-image:none;width:150px">Chưa có
-                                                    đánh giá
-                                                </div>
-                                            @else
-                                                <div class="stars"
-                                                     style="width:{{ 80 *($product->feedbacks()->pluck('feedbacks.rate')->avg() /5) }}px ">
-                                                </div>
-                                            @endif
-                                            <a href=""
-                                               class="mini_text render_count">{{ $product->feedbacks->count() }}
-                                                đánh giá</a>
+                                        <div class="rating" id="show_rating">
+
                                         </div>
                                         <div class="price">
                                             @if ($product->discount)
@@ -213,7 +199,7 @@
                                                         <li><span>Số lượng: </span><span>{{ $product->stock }}</span>
                                                         </li>
                                                         <li><span>Đã bán:</span><span>{{ $product->sold }}</span></li>
-                                                        <li><span>Đánh giá:</span><span>{{ round($rate, 1) }} sao</span>
+                                                        <li><span>Đánh giá:</span><span class="rate_count_start">{{ round($rate, 1) }} sao</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -275,7 +261,7 @@
                                             </li>
                                             <li class="has_child">
                                                 <a href="#" class="icon_small">Đánh giá<span
-                                                        class="mini_text render_count">{{ $product->feedbacks->count() }}</span></a>
+                                                        class="mini_text count_feedback">{{ $product->feedbacks->count() }}</span></a>
                                                 <div class="content">
                                                     <div class="reviews">
                                                         <h4>Bình luận của mọi người</h4>
@@ -298,59 +284,7 @@
                                                                     </a>
                                                                     <div class="review_block_body">
                                                                         <ul id="review_ul">
-
-                                                                            @foreach ($product->feedbacks()->orderBy('created_at', 'desc')->limit(6)->get() as $review)
-                                                                                <li class="item">
-                                                                                    <div class="review_form">
-                                                                                        <p class="person">Bình luận bởi
-                                                                                            {{ $review->name }}
-                                                                                        </p>
-                                                                                        <p class="mini_text">Vào ngày
-                                                                                            {{ date('d-m-Y'), strtotime($review->created_at) }}
-                                                                                        </p>
-                                                                                    </div>
-                                                                                    <div class="review_rating rating">
-                                                                                        <div class="stars"
-                                                                                             style="width: {{ 80 * ($review->rate / 5) }}px">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div
-                                                                                        class="review_img object_cover">
-                                                                                        @if (!(empty($review->image)))
-                                                                                            <img
-                                                                                                src="{{ asset('storage/review/'. $review->image) }}"
-                                                                                                style="position: static;width:200px;height:200px">
-                                                                                        @endif
-                                                                                    </div>
-                                                                                    <div class="review_title">
-                                                                                        <p>{{ $review->title }}</p>
-                                                                                    </div>
-                                                                                    <div class="review_text">
-                                                                                        <p>{{ $review->content }}</p>
-                                                                                    </div>
-                                                                                    @if (Auth::check())
-                                                                                        <div
-                                                                                            style="display:flex; gap:1em;">
-                                                                                            @if (Auth::user()->name === $review->name)
-                                                                                                <a href="#review_form"
-                                                                                                   class="primary_button"
-                                                                                                   style="border: none;outline:none"
-                                                                                                   id="btn_edit"
-                                                                                                   onclick="sendEdit({{ $review->id }})">Sửa</a>
-                                                                                            @endif
-                                                                                            @if (Auth::user()->name === $review->name || Auth::user()->role_id == 2)
-                                                                                                <button type="submit"
-                                                                                                        class="secondary_button"
-                                                                                                        id="btn_delete"
-                                                                                                        style="border:none; outline:none"
-                                                                                                        onclick="sendDelete({{ $review->id }})">
-                                                                                                    Xóa
-                                                                                                </button>
-                                                                                            @endif
-                                                                                        </div>
-                                                                                    @endif
-                                                                                </li>
-                                                                            @endforeach
+                                                                            @include('user.design.page_offer.feedback')
                                                                         </ul>
                                                                         <div class="second_links">
                                                                             <a href="#" class="view_all">
@@ -359,85 +293,9 @@
                                                                             </a>
                                                                         </div>
                                                                     </div>
-                                                                    @if (Auth::check())
-                                                                        <div id="review_form" class="review_form">
-                                                                            <h4>Viết bình luận của bạn</h4>
-                                                                            <div class="form_review_user">
-                                                                                <form class="user_review"
-                                                                                      id="create_review"
-                                                                                      action="{{ url('/feedback/store/' . $product->id) }}"
-                                                                                      method="POST"
-                                                                                      enctype="multipart/form-data">
-                                                                                    @csrf
-                                                                                    <div class="rating">
-                                                                                        <p>Bạn có thấy hài lòng?</p>
-                                                                                        <div class="rate_this"
-                                                                                             style="margin-bottom: 23px">
-                                                                                            <input type="radio"
-                                                                                                   name="rate"
-                                                                                                   id="star5"
-                                                                                                   value="5">
-                                                                                            <label for="star5"><i
-                                                                                                    class="ri-star-fill"></i></label>
-                                                                                            <input type="radio"
-                                                                                                   name="rate"
-                                                                                                   id="star4"
-                                                                                                   value="4">
-                                                                                            <label for="star4"><i
-                                                                                                    class="ri-star-fill"></i></label>
-                                                                                            <input type="radio"
-                                                                                                   name="rate"
-                                                                                                   id="star3"
-                                                                                                   value="3">
-                                                                                            <label for="star3"><i
-                                                                                                    class="ri-star-fill"></i></label>
-                                                                                            <input type="radio"
-                                                                                                   name="rate"
-                                                                                                   id="star2"
-                                                                                                   value="2">
-                                                                                            <label for="star2"><i
-                                                                                                    class="ri-star-fill"></i></label>
-                                                                                            <input type="radio"
-                                                                                                   name="rate"
-                                                                                                   id="star1"
-                                                                                                   value="1">
-                                                                                            <label for="star1"><i
-                                                                                                    class="ri-star-fill"></i></label>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <p>
-                                                                                        <label>Tiêu đề</label>
-                                                                                        <input type="text" name="title"
-                                                                                               required>
-                                                                                    </p>
-                                                                                    <p>
-                                                                                        <label>Ảnh review</label>
-                                                                                        <input type="file" name="image">
-                                                                                    </p>
-                                                                                    <p>
-                                                                                        <label>Bình luận</label>
-                                                                                        <textarea cols="30" rows="10"
-                                                                                                  name="content"
-                                                                                                  required></textarea>
-                                                                                    </p>
-                                                                                    <p>
-                                                                                        <input type="text" hidden
-                                                                                               name="name"
-                                                                                               value="{{ Auth::user()->name }}">
-                                                                                        <input type="text" hidden
-                                                                                               name="email"
-                                                                                               value="{{ Auth::user()->email }}">
-                                                                                    </p>
-                                                                                    <button id="button_review"
-                                                                                            type="submit"
-                                                                                            class="primary_button"
-                                                                                            style="border:none; outline:none">
-                                                                                        Đánh giá
-                                                                                    </button>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endif
+                                                                    <div id="show-data-form-create">
+                                                                        @include('user.design.page_offer.create_feedback')
+                                                                    </div>
                                                             </div>
                                                         </div>
                                                     </div>

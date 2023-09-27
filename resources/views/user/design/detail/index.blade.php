@@ -61,22 +61,8 @@
                                 <div class="item">
                                     <h1>{{ $product->name }}</h1>
                                     <div class="content">
-                                        <div class="rating">
-                                            @if (80 *
-                                                    ($product->feedbacks()->pluck('feedbacks.rate')->avg() /
-                                                        5) ==
-                                                    0)
-                                                <div class="stars" style="background-image:none;width:150px">Chưa có
-                                                    đánh giá
-                                                </div>
-                                            @else
-                                                <div class="stars"
-                                                     style="width:{{ 80 *($product->feedbacks()->pluck('feedbacks.rate')->avg() /5) }}px ">
-                                                </div>
-                                            @endif
-                                            <a href=""
-                                               class="mini_text render_count">{{ $product->feedbacks->count() }}
-                                                đánh giá</a>
+                                        <div class="rating" id="show_rating">
+
                                         </div>
                                     </div>
                                     <div class="stock_sku">
@@ -209,7 +195,7 @@
                                                 </li>
                                                 <li><span>Đã bán:</span><span>{{ $product->sold }} sản phẩm </span>
                                                 </li>
-                                                <li><span>Đánh giá:</span><span>{{ round($rate, 1) }} sao</span></li>
+                                                <li><span>Đánh giá:</span><span class="rate_count_start">{{ round($rate, 1) }} sao</span></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -270,7 +256,7 @@
                                     </li>
                                     <li class="has_child">
                                         <a href="#" class="icon_small">Đánh giá<span
-                                                class="mini_text render_count">{{ $product->feedbacks->count() }}</span></a>
+                                                class="mini_text count_feedback">{{ $product->feedbacks->count() }}</span></a>
                                         <div class="content">
                                             <div class="reviews">
                                                 <h4>Đánh giá của mọi người</h4>

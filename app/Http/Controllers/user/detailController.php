@@ -74,15 +74,17 @@ class detailController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
             'content' => 'required',
+            'rate' => 'required',
         ], [
             'title.required' => 'Không được để trống tiêu đề',
             'title.max' => 'Tiêu đề không được quá 255 ký tự',
             'content.required' => 'Không được để trống nội dung',
+            'rate.required' => 'Không được để trống đánh giá',
         ]);
         if ($validator->fails()) {
             return [
                 'status' => 0,
-                'error' => $validator->errors()->toArray(),
+                'message' => $validator->errors()->toArray(),
             ];
         }
         try {
@@ -96,18 +98,20 @@ class detailController extends Controller
                 'rate' => $input['rate'],
             ]);
             $count = FeedBack::where('product_id', $input['product_id'])->count();
-            $rate = FeedBack::where('product_id', $input['product_id'])->pluck('rate')->avg();
+            $rateStar = FeedBack::where('product_id', $input['product_id'])->pluck('rate')->avg();
+            $rate = round($rateStar, 1);
             Product::where('id', $input['product_id'])->update([
                 'rate' => $rate,
                 'count' => $count,
             ]);
-
+            $product = Product::findOrFail($request->product_id);
             return [
                 'status' => 1,
                 'message' => 'Gửi đánh giá thành công',
                 'count' => $count,
                 'rate' => $rate,
-                'view' => view('user.design.detail.feed_back', compact('count', 'rate'))->render(),
+                'html' => view('user.design.detail.rating', compact('product', 'rate', 'count'))->render(),
+                'view' => view('user.design.detail.feedback', compact('count', 'rate', 'product'))->render(),
             ];
         } catch (\Exception $e) {
             return [
@@ -115,6 +119,29 @@ class detailController extends Controller
                 'message' => 'Đã xảy ra lỗi',
             ];
         }
-
     }
+
+    public function destroy()
+    {
+        $id = request()->id;
+        $feedback = FeedBack::findOrFail($id);
+        $product = Product::findOrFail($feedback->product_id);
+        $feedback->delete();
+        $count = FeedBack::where('product_id', $feedback->product_id)->count();
+        $rateStar = FeedBack::where('product_id', $feedback->product_id)->pluck('rate')->avg();
+        $rate = round($rateStar, 1);
+        Product::where('id', $feedback->product_id)->update([
+            'rate' => $rate,
+            'count' => $count,
+        ]);
+        return [
+            'status' => 1,
+            'message' => 'Xóa đánh giá thành công',
+            'count' => $count,
+            'rate' => $rate,
+            'html' => view('user.design.detail.rating', compact('product', 'rate', 'count'))->render(),
+            'view' => view('user.design.detail.feedback', compact('count', 'rate', 'product'))->render(),
+        ];
+    }
+
 }

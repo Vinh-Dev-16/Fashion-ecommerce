@@ -72,11 +72,14 @@ use Illuminate\Routing\Router;
         Route::prefix('pageoffer')->group(function(){
             Route::get('/{slug}',[pageOfferController::class,'index'])->name('pageoffer');
             Route::post('love',[pageOfferController::class,'love'])->name('page_offer.love');
+            Route::post('feedback/store',[detailController::class,'store'])->name('page_offer.feedback.store');
+            Route::post('feedback/destroy',[detailController::class,'destroy'])->name('page_offer.feedback.destroy');
         });
         Route::prefix('detail')->group(function(){
             Route::get('/{slug}',[detailController::class,'index'])->name('detail.index');
             Route::post('love',[detailController::class,'love'])->name('detail.love');
             Route::post('feedback/store',[detailController::class,'store'])->name('detail.feedback.store');
+            Route::post('feedback/destroy',[detailController::class,'destroy'])->name('detail.feedback.destroy');
         });
 
         // Route viewAllProduct

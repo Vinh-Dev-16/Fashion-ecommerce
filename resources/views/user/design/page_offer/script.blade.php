@@ -4,6 +4,16 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    $(document).ready(function () {
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .then( newEditor => {
+                editor = newEditor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
 
     function wishlist() {
         let user_id = $('#user_id').val();
@@ -95,7 +105,100 @@
         });
     }
 
+    // feedback
 
+    function send_feed_back(product_id)
+    {
+        let editorContent = editor.getData();
+        let rate = $('input[name="rate"]:checked').val();
+        let title = $('input[name="title"]').val();
+        let name = $('input[name="name"]').val();
+        let email = $('input[name="email"]').val();
+        $.ajax({
+            url: "{{ route('page_offer.feedback.store') }}",
+            method: "POST",
+            data: {
+                product_id: product_id,
+                rate: rate,
+                title: title,
+                content: editorContent,
+                name: name,
+                email: email,
+            },
+            beforeSend: function () {
+                $(document).find('div.text-danger').text('');
+            },
+            success: function (data) {
+                switch (data.status) {
+                    case 0:
+                        $.each(data.message, function (prefix, val) {
+                            $('div.' + prefix + '_error').text(val[0]);
+                        });
+                        break;
+                    case 2:
+                        createToast(data.message);
+                        break;
+                    case 1:
+                        $('#review_ul').fadeOut(300, function () {
+                            $(this).html(data.view);
+                            $(this).fadeIn(300);
+                        });
+                        editor.setData('');
+                        $('.user_review')[0].reset();
+                        $('.render_count').text(data.count + ' đánh giá');
+                        $('.rate_sum').text(data.rate  + ' sao');
+                        $('.count_feedback').text(data.count);
+                        $('.rate_count_start').text(data.rate);
+                        $('#show_rating').html(data.html);
+                        createNoti(data.message);
+                        break;
+                }
+            },
+            error: function (data) {
+                createToast('Đã xảy ra lỗi');
+            }
+        });
+    }
+    function confirmation(eve, id) {
+        swal({
+            title: 'Bạn có chắc là xóa nó chứ?',
+            text: 'Bạn không thể rollback nó',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willCancle) => {
+                if (willCancle) {
+                    delete_rate(id);
+                }
+            })
+        return false;
+    }
+
+    function delete_rate(id){
+        $.ajax({
+            url: "{{ route('page_offer.feedback.destroy') }}",
+            method: "POST",
+            data: {
+                id: id,
+            },
+            success: function (data) {
+                $('#review_ul').fadeOut(300, function () {
+                    $(this).html(data.view);
+                    $(this).fadeIn(300);
+                });
+                $('.render_count').text(data.count + ' đánh giá');
+                $('.rate_sum').text(data.rate  + ' sao');
+                $('.count_feedback').text(data.count);
+                $('.rate_count_start').text(data.rate);
+                $('#show_rating').html(data.html);
+                createNoti(data.message);
+            },
+            error: function (data) {
+                createToast('Đã xảy ra lỗi');
+            }
+        });
+    }
 
     const dpt_menu = document.querySelectorAll('.dpt_menu');
     const close_menu = document.querySelectorAll('#close_menu');
