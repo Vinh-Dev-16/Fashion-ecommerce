@@ -122,14 +122,17 @@
         fileInput.click();
     });
     fileInput.onchange = ({target})=>{
-        let file = target.files[0];
-        if(file){
-            let fileName = file.name;
-            if(fileName.length >= 12){
-                let splitName = fileName.split('.');
-                fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
+        const files = fileInput.files;
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if(file) {
+                let fileName = file.name;
+                if (fileName.length >= 12) {
+                    let splitName = fileName.split('.');
+                    fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
+                }
+                uploadFile(fileName);
             }
-            uploadFile(fileName);
         }
     }
     function uploadFile(name) {
@@ -190,10 +193,11 @@
             success: function (response) {
                 if (response.status === 'success') {
                     let imageUrl = response.url
-
-                    let imageHTML = `<img src="{{ asset('') }}${imageUrl}" alt="ảnh đã upload">`;
-
-                   $('#show-image-upload').html(imageHTML);
+                    let imageHTML = `{{ asset('') }}${imageUrl}`;
+                    const img = document.createElement("img");
+                    img.src = imageHTML;
+                    img.alt = 'ảnh upload';
+                    $('#show-image-upload').append(img);
                 } else {
                     createToast(response.message);
                 }

@@ -31,8 +31,8 @@
                         <label for="star1"><i
                                 class="ri-star-fill"></i></label>
                     </div>
-                 <div style="color:red;" class="text-danger error-text rate_error"></div>
                 </div>
+                <div style="color:red; margin-bottom: 15px;" class="text-danger error-text rate_error"></div>
                 <p style="margin-bottom: 20px">
                     <label>Tiêu đề</label>
                     <input type="text" name="title"
@@ -40,19 +40,19 @@
                 </p>
                 <div style="color:red; margin-bottom: 15px" class="text-danger error-text title_error"></div>
 
-                <div id="show-image-upload" style="display: flex; align-content: center; justify-content: left"></div>
+                <div id="show-image-upload" style="display: flex; align-content: center; justify-content: left; gap: 15px"></div>
 
                 <div class="wrapper-upload-image">
                     <header>Tải ảnh lên tại đây</header>
                     <div id="form-upload-image">
-                        <input class="file-input" type="file" name="file" hidden>
+                        <input class="file-input" type="file" name="file"  hidden>
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Tải ảnh từ thiết bị của bạn</p>
                     </div>
                     <section class="progress-area"></section>
                     <section class="uploaded-area"></section>
                 </div>
-                <p style="margin-bottom: 20px">
+                <p style="margin-bottom: 20px; margin-top: 65px;">
                     <label>Nội dung</label>
                     <textarea id="editor" cols="30" rows="15"
                               name="content"></textarea>
