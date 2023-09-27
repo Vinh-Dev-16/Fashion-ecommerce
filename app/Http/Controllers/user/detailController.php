@@ -30,7 +30,9 @@ class detailController extends Controller
         }
         Session::put('pageoffer_url', request()->fullUrl());
         $rate = $product->feedbacks()->pluck('feedbacks.rate')->avg();
-        return view('user.design.detail.index', compact('product', 'rate', 'cart'));
+
+        $feedbacks = $product->feedbacks()->orderBy('id', 'desc')->paginate(6);
+        return view('user.design.detail.index', compact('product', 'rate', 'cart', 'feedbacks'));
     }
 
 
@@ -166,6 +168,7 @@ class detailController extends Controller
         $feedback = FeedBack::findOrFail($id);
         $product = Product::findOrFail($feedback->product_id);
         $feedback->delete();
+        $feedbacks = $product->feedbacks()->orderBy('id', 'desc')->paginate(6);
         $count = FeedBack::where('product_id', $feedback->product_id)->count();
         $rateStar = FeedBack::where('product_id', $feedback->product_id)->pluck('rate')->avg();
         $rate = round($rateStar, 1);
@@ -178,8 +181,8 @@ class detailController extends Controller
             'message' => 'Xóa đánh giá thành công',
             'count' => $count,
             'rate' => $rate,
-            'html' => view('user.design.detail.rating', compact('product', 'rate', 'count'))->render(),
-            'view' => view('user.design.detail.feedback', compact('count', 'rate', 'product'))->render(),
+            'html' => view('user.design.detail.rating', compact('feedbacks', 'product','rate', 'count'))->render(),
+            'view' => view('user.design.detail.feedback', compact('feedbacks', 'rate', 'product'))->render(),
         ];
     }
 

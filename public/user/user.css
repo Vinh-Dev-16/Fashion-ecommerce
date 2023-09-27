@@ -2463,7 +2463,7 @@ form label {
 .mini_cart {
     position: absolute;
     width: 400px;
-    top: 100%;
+    top: 87%;
     right: 0;
     background-color: var(--while-color);
     z-index: 10000;

@@ -1,4 +1,4 @@
-@foreach ($product->feedbacks()->orderBy('created_at', 'desc')->limit(6)->get() as $feedback)
+@foreach ($feedbacks as $feedback)
     <li class="item">
         <div class="feedback_form">
             <p class="person">Bình luận bởi
