@@ -71,14 +71,20 @@ class detailController extends Controller
                 'status' => 1,
                 'count' => $count,
                 'message' => 'Thích thành công',
+                'view' => view('user.design.detail.like', compact('feedback'))->render(),
             ];
         } else {
             $feedback->decrement('like');
+            if ($feedback->like < 0) {
+                $feedback->like = 0;
+                $feedback->save();
+            }
             $count = $feedback->like;
             return [
                 'status' => 0,
                 'count' => $count,
                 'message' => 'Bỏ thích thành công',
+                'view' => view('user.design.detail.like', compact('feedback'))->render(),
             ];
         }
 

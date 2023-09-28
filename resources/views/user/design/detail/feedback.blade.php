@@ -21,10 +21,13 @@
         </div>
         @if (Auth::check())
             <div style="display:flex; gap:1em;">
+              <div class="show-like">
+                  @include('user.design.detail.like')
+              </div>
                 <p style="margin-right: 1rem; font-size: 20px">
                     <i class="ri-thumb-up-line like-feedback" onclick="like_feedback({{$feedback->id}})"></i>
                     <span id="count-like">{{ $feedback->like }}</span>
-                    </p>
+                </p>
                 @if (Auth::user()->email === $feedback->email || Auth::user()->can('delete-feedback'))
                     <a href="javascript:void(0)" id="btn_delete" onclick="return confirmation(this, {{$feedback->id}})" style="font-size: 20px">
                         <i class="ri-delete-bin-line"></i>  Xóa

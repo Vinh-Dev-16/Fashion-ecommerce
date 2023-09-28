@@ -1,4 +1,3 @@
-<script src="https://cdn.ckeditor.com/ckeditor5/45.0.0/classic/ckeditor.js"></script>
 <script>
     $.ajaxSetup({
         headers: {
@@ -8,14 +7,7 @@
 
     $(document).ready(function () {
         ClassicEditor
-            .create(document.querySelector('#editor'),{
-                simpleUpload: {
-                    uploadUrl: '', // Đặt URL tải lên là rỗng để tắt tính năng tải lên
-                }
-            })
-            .then( newEditor => {
-                editor = newEditor;
-            })
+            .create(document.querySelector('#editor'))
             .catch(error => {
                 console.error(error);
             });
@@ -118,20 +110,24 @@
         fileInput = document.querySelector(".file-input"),
         progressArea = document.querySelector(".progress-area"),
         uploadedArea = document.querySelector(".uploaded-area");
-    form.addEventListener("click", () =>{
-        fileInput.click();
-    });
-    fileInput.onchange = ({target})=>{
-        const files = fileInput.files;
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            if(file) {
-                let fileName = file.name;
-                if (fileName.length >= 12) {
-                    let splitName = fileName.split('.');
-                    fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
+    if(form) {
+        form.addEventListener("click", () =>{
+            fileInput.click();
+        });
+    }
+    if (fileInput) {
+        fileInput.onchange = ({target})=>{
+            const files = fileInput.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if(file) {
+                    let fileName = file.name;
+                    if (fileName.length >= 12) {
+                        let splitName = fileName.split('.');
+                        fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
+                    }
+                    uploadFile(fileName);
                 }
-                uploadFile(fileName);
             }
         }
     }
@@ -263,18 +259,17 @@
         });
     }
 
-    function like_feedback(id) {
+    function like_feedback(id, like) {
+
         $.ajax({
             url: "{{ route('detail.feedback.like') }}",
             method: "POST",
             data: {
                 id: id,
-                like: 1,
+                like: like,
             },
             success: function (data) {
-                $('.like-feedback').css('color','blue');
-                $('.like-feedback').attr('onclick','unlike_feedback('+id+')');
-                $('#count-like').text(data.count);
+                $('.show-like').html(data.view);
                 createNoti(data.message);
             },
             error: function (data) {
@@ -282,6 +277,7 @@
             }
         });
     }
+
 
     function confirmation(eve, id) {
         swal({

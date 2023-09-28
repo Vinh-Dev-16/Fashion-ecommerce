@@ -15,6 +15,7 @@ class FeedBack extends Model
         'email',
         'title',
         'rate',
+        'like',
         'content',
         'product_id',
     ];
