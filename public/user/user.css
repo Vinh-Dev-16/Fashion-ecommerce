@@ -1177,11 +1177,21 @@ section .details span{
 }
 
 #show-image-upload img {
-    width: 20%;
-    height: auto;
+    width: 100%;
+    height: 150px;
     object-fit: cover;
     object-position: center;
     border-radius: 5px;
+}
+#show-image-upload .image-upload .remove-image{
+    position: absolute;
+    top: -5px;
+    right: -3px;
+    cursor: pointer;
+    transition: .25s ease;
+}
+#show-image-upload .image-upload .remove-image:hover{
+    transform: scale(1.1);
 }
 
 form .gender-details .gender-title {

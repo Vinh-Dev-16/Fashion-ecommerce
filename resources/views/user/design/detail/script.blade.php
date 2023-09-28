@@ -110,6 +110,7 @@
         fileInput = document.querySelector(".file-input"),
         progressArea = document.querySelector(".progress-area"),
         uploadedArea = document.querySelector(".uploaded-area");
+    let filesImage = [];
     if(form) {
         form.addEventListener("click", () =>{
             fileInput.click();
@@ -126,18 +127,37 @@
                         let splitName = fileName.split('.');
                         fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
                     }
+                    filesImage.push(file);
+                    showImages();
                     uploadFile(fileName);
                 }
             }
         }
     }
+
+     function showImages() {
+        let images = '';
+        filesImage.forEach(file => {
+            images += `<div class="image-upload" style="position: relative">
+                            <img src="${URL.createObjectURL(file)}" alt="">
+                            <i class="fas fa-times remove-image" onclick="removeImage(this)"></i>
+                        </div>`;
+        });
+        $('#show-image-upload').html(images);
+    }
+
+    function removeImage(element) {
+        let index = $(element).parent().index();
+        filesImage.splice(index, 1);
+        showImages();
+    }
+
     function uploadFile(name) {
         let data = new FormData();
         data.append("fileInput", fileInput.files[0]);
-
         $.ajax({
-            type: "POST",
-            url: "{{ route('detail.feedback.load_images') }}",
+            url: "{{ route('detail.feedback.load_images') }}}}",
+            method: "POST",
             data: data,
             processData: false,
             contentType: false,
@@ -186,21 +206,11 @@
                 });
                 return xhr;
             },
-            success: function (response) {
-                if (response.status === 'success') {
-                    let imageUrl = response.url
-                    let imageHTML = `{{ asset('') }}${imageUrl}`;
-                    const img = document.createElement("img");
-                    img.src = imageHTML;
-                    img.alt = 'ảnh upload';
-                    $('#show-image-upload').append(img);
-                } else {
-                    createToast(response.message);
+            success: function (data) {
+                if (data.status == 0) {
+                    createToast(data.message);
                 }
-            },
-            error: function (error) {
-                createToast('Đã xảy ra lỗi');
-            },
+            }
         });
     }
 
@@ -267,9 +277,11 @@
             data: {
                 id: id,
                 like: like,
+                user_id: $('[name="user_id"]').val(),
             },
             success: function (data) {
                 $('.show-like').html(data.view);
+                $('#count-like').text(data.count);
                 createNoti(data.message);
             },
             error: function (data) {

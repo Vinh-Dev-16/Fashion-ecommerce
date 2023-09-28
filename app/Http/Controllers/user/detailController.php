@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use App\Models\admin\FeedBack;
 use App\Models\admin\Product;
+use App\Models\Like;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -65,7 +66,11 @@ class detailController extends Controller
     {
         $feedback = FeedBack::findOrFail($request->id);
         if ($request->like == 1) {
-            $feedback->increment('like');
+        $feedback->increment('like');
+            Like::create([
+                'feed_back_id' => $request->id,
+                'user_id' => $request->user_id,
+            ]);
             $count = $feedback->like;
             return [
                 'status' => 1,
@@ -75,10 +80,7 @@ class detailController extends Controller
             ];
         } else {
             $feedback->decrement('like');
-            if ($feedback->like < 0) {
-                $feedback->like = 0;
-                $feedback->save();
-            }
+            Like::where('feed_back_id', $request->id)->where('user_id', $request->user_id)->delete();
             $count = $feedback->like;
             return [
                 'status' => 0,
@@ -152,20 +154,18 @@ class detailController extends Controller
         }
     }
 
-    public function loadImages(Request $request) {
-        if ($request->hasFile('fileInput')) {
-            $file = $request->file('fileInput');
-
-            $uniqueFileName = uniqid() . '_' . $file->getClientOriginalName();
-
-            $file->storeAs('cache', $uniqueFileName, 'public');
-            $imageNames = 'storage/cache/' . $uniqueFileName;
-
-
-            return response()->json(['status' => 'success', 'url' => $imageNames]);
+    public function loadImages(): array
+    {
+        try {
+         return [
+             'status' => 1,
+         ];
+        } catch (\Exception $e) {
+            return [
+                'status' => 0,
+                'message' => 'Đã xảy ra lỗi',
+            ];
         }
-
-        return response()->json(['status' => 'error', 'message' => 'Không có tệp nào được tải lên'], 400);
     }
 
     public function destroy()

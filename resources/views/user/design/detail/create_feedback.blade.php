@@ -45,7 +45,7 @@
                 <div class="wrapper-upload-image">
                     <header>Tải ảnh lên tại đây</header>
                     <div id="form-upload-image">
-                        <input class="file-input" type="file" name="file"  hidden>
+                        <input class="file-input" type="file" name="file" multiple hidden>
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Tải ảnh từ thiết bị của bạn</p>
                     </div>
@@ -63,6 +63,7 @@
                            value="{{ Auth::user()->name }}">
                     <input type="text" hidden name="email"
                            value="{{ Auth::user()->email }}">
+                    <input type="text" hidden="hidden" value="{{Auth::user()->id}}" name="user_id">
                 </p>
             </form>
             <button type="submit" onclick="send_feed_back({{ $product->id }})"
