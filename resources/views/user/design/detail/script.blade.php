@@ -50,6 +50,7 @@
     addToCart.addEventListener('click', (e) => {
         e.preventDefault();
     });
+
     function add_cart($product_id) {
         var color = $('input[name="color"]:checked').val() ? color = $('input[name="color"]:checked').val() : createToast('Bạn chưa chọn màu');
         var size = $('input[name="size"]:checked').val() ? size = $('input[name="size"]:checked').val() : createToast('Bạn chưa chọn size');
@@ -105,23 +106,24 @@
 
 
     // upload image
-
+    let currentAjaxCall = null;
     const form = document.querySelector("#form-upload-image"),
         fileInput = document.querySelector(".file-input"),
         progressArea = document.querySelector(".progress-area"),
         uploadedArea = document.querySelector(".uploaded-area");
     let filesImage = [];
-    if(form) {
-        form.addEventListener("click", () =>{
+    let xhrArray = [];
+    if (form) {
+        form.addEventListener("click", () => {
             fileInput.click();
         });
     }
     if (fileInput) {
-        fileInput.onchange = ({target})=>{
+        fileInput.onchange = ({target}) => {
             const files = fileInput.files;
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                if(file) {
+                if (file) {
                     let fileName = file.name;
                     if (fileName.length >= 12) {
                         let splitName = fileName.split('.');
@@ -135,7 +137,7 @@
         }
     }
 
-     function showImages() {
+    function showImages() {
         let images = '';
         filesImage.forEach(file => {
             images += `<div class="image-upload" style="position: relative">
@@ -149,14 +151,26 @@
     function removeImage(element) {
         let index = $(element).parent().index();
         filesImage.splice(index, 1);
-        showImages();
+        const name = element.parentElement.getAttribute('data-name');
+
+        // Xóa phần tử HTML tương ứng với name
+        const elementToRemove = document.querySelector(`li.row-image[data-id="${name}"]`);
+
+        if (elementToRemove) {
+            elementToRemove.remove();
+        }
+
+        // Xóa phần tử <div class="image-upload">
+        element.parentElement.remove();
+
     }
 
     function uploadFile(name) {
         let data = new FormData();
         data.append("fileInput", fileInput.files[0]);
+        data.append("name", name);
         $.ajax({
-            url: "{{ route('detail.feedback.load_images') }}}}",
+            url: "{{ route('detail.feedback.load_images') }}",
             method: "POST",
             data: data,
             processData: false,
@@ -174,34 +188,36 @@
                             fileSize = (e.loaded / (1024 * 1024)).toFixed(2) + " MB";
                         }
                         let progressHTML = `<li class="row-image">
-                                <i class="fas fa-file-alt"></i>
-                                <div class="content">
-                                  <div class="details">
-                                    <span class="name">${name} • Uploading</span>
-                                    <span class="percent">${fileLoaded}%</span>
-                                  </div>
-                                  <div class="progress-bar">
-                                    <div class="progress" style="width: ${fileLoaded}%"></div>
-                                  </div>
-                                </div>
-                              </li>`;
+                                    <i class="fas fa-file-alt"></i>
+                                    <div class="content">
+                                    <div class="details">
+                                        <span class="name">${name} • Uploading</span>
+                                        <span class="percent">${fileLoaded}%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: ${fileLoaded}%"></div>
+                                    </div>
+                                    </div>
+                                </li>`;
                         uploadedArea.classList.add("onprogress");
                         progressArea.innerHTML = progressHTML;
                         if (e.loaded == e.total) {
                             progressArea.innerHTML = "";
-                            let uploadedHTML = `<li class="row-image">
-                                  <div class="content upload">
-                                    <i class="fas fa-file-alt"></i>
-                                    <div class="details">
-                                      <span class="name">${name} • Uploaded</span>
-                                      <span class="size">${fileSize}</span>
+                            let uploadedHTML = `<li class="row-image" data-id="${name}">
+                                    <div class="content upload">
+                                        <i class="fas fa-file-alt"></i>
+                                        <div class="details">
+                                        <span class="name">${name} • Uploaded</span>
+                                        <span class="size">${fileSize}</span>
+                                        </div>
                                     </div>
-                                  </div>
-                                  <i class="fas fa-check"></i>
-                                </li>`;
+                                    <i class="fas fa-check"></i>
+                                    </li>`;
                             uploadedArea.classList.remove("onprogress");
                             uploadedArea.insertAdjacentHTML("afterbegin", uploadedHTML);
                         }
+                        const imageUploadDiv = document.querySelector('.image-upload');
+                        imageUploadDiv.setAttribute('data-name', name);
                     }
                 });
                 return xhr;
@@ -216,8 +232,7 @@
 
     // feedback
 
-    function send_feed_back(product_id)
-    {
+    function send_feed_back(product_id) {
         let editorContent = editor.getData();
         let rate = $('input[name="rate"]:checked').val();
         let title = $('input[name="title"]').val();
@@ -255,7 +270,7 @@
                         editor.setData('');
                         $('.user_review')[0].reset();
                         $('.render_count').text(data.count + ' đánh giá');
-                        $('.rate_sum').text(data.rate  + ' sao');
+                        $('.rate_sum').text(data.rate + ' sao');
                         $('.count_feedback').text(data.count);
                         $('.rate_count_start').text(data.rate);
                         $('#show_rating').html(data.html);
@@ -307,7 +322,7 @@
         return false;
     }
 
-   function delete_rate(id){
+    function delete_rate(id) {
         $.ajax({
             url: "{{ route('detail.feedback.destroy') }}",
             method: "POST",
@@ -320,7 +335,7 @@
                     $(this).fadeIn(300);
                 });
                 $('.render_count').text(data.count + ' đánh giá');
-                $('.rate_sum').text(data.rate  + ' sao');
+                $('.rate_sum').text(data.rate + ' sao');
                 $('.count_feedback').text(data.count);
                 $('.rate_count_start').text(data.rate);
                 $('#show_rating').html(data.html);
