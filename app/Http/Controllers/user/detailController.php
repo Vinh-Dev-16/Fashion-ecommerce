@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use App\Models\admin\FeedBack;
 use App\Models\admin\Product;
+use App\Models\ImageFeedBack;
 use App\Models\Like;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
@@ -29,11 +30,8 @@ class detailController extends Controller
             $product->increment('view');
             Cookie::queue('view', json_encode([$product->id]), 120);
         }
-        Session::put('pageoffer_url', request()->fullUrl());
         $rate = $product->feedbacks()->pluck('feedbacks.rate')->avg();
-
-        $feedbacks = $product->feedbacks()->orderBy('id', 'desc')->paginate(6);
-        return view('user.design.detail.index', compact('product', 'rate', 'cart', 'feedbacks'));
+        return view('user.design.detail.index', compact('product', 'rate', 'cart'));
     }
 
 
@@ -66,27 +64,31 @@ class detailController extends Controller
     {
         $feedback = FeedBack::findOrFail($request->id);
         if ($request->like == 1) {
-        $feedback->increment('like');
+            $feedback->increment('like');
             Like::create([
                 'feed_back_id' => $request->id,
                 'user_id' => $request->user_id,
             ]);
             $count = $feedback->like;
+            $product = Product::where('id', $feedback->product_id)->first();
+            $feedbacks = $product->feedbacks()->orderBy('id', 'desc')->paginate(6);
             return [
                 'status' => 1,
                 'count' => $count,
                 'message' => 'Thích thành công',
-                'view' => view('user.design.detail.like', compact('feedback'))->render(),
+                'view' => view('user.design.detail.feedback', compact('product'))->render(),
             ];
         } else {
             $feedback->decrement('like');
             Like::where('feed_back_id', $request->id)->where('user_id', $request->user_id)->delete();
             $count = $feedback->like;
+            $product = Product::where('id', $feedback->product_id)->first();
+            $feedbacks = $product->feedbacks()->orderBy('id', 'desc')->paginate(6);
             return [
                 'status' => 0,
                 'count' => $count,
                 'message' => 'Bỏ thích thành công',
-                'view' => view('user.design.detail.like', compact('feedback'))->render(),
+                'view' => view('user.design.detail.feedback', compact('product'))->render(),
             ];
         }
 
@@ -122,7 +124,7 @@ class detailController extends Controller
         }
         try {
             $input = $request->all();
-            FeedBack::create([
+            $newFeedback = FeedBack::create([
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'title' => $input['title'],
@@ -130,6 +132,15 @@ class detailController extends Controller
                 'product_id' => $input['product_id'],
                 'rate' => $input['rate'],
             ]);
+            if ($request->images) {
+                $files = $request->images;
+                foreach ($files as $file) {
+                    ImageFeedBack::create([
+                        'path' => $file,
+                        'feedback_id' => $newFeedback->id,
+                    ]);
+                }
+            }
             $count = FeedBack::where('product_id', $input['product_id'])->count();
             $rateStar = FeedBack::where('product_id', $input['product_id'])->pluck('rate')->avg();
             $rate = round($rateStar, 1);
@@ -171,14 +182,18 @@ class detailController extends Controller
     public function destroy()
     {
         $id = request()->id;
-        $feedback = FeedBack::findOrFail($id);
-        $product = Product::findOrFail($feedback->product_id);
-        $feedback->delete();
-        $feedbacks = $product->feedbacks()->orderBy('id', 'desc')->paginate(6);
-        $count = FeedBack::where('product_id', $feedback->product_id)->count();
-        $rateStar = FeedBack::where('product_id', $feedback->product_id)->pluck('rate')->avg();
+        $feedbackByID = FeedBack::findOrFail($id);
+        $product = Product::findOrFail($feedbackByID->product_id);
+        $likes = Like::where('feed_back_id', $id)->get();
+        foreach ($likes as $like) {
+            $like->delete();
+        }
+        $feedbackByID->delete();
+        $feedback = $product->feedbacks()->orderBy('id', 'desc')->paginate(6);
+        $count = FeedBack::where('product_id', $product->id)->count();
+        $rateStar = FeedBack::where('product_id', $product->product_id)->pluck('rate')->avg();
         $rate = round($rateStar, 1);
-        Product::where('id', $feedback->product_id)->update([
+        Product::where('id', $product->id)->update([
             'rate' => $rate,
             'count' => $count,
         ]);
@@ -187,8 +202,8 @@ class detailController extends Controller
             'message' => 'Xóa đánh giá thành công',
             'count' => $count,
             'rate' => $rate,
-            'html' => view('user.design.detail.rating', compact('feedbacks', 'product','rate', 'count'))->render(),
-            'view' => view('user.design.detail.feedback', compact('feedbacks', 'rate', 'product'))->render(),
+            'html' => view('user.design.detail.rating', compact( 'product','rate', 'count'))->render(),
+            'view' => view('user.design.detail.feedback', compact( 'rate', 'product'))->render(),
         ];
     }
 

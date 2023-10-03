@@ -36,17 +36,12 @@ class informationController extends Controller
      */
     public function create()
     {
-       
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {   
+
+    public function store(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    {
         $products = Product::all();
         $categories = Category::all();
         $brands = Brand::all();
@@ -174,7 +169,7 @@ class informationController extends Controller
             }
             $file = $request->file('avatar');
             $file->storeAs('public/avatar' , time().'.'.$file->getClientOriginalExtension());
-            $image = time().'.'.$file->getClientOriginalExtension(); 
+            $image = time().'.'.$file->getClientOriginalExtension();
             $information->avatar = $image;
         }
         try{

@@ -2,11 +2,7 @@
     <div id="review_form" class="review_form">
         <h4>Viết đánh giá của bạn</h4>
         <div class="form_review_user">
-            <form class="user_review"
-                  action=""
-                  method="POST"
-                  enctype="multipart/form-data">
-                @csrf
+            <div class="user_review">
                 <div class="rating">
                     <p>Bạn có thấy hài lòng?</p>
                     <div class="rate_this">
@@ -42,16 +38,17 @@
 
                 <div id="show-image-upload" style="display: flex; align-content: center; justify-content: left; gap: 15px"></div>
 
-                <div class="wrapper-upload-image">
-                    <header>Tải ảnh lên tại đây</header>
-                    <div id="form-upload-image">
-                        <input class="file-input" type="file" name="file" multiple hidden>
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Tải ảnh từ thiết bị của bạn</p>
-                    </div>
-                    <section class="progress-area"></section>
-                    <section class="uploaded-area"></section>
-                </div>
+{{--                <div class="wrapper-upload-image">--}}
+{{--                    <header>Tải ảnh lên tại đây</header>--}}
+{{--                    <form id="form-upload-image" class="dropzone">--}}
+{{--                        <input class="file-input" type="file" name="file" multiple hidden>--}}
+{{--                        <i class="fas fa-cloud-upload-alt"></i>--}}
+{{--                        <p>Tải ảnh từ thiết bị của bạn</p>--}}
+{{--                    </form>--}}
+{{--                    <section class="progress-area"></section>--}}
+{{--                    <section class="uploaded-area"></section>--}}
+{{--                </div>--}}
+                <form action="{{route('detail.feedback.load_images')}}" class="dropzone" id="my-great-dropzone"></form>
                 <p style="margin-bottom: 20px; margin-top: 65px;">
                     <label>Nội dung</label>
                     <textarea id="editor" cols="30" rows="15"
@@ -65,7 +62,7 @@
                            value="{{ Auth::user()->email }}">
                     <input type="text" hidden="hidden" value="{{Auth::user()->id}}" name="user_id">
                 </p>
-            </form>
+            </div>
             <button type="submit" onclick="send_feed_back({{ $product->id }})"
                     class="primary_button"
                     style="border:none; outline:none">

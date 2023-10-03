@@ -1175,6 +1175,21 @@ section .details span{
 .uploaded-area i.fa-check{
     font-size: 16px;
 }
+.image-feedback {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-items: center;
+    margin: 10px 0;
+    gap: 10px;
+}
+.image-feedback img {
+    width: 30%;
+    height: 270px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 5px;
+}
 
 #show-image-upload img {
     width: 100%;
@@ -1193,6 +1208,7 @@ section .details span{
 #show-image-upload .image-upload .remove-image:hover{
     transform: scale(1.1);
 }
+
 
 form .gender-details .gender-title {
     font-size: 20px;

@@ -8,9 +8,36 @@
     $(document).ready(function () {
         ClassicEditor
             .create(document.querySelector('#editor'))
+            .then( newEditor => {
+                editor = newEditor;
+            } )
             .catch(error => {
                 console.error(error);
             });
+
+        Dropzone.options.myDropzone = {
+            url: "{{ route('detail.feedback.load_images') }}",
+            method: "POST",
+            maxFilesize: 2,
+            maxFiles: 5,
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            timeout: 50000,
+            success: function (file, response) {
+                if (response.status == 0) {
+                    createToast(response.message);
+                } else {
+                    $('#show-image-upload').append('<div class="image-upload" style="position: relative">\n' +
+                        '                            <img src="' + response.path + '" alt="">\n' +
+                        '                            <i class="fas fa-times remove-image" onclick="removeImage(this)"></i>\n' +
+                        '                        </div>');
+                    createNoti(response.message);
+                }
+            },
+            error: function (file, response) {
+                return false;
+            }
+        };
     });
 
     function wishlist() {
@@ -129,6 +156,7 @@
                         let splitName = fileName.split('.');
                         fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
                     }
+                    xhrArray.push(fileName);
                     filesImage.push(file);
                     showImages();
                     uploadFile(fileName);
@@ -150,25 +178,32 @@
 
     function removeImage(element) {
         let index = $(element).parent().index();
-        filesImage.splice(index, 1);
-        const name = element.parentElement.getAttribute('data-name');
-
-        // Xóa phần tử HTML tương ứng với name
-        const elementToRemove = document.querySelector(`li.row-image[data-id="${name}"]`);
-
-        if (elementToRemove) {
-            elementToRemove.remove();
+        for (let i = 0; i < xhrArray.length; i++) {
+            if (xhrArray[i] === $(element).parent().find('img').attr('src').split('/').pop()) {
+                xhrArray.splice(i, 1);
+            }
+            document.querySelector(`li.row-image[data-id="${xhrArray[i]}`).remove();
         }
 
-        // Xóa phần tử <div class="image-upload">
-        element.parentElement.remove();
+        filesImage.splice(index, 1);
+        // const name = element.parentElement.getAttribute('data-name');
+        //
+        // // Xóa phần tử HTML tương ứng với name
+        // const elementToRemove = document.querySelector(`li.row-image[data-id="${name}"]`);
+        //
+        // if (elementToRemove) {
+        //     elementToRemove.remove();
+        // }
+        //
+        // // Xóa phần tử <div class="image-upload">
+        // element.parentElement.remove();
 
     }
 
     function uploadFile(name) {
         let data = new FormData();
-        data.append("fileInput", fileInput.files[0]);
-        data.append("name", name);
+        let imageLoad = filesImage[filesImage.length - 1];
+        data.append("file", imageLoad);
         $.ajax({
             url: "{{ route('detail.feedback.load_images') }}",
             method: "POST",
@@ -216,8 +251,8 @@
                             uploadedArea.classList.remove("onprogress");
                             uploadedArea.insertAdjacentHTML("afterbegin", uploadedHTML);
                         }
-                        const imageUploadDiv = document.querySelector('.image-upload');
-                        imageUploadDiv.setAttribute('data-name', name);
+
+
                     }
                 });
                 return xhr;
@@ -238,6 +273,10 @@
         let title = $('input[name="title"]').val();
         let name = $('input[name="name"]').val();
         let email = $('input[name="email"]').val();
+        let image = [];
+        $('.image-upload').each(function () {
+            image.push($(this).find('img').attr('src'));
+        });
         $.ajax({
             url: "{{ route('detail.feedback.store') }}",
             method: "POST",
@@ -246,6 +285,7 @@
                 rate: rate,
                 title: title,
                 content: editorContent,
+                images: image,
                 name: name,
                 email: email,
             },
@@ -274,6 +314,8 @@
                         $('.count_feedback').text(data.count);
                         $('.rate_count_start').text(data.rate);
                         $('#show_rating').html(data.html);
+                        $('#show-image-upload').html('');
+                        $('.uploaded-area').html('');
                         createNoti(data.message);
                         break;
                 }
@@ -295,8 +337,7 @@
                 user_id: $('[name="user_id"]').val(),
             },
             success: function (data) {
-                $('.show-like').html(data.view);
-                $('#count-like').text(data.count);
+                $('#review_ul').html(data.view);
                 createNoti(data.message);
             },
             error: function (data) {

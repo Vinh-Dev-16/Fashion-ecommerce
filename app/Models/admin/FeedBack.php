@@ -2,6 +2,7 @@
 
 namespace App\Models\admin;
 
+use App\Models\ImageFeedBack;
 use App\Models\Like;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,5 +29,10 @@ class FeedBack extends Model
     public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Like::class);
+    }
+
+    public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ImageFeedBack::class, 'feedback_id');
     }
 }
