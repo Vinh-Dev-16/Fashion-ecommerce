@@ -52,9 +52,9 @@ class categoryController extends Controller
         }
     }
 
-    public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function edit($slug): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $categories = Category::findOrFail($id);
+        $categories = Category::where('slug', $slug)->first();
         $category = Category::all();
         return view('admin.category.edit', compact('categories','category'));
     }

@@ -204,6 +204,17 @@
         }
     });
 
+    $('input[name="email"]').on('keyup', function (e) {
+       if (e.keyCode == 13) {
+           do_login();
+       }
+    });
+    $('input[name="password"]').on('keyup', function (e) {
+       if (e.keyCode == 13) {
+           do_login();
+       }
+    });
+
     function do_login() {
         $.ajax({
             url: "{{ route('do_login') }}",

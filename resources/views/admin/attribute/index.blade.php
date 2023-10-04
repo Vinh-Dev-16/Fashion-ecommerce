@@ -1,78 +1,44 @@
 @extends('admin.layout')
 @section('title')
-    Trang attribute
+    Trang thuộc tính sản phẩm
+@endsection
+@section('breadcrumbs')
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white"
+                                               href="{{url('admin/dashboard')}}">Home</a></li>
+        <li class="breadcrumb-item text-sm text-white active" aria-current="page"><a
+                href="{{route('admin.product.index')}}" class="opacity-5 text-white>"></a>Thuộc tính sản phẩm
+        </li>
+    </ol>
+    <h6 class="font-weight-bolder text-white mb-0">Trang chủ</h6>
 @endsection
 @section('content')
 
     {{-- Content --}}
-    <div class="col-md-12" style="display:flex;align-items: center;justify-content:center">
-        <div class="product col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN ATTRIBUTE</h2>
-                    <h3 class="card-title"><a href="{{ route('admin.attribute.create') }}">Tạo mới attribute</a></h3>
-
-                    <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+    <div class="card mb-4">
+        <div class="card-header pb-0">
+            <h6>Bảng thuộc tính sản phẩm</h6>
+            <div class="mb-4 mt-4 d-flex align-items- justify-content-between">
+                @can('create-attribute')
+                    <a class="btn bg-gradient-dark mb-0" href="{{route('admin.brand.create')}}">
+                        <i class="fas fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;
+                        Thêm thuộc tính sản phẩm</a>
+                @endcan
+                <div class="input-group d-flex justify-content-end" style="width: 300px">
+                    <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                    <input type="text" id="search-attribute" class="form-control" placeholder="Tìm kiếm...">
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên attribute</th>
-                                <th>CRUD</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                @foreach ($attributes as $attribute)
-                                    <td>{{ $attribute->id }}</td>
-                                    <td>{{ $attribute->value }}</td>
-                                    <td class="table_crud" style="display:flex;justify-content:flex-start;">
-                                        <a href="{{ url('admin/attribute/edit/' . $attribute->id) }}" title="Sửa attribute"
-                                            style="border: none;outline:none">
-                                            <i class="fa-solid fa-pen" style="color:black; font-size:25px;"></i></a>
-                                        <form method="post"
-                                            action="{{ url('admin/attribute/destroy/' . $attribute->id) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" title="Xóa attribute"
-                                                onclick=" return confirm ('Bạn có muốn xóa không?')"
-                                                style="border: none;outline:none;padding:0 13px;background:transparent"><i
-                                                    class="fa-solid fa-trash"
-                                                    style="color: black; font-size:25px;"></i></button>
-                                        </form>
-                                    </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
             </div>
         </div>
-    </div>
-    <div class="col-md-12" style="display: flex;justify-content: center;
-      align-items: center;">
-        {{ $attributes->links() }}
+        <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0" id="show-data">
+                @include('admin.attribute.list_data')
+            </div>
+            <!-- /.card-body -->
+        </div>
     </div>
 @endsection
-
-@section('breadcumb')
-    <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Home</a></li>
-        <li class="breadcrumb-item active">Attribute</li>
-    </ol>
+@section('javascript')
+    @include('admin.attribute.script')
 @endsection
 

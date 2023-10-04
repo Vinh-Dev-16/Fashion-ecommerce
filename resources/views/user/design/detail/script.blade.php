@@ -251,8 +251,6 @@
                             uploadedArea.classList.remove("onprogress");
                             uploadedArea.insertAdjacentHTML("afterbegin", uploadedHTML);
                         }
-
-
                     }
                 });
                 return xhr;

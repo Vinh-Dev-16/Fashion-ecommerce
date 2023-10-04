@@ -7,7 +7,7 @@
         <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white"
                                                href="{{url('admin/dashboard')}}">Home</a></li>
         <li class="breadcrumb-item text-sm text-white active" aria-current="page"><a
-                href="{{route('admin.product.index')}}" class="opacity-5 text-white>"></a>Brand
+                href="{{route('admin.brand.index')}}" class="opacity-5 text-white>"></a>Brand
         </li>
     </ol>
     <h6 class="font-weight-bolder text-white mb-0">Sửa brand</h6>
@@ -17,7 +17,7 @@
 
     <div class="card mb-4">
         <div class="card-header pb-0">
-            <h6>Thêm Brand</h6>
+            <h6>Sửa Brand</h6>
         </div>
         @can('edit-brand')
             <form action="{{url('admin/brand/update/' . $brand->id)}}" method="POST">

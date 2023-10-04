@@ -9,34 +9,34 @@ use Exception;
 
 class attributeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|string|\Illuminate\Contracts\Foundation\Application
     {
+        $attributes = Attribute::query();
+        if ($request->ajax()) {
+            return $this->listData($request);
+        }
         $attributes = Attribute::paginate(6);
         return view('admin.attribute.index', compact('attributes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function listData(Request $request): string
+    {
+        $attributes = Attribute::query();
+        if (!empty($request->search)) {
+            $attributes->where('value', 'like', '%' . $request->search . '%')
+                ->orWhere('slug', 'like', '%' . $request->search . '%');
+        }
+        $attributes = $attributes->paginate(6);
+        return view('admin.attribute.list_data', compact('attributes'))->render();
+    }
+
+    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         return view('admin.attribute.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(Request $request): \Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
     {
         if ($request->isMethod('POST')) {
             $rules = [
@@ -58,59 +58,37 @@ class attributeController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit($slug): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        //
+        $attribute = Attribute::where('slug', $slug)->first();
+        return view('admin.attribute.edit', compact('attribute'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $attributes = Attribute::find($id);
-        return view('admin.attribute.edit', compact('attributes'));
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
     {
         try {
            $attributes = Attribute::find($id);
             $input = $request->all();
             unset($input['_token']);
            $attributes->update($input);
-            return redirect('admin/attribute/index')->with('success', 'Đã sửa attribute thành công');
+            return redirect('admin/attribute/index')->with('success', 'Đã sửa  thành công');
         } catch (Exception $e) {
-            return redirect('admin/attribute/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function destroy($id): \Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
     {
-        $attributes = Attribute::find($id);
-        $attributes->delete();
-        return redirect('admin/attribute/index')->with('success', 'Xóa attribute thành công');
+        $attribute = Attribute::find($id);
+        if ($attribute->product->count() > 0) {
+            return redirect('admin/attribute/index')->with('error', 'Không thể xóa vì có sản phẩm đang sử dụng');
+        }
+        if (empty($attribute)) {
+            return redirect('admin/attribute/index')->with('error', 'Không tìm thấy dữ liệu');
+        }
+        $attribute->delete();
+        return redirect('admin/attribute/index')->with('success', 'Xóa thành công');
     }
 }
