@@ -37,8 +37,9 @@
                         </thead>
                         <tbody class="infor_images">
                             <tr>
+                                <?php $i = 1; ?>
                                 @foreach ($images as $image)
-                                    <td>{{ $image->id }}</td>
+                                    <td>{{ $images->firstItem() + $loop->index  }}</td>
                                     <td style="width:150px;height:120px;"><img class="logo_image" src=" {{ $image->path }}"
                                             alt="images của {{$image->products->name}}"></td>
                                     <td>{{ Illuminate\Support\Str::of($image->products->name)->words(4) }}</td>

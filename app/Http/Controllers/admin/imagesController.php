@@ -20,8 +20,9 @@ class imagesController extends Controller
     public function index()
     {
         $images = Image::orderBy('product_id')->paginate(6);
-        Session::put('image_url', request()->fullUrl());
+        // Kích thước trang (số hình ảnh trên mỗi trang)
         return view('admin.images.index', compact('images'));
+//        Session::put('image_url', request()->fullUrl());
     }
 
     public function search(Request $request)

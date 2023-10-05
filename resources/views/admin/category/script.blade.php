@@ -28,11 +28,11 @@
                 search: $('#search-category').val(),
             },
             success: function (data) {
-                $('#show-data').fadeOut(200, function() {
-                    $(this).html(data);
-                    $(this).fadeIn(200);
-                });
-
+                // $('#show-data').fadeOut(200, function() {
+                //     $(this).html(data);
+                //     $(this).fadeIn(200);
+                // });
+                $('#show-data').html(data);
             },
             error: function (error) {
                 console.log(error);
@@ -41,7 +41,7 @@
     }
 
 
-    function confirmation(eve) {
+    function confirmation(eve, id) {
         let url = eve.getAttribute('href');
         console.log(url);
         swal({
@@ -53,7 +53,30 @@
         })
             .then((willCancle) => {
                 if (willCancle) {
-                    window.location.href = url;
+                    $.ajax({
+                        url: '{{ url('admin/category/destroy')}}',
+                        method: 'POST',
+                        data: {
+                            id: id,
+                        },
+                        success: function (data) {
+                            switch (data.status) {
+                                case 0:
+                                    createToast(data.message);
+                                    break;
+                                case 1:
+                                    list_data(data.url);
+                                    createSuccess(data.message);
+                                    break;
+                                case 2:
+                                    createToast(data.message);
+                                    break;
+                            }
+                        },
+                        error: function (error) {
+                            createToast(error);
+                        }
+                    });
                 }
             })
         return false;
@@ -77,6 +100,21 @@
         });
     }
 
-
+    function get_modal_edit_category(id) {
+        $.ajax({
+            url: '{{ url('admin/category/edit') }}/' + id,
+            method: 'GET',
+            data: {
+                id: id,
+            },
+            success: function (data) {
+                $('#show-modal').html(data);
+                $('#modal-edit-category').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
 
 </script>

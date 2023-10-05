@@ -31,7 +31,7 @@
     <link id="pagestyle" href="{{ asset('css/argon-dashboard.css') }}" rel="stylesheet"/>
 </head>
 
-<body class="g-sidenav-show bg-gray-100 " id="body-show">
+<body class="g-sidenav-show bg-gray-100 " id="body-show" style="overflow: auto">
 @if (Session::has('success'))
     <ul class="notification">
         <li class="success toasts">

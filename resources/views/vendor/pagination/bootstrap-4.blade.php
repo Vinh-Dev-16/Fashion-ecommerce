@@ -26,7 +26,7 @@
                             <li class="page-item active" aria-current="page">
                                 <span class="page-link">
                                      <a href="{{$url}}">
-                                    <span>{{ $page }}</span>
+                                    <span style="color: white">{{ $page }}</span>
                                     </a>
                                 </span>
                             </li>

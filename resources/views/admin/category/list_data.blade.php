@@ -14,7 +14,7 @@
         <?php $i = 1; ?>
         @foreach ($categories as $category)
             <td>
-                <p class="text-xs mb-0" style="margin: 0 16px">{{$i++}}</p>
+                <p class="text-xs mb-0" style="margin: 0 16px">{{$categories->firstItem() + $loop->index}}</p>
             </td>
             <td>
                 <p class="text-xs text-center  mb-0"
@@ -33,14 +33,12 @@
             <td class="align-middle text-center ms-auto text-end" style="width: 20%">
                 @can('delete-category')
                     <a class="btn btn-link text-danger text-gradient px-3 mb-0"
-                       onclick="return confirmation(this)"
-                       href="{{url('admin/category/destroy/'. $category->id)}}"><i
-                            class="far fa-trash-alt me-2" aria-hidden="true"></i>Xóa</a>
+                       onclick="return confirmation(this, {{ $category->id }})">
+                        <i class="far fa-trash-alt me-2" aria-hidden="true"></i>Xóa</a>
                 @endcan
                 @can('edit-category')
-                    <a class="btn btn-link text-dark px-3 mb-0"
-                       href="{{url('admin/category/edit/'. $category->slug)}}"><i
-                            class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Sửa</a>
+                    <a class="btn btn-link text-dark px-3 mb-0" onclick="get_modal_edit_category({{$category->id}})">
+                        <i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Sửa</a>
                 @endcan
             </td>
     </tr>

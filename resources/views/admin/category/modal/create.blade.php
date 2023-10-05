@@ -2,10 +2,10 @@
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Thêm danh mục</h4>
+            <div class="modal-header" style="background: #5e72e4">
+                <h4 class="modal-title" style="color: white" id="myModalLabel">Thêm danh mục</h4>
                 <button
-                    class="close-modal btn btn-icon-only btn-rounded btn-outline-dark mb-0 me-3 btn-sm d-flex align-items-center justify-content-center">
+                    class="close-modal btn btn-icon-only btn-rounded btn-outline-white mb-0 me-3 btn-sm d-flex align-items-center justify-content-center">
                     <i class="ri-close-line"></i>
                 </button>
             </div>
@@ -45,7 +45,8 @@
         </div>
     </div>
 </div>
-<script>
+
+<script defer>
     $('.close-modal').click(function () {
         $('#modal-create-category').modal('hide');
     });
@@ -81,6 +82,7 @@
                         break;
                     case 1:
                         $('#modal-create-category').modal('hide');
+                        list_data(data.url)
                         createSuccess(data.message);
                         break;
                     case 2:
