@@ -59,5 +59,24 @@
         return false;
     }
 
+    $('.create-category').click(function () {
+        get_modal_category();
+    });
+
+    function get_modal_category() {
+        $.ajax({
+            url: '{{ route('admin.category.create') }}',
+            method: 'GET',
+            success: function (data) {
+                $('#show-modal').html(data);
+                $('#modal-create-category').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+
 
 </script>

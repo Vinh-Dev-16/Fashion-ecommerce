@@ -19,7 +19,7 @@
             <h6>Bảng sản phẩm</h6>
             <div class="mb-4 mt-4 d-flex align-items- justify-content-between">
                 @can('create-product')
-                    <a class="btn bg-gradient-dark mb-0" href="{{route('admin.product.create')}}">
+                    <a class="btn bg-gradient-dark mb-0" id="create-product">
                         <i class="fas fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;
                         Thêm sản phẩm</a>
                 @endcan
@@ -34,6 +34,9 @@
                 @include('admin.product.list_data')
             </div>
             <!-- /.card-body -->
+        </div>
+        <div id="modal-create">
+
         </div>
     </div>
 

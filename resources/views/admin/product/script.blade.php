@@ -1,4 +1,3 @@
-
 <script>
 
     $.ajaxSetup({
@@ -13,7 +12,7 @@
             list_data(url);
         });
     });
-    $('#search-product').keyup(function(e) {
+    $('#search-product').keyup(function (e) {
         if (e.keyCode === 13) {
             list_data();
         }
@@ -27,7 +26,7 @@
                 search: $('#search-product').val(),
             },
             success: function (data) {
-                $('#show-data').fadeOut(200, function() {
+                $('#show-data').fadeOut(200, function () {
                     $(this).html(data);
                     $(this).fadeIn(200);
                 });
@@ -57,5 +56,23 @@
         return false;
     }
 
+    $('#create-product').click(function () {
+        get_modal_create();
+    });
+
+    function get_modal_create() {
+        let ckeditorCreated = false;
+        $.ajax({
+            url: '{{ route('admin.product.create') }}',
+            method: 'GET',
+            success: function (data) {
+                $('#modal-create').html(data);
+                $('#modal-create-product').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
 
 </script>

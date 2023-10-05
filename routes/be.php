@@ -75,7 +75,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
     Route::get('/index', [categoryController::class, 'index'])->name('admin.category.index');
     Route::get('create', [categoryController::class, 'create'])->name('admin.category.create');
     Route::post('store', [categoryController::class, 'store'])->name('admin.category.store');
-    Route::delete('destroy/{id}', [categoryController::class, 'destroy'])->name('admin.category.destroy');
+    Route::get('destroy/{id}', [categoryController::class, 'destroy'])->name('admin.category.destroy');
     Route::patch('update/{id}', [categoryController::class, 'update'])->name('admin.category.update');
     Route::get('edit/{slug}', [categoryController::class, 'edit'])->name('admin.category.edit');
     Route::get('search', [categoryController::class, 'search'])->name('admin.category.search');

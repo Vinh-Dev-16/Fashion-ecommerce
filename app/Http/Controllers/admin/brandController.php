@@ -33,10 +33,10 @@ class brandController extends Controller
         return view('admin.brand.list_data', compact('brands'));
     }
 
-    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function create(): string
     {
         $products  = Product::all();
-        return view('admin.brand.create',compact('products'));
+        return view('admin.brand.modal.create',compact('products'))->render();
     }
 
 

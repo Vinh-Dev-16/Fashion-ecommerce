@@ -8,6 +8,7 @@ use App\Models\admin\Brand;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use App\Models\admin\Product;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\admin\Category;
 use App\Models\admin\Image;
@@ -51,13 +52,47 @@ class productController extends Controller
         $brands = Brand::all();
         $colors = ValueAttribute::where('attribute_id', '=', '2')->get();
         $sizes = ValueAttribute::where('attribute_id', '=', 1)->get();
-        return view('admin.product.create', compact('brands', 'categories', 'sizes', 'colors', 'brands'));
+        return view('admin.product.modal.create', compact('brands', 'categories', 'sizes', 'colors', 'brands'))->render();
     }
 
 
-    public function store(Request $request, ProductRequest $productRequest)
+    public function store(Request $request)
     {
-       $validate = $productRequest->validated();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'slug' => 'unique:products|required',
+            'price' => 'required|integer',
+            'stock' => 'required|integer',
+            'desce' => 'required',
+            'brand_id' => 'required',
+            'path' => 'required',
+            'sale' => 'required|integer',
+            'tags' => 'required',
+            'material' => 'required',
+        ], [
+            'name.required' => 'Tên sản phẩm không được để trống',
+            'slug.unique' => 'Tên sản phẩm đã tồn tại',
+            'slug.required' => 'Slug không được để trống',
+            'name.max' => 'Tên sản phẩm không được quá 255 ký tự',
+            'price.required' => 'Giá sản phẩm không được để trống',
+            'price.integer' => 'Giá sản phẩm phải là số',
+            'stock.required' => 'Số lượng sản phẩm không được để trống',
+            'stock.integer' => 'Số lượng sản phẩm phải là số',
+            'desce.required' => 'Mô tả sản phẩm không được để trống',
+            'brand_id.required' => 'Thương hiệu sản phẩm không được để trống',
+            'path.required' => 'Ảnh sản phẩm không được để trống',
+            'sale.required' => 'Giảm giá sản phẩm không được để trống',
+            'sale.integer' => 'Giảm giá sản phẩm phải là số',
+            'tags.required' => 'Tags sản phẩm không được để trống',
+            'material.required' => 'Chất liệu sản phẩm không được để trống',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $validator->errors()->toArray(),
+            ]);
+        }
 
          try {
             $input = $request->all();

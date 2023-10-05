@@ -53,6 +53,8 @@
         </li>
     </ul>
 @endif
+<ul class="notification">
+</ul>
 <div class="min-height-300 bg-primary position-absolute w-100"></div>
 <aside
         class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 ps bg-white"
@@ -467,6 +469,12 @@
 https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
 "></script>
 <script>
+
+    const notifications = document.querySelector('.notification');
+    const toast = document.querySelector('.toasts');
+    const timer = 3000;
+
+
     {{--        event--}}
     //     Pusher.logToConsole = true;
     // var pusher = new Pusher('0c39d13ebf28b8d3f138', {
@@ -477,6 +485,53 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
     // channel.bind('my-handle', function(data) {
     //     createSuccessToast(data.name + ' đã đặt hàng');
     // });
+    const removeSuccess = (success) => {
+        success.classList.add("hide");
+        if (success.timeoutId) clearTimeout(success.timeoutId);
+        setTimeout(() => success.remove(), 400);
+    };
+
+
+    // Tao Toast
+
+    function createSuccess(message) {
+        const success = document.createElement('li');
+        success.className = `toasts success`;
+        success.innerHTML = `
+                        <div class="column">
+                         <i class="fa fa-check"></i>
+                            <span>${message}</span>
+                        </div>
+                           <i class="fa fa-xmark"></i>
+                        `
+        notifications.appendChild(success);
+        setTimeout(() => removeSuccess(success), 3000)
+    };
+
+    // Tao remove toast
+
+    const removeToast = (toast) => {
+        toast.classList.add("hide");
+        if (toast.timeoutId) clearTimeout(toast.timeoutId);
+        setTimeout(() => toast.remove(), 400);
+    };
+
+
+    // Tao Toast
+
+    function createToast(toastMessage) {
+        const toast = document.createElement('li');
+        toast.className = `toasts error`;
+        toast.innerHTML = `
+                <div class="column">
+                   <i class="ri-bug-line"></i>
+                    <span>${toastMessage}</span>
+                </div>
+                  <i class="fa fa-xmark"></i>
+                `
+        notifications.appendChild(toast);
+        setTimeout(() => removeToast(toast), 3000)
+    };
 
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.sidebar .nav-link').forEach(function (element) {
@@ -572,10 +627,6 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
 @if (Session::has('success') || Session::has('error'))
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-
-            const notifications = document.querySelector('.notification');
-            const toast = document.querySelector('.toasts');
-            const timer = 3000;
 
 
             function removeToast(toast) {

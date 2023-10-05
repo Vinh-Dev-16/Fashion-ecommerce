@@ -39,11 +39,6 @@
         });
     }
 
-    ClassicEditor
-        .create( document.querySelector( '#editor' ) )
-        .catch( error => {
-            console.error( error );
-        } );
 
     function confirmation(eve) {
         let url = eve.getAttribute('href');
@@ -63,12 +58,4 @@
         return false;
     }
 
-    $(document).ready(function () {
-        $('.select2').select2();
-
-        $('.tag_multiple').select2({
-            theme: "classic",
-            tags: true,
-        });
-    });
 </script>
