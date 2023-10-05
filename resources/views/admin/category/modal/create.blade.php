@@ -59,6 +59,7 @@
     });
 
     $('.btn-create-category').click(function () {
+        var page = $(this).attr('data-page');
         $.ajax({
             url: '{{ route('admin.category.store') }}',
             method: 'POST',
@@ -66,6 +67,7 @@
                 name: $('#slug').val(),
                 slug: $('#convert_slug').val(),
                 parent_id: $('#parent_id').val(),
+                page: page,
             },
             beforeSend: function () {
                 $(document).find('div.text-danger').text('');
@@ -80,8 +82,6 @@
                     case 1:
                         $('#modal-create-category').modal('hide');
                         createSuccess(data.message);
-                        let url = $(this).attr('href');
-                        list_data(url);
                         break;
                     case 2:
                         $('#modal-create-category').modal('hide');

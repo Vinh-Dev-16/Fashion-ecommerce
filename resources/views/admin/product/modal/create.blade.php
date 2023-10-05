@@ -200,8 +200,6 @@
                         break;
                     case 1:
                         $('#modal-create-product').modal('hide');
-                        let url = $(this).attr('href');
-                        list_data(url);
                         createSuccess('Thêm sản phẩm thành công!');
                 }
             },

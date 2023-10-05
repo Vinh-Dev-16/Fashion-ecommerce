@@ -29,7 +29,9 @@ class categoryController extends Controller
             $categories->where('name', 'like', '%' . $request->search . '%')
                 ->orWhere('slug', 'like', '%' . $request->search . '%');
         }
-        $categories = $categories->paginate(6);
+        $currentPage = $request->input('page', 1);
+
+        $categories = $categories->paginate(6, ['*'], 'page', $currentPage);
         return view('admin.category.list_data', compact('categories'))->render();
     }
 
@@ -62,10 +64,14 @@ class categoryController extends Controller
         try {
             $input = $request->all();
             unset($input['_token']);
+            unset($input['page']);
             Category::create($input);
+            $url = url('admin/category/index/' .$request->page );
+            dd($url);
             return response()->json([
                 'status' => 1,
                 'message' => 'Thêm danh mục thành công',
+                'url' => $url,
             ]);
         } catch (Exception $e) {
           return response()->json([
