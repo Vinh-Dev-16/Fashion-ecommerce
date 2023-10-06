@@ -182,7 +182,7 @@
 
   // Automatically set modal's width for larger viewports
   .modal-dialog {
-    max-width: var(--#{$prefix}modal-width);
+    max-width: 750px;
     margin-right: auto;
     margin-left: auto;
   }
