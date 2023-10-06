@@ -115,7 +115,7 @@ class categoryController extends Controller
             $url = url('admin/category/index') . '?page=' . Session::get('page');
             return response()->json([
                 'status' => 1,
-                'message' => 'Thêm danh mục thành công',
+                'message' => 'Sửa danh mục thành công',
                 'url' => $url,
             ]);
         } catch (Exception $e) {

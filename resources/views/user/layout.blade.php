@@ -36,17 +36,17 @@
                 <i class="fa fa-check"></i>
                 <span>{{ session('success') }}</span>
             </div>
-            <i class="fa fa-xmark"></i>
+            <i class="fa fa-xmark close-toast"></i>
         </li>
     </ul>
 @elseif (Session::has('error'))
     <ul class="notification">
         <li class="error toasts">
             <div class="column">
-                <i class="fa fa-check"></i>
+                <i class="fa fa-bug"></i>
                 <span>{{ session('error') }}</span>
             </div>
-            <i class="fa fa-xmark"></i>
+            <i class="fa fa-xmark close-toast"></i>
         </li>
     </ul>
 @endif

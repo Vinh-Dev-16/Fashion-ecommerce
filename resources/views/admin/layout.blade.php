@@ -36,10 +36,10 @@
     <ul class="notification">
         <li class="success toasts">
             <div class="column">
-                <i class="fa fa-check"></i>
+                <i class="fa fa-bud"></i>
                 <span>{{ session('success') }}</span>
             </div>
-            <i class="fa fa-xmark"></i>
+            <i class="fa fa-xmark close-toast"></i>
         </li>
     </ul>
 @elseif (Session::has('error'))
@@ -49,7 +49,7 @@
                 <i class="fa fa-xmark"></i>
                 <span>{{ session('error') }}</span>
             </div>
-            <i class="fa fa-xmark"></i>
+            <i class="fa fa-xmark close-toast"></i>
         </li>
     </ul>
 @endif
@@ -502,7 +502,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
                          <i class="fa fa-check"></i>
                             <span>${message}</span>
                         </div>
-                           <i class="fa fa-xmark"></i>
+                           <i class="fa fa-xmark close-toast"></i>
                         `
         notifications.appendChild(success);
         setTimeout(() => removeSuccess(success), 3000)
@@ -517,6 +517,13 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
     };
 
 
+    document.querySelector('.notification').addEventListener('click', function (e) {
+        if (e.target.classList.contains('close-toast')) {
+            removeToast(e.target.parentElement);
+        }
+    });
+
+
     // Tao Toast
 
     function createToast(toastMessage) {
@@ -527,7 +534,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
                    <i class="ri-bug-line"></i>
                     <span>${toastMessage}</span>
                 </div>
-                  <i class="fa fa-xmark"></i>
+                  <i class="fa fa-xmark close-toast" ></i>
                 `
         notifications.appendChild(toast);
         setTimeout(() => removeToast(toast), 3000)

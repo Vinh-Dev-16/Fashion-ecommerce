@@ -124,7 +124,7 @@
                             <i class="fa-solid fa-check"></i>
                             <span>${message}</span>
                         </div>
-                        <i class="fa-solid fa-x"></i>
+                        <i class="fa-solid fa-x close-toast"></i>
                         `
         notifications.appendChild(noti);
         setTimeout(() => removeNoti(noti), 3000)
@@ -149,11 +149,18 @@
                     <i class="fa-solid fa-bug"></i>
                     <span>${toastMessage}</span>
                 </div>
-                <i class="fa-solid fa-x"></i>
+                <i class="fa-solid fa-x close-toast"></i>
                 `
         notifications.appendChild(toast);
         setTimeout(() => removeToast(toast), 3000)
     };
+
+    // Tao close toast
+    document.querySelector('.notification').addEventListener('click', function (e) {
+        if (e.target.classList.contains('close-toast')) {
+            removeToast(e.target.parentElement);
+        }
+    });
 
     const submenu = document.querySelectorAll('.has_child .icon_small');
     submenu.forEach((menu) => menu.addEventListener('click', togglePage));
