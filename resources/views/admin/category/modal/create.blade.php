@@ -26,7 +26,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleName">Cha danh mục</label>
-                                <select class="form-control" name="parent_id">
+                                <select class="form-control" name="parent_id" id="parent_id">
                                     <option value="0"> None</option>
                                     @foreach ($categories as $category)
                                         <option value="{{$category->id}}">{{$category->name}}</option>
