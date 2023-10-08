@@ -13,7 +13,7 @@
         });
     });
 
-    $('#search-brand').keyup(function(e) {
+    $('#search-brand').keyup(function (e) {
         if (e.keyCode === 13) {
             list_data();
         }
@@ -27,7 +27,7 @@
                 search: $('#search-brand').val(),
             },
             success: function (data) {
-                $('#show-data').fadeOut(200, function() {
+                $('#show-data').fadeOut(200, function () {
                     $(this).html(data);
                     $(this).fadeIn(200);
                 });
@@ -40,9 +40,7 @@
     }
 
 
-    function confirmation(eve) {
-        let url = eve.getAttribute('href');
-        console.log(url);
+    function confirmation(eve, id) {
         swal({
             title: 'Bạn có chắc là xóa nó chứ?',
             text: 'Bạn không thể restore nó',
@@ -52,10 +50,67 @@
         })
             .then((willCancle) => {
                 if (willCancle) {
-                    window.location.href = url;
+                    $.ajax({
+                        url: '{{ url('admin/brand/destroy')}}',
+                        method: 'POST',
+                        data: {
+                            id: id,
+                        },
+                        success: function (data) {
+                            switch (data.status) {
+                                case 0:
+                                    createToast(data.message);
+                                    break;
+                                case 1:
+                                    list_data(data.url);
+                                    createSuccess(data.message);
+                                    break;
+                                case 2:
+                                    createToast(data.message);
+                                    break;
+                            }
+                        },
+                        error: function (error) {
+                            createToast(error);
+                        }
+                    });
                 }
             })
         return false;
+    }
+
+    // create
+
+    $('.create-brand').click(function () {
+        get_modal_brand();
+    });
+
+    function get_modal_brand() {
+        $.ajax({
+            url: '{{ route('admin.brand.create') }}',
+            method: 'GET',
+            success: function (data) {
+                $('#show-modal').html(data);
+                $('#modal-create-brand').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function get_modal_edit_brand(id) {
+        $.ajax({
+            url: '{{ url('admin/brand/edit') }}/' + id,
+            method: 'GET',
+            success: function (data) {
+                $('#show-modal').html(data);
+                $('#modal-edit-brand').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     }
 
 </script>

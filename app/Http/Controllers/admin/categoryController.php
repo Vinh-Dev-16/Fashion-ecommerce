@@ -35,10 +35,10 @@ class categoryController extends Controller
         return view('admin.category.list_data', compact('categories'))->render();
     }
 
-    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function create()
     {
         $categories = Category::all();
-        return view('admin.category.modal.create', compact('categories'));
+        return view('admin.category.modal.create', compact('categories'))->render();
     }
 
 

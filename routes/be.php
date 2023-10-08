@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\dashboardController;
 use App\Http\Controllers\admin\permissionController;
 use App\Http\Controllers\admin\roleController;
+use App\Http\Controllers\admin\voucherController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\productController;
 use App\Http\Controllers\admin\categoryController;
@@ -86,11 +87,24 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
     Route::get('/index', [brandController::class, 'index'])->name('admin.brand.index');
     Route::get('create', [brandController::class, 'create'])->name('admin.brand.create');
     Route::post('store', [brandController::class, 'store'])->name('admin.brand.store');
-    Route::delete('destroy/{id}', [brandController::class, 'destroy'])->name('admin.brand.destroy');
-    Route::patch('update/{id}', [brandController::class, 'update'])->name('admin.brand.update');
+    Route::post('destroy', [brandController::class, 'destroy'])->name('admin.brand.destroy');
+    Route::post('update', [brandController::class, 'update'])->name('admin.brand.update');
     Route::get('edit/{id}', [brandController::class, 'edit'])->name('admin.brand.edit');
     Route::get('search', [brandController::class, 'search'])->name('admin.brand.search');
   });
+
+//  route về voucher
+
+    Route::prefix('/voucher')->middleware('role:admin|editor|manager')->group(function () {
+        Route::get('/index', [voucherController::class, 'index'])->name('admin.voucher.index');
+        Route::get('create', [voucherController::class, 'create'])->name('admin.voucher.create');
+        Route::post('store', [voucherController::class, 'store'])->name('admin.voucher.store');
+        Route::post('destroy', [voucherController::class, 'destroy'])->name('admin.voucher.destroy');
+        Route::post('update', [voucherController::class, 'update'])->name('admin.voucher.update');
+        Route::get('edit/{id}', [voucherController::class, 'edit'])->name('admin.voucher.edit');
+        Route::get('search', [voucherController::class, 'search'])->name('admin.voucher.search');
+    });
+
   // Route về attribute
 
   Route::prefix('/attribute')->middleware('role:admin|editor|manager')->group(function () {

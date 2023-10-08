@@ -7,7 +7,6 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/apple-icon.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
     <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <title>
@@ -59,7 +58,7 @@
 <div class="min-height-300 bg-primary position-absolute w-100"></div>
 <aside
         class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 ps bg-white"
-        id="sidenav-main">
+        id="sidenav-main" style="z-index: 100">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
            aria-hidden="true" id="iconSidenav"></i>
@@ -136,6 +135,17 @@
                             <i class="ri-handbag-line mb-1  text-dark text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Brand</span>
+                    </a>
+                </li>
+            @endcan
+            @can('view-voucher')
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('admin/voucher/index') ? 'active' : '' }}"
+                       href="{{route('admin.voucher.index')}}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ri-percent-line text-primary text-sm opacity-10"></i></div>
+                        <span class="nav-link-text ms-1">Mã giảm giá</span>
                     </a>
                 </li>
             @endcan
@@ -466,6 +476,7 @@
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="
 https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
 "></script>

@@ -79,9 +79,7 @@
     --info: #3498db;
 }
 
-::-webkit-scrollbar{
-    width: 8px;
-}
+
 ::-webkit-scrollbar-thumb{
     background: rgb(183 183 183) !important;
     border-radius: 6px;
@@ -2855,7 +2853,7 @@ progress {
 .form-control {
     display: block;
     width: 100%;
-    padding: 0.5rem 0.75rem;
+    padding: 1.3rem 0.75rem;
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.4rem;
@@ -5388,6 +5386,7 @@ fieldset:disabled .btn {
     padding: var(--bs-card-img-overlay-padding);
     border-radius: var(--bs-card-inner-border-radius);
 }
+
 .overlay-modal {
     position: fixed;
     top: 0;
@@ -5420,6 +5419,10 @@ fieldset:disabled .btn {
 }
 
 @media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 60%  !important;
+        margin: 1.75rem auto;
+    }
     .card-group {
         display: flex;
         flex-flow: row wrap;

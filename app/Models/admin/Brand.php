@@ -23,8 +23,8 @@ class Brand extends Model
 
          return $this->hasMany(Product::class);
     }
-    public function vouchers(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function vouchers()
     {
-        return $this->hasMany(Voucher::class);
+        return $this->belongsToMany(Voucher::class, 'brands_vouchers', 'brand_id', 'voucher_id');
     }
 }

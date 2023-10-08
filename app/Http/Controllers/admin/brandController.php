@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\admin;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandRequest;
 use App\Models\admin\Brand;
@@ -8,6 +9,7 @@ use App\Models\admin\Product;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 
 class brandController extends Controller
@@ -22,88 +24,145 @@ class brandController extends Controller
         return view('admin.brand.index', compact('brands'));
     }
 
-    public function listData(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function listData(Request $request): string
     {
         $brands = Brand::query();
         if ($request->has('search')) {
             $brands->where('name', 'like', '%' . $request->get('search') . '%')
                 ->orWhere('slug', 'like', '%' . $request->get('search') . '%');
         }
-        $brands = $brands->paginate(6);
-        return view('admin.brand.list_data', compact('brands'));
+        $currentPage = $request->input('page', 1);
+        Session::put('page', $currentPage);
+        $brands = $brands->paginate(6, ['*'], 'page', $currentPage);
+        return view('admin.brand.list_data', compact('brands'))->render();
     }
 
     public function create(): string
     {
-        $products  = Product::all();
-        return view('admin.brand.modal.create',compact('products'))->render();
+        $products = Product::all();
+        return view('admin.brand.modal.create', compact('products'))->render();
     }
 
 
-    public function store(Request $request, BrandRequest $brandRequest)
+    public function store(Request $request)
     {
-            $brandRequest->validated();
-            try{
-                $input = $request-> all();
-                unset($input['_token']);
-                $brand = Brand::create($input);
-                if (!empty($input['value'])) {
-                    for ($i = 0; $i < count($input['value']); $i++) {
-                        $data = [
-                            'brand_id' => $brand->id,
-                            'value' => $input['value'][$i],
-                            'quantity' => $input['quantity'][$i],
-                            'percent' => $input['percent'][$i],
-                        ];
-                        Voucher::create($data);
-                    }
-                }
-               return redirect()->route('admin.brand.index')->with('success','Đã thêm brand thành công');
-            }catch(Exception $e){
-                return back()->withErrors($e->getMessage('error','Đã xảy ra lỗi'));
-            }
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:brands|max:255',
+            'slug' => 'required|unique:brands|max:255',
+            'logo' => 'required|max:2048',
+            'description' => 'required',
+        ],
+            [
+                'name.required' => 'Tên brand không được để trống',
+                'name.unique' => 'Tên brand đã tồn tại',
+                'name.max' => 'Tên brand không được quá 255 ký tự',
+                'slug.required' => 'Slug không được để trống',
+                'slug.unique' => 'Slug đã tồn tại',
+                'slug.max' => 'Slug không được quá 255 ký tự',
+                'logo.required' => 'Logo không được để trống',
+                'logo.max' => 'Logo không được quá 2048 ký tự',
+                'description.required' => 'Mô tả không được để trống',
+            ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $validator->errors()->toArray(),
+            ]);
+        }
+        try {
+            $input = $request->all();
+            unset($input['_token']);
+            $brand = Brand::create($input);
+            $url = url('admin/brand/index') . '?page=' . Session::get('page');
+            return response()->json([
+                'status' => 1,
+                'message' => 'Thêm brand thành công',
+                'url' => $url,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 2,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
+        }
 
     }
 
-    public function edit($slug): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $brand= Brand::where('slug',$slug)->first();
-        return view('admin.brand.edit',compact('brand'));
+        $brand = Brand::find($id);
+        return view('admin.brand.modal.edit', compact('brand'));
     }
 
 
-    public function update(Request $request, $id, BrandRequest $brandRequest): \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    public function update(Request $request)
     {
-        $brandRequest->validated();
+        $id = $request->id;
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'slug' => 'required|max:255',
+            'logo' => 'max:2048',
+            'description' => 'required',
+        ],
+            [
+                'name.required' => 'Tên brand không được để trống',
+                'name.unique' => 'Tên brand đã tồn tại',
+                'name.max' => 'Tên brand không được quá 255 ký tự',
+                'slug.required' => 'Slug không được để trống',
+                'slug.unique' => 'Slug đã tồn tại',
+                'slug.max' => 'Slug không được quá 255 ký tự',
+                'logo.required' => 'Logo không được để trống',
+                'logo.max' => 'Logo không được quá 2048 ký tự',
+                'description.required' => 'Mô tả không được để trống',
+            ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $validator->errors()->toArray(),
+            ]);
+        }
         try {
             $brands = Brand::find($id);
             $input = $request->all();
             unset($input['_token']);
             $brands->update($input);
-            if (!empty($input['value'])) {
-                $vouchers = Voucher::where('brand_id', $id)->get();
-                for ($i = 0; $i < count($input['value']); $i++) {
-                    foreach ($vouchers as $voucher) {
-                        if ($voucher->id == $input['id'][$i]) {
-                            $voucher->update([
-                                'value' => $input['value'][$i],
-                                'quantity' => $input['quantity'][$i],
-                                'percent' => $input['percent'][$i],
-                            ]);
-                        }
-                    }
-                }
-            }
-            return redirect()->route('admin.brand.index')->with('success', 'Đã cập nhật brand thành công');
+            $url = url('admin/brand/index') . '?page=' . Session::get('page');
+            return response()->json([
+                'status' => 1,
+                'message' => 'Cập nhật brand thành công',
+                'url' => $url,
+            ]);
         } catch (Exception $e) {
-            return redirect('admin/brand/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
+            return response()->json([
+                'status' => 2,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
         }
     }
 
-    public function destroy($id): \Illuminate\Http\RedirectResponse
+    public function destroy(Request $request)
     {
-        $brands = Brand::find($id);
-        $brands->delete();
-        return redirect()->route('admin.brand.index')->with('success', 'Đã xóa brand thành công');
+        $id = $request->id;
+        $brand = Brand::find($id);
+        if (empty($brand)) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Không tìm thấy thương hiệu',
+            ]);
+        }
+        try {
+            $brand->delete();
+            $url = url('admin/brand/index') . '?page=' . Session::get('page');
+            return response()->json([
+                'status' => 1,
+                'message' => 'Xóa thương hiệu thành công',
+                'url' => $url,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 2,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
+        }
     }
 }

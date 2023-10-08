@@ -20,8 +20,8 @@ class Voucher extends Model
         'percent',
     ];
 
-    public function brand(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function brands(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsToMany(Brand::class, 'brands_vouchers', 'voucher_id', 'brand_id');
     }
 }

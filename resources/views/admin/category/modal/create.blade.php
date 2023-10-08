@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-create-category" style="--bs-modal-width:50%" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="z-index:10000000; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
             <div class="modal-header" style="background: #5e72e4">
                 <h4 class="modal-title" style="color: white" id="myModalLabel">Thêm danh mục</h4>
                 <button
@@ -44,6 +44,7 @@
             </div>
         </div>
     </div>
+    <div class="overlay-modal"></div>
 </div>
 
 <script defer>
