@@ -367,16 +367,16 @@
                                 document.write(new Date().getFullYear())
                             </script>
                             ,
-                            đồ án tốt nghiệp của <i class="fa fa-heart"></i>
+                            Đồ án tốt nghiệp của <i class="fa fa-heart"></i>
                             <a href="https://www.facebook.com/vinh.dev.16/" class="font-weight-bold"
-                               target="_blank">Xuan Vinh</a>
+                               target="_blank">Xuân Vinh</a>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                             <li class="nav-item">
                                 <a href="https://www.facebook.com/vinh.dev.16/" class="nav-link text-muted"
-                                   target="_blank">Xuan Vinh</a>
+                                   target="_blank">Xuân Vinh</a>
                             </li>
                         </ul>
                     </div>

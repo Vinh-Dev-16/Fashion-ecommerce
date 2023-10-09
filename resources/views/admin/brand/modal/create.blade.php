@@ -99,12 +99,12 @@
                         });
                         break;
                     case 1:
-                        $('#modal-create-brand').modal('hide');
+                        $('#modal-create-voucher').modal('hide');
                         list_data(data.url)
                         createSuccess(data.message);
                         break;
                     case 2:
-                        $('#modal-create-brand').modal('hide');
+                        $('#modal-create-voucher').modal('hide');
                         createToast(data.message);
                 }
             },

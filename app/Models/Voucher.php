@@ -15,9 +15,13 @@ class Voucher extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'value',
-        'product_id',
         'quantity',
         'percent',
+        'max',
+        'min_price',
+        'start_date',
+        'end_date',
+        'type',
     ];
 
     public function brands(): \Illuminate\Database\Eloquent\Relations\BelongsToMany

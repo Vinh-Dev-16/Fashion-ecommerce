@@ -28,9 +28,9 @@
             </td>
             <td>
                 <p class="text-xs mb-0">
-                    {{ $voucher->percent ? number_format($voucher->percent) . '%' : number_format($voucher->value) . 'đ' }}
+                    {{ $voucher->percent > 0 ? number_format($voucher->percent) . '%' . ' Tối đa ' . number_format($voucher->max) . 'đ'  : number_format($voucher->price) . 'đ' }}
                     <span>
-                        Tối đa {{$voucher->max}} đ
+
                     </span>
                 </p>
             </td>

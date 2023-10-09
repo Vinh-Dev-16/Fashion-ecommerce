@@ -38,4 +38,18 @@
             }
         });
     }
+
+    $('.create-voucher').click(function () {
+        $.ajax({
+            url: '{{ url('admin/voucher/create')}}',
+            method: 'GET',
+            success: function (data) {
+                $('#show-modal').html(data);
+                $('#modal-create-voucher').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
 </script>
