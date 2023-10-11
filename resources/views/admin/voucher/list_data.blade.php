@@ -58,7 +58,7 @@
                     @if(empty($voucher->start_date))
                         Không giới hạn
                     @else
-                        {{$voucher->start_date}}
+                        {{date('d-m-Y', strtotime($voucher->start_date))}}
                     @endif
                 </p>
             </td>
@@ -67,7 +67,7 @@
                     @if(empty($voucher->end_date))
                         Không giới hạn
                     @else
-                        {{$voucher->end_date}}
+                        {{date('d-m-Y', strtotime($voucher->end_date))}}
                     @endif
                 </p>
             </td>

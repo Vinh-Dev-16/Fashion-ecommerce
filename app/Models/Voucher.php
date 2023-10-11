@@ -22,6 +22,7 @@ class Voucher extends Model
         'start_date',
         'end_date',
         'type',
+        'price'
     ];
 
     public function brands(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
