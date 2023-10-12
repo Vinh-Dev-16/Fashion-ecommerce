@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Models\admin\Product;
@@ -288,6 +289,11 @@ class payPalController extends Controller
         return view('user.design.history.print', compact('orderDetail'))->render();
     }
 
+    public function printInvoice(Request $request)
+    {
+        $pdf = PDF::loadview('user.design.history.invoice');
+        return $pdf->download('invoice.pdf');
+    }
     public function softdelete($id)
     {
         $orderDetail = OrderDetail::find($id);

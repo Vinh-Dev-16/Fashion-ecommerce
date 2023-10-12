@@ -3126,7 +3126,7 @@ input[type="range"] {
 .invoice {
     width: 600px;
     max-width: 100%;
-    height: auto;
+    height: 100%;
     background: var(--white);
     padding: 50px 60px;
     position: relative;
@@ -3265,7 +3265,7 @@ input[type="range"] {
 
 .modal-data {
     position: fixed;
-    top: 0;
+    top: -110px;
     left: 0;
     right: 0;
     bottom: 0;

@@ -7,23 +7,28 @@
         <div class="header">
             <div class="i_row">
                 <div class="i_logo">
-                    <p>Coding Market</p>
+                    <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
+                                                                         alt="logo"
+                                                                         style="width:30px; height:30px; margin-right:5px"><span
+                                class="circle"></span><span
+                                style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
+                    </div>
                 </div>
                 <div class="i_title">
-                    <h2>INVOICE</h2>
+                    <h2>Hóa đơn</h2>
                     <p class="p_title text_right">
-                        April 20, 2023
+                    {{date('d-m-y', strtotime(Carbon\Carbon::now()))}}
                     </p>
                 </div>
             </div>
             <div class="i_row">
                 <div class="i_number">
-                    <p class="p_title">INVOICE NO: 3452324</p>
+                    <p class="p_title">Mã hóa đơn: {{$orderDetail->id}}</p>
                 </div>
                 <div class="i_address text_right">
-                    <p>TO</p>
+                    <p>Tới</p>
                     <p class="p_title">
-                        Facebook <br />
+                        {{$orderDetail->order->fullname}} <br />
                         <span>Menlo Park, California</span><br />
                         <span>United States</span>
                     </p>
@@ -35,63 +40,34 @@
                 <div class="i_table_head">
                     <div class="i_row">
                         <div class="i_col w_15">
-                            <p class="p_title">QTY</p>
+                            <p class="p_title">Thuộc tinh</p>
                         </div>
                         <div class="i_col w_55">
-                            <p class="p_title">DESCRIPTION</p>
+                            <p class="p_title">Tên</p>
                         </div>
                         <div class="i_col w_15">
-                            <p class="p_title">PRICE</p>
+                            <p class="p_title">Đơn hàng ngày</p>
                         </div>
                         <div class="i_col w_15">
-                            <p class="p_title">TOTAL</p>
+                            <p class="p_title">Tổng</p>
                         </div>
                     </div>
                 </div>
                 <div class="i_table_body">
                     <div class="i_row">
                         <div class="i_col w_15">
-                            <p>3</p>
+                            <p>Số lượng: {{$orderDetail->quantity}}</p>
+                            <p>Size: {{$orderDetail->size}}</p>
+                            <p>Màu: {{$orderDetail->color}}</p>
                         </div>
                         <div class="i_col w_55">
-                            <p>Lorem, ipsum.</p>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, vel.</span>
+                           <p>{{$orderDetail->name}}</p>
                         </div>
                         <div class="i_col w_15">
-                            <p>$10.00</p>
+                            <p>{{date('d-m-y', strtotime($orderDetail->created_at))}}</p>
                         </div>
                         <div class="i_col w_15">
-                            <p>$30.00</p>
-                        </div>
-                    </div>
-                    <div class="i_row">
-                        <div class="i_col w_15">
-                            <p>2</p>
-                        </div>
-                        <div class="i_col w_55">
-                            <p>Lorem, ipsum.</p>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, vel.</span>
-                        </div>
-                        <div class="i_col w_15">
-                            <p>$10.00</p>
-                        </div>
-                        <div class="i_col w_15">
-                            <p>$20.00</p>
-                        </div>
-                    </div>
-                    <div class="i_row">
-                        <div class="i_col w_15">
-                            <p>5</p>
-                        </div>
-                        <div class="i_col w_55">
-                            <p>Lorem, ipsum.</p>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, vel.</span>
-                        </div>
-                        <div class="i_col w_15">
-                            <p>$10.00</p>
-                        </div>
-                        <div class="i_col w_15">
-                            <p>$100.00</p>
+                            <p>{{number_format($orderDetail->total_money)}}</p>
                         </div>
                     </div>
                 </div>
@@ -104,7 +80,7 @@
                             <p></p>
                         </div>
                         <div class="i_col w_15">
-                            <p>Sub Total</p>
+                            <p>Tổng</p>
                             <p>Tax 10%</p>
                         </div>
                         <div class="i_col w_15">
@@ -116,7 +92,7 @@
                         <div class="i_col w_50">
                         </div>
                         <div class="i_col w_50 grand_total">
-                            <p><span>GRAND TOTAL:</span>
+                            <p><span>Tổng tất cả:</span>
                                 <span>$165.00</span>
                             </p>
                         </div>
@@ -127,12 +103,10 @@
         <div class="footer">
             <div class="i_row">
                 <div class="i_col w_50">
-                    <p class="p_title">Payment Method</p>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cumque, dicta distinctio! Laudantium voluptatibus est nemo.</p>
+                    <a href="{{route('history.print_invoice')}}" class="p_title" target="_blank">Tai xuong file PDF</a>
                 </div>
                 <div class="i_col w_50 text_right">
-                    <p class="p_title">Terms and Conditions</p>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cumque, dicta distinctio! Laudantium voluptatibus est nemo.</p>
+                    <p class="p_title">In hoa don</p>
                 </div>
             </div>
         </div>

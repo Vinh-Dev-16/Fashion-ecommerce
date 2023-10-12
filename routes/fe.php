@@ -108,6 +108,7 @@ use Illuminate\Routing\Router;
         Route::middleware('auth')->prefix('history')->group(function(){
             Route::get('/',[payPalController::class,'history'])->name('history');
             Route::post('print', [payPalController::class, 'print'])->name('history.print');
+            Route::get('print_invoice', [payPalController::class, 'printInvoice'])->name('history.print_invoice');
         });
         // Route comment
 
