@@ -128,21 +128,21 @@ class payPalController extends Controller
         $order = $order->toArray();
 
         foreach($paymentCollect as $payment){
-            array_push($order,[
-              'product' => $payment['product'],
-              'quantity' => $payment['quantity'],
-              'size' => $payment['size'],
-              'color' => $payment['color'],
-              'image' => $payment['image'],
-              'voucher' => $request->voucher,
-              'user_id' => $request->user_id,
-              'phone' => $request->phone,
-              'address' => $request->address,
-              'subtotal' => $request->subtotal,
-              'fullname' => $request->fullname,
-              'total' => $total_money,
-              'note' => $request->note,
-            ]);
+            $order[] = [
+                'product' => $payment['product'],
+                'quantity' => $payment['quantity'],
+                'size' => $payment['size'],
+                'color' => $payment['color'],
+                'image' => $payment['image'],
+                'voucher' => $request->voucher,
+                'user_id' => $request->user_id,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'subtotal' => $request->subtotal,
+                'fullname' => $request->fullname,
+                'total' => $total_money,
+                'note' => $request->note,
+            ];
         }
 
         session()->put('order',$order);
@@ -275,7 +275,7 @@ class payPalController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-        return view('user.design.history',compact('brands','products','categories','cart'))->with('success','Đã thanh toán thành công');
+        return view('user.design.history.index',compact('brands','products','categories','cart'))->with('success','Đã thanh toán thành công');
     }
 
     public function softdelete($id){

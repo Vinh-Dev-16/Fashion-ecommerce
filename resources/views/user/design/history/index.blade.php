@@ -187,13 +187,17 @@
                                                                         {{ number_format($orderItem->total_money) }} VND
                                                                     </td>
                                                                     <td>
-                                                                        <div style="cursor: pointer" class="detail_ship">Xem
-                                                                            chi
-                                                                            tiết</div>
+                                                                        <div style="cursor: pointer" class="detail_ship">
+                                                                            <i class="ri-eye-line"></i>
+                                                                            Xem chi tiết</div>
+                                                                        <br>
+                                                                        <div style="cursor: pointer" class="detail_ship">
+                                                                            <i class="ri-printer-line"></i>
+                                                                            Xuất hóa đơn</div>
                                                                         <br>
                                                                         @if ($orderItem->ship == 1)
                                                                             <a
-                                                                                href="{{ url('confirm/product/' . $orderItem->id) }}">Confirm</a>
+                                                                                href="{{ url('confirm/product/' . $orderItem->id) }}">Xác nhận</a>
                                                                         @endif
                                                                     </td>
                                                                 </tr>
@@ -209,7 +213,7 @@
                                                                                         tới. Vui lòng mời bạn xuống nhận</p>
                                                                                     <span class="circle_ship"></span>
                                                                                     <span
-                                                                                        class="date">{{ date('d-m-Y'), strtotime($orderItem->time) }}</span>
+                                                                                        class="date">{{ date('d-m-Y', strtotime($orderItem->time)) }}</span>
                                                                                 </li>
                                                                             @endif
                                                                             <li>
@@ -217,17 +221,17 @@
                                                                                 <p>Đơn hàng của bạn đang được giao</p>
                                                                                 <span class="circle_ship"></span>
                                                                                 <span class="date">
-                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time_confirm) }}</span>
+                                                                                    {{ date('d-m-Y', strtotime($orderItem->time_confirm)) }}</span>
                                                                             </li>
                                                                             <li>
                                                                                 <h3 class="title">Đã đóng hàng</h3>
                                                                                 <p>Đơn hàng của bạn đã được nhà cung cấp
                                                                                     đóng hàng vào ngày
-                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time) }}
+                                                                                    {{ date('d-m-Y', strtotime($orderItem->time)) }}
                                                                                 </p>
                                                                                 <span class="circle_ship"></span>
                                                                                 <span class="date">
-                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time_confirm) }}
+                                                                                    {{ date('d-m-Y', strtotime($orderItem->time)) }}
                                                                                 </span>
                                                                             </li>
                                                                         </ul>
@@ -315,10 +319,18 @@
                                                                     <td>
                                                                         {{ number_format($orderItem->total_money) }} VND
                                                                     </td>
-                                                                    <td> {{ date('d-m-Y'), strtotime($order->updated_at) }}
+                                                                    <td> {{ date('d-m-Y', strtotime($order->updated_at)) }}
                                                                     </td>
-                                                                    <td class="history_ship" style="cursor: pointer">Xem
-                                                                        lịch sử</td>
+                                                                    <td style="cursor: pointer">
+                                                                        <div style="cursor: pointer" class="history_ship">
+                                                                            <i class="ri-eye-line"></i>
+                                                                            Xem lịch sử</div>
+                                                                        <br>
+                                                                        <div style="cursor: pointer">
+                                                                            <i class="ri-printer-line"></i>
+                                                                            Xuất hóa đơn</div>
+                                                                        <br>
+                                                                    </td>
                                                                 </tr>
                                                                 <div class="history">
                                                                     <h3 class="heading_ship">Trạng thái giao hàng</h3>
@@ -330,7 +342,7 @@
                                                                                 <p>Bạn đã nhận được hàng</p>
                                                                                 <span class="circle_ship"></span>
                                                                                 <span
-                                                                                    class="date">{{ date('d-m-Y'), strtotime($orderItem->updated_at) }}</span>
+                                                                                    class="date">{{ date('d-m-Y', strtotime($orderItem->updated_at)) }}</span>
                                                                             </li>
                                                                             <li>
                                                                                 <h3 class="title">Đã giao hàng</h3>
@@ -338,24 +350,24 @@
                                                                                     tới. Vui lòng mời bạn xuống nhận</p>
                                                                                 <span class="circle_ship"></span>
                                                                                 <span
-                                                                                    class="date">{{ date('d-m-Y'), strtotime($orderItem->time) }}</span>
+                                                                                    class="date">{{ date('d-m-Y', strtotime($orderItem->time)) }}</span>
                                                                             </li>
                                                                             <li>
                                                                                 <h3 class="title">Đang giao hàng</h3>
                                                                                 <p>Đơn hàng của bạn đang được giao</p>
                                                                                 <span class="circle_ship"></span>
                                                                                 <span class="date">
-                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time_confirm) }}</span>
+                                                                                    {{ date('d-m-Y', strtotime($orderItem->time_confirm)) }}</span>
                                                                             </li>
                                                                             <li>
                                                                                 <h3 class="title">Đã đóng hàng</h3>
                                                                                 <p>Đơn hàng của bạn đã được nhà cung cấp
                                                                                     đóng hàng vào ngày
-                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time) }}
+                                                                                    {{ date('d-m-Y', strtotime($orderItem->time)) }}
                                                                                 </p>
                                                                                 <span class="circle_ship"></span>
                                                                                 <span class="date">
-                                                                                    {{ date('d-m-Y'), strtotime($orderItem->time_confirm) }}
+                                                                                    {{ date('d-m-Y', strtotime($orderItem->time_confirm)) }}
                                                                                 </span>
                                                                             </li>
                                                                         </ul>
