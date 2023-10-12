@@ -105,6 +105,10 @@ use Illuminate\Routing\Router;
             Route::patch('update/{id}',[informationController::class,'update'])->name('information.update');
          });
 
+        Route::middleware('auth')->prefix('history')->group(function(){
+            Route::get('/',[payPalController::class,'history'])->name('history');
+            Route::post('print', [payPalController::class, 'print'])->name('history.print');
+        });
         // Route comment
 
         Route::middleware('auth')->prefix('/feedback')->group(function(){
@@ -119,7 +123,6 @@ use Illuminate\Routing\Router;
             Route::get('voucher', [payPalController::class, 'voucher'])
             ->middleware('auth')
             ->name('payment.voucher');
-            Route::get('history',[PayPalController::class, 'history'])->middleware('auth')->name('history');
             Route::post('process-transaction', [payPalController::class, 'processTransaction'])->middleware('auth')->name('processTransaction');
             Route::get('success-transaction', [payPalController::class, 'successTransaction'])->middleware('auth')->name('successTransaction');
             Route::get('cancel-transaction', [payPalController::class, 'cancelTransaction'])->middleware('auth')->name('cancelTransaction');

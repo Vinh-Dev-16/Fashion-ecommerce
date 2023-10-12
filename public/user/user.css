@@ -43,6 +43,9 @@
     --trans-background-color: background-color 0.3s color 0.3s;
     --trans-background: background-color 0.3s;
     --trans-color: color 0.3s;
+    --bg-clr: #ead376;
+    --primary-clr: #2f2929;
+    --secondary-clr: #5265a7;
 }
 
 ::-webkit-scrollbar {
@@ -3071,7 +3074,7 @@ input[type="range"] {
     will-change: visibility, opacity;
 }
 
-:where(.showmenu , .showmodal) .overlay {
+:where(.showmenu , .showmodal, .active.modal-data) .overlay {
     opacity: 1;
     visibility: inherit;
 }
@@ -3118,9 +3121,172 @@ input[type="range"] {
 
 /* history */
 
+/*invoice*/
+
+.invoice {
+    width: 600px;
+    max-width: 100%;
+    height: auto;
+    background: var(--white);
+    padding: 50px 60px;
+    position: relative;
+    margin:  auto;
+}
+
+.w_15 {
+    width: 15%;
+}
+
+.w_50 {
+    width: 50%;
+}
+
+.w_55 {
+    width: 55%;
+}
+
+.p_title {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.i_row {
+    display: flex;
+}
+
+.text_right {
+    text-align: right;
+}
+
+.invoice .header .i_row {
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.invoice .header .i_row:last-child {
+    align-items: flex-end;
+}
+
+.invoice .header .i_row .i_logo p {
+    font-family: "Redressed", cursive;
+}
+
+.invoice .header .i_row .i_logo p,
+.invoice .header .i_row .i_title h2 {
+    font-size: 32px;
+    line-height: 38px;
+    color: var(--secondary-clr);
+}
+
+.invoice .header .i_row .i_address .p_title span {
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.invoice .body .i_table .i_col p {
+    font-weight: 700;
+}
+
+.invoice .body .i_table .i_row .i_col {
+    padding: 12px 5px;
+}
+
+.invoice .body .i_table .i_table_head .i_row {
+    border: 2px solid;
+    border-color: var(--primary-clr) transparent var(--primary-clr) transparent;
+}
+
+.invoice .body .i_table .i_table_body .i_row:last-child {
+    border-bottom: 2px solid var(--primary-clr);
+}
+
+.invoice .body .i_table .i_table_foot .grand_total_wrap {
+    margin-top: 20px;
+}
+
+.invoice .body .i_table .i_table_foot .grand_total_wrap .grand_total {
+    background: var(--secondary-clr);
+    color: var(--white);
+    padding: 10px 15px;
+}
+
+.invoice .body .i_table .i_table_foot .grand_total_wrap .grand_total p {
+    display: flex;
+    justify-content: space-between;
+}
+
+.invoice .footer {
+    margin-top: 30px;
+}
+
+.top_line,
+.bottom_line {
+    width: 25px;
+    height: 175px;
+    z-index: 1;
+    position: absolute;
+    background: var(--secondary-clr);
+}
+
+.top_line {
+    top: 0;
+    left: 0;
+}
+
+.bottom_line {
+    bottom: 0;
+    right: 0;
+}
+
+.top_line:before,
+.bottom_line:before {
+    content: "";
+    position: absolute;
+    border: 13px solid;
+}
+
+.top_line:before {
+    bottom: 0;
+    left: 0px;
+    border-color: transparent var(--white) var(--white) transparent;
+}
+
+.bottom_line:before {
+    top: 0;
+    left: 0px;
+    border-color: var(--white) transparent transparent var(--white);
+}
+
+
 /* Switch tabs */
 .switch_tabs {
     width: 100%;
+}
+
+.modal-data {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 600px;
+    width: 90%;
+    height: 82%;
+    margin: auto;
+    text-align: center;
+    background-color: var(--light-bg-color);
+    z-index: 10000;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform .2s, visibility .2s, opacity .2s;
+}
+
+.modal-data.active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 1s, visibility 1s, opacity 1s;
 }
 
 .tabs {

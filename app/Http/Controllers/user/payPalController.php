@@ -19,9 +19,11 @@ use App\Models\admin\ValueAttribute;
 
 use Illuminate\Support\Facades\DB;
 use Exception;
+
 class payPalController extends Controller
 {
-    public function payment(Request $request){
+    public function payment(Request $request)
+    {
 
         if ($request->isMethod('Post')) {
             $rules = [
@@ -37,13 +39,13 @@ class payPalController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-        if(Session::has('payment')){
+        if (Session::has('payment')) {
             session()->forget('payment');
         }
         $product = Product::find($request->product_id);
-        $payment = collect(session('payment'),[]);
+        $payment = collect(session('payment'), []);
         $payment = $payment->toArray();
-        array_push($payment,[
+        array_push($payment, [
             'product' => Product::find($request->product_id),
             'quantity' => $request->stock,
             'size' => ValueAttribute::find($request->size)->value,
@@ -52,16 +54,17 @@ class payPalController extends Controller
             'voucher' => $request->voucher,
         ]);
         session()->put('payment', $payment);
-        $payments = session()->get('payment',[]);
-        return view('user.design.payment',compact('brands','products','categories','cart','payments','product'));
+        $payments = session()->get('payment', []);
+        return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'));
     }
 
-    public function voucher(Request $request){
+    public function voucher(Request $request)
+    {
 
-        $payment = collect(session('payment'),[]);
+        $payment = collect(session('payment'), []);
         $payment = $payment->toArray();
         $payment[0]['voucher'] = $request->voucher;
-        session()->put('payment',$payment);
+        session()->put('payment', $payment);
         return response()->json([
             'result' => $payment,
         ]);
@@ -87,7 +90,7 @@ class payPalController extends Controller
             ];
             $request->validate($rules, $messages);
         }
-        if(Session::has('order')){
+        if (Session::has('order')) {
             session()->forget('order');
         }
 
@@ -99,35 +102,35 @@ class payPalController extends Controller
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();
 
-        $paymentCollect = collect(session('payment',[]));
-        foreach($paymentCollect as $payment){
+        $paymentCollect = collect(session('payment', []));
+        foreach ($paymentCollect as $payment) {
             $product = Product::find($payment['product']->id);
         }
-        $total_money = $paymentCollect->sum(function($cartItem){
+        $total_money = $paymentCollect->sum(function ($cartItem) {
             if (!$cartItem['product']->discount) {
-                 $subTotal = $cartItem['quantity'] * $cartItem['product']->price;
+                $subTotal = $cartItem['quantity'] * $cartItem['product']->price;
             } else {
-                 $subTotal= $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
+                $subTotal = $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
             }
-            switch($cartItem['voucher']){
+            switch ($cartItem['voucher']) {
                 case(!($cartItem['voucher'])):
-                  return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment',[])));
-                  break;
+                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment', [])));
+                    break;
                 case($cartItem['voucher'] == 0):
-                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment',[])));
+                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment', [])));
                     break;
                 case($cartItem['voucher'] > 0 && $cartItem['voucher'] <= 100):
-                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment',[]))) - ($subTotal * ($cartItem['voucher']/100));
+                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment', []))) - ($subTotal * ($cartItem['voucher'] / 100));
                     break;
-                case($cartItem['voucher'] >100):
-                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment',[]))) - ($cartItem['voucher']);
+                case($cartItem['voucher'] > 100):
+                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment', []))) - ($cartItem['voucher']);
                     break;
             }
         });
-        $order = collect(session('order',[]));
+        $order = collect(session('order', []));
         $order = $order->toArray();
 
-        foreach($paymentCollect as $payment){
+        foreach ($paymentCollect as $payment) {
             $order[] = [
                 'product' => $payment['product'],
                 'quantity' => $payment['quantity'],
@@ -145,8 +148,8 @@ class payPalController extends Controller
             ];
         }
 
-        session()->put('order',$order);
-        $finalTotal = round(($total_money / 22180),2);
+        session()->put('order', $order);
+        $finalTotal = round(($total_money / 22180), 2);
         $response = $provider->createOrder([
             "intent" => "CAPTURE",
             "application_context" => [
@@ -172,10 +175,10 @@ class payPalController extends Controller
                 }
             }
 
-            return view('user.design.payment',compact('brands','products','categories','cart','payments','product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
+            return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
 
         } else {
-            return view('user.design.payment',compact('brands','products','categories','cart','payments','product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
+            return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
         }
     }
 
@@ -194,9 +197,9 @@ class payPalController extends Controller
 
             $orders = session()->get('order', []);
 
-            try{
+            try {
                 DB::beginTransaction();
-                foreach($orders as $order){
+                foreach ($orders as $order) {
                     $orderCreate = Order::create([
                         'user_id' => $order['user_id'],
                         'fullname' => $order['fullname'],
@@ -224,19 +227,18 @@ class payPalController extends Controller
                         'total_money' => $cartItem['total'],
                     ]);
                     Product::where('id', $cartItem['product']->id)->update([
-                        'sold'=> $cartItem['product']->sold + $cartItem['quantity'],
+                        'sold' => $cartItem['product']->sold + $cartItem['quantity'],
                         'stock' => $cartItem['product']->stock - $cartItem['quantity'],
                     ]);
                 });
-                $count =OrderDetail::where('status', 0)->count();
+                $count = OrderDetail::where('status', 0)->count();
                 $name = $orders[0]['fullname'];
-                event(new UserOrderEvent($name,$count));
+                event(new UserOrderEvent($name, $count));
                 DB::commit();
-            }catch(Exception $e){
+            } catch (Exception $e) {
                 DB::rollBack();
-                return back()->with('error','Đã xảy ra lỗi về thanh toán');
+                return back()->with('error', 'Đã xảy ra lỗi về thanh toán');
             };
-
 
 
             session()->forget('payment');
@@ -259,57 +261,68 @@ class payPalController extends Controller
      */
     public function cancelTransaction(Request $request)
     {
-        $payments = session()->get('payment',[]);
+        $payments = session()->get('payment', []);
         $products = Product::all();
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-        foreach($payments as $payment){
+        foreach ($payments as $payment) {
             $product = Product::find($payment['product']->id);
         }
-        return view('user.design.payment',compact('brands','products','categories','cart','payments','product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
+        return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
     }
 
-    public function history(){
+    public function history()
+    {
         $products = Product::all();
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-        return view('user.design.history.index',compact('brands','products','categories','cart'))->with('success','Đã thanh toán thành công');
+        return view('user.design.history.index', compact('brands', 'products', 'categories', 'cart'))->with('success', 'Đã thanh toán thành công');
     }
 
-    public function softdelete($id){
+    public function print(Request $request): string
+    {
+        $id = $request->id;
+        $orderDetail = OrderDetail::where('order_id', $id)->first();
+        return view('user.design.history.print', compact('orderDetail'))->render();
+    }
+
+    public function softdelete($id)
+    {
         $orderDetail = OrderDetail::find($id);
-        try{
-                $products = Product::where('id' , $orderDetail->product_id)->get();
-                foreach($products as $product){
-                    $product->sold = $product->sold - $orderDetail->quantity;
-                    $product->stock = $product->stock + $orderDetail->quantity;
-                    $product->save();
-                }
-                $orderDetail->delete();
+        try {
+            $products = Product::where('id', $orderDetail->product_id)->get();
+            foreach ($products as $product) {
+                $product->sold = $product->sold - $orderDetail->quantity;
+                $product->stock = $product->stock + $orderDetail->quantity;
+                $product->save();
+            }
+            $orderDetail->delete();
             return redirect()->back()->with('success', 'Đã hủy đơn hàng');
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }
-    public function restore($id){
-       $orderDetail = OrderDetail::onlyTrashed()->find($id);
-         try{
-                $products = Product::where('id' , $orderDetail->product_id)->get();
-                foreach($products as $product){
-                    if($product->stock == 0){
-                        return redirect()->back()->with('error', 'Sản phẩm này đã hết hàng');
-                    }else{
-                        $product->sold = $product->sold + $orderDetail->quantity;
-                        $product->stock = $product->stock - $orderDetail->quantity;
-                        $product->save();
-                    }
+
+    public function restore($id)
+    {
+        $orderDetail = OrderDetail::onlyTrashed()->find($id);
+        try {
+            $products = Product::where('id', $orderDetail->product_id)->get();
+            foreach ($products as $product) {
+                if ($product->stock == 0) {
+                    return redirect()->back()->with('error', 'Sản phẩm này đã hết hàng');
+                } else {
+                    $product->sold = $product->sold + $orderDetail->quantity;
+                    $product->stock = $product->stock - $orderDetail->quantity;
+                    $product->save();
+                }
                 $orderDetail->restore();
             }
 
             return redirect()->back()->with('success', 'Đã đặt lại đơn hàng');
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }
     }

@@ -183,7 +183,7 @@
                     <ul class="flexitem second_links">
                         @if (Auth::check())
                             <li class="mobile_hide">
-                                <a  href="{{ url('history') }}">
+                                <a  href="{{ route('history') }}">
                                     <div class="icon_large" style="margin-top: -36px">
                                         <i class="ri-history-line"></i>
                                     </div>

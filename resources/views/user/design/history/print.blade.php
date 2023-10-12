@@ -1,5 +1,8 @@
-<section>
+<section class="modal-data">
     <div class="invoice">
+        <a href="#" class="t_close modalclose flexcenter">
+            <i class="ri-close-line"></i>
+        </a>
         <div class="top_line"></div>
         <div class="header">
             <div class="i_row">
@@ -125,7 +128,7 @@
             <div class="i_row">
                 <div class="i_col w_50">
                     <p class="p_title">Payment Method</p>
-                    <p>Đơn hàng </p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cumque, dicta distinctio! Laudantium voluptatibus est nemo.</p>
                 </div>
                 <div class="i_col w_50 text_right">
                     <p class="p_title">Terms and Conditions</p>
@@ -134,5 +137,7 @@
             </div>
         </div>
         <div class="bottom_line"></div>
+
     </div>
 </section>
+<div class="overlay" style="opacity: 1; visibility: inherit"></div>

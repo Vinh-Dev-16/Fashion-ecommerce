@@ -326,7 +326,7 @@
                                                                             <i class="ri-eye-line"></i>
                                                                             Xem lịch sử</div>
                                                                         <br>
-                                                                        <div style="cursor: pointer">
+                                                                        <div style="cursor: pointer" onclick="print_invoice(this, {{$orderItem->id}})">
                                                                             <i class="ri-printer-line"></i>
                                                                             Xuất hóa đơn</div>
                                                                         <br>
@@ -468,6 +468,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="show-data">
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -476,54 +479,5 @@
     @endif
 @endsection
 @section('javascript')
-    <script>
-        const dpt_menu = document.querySelectorAll('.dpt_menu');
-        const close_menu = document.querySelectorAll('#close_menu');
-
-        for (let i of dpt_menu) {
-            i.classList.add('active');
-        }
-        close_menu.forEach((item) => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                for (let i of dpt_menu) {
-                    i.classList.toggle('active');
-                }
-            });
-        })
-
-        const tabs = document.querySelectorAll(".tabs li");
-        const content = document.querySelectorAll(".content_tabs");
-
-        tabs.forEach((tab, index) => {
-            tab.addEventListener("click", () => {
-                tabs.forEach((tab) => tab.classList.remove("active"));
-
-                tab.classList.add("active");
-                content.forEach(c => c.classList.remove("active"));
-                content[index].classList.add('active');
-            });
-        });
-        tabs[0].click();
-
-        let detail_ship = document.querySelectorAll('.detail_ship');
-        let main_ship = document.querySelectorAll('.main_ship');
-
-        detail_ship.forEach((tab, index) => {
-            tab.addEventListener("click", () => {
-                main_ship.forEach(c => c.classList.remove("active"));
-                main_ship[index].classList.toggle('active');
-            });
-        });
-
-        let history_ship = document.querySelectorAll('.history_ship');
-        let history = document.querySelectorAll('.history');
-
-        history_ship.forEach((tab, index) => {
-            tab.addEventListener("click", () => {
-                main_ship.forEach(c => c.classList.remove("active"));
-                history[index].classList.toggle('active');
-            });
-        });
-    </script>
+   @include('user.design.history.script')
 @endsection
