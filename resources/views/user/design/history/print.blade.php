@@ -24,6 +24,12 @@
             <div class="i_row">
                 <div class="i_number">
                     <p class="p_title">Mã hóa đơn: {{$orderDetail->id}}</p>
+                    <p class="p_title">Mã vạch
+                        <span>{!! DNS1D::getBarcodeHTML( $orderDetail->id , 'PHARMA2T',3,33, 'black') !!}</span></p>
+                </div>
+                <div class="i_number">
+                    <p class="p_title">Mã QR</p>
+                        {!!  DNS2D::getBarcodeHTML('fashion' . $orderDetail->id, 'QRCODE') !!}
                 </div>
                 <div class="i_address text_right">
                     <p>Tới</p>
@@ -106,7 +112,7 @@
                     <a href="{{route('history.print_invoice')}}" class="p_title" target="_blank">Tai xuong file PDF</a>
                 </div>
                 <div class="i_col w_50 text_right">
-                    <p class="p_title">In hoa don</p>
+                    <p class="p_title" id="print_invoice">In hoa don</p>
                 </div>
             </div>
         </div>
@@ -115,3 +121,16 @@
     </div>
 </section>
 <div class="overlay" style="opacity: 1; visibility: inherit"></div>
+
+<script defer>
+    $(document).ready(function () {
+        $('#print_invoice').click(function () {
+            window.print();
+        })
+    })
+    $('.modalclose').click(function (e) {
+        e.preventDefault();
+        $('.modal-data').removeClass('active');
+        $('.overlay').removeClass('active');
+    })
+</script>

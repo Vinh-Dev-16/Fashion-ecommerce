@@ -13,6 +13,7 @@ use App\Models\admin\Brand;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Events\UserOrderEvent;
+use Milon\Barcode\DNS2D;
 
 
 use App\Models\Information;
@@ -292,7 +293,7 @@ class payPalController extends Controller
     public function printInvoice(Request $request)
     {
         $pdf = PDF::loadview('user.design.history.invoice');
-        return $pdf->download('invoice.pdf');
+        return $pdf->download('Fashion_Invoice.pdf');
     }
     public function softdelete($id)
     {

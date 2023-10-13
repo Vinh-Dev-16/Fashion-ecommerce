@@ -13,6 +13,7 @@
         "laravel/sanctum": "^2.15",
         "laravel/socialite": "^5.6",
         "laravel/tinker": "^2.5",
+        "milon/barcode": "^10.0",
         "munafio/chatify": "^1.6",
         "realrashid/sweet-alert": "^6.0",
         "srmklive/paypal": "~3.0",
