@@ -3122,7 +3122,10 @@ input[type="range"] {
 /* history */
 
 /*invoice*/
-
+.overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
 .invoice {
     width: 600px;
     max-width: 100%;

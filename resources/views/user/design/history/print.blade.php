@@ -17,18 +17,19 @@
                 <div class="i_title">
                     <h2>Hóa đơn</h2>
                     <p class="p_title text_right">
+                        Tạo ngày:
                     {{date('d-m-y', strtotime(Carbon\Carbon::now()))}}
                     </p>
                 </div>
             </div>
             <div class="i_row">
                 <div class="i_number">
-                    <p class="p_title">Mã hóa đơn: {{$orderDetail->id}}</p>
-                    <p class="p_title">Mã vạch
-                        <span>{!! DNS1D::getBarcodeHTML( $orderDetail->id , 'PHARMA2T',3,33, 'black') !!}</span></p>
+                    <p class="p_title" style="margin-bottom: 5px">Mã hóa đơn: {{$orderDetail->id}}</p>
+                    <p class="p_title">
+                        <span>{!! DNS1D::getBarcodeHTML( $orderDetail->id , 'PHARMA') !!}</span></p>
                 </div>
                 <div class="i_number">
-                    <p class="p_title">Mã QR</p>
+                    <p class="p_title"></p>
                         {!!  DNS2D::getBarcodeHTML('fashion' . $orderDetail->id, 'QRCODE') !!}
                 </div>
                 <div class="i_address text_right">
@@ -109,10 +110,10 @@
         <div class="footer">
             <div class="i_row">
                 <div class="i_col w_50">
-                    <a href="{{route('history.print_invoice')}}" class="p_title" target="_blank">Tai xuong file PDF</a>
+                    <a href="{{route('history.print_invoice')}}" class="p_title" target="_blank"><i class="ri-file-download-line"></i> Tai xuong file PDF</a>
                 </div>
-                <div class="i_col w_50 text_right">
-                    <p class="p_title" id="print_invoice">In hoa don</p>
+                <div class="i_col w_50 text_right" style="cursor: pointer">
+                    <p class="p_title" id="print_invoice"><i class="ri-printer-line"></i> In hoa don</p>
                 </div>
             </div>
         </div>
@@ -120,13 +121,20 @@
 
     </div>
 </section>
-<div class="overlay" style="opacity: 1; visibility: inherit"></div>
+<div class="overlay"></div>
 
 <script defer>
     $(document).ready(function () {
         $('#print_invoice').click(function () {
             window.print();
         })
+        $('.overlay').addClass('active');
+    })
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('overlay')) {
+            $('.modal-data').removeClass('active');
+            $('.overlay').removeClass('active');
+        }
     })
     $('.modalclose').click(function (e) {
         e.preventDefault();
