@@ -37,9 +37,3 @@
 # Contact
    
    + <a href="https://www.facebook.com/vinh.dev.16/">Dao Xuan Vinh</a>
-
-# About me 
-   + My fullname is 'Đào Xuân Vinh', I was born in 2001, I from Viet Nam.
-   + I started study php about one year ago and lavarel before six month.
-   + I studied at [ICT NIIT](https://niithanoi.edu.vn) with Mr.Luan, who is very pro 
-   
