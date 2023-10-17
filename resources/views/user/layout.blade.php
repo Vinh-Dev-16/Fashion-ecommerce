@@ -185,6 +185,13 @@
                             <li class="mobile_hide">
                                 <a  href="{{ route('history') }}">
                                     <div class="icon_large" style="margin-top: -36px">
+                                        <i class="ri-notification-line"></i>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="mobile_hide">
+                                <a  href="{{ route('history') }}">
+                                    <div class="icon_large" style="margin-top: -36px">
                                         <i class="ri-history-line"></i>
                                     </div>
                                 </a>

@@ -1,8 +1,5 @@
 <section class="modal-data">
     <div class="invoice">
-        <a href="#" class="t_close modalclose flexcenter">
-            <i class="ri-close-line"></i>
-        </a>
         <div class="top_line"></div>
         <div class="header">
             <div class="i_row">
@@ -65,7 +62,7 @@
                         <div class="i_col w_15">
                             <p>Số lượng: {{$orderDetail->quantity}}</p>
                             <p>Size: {{$orderDetail->size}}</p>
-                            <p>Màu: {{$orderDetail->color}}</p>
+                            <p>Màu: {{\App\Helpers\ColorNameHelper::ChangeName($orderDetail->color)}}</p>
                         </div>
                         <div class="i_col w_55">
                            <p>{{$orderDetail->name}}</p>
@@ -74,7 +71,14 @@
                             <p>{{date('d-m-y', strtotime($orderDetail->created_at))}}</p>
                         </div>
                         <div class="i_col w_15">
-                            <p>{{number_format($orderDetail->total_money)}}</p>
+                            <?php
+                                if ($orderDetail->discount > 0) {
+                                    $total = ($orderDetail->price * (100 - $orderDetail->discount)) / 100 * $orderDetail->quantity;
+                                } else {
+                                    $total = $orderDetail->price * $orderDetail->quantity;
+                                }
+                            ?>
+                            <p>{{number_format(floor($total))}} VND</p>
                         </div>
                     </div>
                 </div>
@@ -89,10 +93,12 @@
                         <div class="i_col w_15">
                             <p>Tổng</p>
                             <p>Tax 10%</p>
+                            <p>Phí ship</p>
                         </div>
                         <div class="i_col w_15">
-                            <p>$150.00</p>
-                            <p>$15.00</p>
+                            <p>{{number_format(floor($total))}}</p>
+                            <p>{{number_format(floor($total * 0.1))}}</p>
+                            <p>{{number_format('15000')}}</p>
                         </div>
                     </div>
                     <div class="i_row grand_total_wrap">
@@ -100,7 +106,7 @@
                         </div>
                         <div class="i_col w_50 grand_total">
                             <p><span>Tổng tất cả:</span>
-                                <span>$165.00</span>
+                                <span>{{number_format(floor($orderDetail->total_money))}} VND</span>
                             </p>
                         </div>
                     </div>
@@ -135,10 +141,5 @@
             $('.modal-data').removeClass('active');
             $('.overlay').removeClass('active');
         }
-    })
-    $('.modalclose').click(function (e) {
-        e.preventDefault();
-        $('.modal-data').removeClass('active');
-        $('.overlay').removeClass('active');
     })
 </script>

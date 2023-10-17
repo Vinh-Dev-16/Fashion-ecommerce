@@ -12,7 +12,7 @@
                                 <img src="{{ $cart_product['image'] }}" alt="???">
                             </a>
                         </div>
-                        <div class="item_content">
+                        <span class="item_content">
                             @if ($cart_product['product']->sale == 0)
                                 <p style="margin-bottom:0"><a
                                         href="{{ url('detail/' . $cart_product['product']->slug) }}">{{ Illuminate\Support\Str::of($cart_product['product']->name)->words(9) }}</a>
@@ -23,20 +23,20 @@
                                 </p>
                             @endif
                             <span class="price">
-                                                                    <br>
-                                                                    @if ($cart_product['product']->discount)
+                                <br>
+                                @if ($cart_product['product']->discount)
                                     <span>{{ number_format($cart_product['quantity'] * ($cart_product['product']->price - ($cart_product['product']->discount / 100) * $cart_product['product']->price)) }}
                                                                             VND
-                                                                        </span>
+                                    </span>
                                 @else
                                     <span>{{ number_format($cart_product['quantity'] * $cart_product['product']->price) }}
                                                                             VND
-                                                                        </span>
+                                    </span>
                                 @endif
-                                                                    <span
-                                                                        class="fly_item"><span>{{ $cart_product['quantity'] }}x</span></span>
-                                                                </span>
-                        </div>
+                                <span
+                                    class="fly_item"><span>{{ $cart_product['quantity'] }}x</span></span>
+                                 </span>
+                        </span>
                         <a href="#" class="item_remove" id="item_remove"
                            onclick="remove_cart({{ $cart_product['product']->id }})">
                             <i class="ri-close-line"></i>
@@ -74,7 +74,7 @@
             <p><strong>{{ number_format($subTotal * 0.1) }} VND</strong></p>
             <p>Tổng tiền</p>
             <p>
-                <strong>{{ number_format($subTotal + 15000 *  + $subTotal * 0.1) }}
+                <strong>{{ number_format($subTotal + 15000  + $subTotal * 0.1) }}
                     VND</strong></p>
         </div>
         <div class="actions">

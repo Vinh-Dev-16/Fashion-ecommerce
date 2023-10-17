@@ -80,9 +80,7 @@ class productController extends Controller
             'stock.integer' => 'Số lượng sản phẩm phải là số',
             'desce.required' => 'Mô tả sản phẩm không được để trống',
             'brand_id.required' => 'Thương hiệu sản phẩm không được để trống',
-            'path.required' => 'Ảnh sản phẩm không được để trống',
-            'sale.required' => 'Giảm giá sản phẩm không được để trống',
-            'sale.integer' => 'Giảm giá sản phẩm phải là số',
+        'sale.integer' => 'Giảm giá sản phẩm phải là số',
             'tags.required' => 'Tags sản phẩm không được để trống',
             'material.required' => 'Chất liệu sản phẩm không được để trống',
         ]);

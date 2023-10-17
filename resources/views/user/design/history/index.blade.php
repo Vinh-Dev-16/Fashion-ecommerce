@@ -63,8 +63,8 @@
                                                                                         href="{{ url('detail/' . $orderItem->product->slug) }}">{{ $orderItem->name }}
                                                                                     </a>
                                                                                 </strong>
-                                                                                <p style="margin-bottom: 1px">Color:
-                                                                                    {{ $orderItem->color }}</p>
+                                                                                <p style="margin-bottom: 1px">Màu:
+                                                                                    {{ \App\Helpers\ColorNameHelper::ChangeName($orderItem->color) }}</p>
                                                                                 <p>Size: {{ $orderItem->size }}</p>
                                                                             </div>
                                                                         @else
@@ -80,8 +80,8 @@
                                                                                         href="{{ url('pageoffer/' . $orderItem->product->slug) }}">{{ $orderItem->name }}
                                                                                     </a>
                                                                                 </strong>
-                                                                                <p style="margin-bottom: 1px">Color:
-                                                                                    {{ $orderItem->color }}</p>
+                                                                                <p style="margin-bottom: 1px">Màu:
+                                                                                    {{ \App\Helpers\ColorNameHelper::ChangeName($orderItem->color) }}</p>
                                                                                 <p>Size: {{ $orderItem->size }}</p>
                                                                             </div>
                                                                         @endif
@@ -147,8 +147,8 @@
                                                                                         href="{{ url('detail/' . $orderItem->product_id) }}">{{ $orderItem->name }}
                                                                                     </a>
                                                                                 </strong>
-                                                                                <p style="margin-bottom: 1px">Color:
-                                                                                    {{ $orderItem->color }}</p>
+                                                                                <p style="margin-bottom: 1px">Màu:
+                                                                                    {{ \App\Helpers\ColorNameHelper::ChangeName($orderItem->color) }}</p>
                                                                                 <p>Size: {{ $orderItem->size }}</p>
                                                                             </div>
                                                                         @else
@@ -164,8 +164,8 @@
                                                                                         href="{{ url('pageoffer/' . $orderItem->product_id) }}">{{ $orderItem->name }}
                                                                                     </a>
                                                                                 </strong>
-                                                                                <p style="margin-bottom: 1px">Color:
-                                                                                    {{ $orderItem->color }}</p>
+                                                                                <p style="margin-bottom: 1px">Màu:
+                                                                                    {{ \App\Helpers\ColorNameHelper::ChangeName($orderItem->color) }}</p>
                                                                                 <p>Size: {{ $orderItem->size }}</p>
                                                                             </div>
                                                                         @endif
@@ -280,8 +280,8 @@
                                                                                         href="{{ url('detail/' . $orderItem->product_id) }}">{{ $orderItem->name }}
                                                                                     </a>
                                                                                 </strong>
-                                                                                <p style="margin-bottom: 1px">Color:
-                                                                                    {{ $orderItem->color }}</p>
+                                                                                <p style="margin-bottom: 1px">Màu:
+                                                                                    {{ \App\Helpers\ColorNameHelper::ChangeName($orderItem->color) }}</p>
                                                                                 <p>Size: {{ $orderItem->size }}</p>
                                                                             </div>
                                                                         @else
@@ -297,8 +297,8 @@
                                                                                         href="{{ url('pageoffer/' . $orderItem->product_id) }}">{{ $orderItem->name }}
                                                                                     </a>
                                                                                 </strong>
-                                                                                <p style="margin-bottom: 1px">Color:
-                                                                                    {{ $orderItem->color }}</p>
+                                                                                <p style="margin-bottom: 1px">Màu:
+                                                                                    {{ \App\Helpers\ColorNameHelper::ChangeName($orderItem->color) }}</p>
                                                                                 <p>Size: {{ $orderItem->size }}</p>
                                                                             </div>
                                                                         @endif
@@ -414,8 +414,8 @@
                                                                                         href="{{ url('detail/' . $orderItem->product_id) }}">{{ $orderItem->name }}
                                                                                     </a>
                                                                                 </strong>
-                                                                                <p style="margin-bottom: 1px">Color:
-                                                                                    {{ $orderItem->color }}</p>
+                                                                                <p style="margin-bottom: 1px">Màu:
+                                                                                    {{ \App\Helpers\ColorNameHelper::ChangeName($orderItem->color) }}</p>
                                                                                 <p>Size: {{ $orderItem->size }}</p>
                                                                             </div>
                                                                         @else
@@ -431,8 +431,8 @@
                                                                                         href="{{ url('pageoffer/' . $orderItem->product_id) }}">{{ $orderItem->name }}
                                                                                     </a>
                                                                                 </strong>
-                                                                                <p style="margin-bottom: 1px">Color:
-                                                                                    {{ $orderItem->color }}</p>
+                                                                                <p style="margin-bottom: 1px">Màu:
+                                                                                    {{ \App\Helpers\ColorNameHelper::ChangeName($orderItem->color) }}</p>
                                                                                 <p>Size: {{ $orderItem->size }}</p>
                                                                             </div>
                                                                         @endif

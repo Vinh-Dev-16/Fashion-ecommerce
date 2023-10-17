@@ -286,7 +286,7 @@ class payPalController extends Controller
     public function print(Request $request): string
     {
         $id = $request->id;
-        $orderDetail = OrderDetail::where('order_id', $id)->first();
+        $orderDetail = OrderDetail::where('id', $id)->first();
         return view('user.design.history.print', compact('orderDetail'))->render();
     }
 
