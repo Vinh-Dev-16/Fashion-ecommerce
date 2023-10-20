@@ -14,12 +14,8 @@ use Illuminate\Support\Facades\Storage;
 
 class informationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($id)
+
+    public function index($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $products = Product::all();
         $categories = Category::all();
@@ -27,16 +23,6 @@ class informationController extends Controller
         $user = User::find($id);
         $cart = session()->get('cart', []);
         return view('user.design.information.index', compact('user','products', 'categories', 'brands','cart'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
     }
 
 
@@ -53,7 +39,6 @@ class informationController extends Controller
                 'avatar' => 'required|image',
                 'fullname' => 'required|max:255',
                 'phone' => 'required|max:10',
-                'address' => 'required',
                 'hobbies' => 'required',
                 'description' => 'required',
             ];
@@ -78,7 +63,6 @@ class informationController extends Controller
                 'user_id' => $input['user_id'],
                 'fullname' => $input['fullname'],
                 'phone' => $input['phone'],
-                'address' => $input['address'],
                 'birthday' => $input['birthday'],
                 'hobbies' => $input['hobbies'],
                 'description' => $input['description'],
@@ -91,24 +75,9 @@ class informationController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $user = User::find($id);
         $products = Product::all();
@@ -119,14 +88,7 @@ class informationController extends Controller
         return view('user.design.information.edit', compact('products', 'categories', 'brands', 'cart','user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $products = Product::all();
         $categories = Category::all();
@@ -139,7 +101,6 @@ class informationController extends Controller
                 'avatar' => 'required|image',
                 'fullname' => 'required|max:255',
                 'phone' => 'required|max:10',
-                'address' => 'required',
                 'hobbies' => 'required',
                 'description' => 'required',
             ];
@@ -157,7 +118,6 @@ class informationController extends Controller
         $input = $request->all();
         $information->fullname = $input['fullname'];
         $information->phone = $input['phone'];
-        $information->address = $input['address'];
         $information->birthday = $input['birthday'];
         $information->hobbies = $input['hobbies'];
         $information->gender = $input['gender'];
@@ -180,12 +140,7 @@ class informationController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //
