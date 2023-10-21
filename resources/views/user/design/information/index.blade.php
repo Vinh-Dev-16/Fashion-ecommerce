@@ -39,8 +39,47 @@
                     @if ($user->information)
                         <div class="infor">
                             <h2 class="search_page">Thông tin cá nhân</h2>
-                            <a class="primary_button" style="margin-left: 30px"
-                                href="{{ url('information/edit/' . Auth::user()->id) }}">Điền thông tin</a>
+                          <div >
+                              <nav>
+                                  <div class="sidebar">
+                                      <div class="logo logo-infor"><a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
+                                                                                                      alt="logo"
+                                                                                                      style="width:30px; height:30px; margin-right:5px"><span
+                                                  class="circle"></span><span
+                                                  style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
+                                      </div>
+                                      <div class="sidebar-content">
+                                          <ul class="lists">
+                                              <li class="list">
+                                                  <a href="#" class="nav-link">
+                                                      <i class="ri-home-line"></i>
+                                                      <span class="link">Trang chủ</span>
+                                                  </a>
+                                              </li>
+                                              <li class="list">
+                                                  <a href="{{ url('information/edit/' . Auth::user()->id) }}" class="nav-link">
+                                                      <i class="ri-add-line"></i>
+                                                      <span class="link">Điền thông tin cá nhân</span>
+                                                  </a>
+                                              </li>
+                                              <li class="list">
+                                                  @if(empty($user->information->address))
+                                                      <a href="#" class="nav-link">
+                                                          <i class="ri-add-line"></i>
+                                                          <span class="link">Điền địa chỉ</span>
+                                                      </a>
+                                                  @else
+                                                      <a href="#" class="nav-link">
+                                                          <i class="ri-pencil-line"></i>
+                                                          <span class="link">Sửa địa chỉ</span>
+                                                      </a>
+                                                  @endif
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </nav>
+                          </div>
                             <div class="text_content">
                                 <ul>
                                     <li>Tên đầy đủ: {{ $user->information->fullname }}</li>

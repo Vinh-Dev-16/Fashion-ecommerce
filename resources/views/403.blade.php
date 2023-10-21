@@ -58,6 +58,7 @@
     </div>
 </div>
 <script>
+   
     const btn = document.querySelector('#reload');
     console.log(btn);
 

@@ -1,6 +1,13 @@
 <script>
     const dpt_menu = document.querySelectorAll('.dpt_menu');
     const close_menu = document.querySelectorAll('#close_menu');
+    const navBar = document.querySelector("nav"),
+        menuBtns = document.querySelectorAll(".menu-icon");
+    menuBtns.forEach((menuBtn) => {
+        menuBtn.addEventListener("click", () => {
+            navBar.classList.toggle("open");
+        });
+    });
 
     for (let i of dpt_menu) {
         i.classList.add('active');
@@ -22,9 +29,11 @@
         if (value > 1) {
             value -= 1;
             quantity.value = value;
+            updateQuantity(id, value, el);
+        } else {
+            createToast('Số lượng phải lớn hơn 0');
         }
-        updateQuantity(id, value, el);
-    };
+    }
 
     function increment(id, stock, el) {
         let quantity = el.parentElement.querySelector('#quantity_cart');
@@ -50,8 +59,13 @@
             data: data,
             success: function (response) {
                 $('#show-data').fadeOut(400, function () {
-                    $(this).html(response);
+                    $(this).html(response.view);
                     $(this).fadeIn(400);
+                    $('#mini_cart').fadeOut(400, function () {
+                        $(this).html(response.html);
+                        $(this).fadeIn(400);
+                    });
+                    $('#item_number').text(response.count);
                 });
             },
             error: function (response) {

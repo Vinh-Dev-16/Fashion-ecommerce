@@ -79,7 +79,7 @@ class cartController extends Controller
         ];
     }
 
-    public function updateQuantity(): string
+    public function updateQuantity(): array
     {
         $id = request()->get('id');
         $quantity = request()->get('quantity');
@@ -94,8 +94,12 @@ class cartController extends Controller
         }
 
         session()->put('cart', $cart);
-
-        return view('user.design.view_cart.list_data' , compact('cart'))->render();
+        $count = count(session('cart', []));
+        return [
+            'view' => view('user.design.view_cart.list_data', compact('cart'))->render(),
+            'html' => view('user.cart', compact('cart'))->render(),
+            'count' => $count,
+        ];
     }
 
     public function deleteCart(Request $request): array
