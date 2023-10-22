@@ -14,7 +14,6 @@ class Information extends Model
         'user_id',
         'fullname',
         'phone',
-        'address',
         'birthday',
         'gender',
         'hobbies',

@@ -10,9 +10,6 @@
         <div class="container">
             <div class="wrapper">
                 <div class="filter-view-all-product">
-                    <div class="filter-title">
-                        <h3>Bộ lọc</h3>
-                    </div>
                     <div class="filter-content">
                         <div class="filter-content-item">
                             <div class="filter-content-item-title">
@@ -40,7 +37,7 @@
                                    <select id="select-color">
                                        <option></option>
                                        @foreach (App\Models\admin\ValueAttribute::where('attribute_id', '=', '2')->get() as $color)
-                                           <option value="{{$color->id}}">{{$color->value}}</option>
+                                           <option value="{{$color->id}}">{{\App\Helpers\ColorNameHelper::ChangeName($color->value)}}</option>
                                        @endforeach
                                    </select>
                                 </div>

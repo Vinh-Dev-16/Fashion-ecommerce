@@ -91,24 +91,6 @@
                                 @enderror
                             </div>
                             <div class="input-box">
-                                <span class="details">Tỉnh</span>
-                                <select style="width:100%" id="show-province" onchange="province(value)">
-                                    <option disabled selected></option>
-                                </select>
-                            </div>
-                            <div class="input-box">
-                                <span class="details">Huyện</span>
-                                <select style="width:100%" id="show-district" onchange="district(value)">
-                                    <option disabled selected></option>
-                                </select>
-                            </div>
-                            <div class="input-box">
-                                <span class="details">Xã</span>
-                                <select style="width:100%" id="show-commune">
-                                    <option disabled selected></option>
-                                </select>
-                            </div>
-                            <div class="input-box">
                                 <span class="details">Sinh nhật</span>
                                 <input type="date" placeholder="Enter your number" name="birthday">
                                 @error('birthday')

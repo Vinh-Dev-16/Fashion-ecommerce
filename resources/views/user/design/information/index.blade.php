@@ -36,86 +36,95 @@
                     </div>
                 </div>
                 <div class="body_information">
-                    @if ($user->information)
-                        <div class="infor">
-                            <h2 class="search_page">Thông tin cá nhân</h2>
-                          <div >
-                              <nav>
-                                  <div class="sidebar">
-                                      <div class="logo logo-infor"><a href="{{ route('home') }}"><img src="{{ asset('images/logoCart.png') }}"
-                                                                                                      alt="logo"
-                                                                                                      style="width:30px; height:30px; margin-right:5px"><span
-                                                  class="circle"></span><span
-                                                  style="font-family: 'Dancing Script', cursive; color:green">.F</span><span>ashion</span></a>
-                                      </div>
-                                      <div class="sidebar-content">
-                                          <ul class="lists">
-                                              <li class="list">
-                                                  <a href="#" class="nav-link">
-                                                      <i class="ri-home-line"></i>
-                                                      <span class="link">Trang chủ</span>
-                                                  </a>
-                                              </li>
-                                              <li class="list">
-                                                  <a href="{{ url('information/edit/' . Auth::user()->id) }}" class="nav-link">
-                                                      <i class="ri-add-line"></i>
-                                                      <span class="link">Điền thông tin cá nhân</span>
-                                                  </a>
-                                              </li>
-                                              <li class="list">
-                                                  @if(empty($user->information->address))
-                                                      <a href="#" class="nav-link">
-                                                          <i class="ri-add-line"></i>
-                                                          <span class="link">Điền địa chỉ</span>
-                                                      </a>
-                                                  @else
-                                                      <a href="#" class="nav-link">
-                                                          <i class="ri-pencil-line"></i>
-                                                          <span class="link">Sửa địa chỉ</span>
-                                                      </a>
-                                                  @endif
-                                              </li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                              </nav>
-                          </div>
-                            <div class="text_content">
-                                <ul>
-                                    <li>Tên đầy đủ: {{ $user->information->fullname }}</li>
-                                    <li>Số điện thoại: {{ $user->information->phone }} </li>
-                                    <li>Địa chỉ: {{ $user->information->address }}</li>
-                                </ul>
-                                <ul>
-                                    <li>Ngày sinh: {{ $user->information->birthday }}</li>
-                                    @if ($user->information->gender == 'male')
-                                        <li>Giới tính: Nam</li>
-                                    @else
-                                        <li>Giới tính: Nữ</li>
-                                    @endif
-                                    <li>Sở thích: {{ $user->information->hobbies }}</li>
-                                </ul>
-                            </div>
+                    <div style="display: flex; flex: 1 2;">
+                        <div class="sidebar_info">
+                            <ul>
+                                <li>
+                                    <a href="{{url('information/' . $user->id)}}">
+                                        <div class="icon_large">
+                                            <i class="ri-home-line"></i>
+                                        </div>
+                                        Trang chủ
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{url('edit/' . $user->id)}}">
+                                        <div class="icon_large">
+                                            <i class="ri-article-line"></i>
+                                        </div>
+                                        Thông tin cá nhân
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="icon_large">
+                                            <i class="ri-exchange-funds-line"></i>
+                                        </div>
+                                        Đổi mật khẩu
+                                    </a>
+                                </li>
+                                @if(!empty($user->information->address))
+                                    <li>
+                                        <a>
+                                            <div class="icon_large">
+                                                <i class="ri-edit-box-line"></i>
+                                            </div>
+                                            Đổi địa chỉ
+                                        </a>
+                                    </li>
+                                @else
+                                    <li>
+                                        <a href="{{url('information/create-address/' . $user->id)}}">
+                                            <div class="icon_large">
+                                                <i class="ri-add-circle-line"></i>
+                                            </div>
+                                            Thêm địa chỉ
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
                         </div>
-                    @else
-                        <div class="infor">
-                            <h2 class="search_page">Thông tin cá nhân</h2>
-                            <a class="primary_button" style="margin-left: 30px"
-                                href="{{ url('information/edit/' . Auth::user()->id) }}">Điền thông tin</a>
-                            <div class="text_content">
-                                <ul>
-                                    <li>Số điện thoại: </li>
-                                    <li>Địa chỉ:</li>
-                                    <li>Ngày sinh:</li>
-                                </ul>
-                                <ul>
-                                    <li>Giới tính:</li>
-                                    <li>Sở thích:</li>
-                                    <li>Giới thiệu sơ về bản thân:</li>
-                                </ul>
+                        @if ($user->information)
+                            <div class="infor" style="width: 100%">
+                                <h2 class="search_page">Thông tin cá nhân</h2>
+                                <div class="text_content">
+                                    <ul>
+                                        <li>Tên đầy đủ: {{ $user->information->fullname }}</li>
+                                        <li>Số điện thoại: {{ $user->information->phone }} </li>
+                                        <li>Địa chỉ: {{ $user->information->address }}</li>
+                                    </ul>
+                                    <ul>
+                                        <li>Ngày sinh: {{ $user->information->birthday }}</li>
+                                        @if ($user->information->gender == 'male')
+                                            <li>Giới tính: Nam</li>
+                                        @else
+                                            <li>Giới tính: Nữ</li>
+                                        @endif
+                                        <li>Sở thích: {{ $user->information->hobbies }}</li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                    @endif
+
+                        @else
+                            <div class="infor" style="width: 100%">
+                                <h2 class="search_page">Thông tin cá nhân</h2>
+                                <a class="primary_button" style="margin-left: 30px"
+                                   href="{{ url('information/edit/' . Auth::user()->id) }}">Điền thông tin</a>
+                                <div class="text_content">
+                                    <ul>
+                                        <li>Số điện thoại:</li>
+                                        <li>Địa chỉ:</li>
+                                        <li>Ngày sinh:</li>
+                                    </ul>
+                                    <ul>
+                                        <li>Giới tính:</li>
+                                        <li>Sở thích:</li>
+                                        <li>Giới thiệu sơ về bản thân:</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,7 +137,7 @@
         const close_menu = document.querySelectorAll('#close_menu');
 
         for (let i of dpt_menu) {
-            i.classList.add('active');
+            i.classList.add('active')
         }
         close_menu.forEach((item) => {
             item.addEventListener('click', (e) => {
@@ -136,7 +145,7 @@
                 for (let i of dpt_menu) {
                     i.classList.toggle('active');
                 }
-            });
+            })
         })
     </script>
 @endsection

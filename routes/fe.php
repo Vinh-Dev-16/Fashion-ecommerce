@@ -100,7 +100,9 @@ use Illuminate\Routing\Router;
 
         Route::middleware('auth')->prefix('information')->group(function(){
             Route::get('/{id}',[informationController::class,'index'])->name('information');
+            Route::get('create-address/{id}',[informationController::class,'createAddress'])->name('information.create_address');
             Route::post('store',[informationController::class,'store'])->name('information.store');
+            Route::post('do-create',[informationController::class,'doCreate'])->name('information.do_create');
             Route::get('edit/{id}',[informationController::class,'edit'])->name('information.edit');
             Route::patch('update/{id}',[informationController::class,'update'])->name('information.update');
          });

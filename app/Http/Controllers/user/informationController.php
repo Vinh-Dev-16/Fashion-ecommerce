@@ -75,8 +75,17 @@ class informationController extends Controller
         }
     }
 
+    public function createAddress($id)
+    {
+        $user = User::find($id);
+        $cart = session()->get('cart', []);
+        return view('user.design.information.create_address', compact('cart','user'));
+    }
 
-
+    public function doCreate($id)
+    {
+        //
+    }
     public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $user = User::find($id);
