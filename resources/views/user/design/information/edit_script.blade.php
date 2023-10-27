@@ -1,13 +1,13 @@
 <script>
     $(document).ready(function () {
-        var old_province = {{ $user->information->province }} > 10 ? {{ $user->information->province }} : '0' + {{ $user->information->province }};
-        var old_district = {{ $user->information->district }};
+        var old_province = {{ $user->information->province_id }} > 10 ? {{ $user->information->province_id }} : '0' + {{ $user->information->province_id }};
+        var old_district = {{ $user->information->district_id }};
         if (old_district < 10) {
             old_district = '0' + old_district;
         } else if (old_district < 100) {
             old_district = '00' + old_district;
         }
-        var old_commune = {{ $user->information->commune }};
+        var old_commune = {{ $user->information->commune_id }};
         edit_district(old_province , old_district);
         edit_province(old_province);
         edit_commune(old_commune, old_district);

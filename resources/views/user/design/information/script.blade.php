@@ -22,6 +22,9 @@
         getProvince();
     });
 
+    let district_name = '';
+    let province_name = '';
+    let commune_name = '';
 
     ClassicEditor
         .create(document.querySelector('#editor'))
@@ -47,6 +50,7 @@
     }
 
     async function province(code) {
+        province_name = $('#show-province option:selected').text();
         return await fetch(`https://api.mysupership.vn/v1/partner/areas/district?province=${code}`)
             .then(res => res.json())
             .then(res => show_district(res))
@@ -100,9 +104,12 @@
             url : '{{ route('information.do_create') }}',
             type : 'POST',
             data : {
-                province : $('#show-province').val(),
-                district : $('#show-district').val(),
-                commune : $('#show-commune').val(),
+                province : $('#show-province option:selected').text(),
+                district : $('#show-district option:selected').text(),
+                commune : $('#show-commune option:selected').text(),
+                province_id : $('#show-province').val(),
+                district_id : $('#show-district').val(),
+                commune_id : $('#show-commune').val(),
                 address : $('input[name="address"]').val(),
                 user_id : '{{ $user->id }}',
             },

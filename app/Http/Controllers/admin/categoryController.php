@@ -57,7 +57,7 @@ class categoryController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'status' => 0,
+                'status' => STATUS_ERROR,
                 'message' => $validator->errors()->toArray(),
             ]);
         }
@@ -68,13 +68,13 @@ class categoryController extends Controller
             Category::create($input);
             $url = url('admin/category/index') . '?page=' . Session::get('page');
             return response()->json([
-                'status' => 1,
+                'status' => STATUS_SUCCESS,
                 'message' => 'Thêm danh mục thành công',
                 'url' => $url,
             ]);
         } catch (Exception $e) {
           return response()->json([
-                'status' => 2,
+                'status' => STATUS_FAIL,
                 'message' => 'Đã xảy ra lỗi',
           ]);
         }
@@ -102,7 +102,7 @@ class categoryController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'status' => 0,
+                'status' => STATUS_ERROR,
                 'message' => $validator->errors()->toArray(),
             ]);
         }
@@ -114,13 +114,13 @@ class categoryController extends Controller
             $category->update($input);
             $url = url('admin/category/index') . '?page=' . Session::get('page');
             return response()->json([
-                'status' => 1,
+                'status' => STATUS_SUCCESS,
                 'message' => 'Sửa danh mục thành công',
                 'url' => $url,
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'status' => 2,
+                'status' => STATUS_FAIL,
                 'message' => 'Đã xảy ra lỗi',
             ]);
         }
@@ -133,7 +133,7 @@ class categoryController extends Controller
         $category = Category::find($id);
         if (empty($category)) {
            return response()->json([
-                'status' => 0,
+                'status' => STATUS_ERROR,
                 'message' => 'Không tìm thấy danh mục',
            ]);
         }
@@ -141,13 +141,13 @@ class categoryController extends Controller
             $category->delete();
             $url = url('admin/category/index') . '?page=' . Session::get('page');
             return response()->json([
-                'status' => 1,
+                'status' => STATUS_SUCCESS,
                 'message' => 'Xóa danh mục thành công',
                 'url' => $url,
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'status' => 2,
+                'status' => STATUS_FAIL,
                 'message' => 'Đã xảy ra lỗi',
             ]);
         }

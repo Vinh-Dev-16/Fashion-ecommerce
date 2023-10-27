@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class informationController extends Controller
 {
@@ -107,10 +108,14 @@ class informationController extends Controller
             $input = $request->all();
             unset($input['_token']);
             $input['commune'] = empty($input['commune']) ? '' : $input['commune'];
+            $input['commune_id'] = empty($input['commune_id']) ? '' : $input['commune_id'];
             $information = Information::where('user_id', $request->user_id)->first();
             $information->update([
                 'district' => $input['district'],
                 'province' => $input['province'],
+                'province_id' => $input['province_id'],
+                'district_id' => $input['district_id'],
+                'commune_id' => $input['commune_id'],
                 'address' => $input['address'],
                 'commune' => $input['commune'],
             ]);
@@ -153,16 +158,19 @@ class informationController extends Controller
         }
 
         try {
-            $cart = session()->get('cart', []);
-            $user = User::find($request->user_id);
+
             $input = $request->all();
             unset($input['_token']);
             $input['commune'] = empty($input['commune']) ? '' : $input['commune'];
+            $input['commune_id'] = empty($input['commune_id']) ? '' : $input['commune_id'];
             $information = Information::where('user_id', $request->user_id)->first();
             $information->update([
                 'district' => $input['district'],
                 'province' => $input['province'],
                 'address' => $input['address'],
+                'commune_id' => $input['commune_id'],
+                'district_id' => $input['district_id'],
+                'province_id' => $input['province_id'],
                 'commune' => $input['commune'],
             ]);
             return response()->json([

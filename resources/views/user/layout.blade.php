@@ -274,7 +274,7 @@
                                                 @can('view-dashboard')
                                                     <li class="profile-dropdown-list-item">
                                                         <a href="{{ url('/admin/dashboard') }}">
-                                                            <i class="fa-regular fa-envelope"></i>
+                                                            <i class="ri-home-8-line"></i>
                                                             Trang dashboard
                                                         </a>
                                                     </li>
@@ -282,7 +282,7 @@
                                                 @can('confirm-order')
                                                     <li class="profile-dropdown-list-item" style="position: relative">
                                                         <a href="{{ url('pageConfirm') }}">
-                                                            <i class="fa-regular fa-envelope"></i>
+                                                            <i class="ri-check-fill"></i>
                                                             Trang xác nhận đơn hàng
                                                         </a>
                                                         <div class="fly_item" style="top:-10px;background:red">

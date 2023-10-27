@@ -25,7 +25,9 @@
                             @endif
                         </div>
                         <div class="text_content">
-                            <p>Tên user: {{ Auth::user()->name }}</p>
+                            <p>
+                                <i class="ri-speak-line"></i>
+                                Tên user: {{ Auth::user()->name }}</p>
                             <p>Email: {{ Auth::user()->email }}</p>
                             @if ($user->information)
                                 <p>Giới thiệu: {!! $user->information->description !!}</p>
