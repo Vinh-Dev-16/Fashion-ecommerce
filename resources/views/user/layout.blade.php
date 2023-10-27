@@ -183,20 +183,20 @@
                     <ul class="flexitem second_links">
                         @if (Auth::check())
                             <li class="mobile_hide">
-                                <a  href="{{ route('history') }}">
+                                <a title="Thông báo" href="{{ route('history') }}">
                                     <div class="icon_large" style="margin-top: -36px">
                                         <i class="ri-notification-line"></i>
                                     </div>
                                 </a>
                             </li>
                             <li class="mobile_hide">
-                                <a  href="{{ route('history') }}">
+                                <a title="Lịch sử" href="{{ route('history') }}">
                                     <div class="icon_large" style="margin-top: -36px">
                                         <i class="ri-history-line"></i>
                                     </div>
                                 </a>
                             </li>
-                            <li class="mobile_hide"><a href="{{ url('/wishlist/' . Auth::user()->id) }}">
+                            <li class="mobile_hide"><a title="Yêu thích" href="{{ url('/wishlist/' . Auth::user()->id) }}">
                                     <div class="icon_large" style="margin-top: -36px"><i
                                             class="ri-heart-line"></i>
                                         <div class="fly_item"><span class="item_number"
@@ -217,7 +217,7 @@
                             </li>
                         @endif
                         <li class="iscart">
-                            <a href="#">
+                            <a href="#" title="Giỏ hàng">
                                 <div class="icon_large" id="cart_product"><i
                                         class="ri-shopping-cart-line"></i>
                                     <div class="fly_item"><span class="item_number"

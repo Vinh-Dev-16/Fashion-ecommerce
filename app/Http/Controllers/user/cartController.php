@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\admin\ValueAttribute;
 use App\Models\admin\Category;
 use App\Models\admin\Brand;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Illuminate\Http\Request;
 use App\Models\Information;
@@ -21,10 +19,7 @@ use PhpParser\ErrorHandler\Collecting;
 class cartController extends Controller
 {
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
+
     public function viewCart(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $cart = session()->get('cart', []);

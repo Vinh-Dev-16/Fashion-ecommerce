@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     </form>
-                <button type="submit" class="primary_button">  Thêm địa chỉ
+                <button style="border: none; outline: none" type="submit" class="primary_button">  Thêm địa chỉ
                 </button>
             </div>
         </div>
