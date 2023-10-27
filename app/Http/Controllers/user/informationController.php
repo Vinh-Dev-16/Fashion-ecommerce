@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class informationController extends Controller
 {
@@ -82,10 +83,100 @@ class informationController extends Controller
         return view('user.design.information.create_address', compact('cart','user'));
     }
 
-    public function doCreate($id)
-    {
-        //
+    public function doCreateAddress(Request $request) {
+
+        $validate = Validator::make($request->all(), [
+            'district' => 'required',
+            'province' => 'required',
+            'address' => 'required',
+        ],
+         [
+             'required' => 'Không được để trống trường này',
+         ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => STATUS_ERROR,
+                'message' => $validate->errors()->toArray(),
+            ]);
+        }
+
+        try {
+            $cart = session()->get('cart', []);
+            $user = User::find($request->user_id);
+            $input = $request->all();
+            unset($input['_token']);
+            $input['commune'] = empty($input['commune']) ? '' : $input['commune'];
+            $information = Information::where('user_id', $request->user_id)->first();
+            $information->update([
+                'district' => $input['district'],
+                'province' => $input['province'],
+                'address' => $input['address'],
+                'commune' => $input['commune'],
+            ]);
+           return response()->json([
+                'status' => STATUS_SUCCESS,
+                'message' => 'Thêm địa chỉ thành công',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => STATUS_FAIL,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
+        }
     }
+
+
+    public function editAddress($id)
+    {
+        $user = User::find($id);
+        $cart = session()->get('cart', []);
+        return view('user.design.information.edit_address', compact('cart','user'));
+    }
+
+    public function updateAddress(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'district' => 'required',
+            'province' => 'required',
+            'address' => 'required',
+        ],
+            [
+                'required' => 'Không được để trống trường này',
+            ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => STATUS_ERROR,
+                'message' => $validate->errors()->toArray(),
+            ]);
+        }
+
+        try {
+            $cart = session()->get('cart', []);
+            $user = User::find($request->user_id);
+            $input = $request->all();
+            unset($input['_token']);
+            $input['commune'] = empty($input['commune']) ? '' : $input['commune'];
+            $information = Information::where('user_id', $request->user_id)->first();
+            $information->update([
+                'district' => $input['district'],
+                'province' => $input['province'],
+                'address' => $input['address'],
+                'commune' => $input['commune'],
+            ]);
+            return response()->json([
+                'status' => STATUS_SUCCESS,
+                'message' => 'Sửa địa chỉ thành công',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => STATUS_FAIL,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
+        }
+    }
+
     public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $user = User::find($id);

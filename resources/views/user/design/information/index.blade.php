@@ -65,7 +65,7 @@
                                 </li>
                                 @if(!empty($user->information->address))
                                     <li>
-                                        <a>
+                                        <a href="{{url('information/edit-address/' . $user->id)}}">
                                             <div class="icon_large">
                                                 <i class="ri-edit-box-line"></i>
                                             </div>

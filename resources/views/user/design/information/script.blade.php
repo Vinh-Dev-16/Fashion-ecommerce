@@ -91,4 +91,47 @@
             }
         });
     })
+
+
+
+
+    $('#create_address').click(function(){
+        $.ajax({
+            url : '{{ route('information.do_create') }}',
+            type : 'POST',
+            data : {
+                province : $('#show-province').val(),
+                district : $('#show-district').val(),
+                commune : $('#show-commune').val(),
+                address : $('input[name="address"]').val(),
+                user_id : '{{ $user->id }}',
+            },
+            beforeSend: function () {
+                $(document).find('div.text-danger').text('');
+            },
+            success: function(response) {
+                switch (response.status) {
+                    case 0:
+                        $.each(response.message, function (prefix, val) {
+                            $('div.' + prefix + '_error').text(val[0]);
+                        });
+                        break;
+                    case 1:
+                        createNoti(response.message);
+                        setTimeout(function () {
+                            window.location.href = '{{ url('information/' . $user->id) }}';
+                        }, 1000);
+                        break;
+                    case 2:
+                        createToast(response.message);
+                        break;
+                }
+            },
+            error: function (error) {
+                createToast(error);
+            }
+
+        })
+    })
+
 </script>

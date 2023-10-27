@@ -65,7 +65,7 @@ class brandController extends Controller
             ]);
         if ($validator->fails()) {
             return response()->json([
-                'status' => 0,
+                'status' => STATUS_ERROR,
                 'message' => $validator->errors()->toArray(),
             ]);
         }
@@ -75,13 +75,13 @@ class brandController extends Controller
             $brand = Brand::create($input);
             $url = url('admin/brand/index') . '?page=' . Session::get('page');
             return response()->json([
-                'status' => 1,
+                'status' => STATUS_SUCCESS,
                 'message' => 'Thêm brand thành công',
                 'url' => $url,
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'status' => 2,
+                'status' => STATUS_FAIL,
                 'message' => 'Đã xảy ra lỗi',
             ]);
         }
@@ -117,7 +117,7 @@ class brandController extends Controller
             ]);
         if ($validator->fails()) {
             return response()->json([
-                'status' => 0,
+                'status' => STATUS_ERROR,
                 'message' => $validator->errors()->toArray(),
             ]);
         }
@@ -128,13 +128,13 @@ class brandController extends Controller
             $brands->update($input);
             $url = url('admin/brand/index') . '?page=' . Session::get('page');
             return response()->json([
-                'status' => 1,
+                'status' => STATUS_SUCCESS,
                 'message' => 'Cập nhật brand thành công',
                 'url' => $url,
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'status' => 2,
+                'status' => STATUS_FAIL,
                 'message' => 'Đã xảy ra lỗi',
             ]);
         }
@@ -146,7 +146,7 @@ class brandController extends Controller
         $brand = Brand::find($id);
         if (empty($brand)) {
             return response()->json([
-                'status' => 0,
+                'status' => STATUS_ERROR,
                 'message' => 'Không tìm thấy thương hiệu',
             ]);
         }
@@ -154,13 +154,13 @@ class brandController extends Controller
             $brand->delete();
             $url = url('admin/brand/index') . '?page=' . Session::get('page');
             return response()->json([
-                'status' => 1,
+                'status' => STATUS_SUCCESS,
                 'message' => 'Xóa thương hiệu thành công',
                 'url' => $url,
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'status' => 2,
+                'status' => STATUS_FAIL,
                 'message' => 'Đã xảy ra lỗi',
             ]);
         }

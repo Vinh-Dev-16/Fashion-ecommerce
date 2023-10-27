@@ -236,7 +236,7 @@
                                     @can('confirm-shipper')
                                         <div class="fly_item" style="top:-10px;background:red">
                                                 <span
-                                                    class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() }}
+                                                    class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', CONFIRM)->where('ship',NOT_SHIP)->count() }}
                                                 </span>
                                         </div>
                                     @endcan
@@ -244,7 +244,7 @@
                                     @can('confirm-order')
                                         <div class="fly_item" style="top:-10px;background:red">
                                                 <span
-                                                    class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', 0)->count() }}
+                                                    class="item_number" id="count_number">{{ App\Models\OrderDetail::where('status', NOT_CONFIRM)->count() }}
                                                 </span>
                                         </div>
                                     @endcan
@@ -287,7 +287,7 @@
                                                         </a>
                                                         <div class="fly_item" style="top:-10px;background:red">
                                                         <span
-                                                            class="item_number" id="count_number-confirm">{{ App\Models\OrderDetail::where('status', 0)->count() }}
+                                                            class="item_number" id="count_number-confirm">{{ App\Models\OrderDetail::where('status', NOT_CONFIRM)->count() }}
                                                         </span>
                                                         </div>
                                                     </li>
@@ -305,7 +305,7 @@
                                                             Check đơn hàng
                                                         </a>
                                                         <div class="fly_item" style="top:-10px;background:red">
-                                                     <span class="item_number" id="count_number-ship">{{ App\Models\OrderDetail::where('status', 2)->where('ship',0)->count() }}
+                                                     <span class="item_number" id="count_number-ship">{{ App\Models\OrderDetail::where('status', CONFIRM)->where('ship',NOT_SHIP)->count() }}
                                                      </span>
                                                         </div>
                                                     </li>
