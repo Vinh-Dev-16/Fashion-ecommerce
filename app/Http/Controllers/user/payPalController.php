@@ -47,14 +47,14 @@ class payPalController extends Controller
         $product = Product::find($request->product_id);
         $payment = collect(session('payment'), []);
         $payment = $payment->toArray();
-        array_push($payment, [
+        $payment[] = [
             'product' => Product::find($request->product_id),
             'quantity' => $request->stock,
             'size' => ValueAttribute::find($request->size)->value,
             'color' => ValueAttribute::find($request->color)->value,
             'image' => Product::find($request->product_id)->images->first()->path,
             'voucher' => $request->voucher,
-        ]);
+        ];
         session()->put('payment', $payment);
         $payments = session()->get('payment', []);
         return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'));
@@ -75,7 +75,7 @@ class payPalController extends Controller
     /**
      * process transaction.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function processTransaction(Request $request)
     {
@@ -115,10 +115,8 @@ class payPalController extends Controller
                 $subTotal = $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
             }
             switch ($cartItem['voucher']) {
+                case ($cartItem['voucher'] == 0):
                 case(!($cartItem['voucher'])):
-                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment', [])));
-                    break;
-                case($cartItem['voucher'] == 0):
                     return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment', [])));
                     break;
                 case($cartItem['voucher'] > 0 && $cartItem['voucher'] <= 100):
@@ -177,10 +175,10 @@ class payPalController extends Controller
                 }
             }
 
-            return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
+            return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
 
         } else {
-            return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
+            return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
         }
     }
 
