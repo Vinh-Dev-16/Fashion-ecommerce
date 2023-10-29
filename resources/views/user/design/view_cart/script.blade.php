@@ -32,6 +32,33 @@
         });
     });
 
+    $(document).on('click', 'input[name="ids[]"]', function () {
+        let id = $(this).attr('data-id');
+        let url = '{{ route('selectedCart') }}';
+        let data = {
+            id: id,
+        };
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                $('#show-data').fadeOut(400, function () {
+                    $(this).html(response.view);
+                    $(this).fadeIn(400);
+                    $('#mini_cart').fadeOut(400, function () {
+                        $(this).html(response.html);
+                        $(this).fadeIn(400);
+                    });
+                    $('#item_number').text(response.count);
+                });
+            },
+            error: function (response) {
+                createToast('Có lỗi xảy ra, vui lòng thử lại sau');
+            }
+        });
+    });
+
     // quantity
 
     function decrement(id, el) {

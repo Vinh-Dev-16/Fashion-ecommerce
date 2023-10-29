@@ -35,7 +35,7 @@
                                         <tr>
                                             <td>
                                                 <input type="checkbox" name='ids[{{ $key }}]'
-                                                       value="{{ $key }}">
+                                                       value="{{ $key }}" data-id="{{$key}}">
                                             </td>
                                             <td class="flexitem">
                                                 @if ($cart_product['product']->sale == 0)

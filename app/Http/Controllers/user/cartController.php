@@ -60,6 +60,22 @@ class cartController extends Controller
         ];
     }
 
+    public function selectedCart(Request $request)
+    {
+        $selectedCart = [];
+        $cart = collect(session('cart', []));
+        $cart->each(function ($item, $index) use (&$selectedCart, $request) {
+            if (in_array($index, $request->selected)) {
+                $selectedCart[] = $item;
+            }
+        });
+        session()->put('selectedCart', $selectedCart);
+        $count = count(session('selectedCart', []));
+        return [
+            'view' => view('user.design.view_cart.selected_data', compact('selectedCart', 'cart'))->render(),
+            'count' => $count,
+        ];
+    }
     public function removeCart(Request $request): array
     {
         $product_id = $request->product_id;

@@ -35,12 +35,15 @@ use Illuminate\Routing\Router;
         Route::post('confirm/item',[homeController::class,'confirmItem'])->middleware('auth')->name('confirmItem');
 
         // Route Cart
+        Route::prefix('cart')->group(function(){
+            Route::post('/',[cartController::class,'addToCart'])->name('cart');
+            Route::post('remove_cart',[cartController::class,'removeCart'])->name('remove_cart');
+            Route::get('view_cart',[cartController::class,'viewCart'])->name('view_cart');
+            Route::post('delete_cart',[cartController::class,'deleteCart'])->name('delete_cart');
+            Route::post('updateQuantity',[cartController::class,'updateQuantity'])->name('update_quantity');
+            Route::post('selected_cart',[cartController::class,'selectedCart'])->name('information.selected_cart');
+        });
 
-        Route::post('cart',[cartController::class,'addToCart'])->name('cart');
-        Route::post('remove_cart',[cartController::class,'removeCart'])->name('remove_cart');
-        Route::get('view_cart',[cartController::class,'viewCart'])->name('view_cart');
-        Route::post('delete_cart',[cartController::class,'deleteCart'])->name('delete_cart');
-        Route::post('updateQuantity',[cartController::class,'updateQuantity'])->name('update_quantity');
 
         // Cart checkout action
 
