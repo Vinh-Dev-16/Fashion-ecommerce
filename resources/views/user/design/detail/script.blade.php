@@ -6,38 +6,38 @@
     });
 
     $(document).ready(function () {
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .then( newEditor => {
-                editor = newEditor;
-            } )
-            .catch(error => {
-                console.error(error);
-            });
+        // ClassicEditor
+        //     .create(document.querySelector('#editor'))
+        //     .then( newEditor => {
+        //         editor = newEditor;
+        //     } )
+        //     .catch(error => {
+        //         console.error(error);
+        //     });
 
-        Dropzone.options.myDropzone = {
-            url: "{{ route('detail.feedback.load_images') }}",
-            method: "POST",
-            maxFilesize: 2,
-            maxFiles: 5,
-            acceptedFiles: ".jpeg,.jpg,.png,.gif",
-            addRemoveLinks: true,
-            timeout: 50000,
-            success: function (file, response) {
-                if (response.status == 0) {
-                    createToast(response.message);
-                } else {
-                    $('#show-image-upload').append('<div class="image-upload" style="position: relative">\n' +
-                        '                            <img src="' + response.path + '" alt="">\n' +
-                        '                            <i class="fas fa-times remove-image" onclick="removeImage(this)"></i>\n' +
-                        '                        </div>');
-                    createNoti(response.message);
-                }
-            },
-            error: function (file, response) {
-                return false;
-            }
-        };
+    {{--    Dropzone.options.myDropzone = {--}}
+    {{--        url: "{{ route('detail.feedback.load_images') }}",--}}
+    {{--        method: "POST",--}}
+    {{--        maxFilesize: 2,--}}
+    {{--        maxFiles: 5,--}}
+    {{--        acceptedFiles: ".jpeg,.jpg,.png,.gif",--}}
+    {{--        addRemoveLinks: true,--}}
+    {{--        timeout: 50000,--}}
+    {{--        success: function (file, response) {--}}
+    {{--            if (response.status == 0) {--}}
+    {{--                createToast(response.message);--}}
+    {{--            } else {--}}
+    {{--                $('#show-image-upload').append('<div class="image-upload" style="position: relative">\n' +--}}
+    {{--                    '                            <img src="' + response.path + '" alt="">\n' +--}}
+    {{--                    '                            <i class="fas fa-times remove-image" onclick="removeImage(this)"></i>\n' +--}}
+    {{--                    '                        </div>');--}}
+    {{--                createNoti(response.message);--}}
+    {{--            }--}}
+    {{--        },--}}
+    {{--        error: function (file, response) {--}}
+    {{--            return false;--}}
+    {{--        }--}}
+    {{--    };--}}
     });
 
     function wishlist() {

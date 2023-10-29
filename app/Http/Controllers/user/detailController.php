@@ -24,11 +24,11 @@ class detailController extends Controller
             if (!in_array($product->id, $view)) {
                 $product->increment('view');
                 $view[] = $product->id;
-                Cookie::queue('view', json_encode($view), 1440);
+                Cookie::queue('view', json_encode($view), ONE_DAY);
             }
         } else {
             $product->increment('view');
-            Cookie::queue('view', json_encode([$product->id]), 120);
+            Cookie::queue('view', json_encode([$product->id]), TWO_HOUR);
         }
         $rate = $product->feedbacks()->pluck('feedbacks.rate')->avg();
         return view('user.design.detail.index', compact('product', 'rate', 'cart'));

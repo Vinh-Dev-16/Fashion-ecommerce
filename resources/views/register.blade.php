@@ -82,19 +82,19 @@
                         <form role="form" action="" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Tên đăng nhập"
+                                <input type="text" class="form-control" style="padding: 0.5rem 0.75rem" placeholder="Tên đăng nhập"
                                        name="name" aria-label="Name">
                             </div>
                             <div class="text-danger error-text name_error" style="color:red; margin-bottom:10px;">
                             </div>
                             <div class="mb-3">
                                 <input type="email" class="form-control" placeholder="Email của bạn"
-                                       name="email" aria-label="Email">
+                                       name="email" aria-label="Email" style="padding: 0.5rem 0.75rem">
                             </div>
                             <div class="text-danger error-text email_error" style=" color:red"></div>
                             <div class="mb-3">
                                 <input type="password" class="form-control" placeholder="Nhập password"
-                                       name="password" aria-label="Password">
+                                       name="password" aria-label="Password" style="padding: 0.5rem 0.75rem">
                             </div>
                             <div class="text-danger error-text password_error" style=" color:red"></div>
                         </form>

@@ -31,10 +31,12 @@ class cartController extends Controller
         $product_id = $request->product_id;
         $size = $request->size;
         $color = $request->color;
+        $sizeName = ValueAttribute::find($size)->value;
+        $colorName = ValueAttribute::find($color)->value;
         $cart = collect(session('cart', []));
-        $foundIndex = $cart->search(function ($item, $index) use ($product_id, $size, $color) {
+        $foundIndex = $cart->search(function ($item, $index) use ($product_id, $sizeName, $colorName) {
             if ($item['product']->id == $product_id) {
-                return $item['size'] == $size || $item['color'] == $color;
+                return $item['size'] == $sizeName || $item['color'] == $colorName;
             }
             return false;
         });
@@ -62,8 +64,8 @@ class cartController extends Controller
     {
         $product_id = $request->product_id;
         $cartCollect = collect(session('cart', []));
-        $tmpCart = $cartCollect->filter(function ($item) use ($product_id) {
-            return $item['product']->id != $product_id;
+        $tmpCart = $cartCollect->filter(function ($item, $index) use ($product_id) {
+            return $index != $product_id;
         })->values();
         session()->put('cart', $tmpCart->toArray());
         $count = count(session('cart', []));
@@ -80,7 +82,7 @@ class cartController extends Controller
         $quantity = request()->get('quantity');
         $cart = collect(session('cart', []));
         $foundIndex = $cart->search(function ($item, $index) use ($id) {
-            return $item['product']->id == $id;
+            return $index == $id;
         });
         $cart = $cart->toArray();
 

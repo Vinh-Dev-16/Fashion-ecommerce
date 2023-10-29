@@ -206,7 +206,7 @@
                                 </a>
                             </li>
                         @else
-                            <li class="mobile_hide" onclick="createToast('Bạn cần phải đăng nhập')">
+                            <li class="mobile_hide" style="cursor:pointer" onclick="createToast('Bạn cần phải đăng nhập')">
                                 <div>
                                     <div class="icon_large" style="margin-top: -10px"><i
                                             class="ri-heart-line"></i>
@@ -224,10 +224,11 @@
                                                                 id="item_number">{{ count($cart) }}</span></div>
                                 </div>
                             </a>
-
-                            <div class="mini_cart" id="mini_cart">
-                              @include('user.cart')
-                            </div>
+                            @if(Auth::check())
+                                <div class="mini_cart" id="mini_cart">
+                                    @include('user.cart')
+                                </div>
+                            @endif
                         </li>
                         <li>
 

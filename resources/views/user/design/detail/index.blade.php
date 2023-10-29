@@ -195,7 +195,8 @@
                                                 </li>
                                                 <li><span>Đã bán:</span><span>{{ $product->sold }} sản phẩm </span>
                                                 </li>
-                                                <li><span>Đánh giá:</span><span class="rate_count_start">{{ round($rate, 1) }} sao</span></li>
+                                                <li><span>Đánh giá:</span><span class="rate_count_start">{{ round($rate, 1) }} sao</span>
+                                                </li>
                                             </ul>
                                         </div>
                                     </li>
@@ -313,7 +314,7 @@
                                             class="ri-arrow-right-line"></i></a></div>
                             </div>
                             <div class="products main flexwrap">
-                                @foreach (App\Models\admin\Product::where('sale', '=', 0)->where('brand_id', $product->brand_id)->where('id', '!=', $product->id)->inRandomOrder()->limit(6)->get() as $product)
+                                @foreach (App\Models\admin\Product::where('sale', '=', NOT_SALE)->where('brand_id', $product->brand_id)->where('id', '!=', $product->id)->inRandomOrder()->limit(6)->get() as $product)
                                     <div class="item page_other">
                                         <div class="media">
                                             <div class="thumbnail object_cover">
@@ -338,10 +339,10 @@
                                         </div>
                                         <div class="content">
                                             <div class="rating">
-                                                @if (80 *
+                                                @if (WIDTH_STAR *
                                                         ($product->feedbacks()->pluck('feedbacks.rate')->avg() /
-                                                            5) ==
-                                                        0)
+                                                            MAX_RATE) ==
+                                                        NOT_RATE)
                                                     <div class="stars" style="background-image:none;width:150px">Chưa có
                                                         đánh
                                                         giá

@@ -21,6 +21,17 @@
         });
     })
 
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const checkAllBtn = document.getElementById('checkBoxAll');
+
+
+    checkAllBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = true;
+        });
+    });
+
     // quantity
 
     function decrement(id, el) {

@@ -75,6 +75,7 @@
         $("#load-data").fadeOut("slow");
     }
 
+
     // Phần sidebar
 
     copyMenu();

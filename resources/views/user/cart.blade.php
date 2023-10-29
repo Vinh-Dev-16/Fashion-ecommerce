@@ -2,10 +2,15 @@
     <div class="cart_head" id="card_head">
         <p>Có {{ count($cart) }} sản phẩm</p>
     </div>
+    <?php
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $user = \App\Models\User::find(\Illuminate\Support\Facades\Auth::user()->id);
+        }
+    ?>
     <div class="cart_body">
         <ul class="products mini" id="card_body">
             @if (Session::has('cart'))
-                @foreach ($cart as $cart_product)
+                @foreach ($cart as $key=>$cart_product)
                     <li class="item" style="margin-bottom: 1em">
                         <div class="thumbnail object_cover">
                             <a href="#">
@@ -38,7 +43,7 @@
                                  </span>
                         </span>
                         <a href="#" class="item_remove" id="item_remove"
-                           onclick="remove_cart({{ $cart_product['product']->id }})">
+                           onclick="remove_cart({{ $key }})">
                             <i class="ri-close-line"></i>
                         </a>
                     </li>
@@ -64,17 +69,14 @@
                     $productIDs[] = $productId;
                 }
             }
-            $ship = 15000 * count($productIDs);
+
             ?>
-            <p>Phí ship</p>
-            <p><strong>{{ number_format(15000) }} * {{ count($productIDs) }} =
-                    {{ number_format($ship) }} VND</strong></p>
 
             <p>VAT sản phẩm <small>(10%)</small></p>
             <p><strong>{{ number_format($subTotal * 0.1) }} VND</strong></p>
             <p>Tổng tiền</p>
             <p>
-                <strong>{{ number_format($subTotal + 15000  + $subTotal * 0.1) }}
+                <strong>{{ number_format($subTotal + $subTotal * 0.1) }}
                     VND</strong></p>
         </div>
         <div class="actions">
@@ -87,8 +89,33 @@
                        onclick="createToast('Bạn cần đăng nhập hoặc có đơn hàng')">CheckOut</a>
                 @endif
             </div>
-            <a href="{{ route('view_cart') }}" class="secondary_button">Đến xem giỏ
-                hàng</a>
+            @if(empty($user->information->district) && empty($user->information->province))
+                <a href="javascript:void(0)" onclick="return confirm_btn(this, {{Auth::user()->id}})" class="secondary_button">Đến xem giỏ
+                    hàng</a>
+            @else
+                <a href="{{ route('view_cart') }}" class="secondary_button">Đến xem giỏ
+                    hàng</a>
+            @endif
+
         </div>
     </div>
 </div>
+<script defer>
+    function confirm_btn(eve, id) {
+        let href = '{{ url('information/create-address') }}' + '/' + id ;
+        swal({
+            title: "Bạn chưa có thông tin về địa chỉ",
+            text: "Bạn có muốn cập nhật thông tin địa chỉ không?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                window.location.href = href;
+            } else {
+                swal("Bạn có thể cập nhật thông tin địa chỉ sau");
+                return false;
+            }
+        });
+    }
+</script>

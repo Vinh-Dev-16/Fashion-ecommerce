@@ -19,6 +19,10 @@
                                 <table id="cart_table">
                                     <thead>
                                     <tr>
+                                        <th>
+                                            <input id="checkBoxAll" type="checkbox">
+                                            <span>Chọn</span>
+                                        </th>
                                         <th>Sản phẩm</th>
                                         <th>Giá</th>
                                         <th>Số lượng</th>
@@ -29,6 +33,10 @@
                                     <tbody>
                                     @foreach ($cart as $key=>$cart_product)
                                         <tr>
+                                            <td>
+                                                <input type="checkbox" name='ids[{{ $key }}]'
+                                                       value="{{ $key }}">
+                                            </td>
                                             <td class="flexitem">
                                                 @if ($cart_product['product']->sale == 0)
                                                     <div class="thumbnail">
@@ -43,8 +51,9 @@
                                                                 href="{{ url('detail/' . $cart_product['product']->slug) }}">{{ $cart_product['product']->name }}
                                                             </a>
                                                         </strong>
-                                                        <p style="margin-bottom: 1px">Color:
-                                                            {{ $cart_product['color'] }}</p>
+                                                        <p style="margin-bottom: 1px">Màu:
+                                                            {{\App\Helpers\ColorNameHelper::ChangeName($cart_product['color'])}}
+                                                        </p>
                                                         <p>Size: {{ $cart_product['size'] }}</p>
                                                     </div>
                                                 @else
@@ -60,8 +69,8 @@
                                                                 href="{{ url('pageoffer/' . $cart_product['product']->slug) }}">{{ $cart_product['product']->name }}
                                                             </a>
                                                         </strong>
-                                                        <p style="margin-bottom: 1px">Color:
-                                                            {{ $cart_product['color'] }}</p>
+                                                        <p style="margin-bottom: 1px">Màu:
+                                                            {{\App\Helpers\ColorNameHelper::ChangeName($cart_product['color'])}}</p>
                                                         <p>Size: {{ $cart_product['size'] }}</p>
                                                     </div>
                                                 @endif
@@ -79,13 +88,13 @@
                                             <td>
                                                 <div class="qty_control flexitem">
                                                     <div style="padding-top: 12px" class="minus"
-                                                         onclick="decrement({{ $cart_product['product']->id }},this)">
+                                                         onclick="decrement({{$key}},this)">
                                                         -</div>
                                                     <input type="number" value="{{ $cart_product['quantity'] }}"
                                                            min="1" max="{{ $cart_product['product']->stock }}"
                                                            id="quantity_cart" disabled>
                                                     <div style="padding-top: 12px"
-                                                         onclick="increment({{ $cart_product['product']->id }},{{ $cart_product['product']->stock }},this)"
+                                                         onclick="increment({{ $key }},{{ $cart_product['product']->stock }},this)"
                                                          class="plus">+</div>
                                                 </div>
                                             </td>
@@ -146,7 +155,7 @@
                                                 <td class="sub_total">{{ number_format($subTotal) }} </td>
                                             </tr>
                                             <tr>
-                                                <th>Phí ship<span class="mini_text">/Product</span></th>
+                                                <th>Phí ship</th>
                                                 <td>{{ number_format($ship) }} VND</td>
                                             </tr>
                                             <tr>
@@ -161,14 +170,14 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                    
+
                                         @if (Auth::check() && count($cart) > 0)
                                             <a href="{{ url('checkout') }}" class="secondary_button">Check out</a>
                                         @elseif (!Auth::check())
                                             <button class="secondary_button"
                                                     onclick="createToast('Bạn cần phải đăng nhập')"
                                                     style="border:none;outline:none;width:100%">Check out</button>
-                                        @elseif (count($cart) == 0) 
+                                        @elseif (count($cart) == 0)
                                             <button class="secondary_button"
                                             onclick="createToast('Bạn cần có sản phẩm')"
                                             style="border:none;outline:none;width:100%">Check out</button>

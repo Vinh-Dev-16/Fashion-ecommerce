@@ -102,33 +102,47 @@ class informationController extends Controller
             ]);
         }
 
-        try {
+//        try {
             $cart = session()->get('cart', []);
             $user = User::find($request->user_id);
             $input = $request->all();
             unset($input['_token']);
-            $input['commune'] = empty($input['commune']) ? '' : $input['commune'];
-            $input['commune_id'] = empty($input['commune_id']) ? '' : $input['commune_id'];
+            $input['commune'] = empty($input['commune']) ? null : $input['commune'];
+            $input['commune_id'] = empty($input['commune_id']) ? null : $input['commune_id'];
             $information = Information::where('user_id', $request->user_id)->first();
-            $information->update([
-                'district' => $input['district'],
-                'province' => $input['province'],
-                'province_id' => $input['province_id'],
-                'district_id' => $input['district_id'],
-                'commune_id' => $input['commune_id'],
-                'address' => $input['address'],
-                'commune' => $input['commune'],
-            ]);
+            if (empty($information)) {
+                Information::create([
+                    'user_id' => $input['user_id'],
+                    'district' => $input['district'],
+                    'province' => $input['province'],
+                    'address' => $input['address'],
+                    'commune_id' => $input['commune_id'],
+                    'district_id' => $input['district_id'],
+                    'province_id' => $input['province_id'],
+                    'commune' => $input['commune'],
+                ]);
+            } else {
+                $information->update([
+                    'district' => $input['district'],
+                    'province' => $input['province'],
+                    'province_id' => $input['province_id'],
+                    'district_id' => $input['district_id'],
+                    'commune_id' => $input['commune_id'],
+                    'address' => $input['address'],
+                    'commune' => $input['commune'],
+                ]);
+
+            }
            return response()->json([
                 'status' => STATUS_SUCCESS,
                 'message' => 'Thêm địa chỉ thành công',
             ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'status' => STATUS_FAIL,
-                'message' => 'Đã xảy ra lỗi',
-            ]);
-        }
+//        } catch (Exception $e) {
+//            return response()->json([
+//                'status' => STATUS_FAIL,
+//                'message' => 'Đã xảy ra lỗi',
+//            ]);
+//        }
     }
 
 
