@@ -34,7 +34,7 @@
                                     @foreach ($cart as $key=>$cart_product)
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name='ids[{{ $key }}]'
+                                                <input type="checkbox" name='ids[]'
                                                        value="{{ $key }}" data-id="{{$key}}">
                                             </td>
                                             <td class="flexitem">
@@ -129,47 +129,74 @@
                                         <a href="#" class="icon_small">Hóa đơn bao gồm phí ship và tax</a>
                                     </div>
                                     <div class="cart_total">
-                                            <?php $cartCollect = collect($cart);
-                                            $subTotal = $cartCollect->sum(function ($cartItem) {
-                                                if (!$cartItem['product']->discount) {
-                                                    return $cartItem['quantity'] * $cartItem['product']->price;
-                                                } else {
-                                                    return $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
-                                                }
-                                            });
 
-                                            $productIDs = [];
-                                            foreach ($cartCollect as $cartItem) {
-                                                $productId = $cartItem['product']->id;
+                                        @if(Session::has('selectedCart'))
+                                            <table>
+                                                    <?php $cartCollect = collect(\Illuminate\Support\Facades\Session::get('selectedCart'));
+                                                    $subTotal = $cartCollect->sum(function ($cartItem) {
+                                                        if (!$cartItem['product']->discount) {
+                                                            return $cartItem['quantity'] * $cartItem['product']->price;
+                                                        } else {
+                                                            return $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
+                                                        }
+                                                    });
 
-                                                if (!in_array($productId, $productIDs)) {
-                                                    $productIDs[] = $productId;
-                                                }
-                                            }
-                                            $ship = 15000 * count($productIDs);
-                                            ?>
-                                        <table>
-                                            <tbody>
-                                            <tr>
-                                                <th>Tổng tiền</th>
-                                                <td class="sub_total">{{ number_format($subTotal) }} </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Phí ship</th>
-                                                <td>{{ number_format($ship) }} VND</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Tax</th>
-                                                <td class="tax">{{ number_format($subTotal * 0.1) }} VND</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Tổng tất cả</th>
-                                                <td class="total">
-                                                    {{ number_format($subTotal + $ship + $subTotal * 0.1) }}
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                    $productIDs = [];
+                                                    foreach ($cartCollect as $cartItem) {
+                                                        $productId = $cartItem['product']->id;
+
+                                                        if (!in_array($productId, $productIDs)) {
+                                                            $productIDs[] = $productId;
+                                                        }
+                                                    }
+                                                    $ship = 15000 * count($productIDs);
+                                                    ?>
+                                                <tbody>
+                                                <tr>
+                                                    <th>Tổng tiền</th>
+                                                    <td class="sub_total">{{ number_format($subTotal) }} </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Phí ship</th>
+                                                    <td>{{ number_format($ship) }} VND</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Tax</th>
+                                                    <td class="tax">{{ number_format($subTotal * 0.1) }} VND</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Tổng tất cả</th>
+                                                    <td class="total">
+                                                        {{ number_format($subTotal + $ship + $subTotal * 0.1) }}
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        @else
+                                            <table>
+                                                <tbody>
+                                                <tr>
+                                                    <th>Tổng tiền</th>
+                                                    <td class="sub_total"> 0 VNĐ </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Phí ship</th>
+                                                    <td> 0 VNĐ</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Tax</th>
+                                                    <td class="tax"> 0 VNĐ</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Tổng tất cả</th>
+                                                    <td class="total">
+                                                       0 VNĐ
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        @endif
+
 
                                         @if (Auth::check() && count($cart) > 0)
                                             <a href="{{ url('checkout') }}" class="secondary_button">Check out</a>

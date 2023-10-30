@@ -23,6 +23,10 @@ class cartController extends Controller
     public function viewCart(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $cart = session()->get('cart', []);
+        if (session()->has('selectedCart') && session()->get('selectedCart') != null) {
+            $selectedCart = session()->get('selectedCart', []);
+            return view('user.design.view_cart.index', compact('cart', 'selectedCart'));
+        }
         return view('user.design.view_cart.index', compact('cart'));
     }
 
@@ -71,8 +75,9 @@ class cartController extends Controller
         });
         session()->put('selectedCart', $selectedCart);
         $count = count(session('selectedCart', []));
+        dd(session()->get('selectedCart', []));
         return [
-            'view' => view('user.design.view_cart.selected_data', compact('selectedCart', 'cart'))->render(),
+            'view' => view('user.design.view_cart.list_data', compact('selectedCart', 'cart'))->render(),
             'count' => $count,
         ];
     }

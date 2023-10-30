@@ -33,10 +33,13 @@
     });
 
     $(document).on('click', 'input[name="ids[]"]', function () {
-        let id = $(this).attr('data-id');
+        let id = [];
+        $('input[name="ids[]"]:checked').each(function () {
+            id.push($(this).val());
+        });
         let url = '{{ route('information.selected_cart') }}';
         let data = {
-            id: id,
+            selected: id,
         };
         $.ajax({
             url: url,
