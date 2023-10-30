@@ -84,19 +84,19 @@
                 @if (Auth::check() && count($cart) > 0)
                     <a href="{{ url('checkout') }}"
                        class="primary_button">CheckOut</a>
-                @else
-                    <a href="#" class="primary_button"
-                       onclick="createToast('Bạn cần đăng nhập hoặc có đơn hàng')">CheckOut</a>
                 @endif
             </div>
+            @if (Auth::check())
             @if(empty($user->information->district) && empty($user->information->province))
-                <a href="javascript:void(0)" onclick="return confirm_btn(this, {{Auth::user()->id}})" class="secondary_button">Đến xem giỏ
-                    hàng</a>
+            <a href="javascript:void(0)" onclick="return confirm_btn(this, {{Auth::user()->id}})" class="secondary_button">Đến xem giỏ
+                hàng</a>
             @else
                 <a href="{{ route('view_cart') }}" class="secondary_button">Đến xem giỏ
                     hàng</a>
             @endif
 
+            @endif
+        
         </div>
     </div>
 </div>

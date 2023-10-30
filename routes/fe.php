@@ -38,10 +38,10 @@ use Illuminate\Routing\Router;
         Route::prefix('cart')->group(function(){
             Route::post('/',[cartController::class,'addToCart'])->name('cart');
             Route::post('remove_cart',[cartController::class,'removeCart'])->name('remove_cart');
-            Route::get('view_cart',[cartController::class,'viewCart'])->name('view_cart');
-            Route::post('delete_cart',[cartController::class,'deleteCart'])->name('delete_cart');
-            Route::post('updateQuantity',[cartController::class,'updateQuantity'])->name('update_quantity');
-            Route::post('selected_cart',[cartController::class,'selectedCart'])->name('information.selected_cart');
+            Route::get('view_cart',[cartController::class,'viewCart'])->name('view_cart')->middleware('auth');
+            Route::post('delete_cart',[cartController::class,'deleteCart'])->name('delete_cart')->middleware('auth');;
+            Route::post('updateQuantity',[cartController::class,'updateQuantity'])->name('update_quantity')->middleware('auth');;
+            Route::post('selected_cart',[cartController::class,'selectedCart'])->name('information.selected_cart')->middleware('auth');;
         });
 
 

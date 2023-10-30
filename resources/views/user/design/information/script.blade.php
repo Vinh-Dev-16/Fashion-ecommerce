@@ -97,6 +97,8 @@
     })
 
 
+    function getShipByAPI() {
+    }
 
 
     $('#create_address').click(function(){

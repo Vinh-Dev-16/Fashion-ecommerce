@@ -224,11 +224,11 @@
                                                                 id="item_number">{{ count($cart) }}</span></div>
                                 </div>
                             </a>
-                            @if(Auth::check())
+                    
                                 <div class="mini_cart" id="mini_cart">
                                     @include('user.cart')
                                 </div>
-                            @endif
+                    
                         </li>
                         <li>
 

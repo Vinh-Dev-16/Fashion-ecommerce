@@ -5,6 +5,8 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Models\admin\Product;
 use Illuminate\Support\Facades\Session;
@@ -13,7 +15,6 @@ use App\Models\admin\Brand;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Events\UserOrderEvent;
-use Milon\Barcode\DNS2D;
 
 
 use App\Models\Information;
@@ -60,7 +61,7 @@ class payPalController extends Controller
         return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'));
     }
 
-    public function voucher(Request $request)
+    public function voucher(Request $request): \Illuminate\Http\JsonResponse
     {
 
         $payment = collect(session('payment'), []);
@@ -72,11 +73,7 @@ class payPalController extends Controller
         ]);
     }
 
-    /**
-     * process transaction.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
+
     public function processTransaction(Request $request)
     {
 
@@ -182,12 +179,13 @@ class payPalController extends Controller
         }
     }
 
+
     /**
-     * success transaction.
-     *
-     * @return \Illuminate\Http\Response
+     * @throws ContainerExceptionInterface
+     * @throws \Throwable
+     * @throws NotFoundExceptionInterface
      */
-    public function successTransaction(Request $request)
+    public function successTransaction(Request $request): \Illuminate\Http\RedirectResponse
     {
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
@@ -254,11 +252,7 @@ class payPalController extends Controller
         }
     }
 
-    /**
-     * cancel transaction.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function cancelTransaction(Request $request)
     {
         $payments = session()->get('payment', []);
@@ -288,7 +282,7 @@ class payPalController extends Controller
         return view('user.design.history.print', compact('orderDetail'))->render();
     }
 
-    public function printInvoice(Request $request)
+    public function printInvoice(Request $request): \Illuminate\Http\Response
     {
         $pdf = PDF::loadview('user.design.history.invoice');
         return $pdf->download('Fashion_Invoice.pdf');

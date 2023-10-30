@@ -34,7 +34,7 @@
 
     $(document).on('click', 'input[name="ids[]"]', function () {
         let id = $(this).attr('data-id');
-        let url = '{{ route('selectedCart') }}';
+        let url = '{{ route('information.selected_cart') }}';
         let data = {
             id: id,
         };
