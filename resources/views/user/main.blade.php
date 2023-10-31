@@ -60,20 +60,20 @@
     </script>
 @endcan
 <script>
-    window.addEventListener('load', () => {
-        $("#load-data").fadeOut("slow");
-        $("#page").fadeIn("slow");
-    })
+    // window.addEventListener('load', () => {
+    //     $("#load-data").fadeOut("slow");
+    //     $("#page").fadeIn("slow");
+    // })
 
-    function block_screen() {
-        $("#load-data").fadeIn("slow");
-        $("#page").fadeOut("slow");
-    }
-
-    function unblock_screen() {
-        $("#page").fadeIn("slow");
-        $("#load-data").fadeOut("slow");
-    }
+    // function block_screen() {
+    //     $("#load-data").fadeIn("slow");
+    //     $("#page").fadeOut("slow");
+    // }
+    //
+    // function unblock_screen() {
+    //     $("#page").fadeIn("slow");
+    //     $("#load-data").fadeOut("slow");
+    // }
 
 
     // Phần sidebar

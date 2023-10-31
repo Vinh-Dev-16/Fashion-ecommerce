@@ -5423,6 +5423,10 @@ fieldset:disabled .btn {
         max-width: 60%  !important;
         margin: 1.75rem auto;
     }
+    .custom-dialog {
+        /* max-width: 41% !important; */
+        max-width: 500px !important;
+        margin: auto !important;
     .card-group {
         display: flex;
         flex-flow: row wrap;

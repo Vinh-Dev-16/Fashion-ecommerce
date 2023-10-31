@@ -1,4 +1,4 @@
-@if (Session::has('cart'))
+@if (Session::has('cart') && Session::has('selectedCart'))
     <div class="single_cart">
         <div class="container">
             <div class="wrapper">
@@ -35,7 +35,13 @@
                                         <tr>
                                             <td>
                                                 <input type="checkbox" name='ids[]'
-                                                       value="{{ $key }}" data-id="{{$key}}">
+                                                       value="{{ $key }}" data-id="{{$key}}"
+                                                @foreach ($selectedCart as $selected)
+                                                    @if ($selected['index'] == $key)
+                                                        checked
+                                                    @endif
+                                                    @endforeach
+                                                >
                                             </td>
                                             <td class="flexitem">
                                                 @if ($cart_product['product']->sale == 0)
@@ -130,9 +136,9 @@
                                     </div>
                                     <div class="cart_total">
 
-                                        @if(Session::has('selectedCart') && count(\Illuminate\Support\Facades\Session::get('selectedCart')) > 0)
-                                            <table style="width: 100%">
-                                                    <?php $cartCollect = collect($cart);
+                                        @if(Session::has('selectedCart'))
+                                            <table style="width: 100%;">
+                                                    <?php $cartCollect = collect($selectedCart);
                                                     $subTotal = $cartCollect->sum(function ($cartItem) {
                                                         if (!$cartItem['product']->discount) {
                                                             return $cartItem['quantity'] * $cartItem['product']->price;
@@ -154,7 +160,7 @@
                                                 <tbody>
                                                 <tr>
                                                     <th>Tổng tiền</th>
-                                                    <td class="sub_total">{{ number_format($subTotal) }} </td>
+                                                    <td class="sub_total">{{ number_format($subTotal) }} VND </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Phí ship</th>
@@ -167,13 +173,13 @@
                                                 <tr>
                                                     <th>Tổng tất cả</th>
                                                     <td class="total">
-                                                        {{ number_format($subTotal + $ship + $subTotal * 0.1) }}
+                                                        {{ number_format($subTotal + $ship + $subTotal * 0.1) }} VND
                                                     </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
                                         @else
-                                            <table style="width: 100%" >
+                                            <table style="width: 100%">
                                                 <tbody>
                                                 <tr>
                                                     <th>Tổng tiền</th>
@@ -190,7 +196,7 @@
                                                 <tr>
                                                     <th>Tổng tất cả</th>
                                                     <td class="total">
-                                                       0 VNĐ
+                                                        0 VNĐ
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -206,8 +212,8 @@
                                                     style="border:none;outline:none;width:100%">Thanh toán</button>
                                         @elseif (count($cart) == 0)
                                             <button class="secondary_button"
-                                            onclick="createToast('Bạn cần có sản phẩm')"
-                                            style="border:none;outline:none;width:100%">Thanh toán</button>
+                                                    onclick="createToast('Bạn cần có sản phẩm')"
+                                                    style="border:none;outline:none;width:100%">Thanh toán</button>
                                         @endif
                                     </div>
                                 </div>

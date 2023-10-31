@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\user;
+
 use App\Models\admin\Product;
 use App\Http\Controllers\Controller;
 use App\Models\admin\ValueAttribute;
 use App\Models\admin\Category;
 use App\Models\admin\Brand;
+use Illuminate\Support\Facades\Route;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Illuminate\Http\Request;
 use App\Models\Information;
@@ -20,6 +24,10 @@ class cartController extends Controller
 {
 
 
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     */
     public function viewCart(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $cart = session()->get('cart', []);
@@ -64,39 +72,99 @@ class cartController extends Controller
         ];
     }
 
-    public function selectedCart(Request $request)
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function selectedCart(Request $request): array
     {
-        $selectedCart = [];
-        $cart = collect(session('cart', []));
-        $cart->each(function ($item, $index) use (&$selectedCart, $request) {
-            if (in_array($index, $request->selected)) {
-                $selectedCart[] = $item;
-            }
-        });
-        session()->put('selectedCart', $selectedCart);
-        $count = count(session('selectedCart', []));
-        dd(session()->get('selectedCart', []));
-        return [
-            'view' => view('user.design.view_cart.list_data', compact('selectedCart', 'cart'))->render(),
-            'count' => $count,
-        ];
-    }
-    public function removeCart(Request $request): array
-    {
-        $product_id = $request->product_id;
-        $cartCollect = collect(session('cart', []));
-        $tmpCart = $cartCollect->filter(function ($item, $index) use ($product_id) {
-            return $index != $product_id;
-        })->values();
-        session()->put('cart', $tmpCart->toArray());
-        $count = count(session('cart', []));
-        $cart = session()->get('cart', []);
-        return [
-            'view' => view('user.cart', compact('cart'))->render(),
-            'count' => $count,
-        ];
+        if (!empty($request->selected)) {
+            $selectedCart = [];
+            $cart = collect(session('cart', []));
+            $cart->each(function ($item, $index) use (&$selectedCart, $request) {
+                if (in_array($index, $request->selected)) {
+                    $selectedCart[] = $item;
+                    $selectedCart[count($selectedCart) - 1]['index'] = $index;
+                    $selectedCart = array_values($selectedCart);
+                }
+            });
+            session()->put('selectedCart', $selectedCart);
+            $count = count(session('selectedCart', []));
+            return [
+                'view' => view('user.design.view_cart.list_cart_selected', compact('selectedCart', 'cart'))->render(),
+                'count' => $count,
+            ];
+        } else {
+            session()->forget('selectedCart');
+            $cart = collect(session('cart', []));
+            $count = count(session('cart', []));
+            return [
+                'view' => view('user.design.view_cart.list_data', compact('cart'))->render(),
+                'count' => $count,
+            ];
+        }
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function removeCart(Request $request): array
+    {
+
+        $id = request()->get('id');
+        $tmpCart = collect(session('cart', []));
+        $cartSelected = collect(session('selectedCart', []));
+        $existsInCart = $tmpCart->has($id);
+        $existsInSelectedCart = $cartSelected->contains('index', $id);
+
+        if ($existsInCart && !$existsInSelectedCart) {
+            $tmpCart = $tmpCart->reject(function ($item, $index) use ($id) {
+                return $index == $id;
+            })->values();
+            session()->put('cart', $tmpCart->toArray());
+
+            $cartSelected = $cartSelected->map(function ($item) use ($id) {
+                if ($item['index'] > $id) {
+                    $item['index'] -= 1;
+                }
+                return $item;
+            })->values();
+            session()->put('selectedCart', $cartSelected->toArray());
+        } elseif ($existsInCart && $existsInSelectedCart) {
+            $tmpCart = $tmpCart->reject(function ($item, $index) use ($id) {
+                return $index == $id;
+            })->values();
+
+            $cartSelected = $cartSelected->reject(function ($item) use ($id) {
+                return $item['index'] == $id;
+            })->values();
+
+            session()->put('cart', $tmpCart->toArray());
+            session()->put('selectedCart', $cartSelected->toArray());
+        }
+
+        $cart = session()->get('cart', []);
+        $count = count($cart);
+        $selectedCart = session()->get('selectedCart', []);
+        if ($request->is('view_cart')) {
+            return [
+                'view' => view('user.design.view_cart.list_cart_selected', compact('selectedCart', 'cart'))->render(),
+                'count' => $count,
+                'html' => view('user.cart', compact('cart'))->render(),
+            ];
+        } else {
+            return [
+                'html' => view('user.cart', compact('cart'))->render(),
+                'count' => $count,
+            ];
+        }
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function updateQuantity(): array
     {
         $id = request()->get('id');
@@ -120,21 +188,62 @@ class cartController extends Controller
         ];
     }
 
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     */
     public function deleteCart(Request $request): array
     {
         $id = request()->get('id');
         $tmpCart = collect(session('cart', []));
-        $cartProduct = $tmpCart->filter(function ($item, $index) use ($id) {
-            return $index != $id;
-        })->values();
-        session()->put('cart', $cartProduct->toArray());
+        $cartSelected = collect(session('selectedCart', []));
+        $existsInCart = $tmpCart->has($id);
+        $existsInSelectedCart = $cartSelected->contains('index', $id);
+
+        if ($existsInCart && !$existsInSelectedCart) {
+            $tmpCart = $tmpCart->reject(function ($item, $index) use ($id) {
+                return $index == $id;
+            })->values();
+            session()->put('cart', $tmpCart->toArray());
+
+            $cartSelected = $cartSelected->map(function ($item) use ($id) {
+                if ($item['index'] > $id) {
+                    $item['index'] -= 1;
+                }
+                return $item;
+            })->values();
+            session()->put('selectedCart', $cartSelected->toArray());
+        } elseif ($existsInCart && $existsInSelectedCart) {
+            $tmpCart = $tmpCart->reject(function ($item, $index) use ($id) {
+                return $index == $id;
+            })->values();
+
+            $cartSelected = $cartSelected->reject(function ($item) use ($id) {
+                return $item['index'] == $id;
+            })->values();
+
+            session()->put('cart', $tmpCart->toArray());
+            session()->put('selectedCart', $cartSelected->toArray());
+        }
+
         $count = count(session('cart', []));
         $cart = session()->get('cart', []);
-        return [
-            'view' => view('user.design.view_cart.list_data' , compact('cart'))->render(),
-            'count' => $count,
-            'html' => view('user.cart', compact('cart'))->render(),
-        ];
+        $selectedCart = session()->get('selectedCart', []);
+        if (count($selectedCart) > 0) {
+            return [
+                'view' => view('user.design.view_cart.list_cart_selected', compact('selectedCart', 'cart'))->render(),
+                'count' => $count,
+                'html' => view('user.cart', compact('cart'))->render(),
+            ];
+        } else {
+            session()->forget('selectedCart');
+            return [
+                'view' => view('user.design.view_cart.list_data', compact('cart'))->render(),
+                'count' => $count,
+                'html' => view('user.cart', compact('cart'))->render(),
+            ];
+        }
+
     }
 
     public function checkout(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
@@ -144,13 +253,14 @@ class cartController extends Controller
         $brands = Brand::all();
         $cart = session()->get('cart', []);
 
-        return view('user.design.checkout',compact('brands','products','categories','cart'));
+        return view('user.design.checkout', compact('brands', 'products', 'categories', 'cart'));
     }
 
     /**
      * @throws \Throwable
      */
-    public function process(Request $request){
+    public function process(Request $request)
+    {
 
 
         if ($request->isMethod('POST')) {
@@ -170,7 +280,7 @@ class cartController extends Controller
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();
 
-        $cartCollect = collect(session('cart',[]));
+        $cartCollect = collect(session('cart', []));
         $subTotal = $cartCollect->sum(function ($cartItem) {
             if (!$cartItem['product']->discount) {
                 return $cartItem['quantity'] * $cartItem['product']->price;
@@ -179,10 +289,10 @@ class cartController extends Controller
             }
         });
         $totalMoney = $subTotal + ($subTotal * 0.1) + (15000 * count($cartCollect));
-        $order = collect(session('order',[]));
+        $order = collect(session('order', []));
         $order = $order->toArray();
 
-        foreach($cartCollect as $cartItem){
+        foreach ($cartCollect as $cartItem) {
             $order[] = [
                 'product' => $cartItem['product'],
                 'quantity' => $cartItem['quantity'],
@@ -200,8 +310,8 @@ class cartController extends Controller
             ];
         }
 
-        session()->put('order',$order);
-        $finalTotal = round(($totalMoney / 22180),2);
+        session()->put('order', $order);
+        $finalTotal = round(($totalMoney / 22180), 2);
         $response = $provider->createOrder([
             "intent" => "CAPTURE",
             "application_context" => [
@@ -228,7 +338,7 @@ class cartController extends Controller
             }
 
             return redirect()
-                ->route('checkout' )
+                ->route('checkout')
                 ->with('error', 'Đã xảy ra lỗi');
 
         } else {
@@ -249,17 +359,17 @@ class cartController extends Controller
 
             $orders = session()->get('order', []);
 
-            try{
+            try {
                 DB::beginTransaction();
-                            $orderCreate = Order::create([
-                            'user_id' => $orders[0]['user_id'],
-                            'fullname' => $orders[0]['fullname'],
-                            'phone' => $orders[0]['phone'],
-                            'address' => $orders[0]['address'],
-                            'note' => $orders[0]['note'],
-                            'subtotal' => $orders[0]['subtotal'],
-                            'total_money' => $orders[0]['total'],
-                        ]);
+                $orderCreate = Order::create([
+                    'user_id' => $orders[0]['user_id'],
+                    'fullname' => $orders[0]['fullname'],
+                    'phone' => $orders[0]['phone'],
+                    'address' => $orders[0]['address'],
+                    'note' => $orders[0]['note'],
+                    'subtotal' => $orders[0]['subtotal'],
+                    'total_money' => $orders[0]['total'],
+                ]);
 
                 $orderCollect = collect($orders);
                 $orderCollect->each(function ($cartItem) use ($orderCreate) {
@@ -283,20 +393,20 @@ class cartController extends Controller
                     ]);
 
                     Product::where('id', $cartItem['product']->id)->update([
-                        'sold'=> $cartItem['product']->sold + $cartItem['quantity'],
+                        'sold' => $cartItem['product']->sold + $cartItem['quantity'],
                         'stock' => $cartItem['product']->stock - $cartItem['quantity'],
                     ]);
                 });
 
                 DB::commit();
-            }catch(Exception $e){
+            } catch (Exception $e) {
                 DB::rollBack();
-                return back()->with('error','Đã xảy ra lỗi về thanh toán');
+                return back()->with('error', 'Đã xảy ra lỗi về thanh toán');
             };
 
-            $count =OrderDetail::where('status', 0)->count();
+            $count = OrderDetail::where('status', 0)->count();
             $name = $orders[0]['fullname'];
-            event(new UserOrderEvent($name,$count));
+            event(new UserOrderEvent($name, $count));
             session()->forget('cart');
             session()->forget('order');
 
@@ -316,6 +426,6 @@ class cartController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-        return view('user.design.checkout',compact('brands','products','categories','cart'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
+        return view('user.design.checkout', compact('brands', 'products', 'categories', 'cart'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
     }
 }

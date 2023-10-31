@@ -15,6 +15,8 @@ class ValueAttribute extends Model
         'attribute_id',
     ];
 
+
+
     public function attributes(){
         return $this ->belongsTo(Attribute::class,'attribute_id', 'id');
     }

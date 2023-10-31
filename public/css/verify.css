@@ -43,7 +43,7 @@
     z-index: 600;
     background-color: white;
     padding: 60px 60px;
-    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    box-shadow: rgb(38, 57, 77) 0 20px 30px -10px;
 }
 .otp-field {
     display: flex;
@@ -104,4 +104,11 @@
 }
 .wrapper-verify.close {
     display: none !important;
+}
+
+@media (min-width: 576px)
+.custom-dialog {
+    /* max-width: 41% !important; */
+    max-width: 500px !important;
+    margin: auto !important;
 }

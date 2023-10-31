@@ -83,27 +83,7 @@
         }
     }
 
-    function remove_cart($product_id) {
-        $.ajax({
-            url: "{{ route('remove_cart') }}",
-            method: "POST",
-            data: {
-                product_id: $product_id,
-            },
-            success: function (data) {
-                $('#mini_cart').fadeOut(300, function () {
-                    $(this).html(data.view);
-                    $(this).fadeIn(300);
-                });
-                $('#item_number').text(data.count);
-                $('#card_head').text(data.count);
-                createNoti('Đã xóa sản phẩm');
-            },
-            error: function (data) {
-                createToast('Đã xảy ra lỗi');
-            }
-        });
-    }
+
 
     // feedback
 

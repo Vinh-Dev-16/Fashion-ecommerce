@@ -26,9 +26,9 @@
 <body>
 
 
-<div id="load-data">
-    <div></div>
-</div>
+{{--<div id="load-data">--}}
+{{--    <div></div>--}}
+{{--</div>--}}
 @if (Session::has('success'))
     <ul class="notification">
         <li class="success toasts">
@@ -224,11 +224,11 @@
                                                                 id="item_number">{{ count($cart) }}</span></div>
                                 </div>
                             </a>
-                    
+
                                 <div class="mini_cart" id="mini_cart">
                                     @include('user.cart')
                                 </div>
-                    
+
                         </li>
                         <li>
 

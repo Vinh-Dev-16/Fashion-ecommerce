@@ -46,15 +46,11 @@
             type: 'POST',
             data: data,
             success: function (response) {
-                $('#show-data').fadeOut(400, function () {
-                    $(this).html(response.view);
-                    $(this).fadeIn(400);
-                    $('#mini_cart').fadeOut(400, function () {
-                        $(this).html(response.html);
-                        $(this).fadeIn(400);
-                    });
-                    $('#item_number').text(response.count);
-                });
+                // $('#show-data').fadeOut(400, function () {
+                //     $(this).html(response.view);
+                //     $(this).fadeIn(400);
+                // });
+                $('#show-data').html(response.view);
             },
             error: function (response) {
                 createToast('Có lỗi xảy ra, vui lòng thử lại sau');
@@ -125,10 +121,11 @@
             type: 'POST',
             data: data,
             success: function (response) {
-                $('#show-data').fadeOut(300, function () {
-                    $(this).html(response.view);
-                    $(this).fadeIn(300);
-                });
+                // $('#show-data').fadeOut(300, function () {
+                //     $(this).html(response.view);
+                //     $(this).fadeIn(300);
+                // });
+                $('#show-data').html(response.view);
                 $('#mini_cart').fadeOut(300, function () {
                     $(this).html(response.html);
                     $(this).fadeIn(300);

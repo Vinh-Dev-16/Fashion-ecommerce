@@ -1,7 +1,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="verify-modal">
-    <div class="modal-dialog">
+    <div class="modal-dialog custom-dialog" >
         <div class="modal-content">
             <!-- Modal Header -->
             <!-- Modal body -->

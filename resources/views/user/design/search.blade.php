@@ -120,7 +120,7 @@
                 for (let i of dpt_menu) {
                     i.classList.toggle('active');
                 }
-            });
+            })
         })
     </script>
 @endsection
