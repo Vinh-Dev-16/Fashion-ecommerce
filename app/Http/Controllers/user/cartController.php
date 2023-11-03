@@ -147,14 +147,16 @@ class cartController extends Controller
         $cart = session()->get('cart', []);
         $count = count($cart);
         $selectedCart = session()->get('selectedCart', []);
-        if ($request->is('view_cart')) {
+        if (count($selectedCart) > 0) {
             return [
                 'view' => view('user.design.view_cart.list_cart_selected', compact('selectedCart', 'cart'))->render(),
                 'count' => $count,
                 'html' => view('user.cart', compact('cart'))->render(),
             ];
         } else {
+            session()->forget('selectedCart');
             return [
+                'view' => view('user.design.view_cart.list_data', compact('cart'))->render(),
                 'html' => view('user.cart', compact('cart'))->render(),
                 'count' => $count,
             ];
@@ -179,13 +181,35 @@ class cartController extends Controller
             $cart[$foundIndex]['quantity'] = $quantity;
         }
 
+        $cartSelected = collect(session('selectedCart', []));
+        $existsInSelectedCart = $cartSelected->contains('index', $id);
+        if ($existsInSelectedCart) {
+            $updateCart = $cartSelected->map(function ($item) use ($id, $quantity) {
+                if ($item['index'] == $id) {
+                    $item['quantity'] = $quantity;
+                }
+                return $item;
+            })->values();
+            session()->put('selectedCart', $updateCart->toArray());
+        }
+
         session()->put('cart', $cart);
+        $selectedCart = session()->get('selectedCart', []);
         $count = count(session('cart', []));
-        return [
-            'view' => view('user.design.view_cart.list_data', compact('cart'))->render(),
-            'html' => view('user.cart', compact('cart'))->render(),
-            'count' => $count,
-        ];
+        if (count($selectedCart) > 0) {
+            return [
+                'view' => view('user.design.view_cart.list_cart_selected', compact('selectedCart', 'cart'))->render(),
+                'count' => $count,
+                'html' => view('user.cart', compact('cart'))->render(),
+            ];
+        } else {
+            session()->forget('selectedCart');
+            return [
+                'view' => view('user.design.view_cart.list_data', compact('cart'))->render(),
+                'count' => $count,
+                'html' => view('user.cart', compact('cart'))->render(),
+            ];
+        }
     }
 
     /**

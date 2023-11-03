@@ -1,4 +1,5 @@
 <script>
+    console.log(window.location.pathname);
     const dpt_menu = document.querySelectorAll('.dpt_menu');
     const close_menu = document.querySelectorAll('#close_menu');
     const navBar = document.querySelector("nav"),
@@ -95,15 +96,12 @@
             type: 'POST',
             data: data,
             success: function (response) {
-                $('#show-data').fadeOut(400, function () {
-                    $(this).html(response.view);
-                    $(this).fadeIn(400);
+                $('#show-data').html(response.view);
                     $('#mini_cart').fadeOut(400, function () {
                         $(this).html(response.html);
                         $(this).fadeIn(400);
                     });
                     $('#item_number').text(response.count);
-                });
             },
             error: function (response) {
                 createToast('Có lỗi xảy ra, vui lòng thử lại sau');

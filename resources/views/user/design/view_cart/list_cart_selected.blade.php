@@ -1,5 +1,5 @@
 @if (Session::has('cart') && Session::has('selectedCart'))
-    <div class="single_cart">
+    <div class="single_cart test">
         <div class="container">
             <div class="wrapper">
                 <div class="breadcrumb">

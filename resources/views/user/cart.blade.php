@@ -133,8 +133,11 @@
                     $(this).html(data.html);
                     $(this).fadeIn(200);
                 });
-                if ({{request()->route()->getName() == 'view_cart'}}) {
-                    $('#show-data').html(data.view);
+                if(window.location.pathname === '/cart/view_cart'){
+                    $('#show-data').fadeOut(200, function () {
+                        $(this).html(data.view);
+                        $(this).fadeIn(200);
+                    });
                 }
                 $('#item_number').text(data.count);
                 $('#card_head').text(data.count);
