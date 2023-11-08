@@ -670,18 +670,11 @@
                         </div>
                         <div class="row">
                             <div class="item mini_links">
-                                <h4>Product Category</h4>
+                                <h4>Danh mục</h4>
                                 <ul class="flexcol">
-                                    <li><a href="">Beauty</a></li>
-                                    <li><a href="">Electronic</a></li>
-                                    <li><a href="">Women's Fashion</a></li>
-                                    <li><a href="">Men's Fashion</a></li>
-                                    <li><a href="">Girl's Fashion</a></li>
-                                    <li><a href="">Boy's Fashion</a></li>
-                                    <li><a href="">Health & HouseHold</a></li>
-                                    <li><a href="">Home & Kitchen</a></li>
-                                    <li><a href="">Pet Suppeise</a></li>
-                                    <li><a href="">Sports</a></li>
+                                    @foreach(\App\Models\admin\Category::take(8)->get() as $cate)
+                                        <li><a href="{{ url('category/'.$cate->slug) }}">{{ $cate->name }}</a></li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>

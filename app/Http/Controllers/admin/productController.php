@@ -52,7 +52,8 @@ class productController extends Controller
         $brands = Brand::all();
         $colors = ValueAttribute::where('attribute_id', '=', '2')->get();
         $sizes = ValueAttribute::where('attribute_id', '=', 1)->get();
-        return view('admin.product.modal.create', compact('brands', 'categories', 'sizes', 'colors', 'brands'))->render();
+        return view('admin.product.modal.create',
+            compact('brands', 'categories', 'sizes', 'colors', 'brands'))->render();
     }
 
 
@@ -125,13 +126,14 @@ class productController extends Controller
         $sizes = ValueAttribute::where('attribute_id', '=', 1)->get();
         $selects = $product->categories()->pluck('categories.name', 'categories.id');
         $options = $product->attributevalues()->pluck('attribute_value.id', 'attribute_value.value');
-        return view('admin.product.edit', compact('product', 'categories', 'brands', 'selects', 'colors', 'sizes', 'options'));
+        return view('admin.product.edit',
+            compact('product', 'categories', 'brands', 'selects', 'colors', 'sizes', 'options'));
     }
 
 
     public function update(Request $request, $id, ProductRequest $productRequest)
     {
-        $validate = $productRequest->validated();
+//        $validate = $productRequest->validated();
         try {
             $product = Product::find($id);
             $input = $request->all();

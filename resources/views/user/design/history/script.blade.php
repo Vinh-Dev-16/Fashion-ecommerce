@@ -70,4 +70,8 @@
         })
     }
 
+    $('#create_feedback').on('click', function(e) {
+        let product_id  = $(this).data('id');
+    })
+
 </script>

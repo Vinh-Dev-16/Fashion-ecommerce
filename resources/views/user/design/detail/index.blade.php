@@ -270,31 +270,21 @@
                                                                 {{ $product->feedbacks->count() }} đánh
                                                                 giá</span>
                                                         </div>
-                                                        @if (Auth::check())
-                                                            <a href="#review_form" class="secondary_button">Viết
-                                                                bình luận</a>
-                                                        @else
-                                                            <a href="#" class="secondary_button"
-                                                               id="review_btn">Viết bình luận
-                                                                @endif
-                                                            </a>
                                                             <div class="review_block_body">
                                                                 <ul id="review_ul">
                                                                     @include('user.design.detail.feedback')
                                                                 </ul>
                                                                 <div class="second_links">
                                                                     <a href="#" class="view_all">
-                                                                        Xem tất cả bình luận
+                                                                        Xem thêm đánh giá
                                                                         <i class="ri-arrow-right-line"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
-                                                            <div id="show-data-form-create">
-                                                                @include('user.design.detail.create_feedback')
-                                                            </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>

@@ -48,7 +48,7 @@ class cartController extends Controller
         $cart = collect(session('cart', []));
         $foundIndex = $cart->search(function ($item, $index) use ($product_id, $sizeName, $colorName) {
             if ($item['product']->id == $product_id) {
-                return $item['size'] == $sizeName || $item['color'] == $colorName;
+                return $item['size'] == $sizeName && $item['color'] == $colorName;
             }
             return false;
         });
