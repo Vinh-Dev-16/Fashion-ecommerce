@@ -81,9 +81,7 @@ use Illuminate\Routing\Router;
         Route::prefix('detail')->group(function(){
             Route::get('/{slug}',[detailController::class,'index'])->name('detail.index');
             Route::post('love',[detailController::class,'love'])->name('detail.love');
-            Route::post('feedback/store',[detailController::class,'store'])->name('detail.feedback.store');
             Route::post('feedback/destroy',[detailController::class,'destroy'])->name('detail.feedback.destroy');
-            Route::post('feedback/load_images',[detailController::class,'loadImages'])->name('detail.feedback.load_images');
             Route::post('feedback/like',[detailController::class,'like'])->name('detail.feedback.like');
         });
 
@@ -135,7 +133,10 @@ use Illuminate\Routing\Router;
             Route::get('success-transaction', [payPalController::class, 'successTransaction'])->middleware('auth')->name('successTransaction');
             Route::get('cancel-transaction', [payPalController::class, 'cancelTransaction'])->middleware('auth')->name('cancelTransaction');
             Route::get('history', [payPalController::class, 'history'])->middleware('auth')->name('history');
-            Route::get('softdelete/{id}', [payPalController::class, 'softdelete'])->middleware('auth')->name('softdelete');
+            Route::get('create-feedback', [payPalController::class, 'createFeedback'])->middleware('auth')->name('history.create_feedback');
+            Route::post('feedback/store',[payPalController::class,'store'])->name('history.feedback.store');
+            Route::post('feedback/load_images',[payPalController::class,'loadImages'])->name('history.feedback.load_images');
+            Route::get('softDelete/{id}', [payPalController::class, 'softDelete'])->middleware('auth')->name('softDelete');
             Route::get('restore/{id}',[payPalController::class, 'restore'])->middleware('auth')->name('restore');
     })
 

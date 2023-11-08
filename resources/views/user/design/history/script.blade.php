@@ -4,6 +4,9 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+
+
     const dpt_menu = document.querySelectorAll('.dpt_menu');
     const close_menu = document.querySelectorAll('#close_menu');
 
@@ -72,6 +75,21 @@
 
     $('#create_feedback').on('click', function(e) {
         let product_id  = $(this).data('id');
+        $.ajax({
+            url: "{{ route('history.create_feedback') }}",
+            method: "GET",
+            data: {
+                product_id: product_id
+
+            },
+            success: function(data) {
+                $('.show-data').html(data.view);
+                $('.modal-data').addClass('active');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                createToast('Đã xảy ra lỗi');
+            }
+        })
     })
 
 </script>

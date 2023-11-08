@@ -60,6 +60,17 @@ class detailController extends Controller
         }
     }
 
+    public function feedBack(Request $request): array
+    {
+        $product = Product::findOrFail($request->product_id);
+        $rate = $product->feedbacks()->pluck('feedbacks.rate')->avg();
+        $count = $product->feedbacks()->count();
+        return [
+            'status' => 1,
+            'view' => view('user.design.detail.feed_back', compact('product', 'rate', 'count'))->render(),
+        ];
+    }
+
     public function like(Request $request)
     {
         $feedback = FeedBack::findOrFail($request->id);
@@ -94,92 +105,8 @@ class detailController extends Controller
 
     }
 
-    public function feedBack(Request $request): array
-    {
-        $product = Product::findOrFail($request->product_id);
-        $rate = $product->feedbacks()->pluck('feedbacks.rate')->avg();
-        $count = $product->feedbacks()->count();
-        return [
-            'status' => 1,
-            'view' => view('user.design.detail.feed_back', compact('product', 'rate', 'count'))->render(),
-        ];
-    }
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255',
-            'content' => 'required',
-            'rate' => 'required',
-        ], [
-            'title.required' => 'Không được để trống tiêu đề',
-            'title.max' => 'Tiêu đề không được quá 255 ký tự',
-            'content.required' => 'Không được để trống nội dung',
-            'rate.required' => 'Không được để trống đánh giá',
-        ]);
-        if ($validator->fails()) {
-            return [
-                'status' => 0,
-                'message' => $validator->errors()->toArray(),
-            ];
-        }
-        try {
-            $input = $request->all();
-            $newFeedback = FeedBack::create([
-                'name' => $input['name'],
-                'email' => $input['email'],
-                'title' => $input['title'],
-                'content' => $input['content'],
-                'product_id' => $input['product_id'],
-                'rate' => $input['rate'],
-            ]);
-            if ($request->images) {
-                $files = $request->images;
-                foreach ($files as $file) {
-                    ImageFeedBack::create([
-                        'path' => $file,
-                        'feedback_id' => $newFeedback->id,
-                    ]);
-                }
-            }
-            $count = FeedBack::where('product_id', $input['product_id'])->count();
-            $rateStar = FeedBack::where('product_id', $input['product_id'])->pluck('rate')->avg();
-            $rate = round($rateStar, 1);
-            Product::where('id', $input['product_id'])->update([
-                'rate' => $rate,
-                'count' => $count,
-            ]);
-            $product = Product::findOrFail($request->product_id);
-            return [
-                'status' => 1,
-                'message' => 'Gửi đánh giá thành công',
-                'count' => $count,
-                'rate' => $rate,
-                'html' => view('user.design.detail.rating', compact('product', 'rate', 'count'))->render(),
-                'view' => view('user.design.detail.feedback', compact('count', 'rate', 'product'))->render(),
-            ];
-        } catch (\Exception $e) {
-            return [
-                'status' => 2,
-                'message' => 'Đã xảy ra lỗi',
-            ];
-        }
-    }
 
-    public function loadImages(): array
-    {
-        try {
-         return [
-             'status' => 1,
-         ];
-        } catch (\Exception $e) {
-            return [
-                'status' => 0,
-                'message' => 'Đã xảy ra lỗi',
-            ];
-        }
-    }
-
-    public function destroy()
+    public function destroy(): array
     {
         $id = request()->id;
         $feedbackByID = FeedBack::findOrFail($id);
@@ -202,8 +129,8 @@ class detailController extends Controller
             'message' => 'Xóa đánh giá thành công',
             'count' => $count,
             'rate' => $rate,
-            'html' => view('user.design.detail.rating', compact( 'product','rate', 'count'))->render(),
-            'view' => view('user.design.detail.feedback', compact( 'rate', 'product'))->render(),
+            'html' => view('user.design.detail.rating', compact('product', 'rate', 'count'))->render(),
+            'view' => view('user.design.detail.feedback', compact('rate', 'product'))->render(),
         ];
     }
 

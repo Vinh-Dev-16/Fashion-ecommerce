@@ -31,6 +31,10 @@
         checkboxes.forEach((checkbox) => {
             checkbox.checked = true;
         });
+        let id = $('input[name="ids[]"]:checked').map(function () {
+            return $(this).val();
+        }).get();
+        selected_cart(id);
     });
 
     $(document).on('click', 'input[name="ids[]"]', function () {
@@ -38,6 +42,12 @@
         $('input[name="ids[]"]:checked').each(function () {
             id.push($(this).val());
         });
+
+
+    });
+
+
+    function selected_cart(id) {
         let url = '{{ route('information.selected_cart') }}';
         let data = {
             selected: id,
@@ -57,7 +67,7 @@
                 createToast('Có lỗi xảy ra, vui lòng thử lại sau');
             }
         });
-    });
+    }
 
     // quantity
 

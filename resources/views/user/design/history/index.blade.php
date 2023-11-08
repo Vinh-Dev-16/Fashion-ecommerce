@@ -103,7 +103,7 @@
                                                                     {{ number_format($orderItem->total_money) }} VND
                                                                 </td>
                                                                 <td>
-                                                                    <a href="{{ url('softdelete/' . $orderItem->id) }}">Hủy
+                                                                    <a href="{{ url('softDelete/' . $orderItem->id) }}">Hủy
                                                                         đơn</a>
                                                                 </td>
                                                             </tr>
@@ -190,11 +190,6 @@
                                                                     <div style="cursor: pointer" class="detail_ship">
                                                                         <i class="ri-eye-line"></i>
                                                                         Xem chi tiết
-                                                                    </div>
-                                                                    <br>
-                                                                    <div style="cursor: pointer" class="detail_ship">
-                                                                        <i class="ri-printer-line"></i>
-                                                                        Xuất hóa đơn
                                                                     </div>
                                                                     <br>
                                                                     @if ($orderItem->ship == 1)
