@@ -93,7 +93,6 @@
                 $('#cancel-filter').val('');
             },
             error: function(error) {
-                unblock_screen();
                 createToast('Không thể lấy dữ liệu');
             }
         })

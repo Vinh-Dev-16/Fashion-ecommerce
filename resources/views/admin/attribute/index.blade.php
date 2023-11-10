@@ -20,7 +20,7 @@
             <h6>Bảng thuộc tính sản phẩm</h6>
             <div class="mb-4 mt-4 d-flex align-items- justify-content-between">
                 @can('create-attribute')
-                    <a class="btn bg-gradient-dark mb-0" href="{{route('admin.brand.create')}}">
+                    <a class="btn bg-gradient-dark mb-0 create-attribute" href="javascript:void(0)">
                         <i class="fas fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;
                         Thêm thuộc tính sản phẩm</a>
                 @endcan
@@ -37,6 +37,7 @@
             <!-- /.card-body -->
         </div>
     </div>
+    <div id="show-modal"></div>
 @endsection
 @section('javascript')
     @include('admin.attribute.script')

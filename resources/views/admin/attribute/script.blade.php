@@ -55,4 +55,21 @@
             })
         return false;
     }
+
+    $('.create-attribute').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '{{ route('admin.attribute.create') }}',
+            method: 'GET',
+            success: function (data) {
+                $('#show-modal').html(data);
+                $('#modal-create-attribute').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+
 </script>

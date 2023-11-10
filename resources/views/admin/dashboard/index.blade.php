@@ -233,7 +233,7 @@
         <div class="col-lg-12 mb-lg-0 mb-4">
             <div class="card mb-4">
                 <div class="card-header pb-0">
-                    <h6>Biểu đồ về lượt bình luận</h6>
+                    <h6>Biểu đồ về lượt đánh giá</h6>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2" style="width: 100%; height: 100%; min-height: 550px">
                     <canvas id="bar-chart-rate" ></canvas>
@@ -370,7 +370,7 @@
         const data4 = {
             labels: _productNameByComment,
             datasets: [{
-                label: 'Số lượt bình luận',
+                label: 'Số lượt đánh giá',
                 data: _comment,
                 fill: false,
                 backgroundColor: [

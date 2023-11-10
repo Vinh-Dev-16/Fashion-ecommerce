@@ -58,7 +58,7 @@
                 <div class="content">
                     <div class="rating">
                         @if (80 *
-                                ($product->reviews()->pluck('feedbacks.rate')->avg() /
+                                ($product->feedbacks()->pluck('feedbacks.rate')->avg() /
                                     5) ==
                                 0)
                             <div class="stars" style="background-image:none;width:150px">Chưa có

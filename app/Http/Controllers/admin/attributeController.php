@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Attribute;
 use Exception;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class attributeController extends Controller
 {
@@ -26,35 +28,50 @@ class attributeController extends Controller
             $attributes->where('value', 'like', '%' . $request->search . '%')
                 ->orWhere('slug', 'like', '%' . $request->search . '%');
         }
-        $attributes = $attributes->paginate(6);
+        $currentPage = $request->input('page_attribute', 1);
+        Session::put('page', $currentPage);
+        $attributes = $attributes->paginate(6, ['*'], 'page', $currentPage);
         return view('admin.attribute.list_data', compact('attributes'))->render();
     }
 
-    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application|string
     {
-        return view('admin.attribute.create');
+        return view('admin.attribute.create')->render();
     }
 
 
-    public function store(Request $request): \Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
+    public function store(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            $rules = [
-                'value' => 'required|max:255',
-            ];
-            $messages = [
-                'required' => 'Không được để trống trường này',
-                'max' => 'Đã vượt qua số từ cho phép',
-            ];
-            $request->validate($rules, $messages);
+        $validator = Validator::make($request->all(), [
+            'value' => 'required|unique:attributes|max:255',
+        ], [
+            'required' => ':attribute không được để trống',
+            'unique' => ':attribute đã tồn tại',
+            'max' => ':attribute không được quá 255 ký tự',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'status' => STATUS_ERROR,
+                    'message' => $validator->errors()->toArray(),
+                ]
+            );
         }
         try {
             $input = $request->all();
             unset($input['_token']);
             Attribute::create($input);
-            return redirect('admin/attribute/index')->with('success', 'Đã thêm thành công');
+            $url = url('admin/attribute/index?page=' . Session::get('page_attribute', 1));
+            return response()->json([
+                'status' => STATUS_SUCCESS,
+                'message' => 'Thêm thuộc tính thành công',
+                'url' => $url,
+            ]);
         } catch (Exception $e) {
-            return redirect('admin/attribute/create')->with('error', 'Đã xảy ra lỗi');
+            return response()->json([
+                'status' => STATUS_FAIL,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
         }
     }
 
