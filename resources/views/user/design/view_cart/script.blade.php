@@ -43,7 +43,7 @@
             id.push($(this).val());
         });
 
-
+        selected_cart(id);
     });
 
 
