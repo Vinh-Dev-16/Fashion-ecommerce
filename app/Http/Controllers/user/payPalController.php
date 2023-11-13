@@ -7,6 +7,7 @@ use App\Models\admin\FeedBack;
 use App\Models\ImageFeedBack;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -61,7 +62,7 @@ class payPalController extends Controller
         ];
         session()->put('payment', $payment);
         $payments = session()->get('payment', []);
-        return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'));
+        return view('user.design.payment.index', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'));
     }
 
     public function voucher(Request $request): \Illuminate\Http\JsonResponse
@@ -175,10 +176,10 @@ class payPalController extends Controller
                 }
             }
 
-            return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
+            return view('user.design.payment.index', compact('brands', 'products', 'categories', 'cart', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
 
         } else {
-            return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
+            return view('user.design.payment.index', compact('brands', 'products', 'categories', 'cart', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
         }
     }
 
@@ -266,7 +267,7 @@ class payPalController extends Controller
         foreach ($payments as $payment) {
             $product = Product::find($payment['product']->id);
         }
-        return view('user.design.payment', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
+        return view('user.design.payment.index', compact('brands', 'products', 'categories', 'cart', 'payments', 'product'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
     }
 
     public function history()
@@ -275,14 +276,16 @@ class payPalController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-        return view('user.design.history.index', compact('brands', 'products', 'categories', 'cart'))->with('success', 'Đã thanh toán thành công');
+        $user = Auth::user()->with('information')->first();
+        return view('user.design.history.index', compact('user','brands', 'products', 'categories', 'cart'))->with('success', 'Đã thanh toán thành công');
     }
 
     public function print(Request $request): string
     {
         $id = $request->id;
         $orderDetail = OrderDetail::where('id', $id)->first();
-        return view('user.design.history.print', compact('orderDetail'))->render();
+        $user = Auth::user()->with('information')->first();
+        return view('user.design.history.print', compact('user','orderDetail'))->render();
     }
 
     public function printInvoice(Request $request): \Illuminate\Http\Response

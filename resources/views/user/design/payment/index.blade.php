@@ -38,7 +38,19 @@
                                         <input type="phone" name="phone" value="{{ $information->phone }}">
                                     </p>
                                     <p>
-                                        <label for="address">Address<span></span></label>
+                                        <label for="province">Thành phố<span></span></label>
+                                        <input type="text" name="province" value="{{ $information->province }}" disabled style="cursor: no-drop">
+                                    </p>
+                                    <p>
+                                        <label for="district">Huyện<span></span></label>
+                                        <input type="text" name="district" value="{{ $information->district }}" disabled style="cursor: no-drop">
+                                    </p>
+                                    <p>
+                                        <label for="commune">Xã/Phường<span></span></label>
+                                        <input type="text" name="commune" value="{{ $information->commune }}" disabled style="cursor: no-drop">
+                                    </p>
+                                    <p>
+                                        <label for="address">Địa chỉ<span></span></label>
                                         <input type="text" name="address" value="{{ $information->address }}">
                                     </p>
                                     @if ($product->brand->vouchers->count() > 0)
@@ -128,9 +140,26 @@
                                         <span>Tổng tiền</span>
                                         <span>{{ number_format($subTotal) }} VND</span>
                                     </li>
+                                    <?php
+                                    $weight = array_sum(array_column($cart, 'product.weight'));
+                                    $province = \App\Helpers\SubStringAddress::subStringProvince(\Illuminate\Support\Facades\Auth::user()->information->province);
+                                    $district = \App\Helpers\SubStringAddress::subStringDistrict(\Illuminate\Support\Facades\Auth::user()->information->district);
+                                    $data = \App\Helpers\GetShip::getShip($province, $district, $weight, $subTotal);
+                                    $fee = $data['results'][0]['fee'];
+                                    $pickUp = $data['results'][0]['pickup']['name'];
+                                    $delivery = $data['results'][0]['delivery']['name'];
+                                    ?>
                                     <li>
                                         <span>Phí ship</span>
-                                        <span>{{ number_format(15000) }} VND</span>
+                                        <span>{{ number_format($fee) }} VND</span>
+                                    </li>
+                                    <li>
+                                        <span>Gửi đi </span>
+                                        <span>{{$pickUp}}</span>
+                                    </li>
+                                    <li>
+                                        <span>Giao ngày</span>
+                                        <span>{{$delivery}}</span>
                                     </li>
                                     <li>
                                         <span>Tax</span>
@@ -138,7 +167,7 @@
                                     </li>
                                     <li>
                                         <span>Tổng tất cả</span>
-                                        <span class="total">{{ number_format($subTotal + 15000 + $subTotal * 0.1) }}
+                                        <span class="total">{{ number_format($subTotal + $fee + $subTotal * 0.1) }}
                                             VND</span>
                                     </li>
                                 </ul>

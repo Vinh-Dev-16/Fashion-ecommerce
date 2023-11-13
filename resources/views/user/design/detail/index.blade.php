@@ -109,9 +109,6 @@
                                                         </p>
                                                     @endif
                                                 @endforeach
-                                                @error('color')
-                                                <div class="text-danger">{{ $message }}</div>
-                                                @enderror
                                             </div>
                                         </div>
                                         @error('color')
@@ -130,9 +127,6 @@
                                                         </P>
                                                     @endif
                                                 @endforeach
-                                                @error('size')
-                                                <div class="text-danger">{{ $message }}</div>
-                                                @enderror
                                             </div>
                                             @error('size')
                                             <div class="text-danger">{{ $message }}</div>

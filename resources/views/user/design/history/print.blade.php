@@ -33,8 +33,9 @@
                     <p>Tới</p>
                     <p class="p_title">
                         {{$orderDetail->order->fullname}} <br />
-                        <span>Menlo Park, California</span><br />
-                        <span>United States</span>
+                        <span>{{$user->information->address}}, {{$user->information->commune}}</span>
+                        <br>
+                        <span>{{$user->information->district}}, {{$user->information->province}}</span><br />
                     </p>
                 </div>
             </div>
@@ -119,7 +120,7 @@
                     <a href="{{route('history.print_invoice')}}" class="p_title" target="_blank"><i class="ri-file-download-line"></i> Tai xuong file PDF</a>
                 </div>
                 <div class="i_col w_50 text_right" style="cursor: pointer">
-                    <p class="p_title" id="print_invoice"><i class="ri-printer-line"></i> In hoa don</p>
+                    <p class="p_title" id="print_invoice"><i class="ri-printer-line"></i> In hóa đơn</p>
                 </div>
             </div>
         </div>

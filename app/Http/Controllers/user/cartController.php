@@ -270,6 +270,10 @@ class cartController extends Controller
 
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function checkout(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $products = Product::all();
@@ -277,7 +281,7 @@ class cartController extends Controller
         $brands = Brand::all();
         $cart = session()->get('cart', []);
 
-        return view('user.design.checkout', compact('brands', 'products', 'categories', 'cart'));
+        return view('user.design.check_out.index', compact('brands', 'products', 'categories', 'cart'));
     }
 
     /**
@@ -450,6 +454,6 @@ class cartController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-        return view('user.design.checkout', compact('brands', 'products', 'categories', 'cart'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
+        return view('user.design.check_out.index', compact('brands', 'products', 'categories', 'cart'))->with('error', $response['message'] ?? 'Bạn đã hủy hành động');
     }
 }
