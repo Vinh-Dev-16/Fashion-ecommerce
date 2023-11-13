@@ -140,25 +140,22 @@
                                                             return $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
                                                         }
                                                     });
-
-                                                    $productIDs = [];
-                                                    foreach ($cartCollect as $cartItem) {
-                                                        $productId = $cartItem['product']->id;
-
-                                                        if (!in_array($productId, $productIDs)) {
-                                                            $productIDs[] = $productId;
-                                                        }
-                                                    }
-                                                    $ship = 15000 * count($productIDs);
                                                     ?>
                                                 <tbody>
                                                 <tr>
                                                     <th>Tổng tiền</th>
                                                     <td class="sub_total">{{ number_format($subTotal) }} </td>
                                                 </tr>
+                                                    <?php
+                                                    $weight = array_sum(array_column($cart, 'product.weight'));
+                                                    $province = \App\Helpers\SubStringAddress::subStringProvince(\Illuminate\Support\Facades\Auth::user()->information->province);
+                                                    $district = \App\Helpers\SubStringAddress::subStringDistrict(\Illuminate\Support\Facades\Auth::user()->information->district);
+                                                    $data = \App\Helpers\GetShip::getShip($province, $district, $weight, $subTotal);
+                                                    $fee = $data['results'][0]['fee'];
+                                                    ?>
                                                 <tr>
                                                     <th>Phí ship</th>
-                                                    <td>{{ number_format($ship) }} VND</td>
+                                                    <td>{{ number_format($fee) }} VND</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Tax</th>
@@ -167,7 +164,7 @@
                                                 <tr>
                                                     <th>Tổng tất cả</th>
                                                     <td class="total">
-                                                        {{ number_format($subTotal + $ship + $subTotal * 0.1) }}
+                                                        {{ number_format($subTotal + $fee + $subTotal * 0.1) }}
                                                     </td>
                                                 </tr>
                                                 </tbody>

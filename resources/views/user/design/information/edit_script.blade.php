@@ -87,9 +87,12 @@
             url : '{{ route('information.update_create') }}',
             type : 'POST',
             data : {
-                province : $('#show-province').val(),
-                district : $('#show-district').val(),
-                commune : $('#show-commune').val(),
+                province_id : $('#show-province').val(),
+                district_id : $('#show-district').val(),
+                commune_id : $('#show-commune').val(),
+                province : $('#show-province option:selected').text(),
+                district : $('#show-district option:selected').text(),
+                commune : $('#show-commune option:selected').text(),
                 address : $('input[name="address"]').val(),
                 user_id : '{{ $user->id }}',
             },
@@ -105,9 +108,9 @@
                         break;
                     case 1:
                         createNoti(response.message);
-                        {{--setTimeout(function () {--}}
-                        {{--        window.location.href = '{{ url('information/' . $user->id) }}';--}}
-                        {{--    }, 1000);--}}
+                        setTimeout(function () {
+                                window.location.href = '{{ url('information/' . $user->id) }}';
+                            }, 1000);
                             break;
                     case 2:
                         createToast(response.message);

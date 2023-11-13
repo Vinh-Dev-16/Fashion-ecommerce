@@ -11,7 +11,6 @@ class GetShip extends Client
     public function __construct()
     {
         parent::__construct([
-            'timeout' => 2.0,
             'headers' => [
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer' . ' ' . env('TOKEN_SHIP'),
