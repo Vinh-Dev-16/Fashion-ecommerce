@@ -15,9 +15,14 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="exampleName">Tên attriute</label>
-                            <input type="text" class="form-control" id="exampleInputName"
+                            <input type="text" class="form-control" id="slug" onkeyup="ChangeToSlug();"
                                    placeholder="Điền tên attriute" name="value">
                             <div class="text-danger error-text value_error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleName">Slug sản phẩm</label>
+                            <input type="text" class="form-control" id="convert_slug" name="slug">
+                            <div class="text-danger error-text slug_error"></div>
                         </div>
                     </div>
                 </form>
@@ -42,7 +47,8 @@
             url: '{{ route('admin.attribute.store') }}',
             method: 'POST',
             data: {
-                value: $('#exampleInputName').val(),
+                value: $('#slug').val(),
+                'slug': $('#convert_slug').val(),
                 page: page,
             },
             beforeSend: function () {

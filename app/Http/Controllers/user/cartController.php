@@ -280,8 +280,12 @@ class cartController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $cart = session()->get('cart', []);
-
-        return view('user.design.check_out.index', compact('brands', 'products', 'categories', 'cart'));
+        $seletedCart = session()->get('selectedCart', []);
+        if (count($seletedCart) > 0) {
+            return view('user.design.check_out.index', compact('brands', 'products', 'categories', 'cart', 'seletedCart'));
+        } else {
+          return view('403')->with('error', 'Bạn chưa chọn sản phẩm nào');
+        }
     }
 
     /**

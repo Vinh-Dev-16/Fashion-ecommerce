@@ -111,7 +111,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
     Route::get('/index', [attributeController::class, 'index'])->name('admin.attribute.index');
     Route::get('create', [attributeController::class, 'create'])->name('admin.attribute.create');
     Route::post('store', [attributeController::class, 'store'])->name('admin.attribute.store');
-    Route::delete('destroy/{id}', [attributeController::class, 'destroy'])->name('admin.attribute.destroy');
+    Route::post('destroy', [attributeController::class, 'destroy'])->name('admin.attribute.destroy');
     Route::patch('update/{id}', [attributeController::class, 'update'])->name('admin.attribute.update');
     Route::get('edit/{id}', [attributeController::class, 'edit'])->name('admin.attribute.edit');
   });

@@ -8,14 +8,16 @@ use App\Models\admin\ValueAttribute;
 class Attribute extends Model
 {
     use HasFactory;
-    
-    protected $table = 'attribute';
+
+    protected $table = 'attributes';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'value'
+        'value',
+        'slug'
     ];
-   
+
     public function valuesAttributes(){
         return $this->hasMany(ValueAttribute::class, 'attribute_id', 'id');
     }
+
 }

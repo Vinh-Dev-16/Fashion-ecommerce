@@ -38,9 +38,8 @@
         });
     }
 
-    function confirmation(eve) {
-        let url = eve.getAttribute('href');
-        console.log(url);
+    function confirmation(eve, id) {
+
         swal({
             title: 'Bạn có chắc là xóa nó chứ?',
             text: 'Bạn không thể restore nó',
@@ -50,7 +49,30 @@
         })
             .then((willCancle) => {
                 if (willCancle) {
-                    window.location.href = url;
+                    $.ajax({
+                        url: '{{ route('admin.attribute.destroy')}}',
+                        method: 'POST',
+                        data: {
+                            id: id,
+                        },
+                        success: function (data) {
+                            switch (data.status) {
+                                case 0:
+                                    createToast(data.message);
+                                    break;
+                                case 1:
+                                    list_data(data.url);
+                                    createSuccess(data.message);
+                                    break;
+                                case 2:
+                                    createToast(data.message);
+                                    break;
+                            }
+                        },
+                        error: function (error) {
+                            createToast(error);
+                        }
+                    });
                 }
             })
         return false;

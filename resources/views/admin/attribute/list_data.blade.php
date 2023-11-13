@@ -24,8 +24,8 @@
                 <td class="align-middle text-center ms-auto text-end" style="width: 20%">
                     @can('delete-attribute')
                         <a class="btn btn-link text-danger text-gradient px-3 mb-0"
-                           onclick="return confirmation(this)"
-                           href="{{url('admin/attribute/destroy/'. $attribute->id)}}"><i
+                           onclick="return confirmation(this), {{$attribute->id}}"
+                           href="javascript:void(0)"><i
                                 class="far fa-trash-alt me-2" aria-hidden="true"></i>Xóa</a>
                     @endcan
                     @can('edit-attribute')

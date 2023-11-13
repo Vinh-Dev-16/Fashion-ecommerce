@@ -96,16 +96,37 @@ class attributeController extends Controller
     }
 
 
-    public function destroy($id): \Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
+    public function destroy(Request $request)
     {
+        $id = $request->id;
         $attribute = Attribute::find($id);
-        if ($attribute->product->count() > 0) {
-            return redirect('admin/attribute/index')->with('error', 'Không thể xóa vì có sản phẩm đang sử dụng');
+//        if (empty($attribute)) {
+//            return response()->json([
+//                'status' => STATUS_ERROR,
+//                'message' => 'Không tìm thấy thuộc tính',
+//            ]);
+//        }
+        if ($attribute->valuesAttributes == null) {
+            return response()->json([
+                'status' => STATUS_ERROR,
+                'message' => 'Không thể xóa vì đã có giá trị thuộc tính',
+            ]);
         }
-        if (empty($attribute)) {
-            return redirect('admin/attribute/index')->with('error', 'Không tìm thấy dữ liệu');
+
+        try {
+            $attribute->delete();
+            $url = url('admin/attribute/index') . '?page=' . Session::get('page_attribute');
+            return response()->json([
+                'status' => STATUS_SUCCESS,
+                'message' => 'Xóa thuộc tính thành công',
+                'url' => $url,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => STATUS_FAIL,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
         }
-        $attribute->delete();
-        return redirect('admin/attribute/index')->with('success', 'Xóa thành công');
+
     }
 }

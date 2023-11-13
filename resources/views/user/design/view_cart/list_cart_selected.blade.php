@@ -201,13 +201,13 @@
                                         @endif
 
 
-                                        @if (Auth::check() && count($cart) > 0)
+                                        @if (Auth::check() && Session::has('selectedCart') && count(Session::get('selectedCart')) > 0)
                                             <a href="{{ url('checkout') }}" class="secondary_button">Thanh toán</a>
                                         @elseif (!Auth::check())
                                             <button class="secondary_button"
                                                     onclick="createToast('Bạn cần phải đăng nhập')"
                                                     style="border:none;outline:none;width:100%">Thanh toán</button>
-                                        @elseif (count($cart) == 0)
+                                        @elseif (Session::has('selectedCart') && count(Session::get('selectedCart')) == 0)
                                             <button class="secondary_button"
                                                     onclick="createToast('Bạn cần có sản phẩm')"
                                                     style="border:none;outline:none;width:100%">Thanh toán</button>
