@@ -25,6 +25,6 @@ class Brand extends Model
     }
     public function vouchers()
     {
-        return $this->belongsToMany(Voucher::class, 'brands_vouchers', 'brand_id', 'voucher_id');
+        return $this->belongsToMany(Voucher::class, 'brands_vouchers', 'brand_id', 'voucher_id')->withTimestamps();
     }
 }

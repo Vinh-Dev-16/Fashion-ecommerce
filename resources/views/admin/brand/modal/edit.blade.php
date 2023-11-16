@@ -33,6 +33,16 @@
                                        value="{{$brand->logo}}" name="logo">
                                 <div class="text-danger error-text logo_error"></div>
                             </div>
+                            <div class="form-group">
+                                <label for="examplePrice">Voucher</label>
+                                <select name="value[]" class="tag_multiple" style="width: 100%" multiple>
+                                    @foreach ($vouchers as $voucher)
+                                        <option value="{{ $voucher->id }}"
+                                        @if(in_array($voucher->id, $brand->vouchers->pluck('id')->toArray())) selected @endif>{{ $voucher->value }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="text-danger error-text value_error"></div>
+                            </div>
                             <!-- /.card-body -->
                             <div class="form-group">
                                 <label for="exampleName">Chi tiết Brand</label>
@@ -61,6 +71,11 @@
     $('.close-modal').click(function () {
         $('#modal-edit-brand').modal('hide');
     });
+
+    $('.tag_multiple').select2({
+        theme: "classic",
+        tags: true,
+    });
     ClassicEditor
         .create(document.querySelector('#editor'))
         .then(newEditor => {
@@ -79,6 +94,7 @@
                 name: $('#slug').val(),
                 slug: $('#convert_slug').val(),
                 logo: $('input[name="logo"]').val(),
+                value: $('select[name="value[]"]').val(),
                 description: editor.getData(),
                 page: page,
                 id: id,

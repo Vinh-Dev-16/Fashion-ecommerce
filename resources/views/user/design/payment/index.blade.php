@@ -82,7 +82,6 @@
                                             type="submit">Thanh toán</button>
                                 </div>
 
-
                             </form>
                         @else
                             <form action="{{ url('/process-transaction') }}" method="POST">

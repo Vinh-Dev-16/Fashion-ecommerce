@@ -21,12 +21,13 @@ class Voucher extends Model
         'min_price',
         'start_date',
         'end_date',
+        'status',
         'type',
         'price'
     ];
 
     public function brands(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Brand::class, 'brands_vouchers', 'voucher_id', 'brand_id');
+        return $this->belongsToMany(Brand::class, 'brands_vouchers', 'voucher_id', 'brand_id')->withTimestamps();
     }
 }

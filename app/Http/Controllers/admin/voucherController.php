@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\admin\Brand;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -38,7 +39,8 @@ class voucherController extends Controller
 
     public function create(): string
     {
-        return view('admin.voucher.modal.create')->render();
+        $brands = Brand::all();
+        return view('admin.voucher.modal.create', compact('brands'))->render();
     }
 
     public function store(Request $request): \Illuminate\Http\JsonResponse
@@ -54,6 +56,7 @@ class voucherController extends Controller
             'end_date' => 'required|date|after:start_date|max:255',
             'min_price' => 'required|max:255',
             'type' => 'required',
+            'status' => 'required|numeric',
         ],
             [
                 'value.required' => 'Giá trị không được để trống',
@@ -75,6 +78,8 @@ class voucherController extends Controller
                 'end_date.max' => 'Ngày kết thúc không được quá 255 ký tự',
                 'min_price.required' => 'Giá trị tối thiểu không được để trống',
                 'min_price.max' => 'Giá trị tối thiểu không được quá 255 ký tự',
+                'status.required' => 'Trạng thái không được để trống',
+                'status.numeric' => 'Trạng thái phải là số',
             ]);
         if ($validator->fails()) {
             return response()->json([
@@ -99,18 +104,19 @@ class voucherController extends Controller
                     'message' => 'Phải nhập 1 trong 2 giá trị giá và phần trăm',
                 ]);
             }
-//            if (!($request->type == 1) || !($request->type == 0)) {
-//                return response()->json([
-//                    'status' => 2,
-//                    'message' => 'Loại không hợp lệ',
-//                ]);
-//            }
+            if (!($request->type == 1) || !($request->type == 0)) {
+                return response()->json([
+                    'status' => 2,
+                    'message' => 'Loại không hợp lệ',
+                ]);
+            }
             unset($input['_token']);
             $input = array_merge($input, ['status' => 1]);
             $input['min_price'] = $min_price;
             $input['max'] = $max;
             $input['price'] = $price;
-            Voucher::create($input);
+            $voucher = Voucher::create($input);
+            $voucher->brands()->attach($request->brand_id);
             $url = url('admin/voucher/index') . '?page=' . Session::get('page');
             return response()->json([
                 'status' => 1,
@@ -124,4 +130,13 @@ class voucherController extends Controller
             ]);
         }
     }
+
+
+    public function edit($id): string
+    {
+        $voucher = Voucher::find($id);
+        $brands = Brand::all();
+        return view('admin.voucher.modal.edit', compact('voucher', 'brands'))->render();
+    }
+
 }

@@ -55,6 +55,16 @@
                                 <div class="text-danger error-text max_error"></div>
                             </div>
                             <div class="form-group">
+                                <label for="exampleType">Trạng thái</label>
+                                <br>
+                                <select  name="status" style="width: 100%; height: 37px">
+                                    <option>Chọn trạng thái</option>
+                                    <option value="1">Hoạt động</option>
+                                    <option value="0">Hết hạn</option>
+                                </select>
+                                <div class="text-danger error-text status_error"></div>
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleType">Phân loại</label>
                                 <br>
                                 <select  name="type" style="width: 100%; height: 37px">
@@ -82,6 +92,15 @@
                                        name="end_date">
                                 <div class="text-danger error-text end_date_error"></div>
                             </div>
+                            <div class="form-group">
+                                <label for="examplePrice">Brand được giảm giá</label>
+                                <select name="brand_id[]" class="tag_multiple" style="width: 100%" multiple>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="text-danger error-text brand_id_error"></div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -96,10 +115,13 @@
 </div>
 <script defer>
     $(document).ready(function () {
-        $('.tag_multiple').select2({
-            theme: "classic",
-            tags: true,
-        });
+        $('.tag_multiple').select2(
+            {
+                placeholder: "Chọn thương hiệu",
+                allowClear: true,
+                closeOnSelect: false,
+            }
+        );
     });
 
 
@@ -124,6 +146,8 @@
                 start_date: $('input[name="start_date"]').val(),
                 end_date: $('input[name="end_date"]').val(),
                 type: $('select[name="type"]').val(),
+                brand_id: $('select[name="brand_id[]"]').val(),
+                status: $('select[name="status"]').val(),
                 page: page,
             },
             beforeSend: function () {

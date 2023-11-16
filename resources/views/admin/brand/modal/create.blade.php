@@ -32,6 +32,15 @@
                                 <div class="text-danger error-text logo_error"></div>
                             </div>
                             <div class="form-group">
+                                <label for="examplePrice">Voucher</label>
+                                <select name="value[]" class="tag_multiple" style="width: 100%" multiple>
+                                    @foreach ($vouchers as $voucher)
+                                        <option value="{{ $voucher->id }}">{{ $voucher->value }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="text-danger error-text value_error"></div>
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleDesce">Chi tiết thương hiệu</label>
                                 <textarea type="text" class="form-control" id="editor" name="description"
                                           placeholder="Điền thông tin sản phẩm"></textarea>
@@ -83,8 +92,6 @@
                 slug: $('#convert_slug').val(),
                 logo: $('input[name="logo"]').val(),
                 value: $('select[name="value[]"]').val(),
-                percent: $('select[name="percent[]"]').val(),
-                quantity: $('select[name="quantity[]"]').val(),
                 description: editor.getData(),
                 page: page,
             },
@@ -99,7 +106,7 @@
                         });
                         break;
                     case 1:
-                        $('#modal-create-voucher').modal('hide');
+                        $('#modal-create-brand').modal('hide');
                         list_data(data.url)
                         createSuccess(data.message);
                         break;

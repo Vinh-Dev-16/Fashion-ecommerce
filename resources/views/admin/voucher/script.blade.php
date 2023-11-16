@@ -52,4 +52,19 @@
             }
         });
     });
+
+    function get_modal_edit_voucher(id) {
+        $.ajax({
+            url: '{{ url('admin/voucher/edit')}}/' + id,
+            method: 'GET',
+            success: function (data) {
+                $('#show-modal').html(data);
+                $('#modal-edit-voucher').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
 </script>
