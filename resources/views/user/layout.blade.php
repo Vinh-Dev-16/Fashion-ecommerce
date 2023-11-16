@@ -293,12 +293,14 @@
                                                         </div>
                                                     </li>
                                                 @endcan
+                                                @cannot('confirm-shipper')
                                                 <li class="profile-dropdown-list-item">
                                                     <a href="{{ url('shipper') }}">
                                                         <i class="ri-run-line"></i>
                                                         Đăng kí làm shipper
                                                     </a>
                                                 </li>
+                                                @endcannot
                                                 @can('confirm-shipper')
                                                     <li class="profile-dropdown-list-item" style="position: relative">
                                                         <a href="{{ url('pageShip') }}">

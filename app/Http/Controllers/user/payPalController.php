@@ -78,7 +78,7 @@ class payPalController extends Controller
     }
 
 
-    public function processTransaction(Request $request)
+    public function processTransaction(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
 
         if ($request->isMethod('POST')) {

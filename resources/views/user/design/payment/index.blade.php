@@ -77,12 +77,11 @@
                                 </p>
                                 <input type="text" name="user_id" value="{{ Auth::user()->id }}" hidden>
                                 <input type="text" name="subtotal" value="{{ $subTotal }}" hidden>
-                              <p>
                                 <div class="primary_checkout">
                                     <button class="primary_button"
                                             type="submit">Thanh toán</button>
                                 </div>
-                              </p>
+
 
                             </form>
                         @else
@@ -100,7 +99,7 @@
                                     <label for="address">Address<span></span></label>
                                     <input type="text" name="address">
                                 </p>
-                                @if ($product->vouchers->count() > 0)
+                                @if ($product->brand->vouchers->count() > 0)
                                     <p>
                                         <label for="voucher">Chọn voucher giảm giá<span></span></label>
                                         <select name="voucher"
@@ -122,11 +121,9 @@
                                 </p>
                                 <input type="text" name="user_id" value="{{ Auth::user()->id }}" hidden>
                                 <input type="text" name="subtotal" value="{{ $subTotal }}" hidden>
-                                <p>
+
                                 <div class="primary_checkout"><button class="primary_button"
                                         type="submit">Thanh toán</button></div>
-
-                                </p>
                             </form>
                         @endif
 
@@ -205,61 +202,5 @@
 
 @endsection
 @section('javascript')
-    <script>
-        const dpt_menu = document.querySelectorAll('.dpt_menu');
-        const close_menu = document.querySelectorAll('#close_menu');
-
-        for (let i of dpt_menu) {
-            i.classList.add('active');
-        }
-        close_menu.forEach((item) => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                for (let i of dpt_menu) {
-                    i.classList.toggle('active');
-                }
-            });
-        })
-        let total = document.querySelector('.total');
-        let voucher = document.querySelector('#voucher_item');
-
-        $(document).ready(function() {
-            $('#voucher_item').change(function() {
-                let voucher_item = $(this).val();
-                $.ajax({
-                    url: "{{ url('/voucher') }}",
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        voucher: voucher_item,
-                    },
-                    success: function(data) {
-                        showVoucher(data);
-                    }
-                });
-            });
-        });
-
-        function showVoucher(data) {
-            console.log(data)
-            let total = document.querySelector('.total');
-            let ship = (15000 * data.result.length);
-            const caculator = data.result.reduce((total, cartItem) => {
-                if (data.result[0].product.discount) {
-                    return total + cartItem.quantity * (cartItem.product.price - ((cartItem.product
-                        .price) * ((cartItem.product.discount) / 100)));
-                } else {
-                    return total + cartItem.quantity * (cartItem.product.price);
-                }
-            }, 0);
-            if (data.result[0].voucher > 100) {
-                total.innerText = ((caculator + (caculator * 0.1) + ship) - data.result[0].voucher).toLocaleString(
-                    'vi-VN') + ' VND';
-            } else if (data.result[0].voucher > 0 && data.result[0].voucher <= 100) {
-                total.innerText = (Math.floor((caculator + (caculator * 0.1) + ship) - ((caculator + (caculator * 0.1) +
-                    ship) * (data.result[0].voucher / 100)))).toLocaleString('vi-VN') + ' VND';
-            } else {
-                total.innerText = (caculator + (caculator * 0.1) + ship).toLocaleString('vi-VN') + ' VND';
-            }
-        }
-    </script>
+   @include('user.design.payment.script')
 @endsection

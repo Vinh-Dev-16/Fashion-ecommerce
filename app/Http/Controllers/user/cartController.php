@@ -274,7 +274,7 @@ class cartController extends Controller
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function checkout(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function checkout()
     {
         $products = Product::all();
         $categories = Category::all();
@@ -284,7 +284,7 @@ class cartController extends Controller
         if (count($seletedCart) > 0) {
             return view('user.design.check_out.index', compact('brands', 'products', 'categories', 'cart', 'seletedCart'));
         } else {
-          return view('403')->with('error', 'Bạn chưa chọn sản phẩm nào');
+          return redirect()->route('403')->with('error', 'Bạn chưa chọn sản phẩm nào');
         }
     }
 

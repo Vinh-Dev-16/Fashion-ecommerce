@@ -67,6 +67,24 @@
 
     });
 </script>
+@if (Session::has('success') || Session::has('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            function removeToast(toast) {
+                toast.classList.add("hide");
+                if (toast.timeoutId) clearTimeout(toast.timeoutId);
+                setTimeout(() => toast.remove(), 400);
+            }
+
+            setTime();
+
+            function setTime() {
+                setTimeout(() => removeToast(toast), 3000)
+            }
+        });
+    </script>
+@endif
 </body>
 
 </html>
