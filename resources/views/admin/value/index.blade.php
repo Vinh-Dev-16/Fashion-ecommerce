@@ -1,79 +1,44 @@
 @extends('admin.layout')
 @section('title')
-Trang Attribute Value
+    Trang giá trị thuộc tính
+@endsection
+@section('breadcrumbs')
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white"
+                                               href="{{url('admin/dashboard')}}">Home</a></li>
+        <li class="breadcrumb-item text-sm text-white active" aria-current="page"><a
+                href="{{route('admin.product.index')}}" class="opacity-5 text-white>"></a>Giá tri thuộc tính
+        </li>
+    </ol>
+    <h6 class="font-weight-bolder text-white mb-0">Trang chủ</h6>
 @endsection
 @section('content')
-   
-
-    {{-- Content --}}
-    <div class="col-md-12" style="display:flex;align-items: center;justify-content:center">
-        <div class="product col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN ATTRIBUTE VALUE</h2>
-                    <h3 class="card-title"><a href="{{ route('admin.value.create') }}">Tạo mới value</a></h3>
-
-                    <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+    <div class="card mb-4">
+        <div class="card-header pb-0">
+            <h6>Bảng thuộc tính sản phẩm</h6>
+            <div class="mb-4 mt-4 d-flex align-items- justify-content-between">
+                @can('create-attribute')
+                    <a class="btn bg-gradient-dark mb-0 create-value" href="javascript:void(0)">
+                        <i class="fas fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;
+                        Thêm giá trị</a>
+                @endcan
+                <div class="input-group d-flex justify-content-end" style="width: 300px">
+                    <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                    <input type="text" id="search-value" class="form-control" placeholder="Tìm kiếm...">
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên giá trị thuộc tính</th>
-                                <th>Tên thuộc tính</th>
-                                <th>CRUD</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                @foreach ($values as $value)
-                                    <td>{{ $value->id }}</td>
-                                    <td>{{ $value->value }}</td>
-                                    <td>{{$value->attributes->value}}</td>
-                                    <td class="table_crud" style="display:flex;justify-content:flex-start;">
-
-                                        <a href="{{ url('admin/value/edit/' . $value->id) }}" title="Sửa value"
-                                            style="border: none;outline:none">
-                                            <i class="fa-solid fa-pen" style="color: green; font-size:25px;"></i></a>
-                                        <a href="{{ url('admin/value/destroy' . $value->id) }}" type="submit"
-                                            title="Xóa value" onclick=" return confirm ('Bạn có muốn xóa không?')"
-                                            style="border: none;outline:none;padding:0 13px;background:transparent"><i
-                                                class="fa-solid fa-trash" style="color: red; font-size:25px;"></i><a>
-                                    </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
             </div>
         </div>
+        <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0" id="show-data">
+                @include('admin.value.list_data')
+            </div>
+            <!-- /.card-body -->
+        </div>
     </div>
-    <div class="col-md-12" style="display: flex;justify-content: center;
-      align-items: center;">
-        {{ $values->links() }}
-    </div>
+    <div id="show-modal"></div>
 @endsection
 
-@section('breadcumb')
-    <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active">Attribute Value</li>
-    </ol>
-@endsection
 
 @section('javascript')
-    
+    @include('admin.value.script')
 @endsection

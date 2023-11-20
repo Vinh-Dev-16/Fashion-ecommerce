@@ -99,7 +99,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
         Route::get('/index', [voucherController::class, 'index'])->name('admin.voucher.index');
         Route::get('create', [voucherController::class, 'create'])->name('admin.voucher.create');
         Route::post('store', [voucherController::class, 'store'])->name('admin.voucher.store');
-        Route::post('destroy', [voucherController::class, 'destroy'])->name('admin.voucher.destroy');
+        Route::delete('destroy', [voucherController::class, 'destroy'])->name('admin.voucher.destroy');
         Route::post('update', [voucherController::class, 'update'])->name('admin.voucher.update');
         Route::get('edit/{id}', [voucherController::class, 'edit'])->name('admin.voucher.edit');
         Route::get('search', [voucherController::class, 'search'])->name('admin.voucher.search');
@@ -112,7 +112,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin|editor|m
     Route::get('create', [attributeController::class, 'create'])->name('admin.attribute.create');
     Route::post('store', [attributeController::class, 'store'])->name('admin.attribute.store');
     Route::post('destroy', [attributeController::class, 'destroy'])->name('admin.attribute.destroy');
-    Route::patch('update/{id}', [attributeController::class, 'update'])->name('admin.attribute.update');
+    Route::put('update/{id}', [attributeController::class, 'update'])->name('admin.attribute.update');
     Route::get('edit/{id}', [attributeController::class, 'edit'])->name('admin.attribute.edit');
   });
 

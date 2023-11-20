@@ -55,16 +55,6 @@
                                 <div class="text-danger error-text max_error"></div>
                             </div>
                             <div class="form-group">
-                                <label for="exampleType">Trạng thái</label>
-                                <br>
-                                <select  name="status" style="width: 100%; height: 37px">
-                                    <option>Chọn trạng thái</option>
-                                    <option value="1">Hoạt động</option>
-                                    <option value="0">Hết hạn</option>
-                                </select>
-                                <div class="text-danger error-text status_error"></div>
-                            </div>
-                            <div class="form-group">
                                 <label for="exampleType">Phân loại</label>
                                 <br>
                                 <select  name="type" style="width: 100%; height: 37px">
@@ -147,7 +137,6 @@
                 end_date: $('input[name="end_date"]').val(),
                 type: $('select[name="type"]').val(),
                 brand_id: $('select[name="brand_id[]"]').val(),
-                status: $('select[name="status"]').val(),
                 page: page,
             },
             beforeSend: function () {

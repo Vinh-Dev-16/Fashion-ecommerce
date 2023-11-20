@@ -126,7 +126,7 @@
     $('.btn-create-voucher').click(function () {
         var page = $(this).attr('data-page');
         $.ajax({
-            url: '{{ route('admin.voucher.store') }}',
+            url: '{{ route('admin.voucher.update') }}',
             method: 'POST',
             data: {
                 value: $('input[name="value"]').val(),
@@ -139,6 +139,7 @@
                 end_date: $('input[name="end_date"]').val(),
                 type: $('select[name="type"]').val(),
                 brand_id: $('select[name="brand_id[]"]').val(),
+                id: '{{$voucher->id}}',
                 page: page,
             },
             beforeSend: function () {

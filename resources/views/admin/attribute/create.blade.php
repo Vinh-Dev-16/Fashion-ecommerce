@@ -14,13 +14,13 @@
                 <form action="">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="exampleName">Tên attriute</label>
+                            <label for="exampleName">Tên thuộc tính</label>
                             <input type="text" class="form-control" id="slug" onkeyup="ChangeToSlug();"
                                    placeholder="Điền tên attriute" name="value">
                             <div class="text-danger error-text value_error"></div>
                         </div>
                         <div class="form-group">
-                            <label for="exampleName">Slug sản phẩm</label>
+                            <label for="exampleName">Slug thuộc tính</label>
                             <input type="text" class="form-control" id="convert_slug" name="slug">
                             <div class="text-danger error-text slug_error"></div>
                         </div>

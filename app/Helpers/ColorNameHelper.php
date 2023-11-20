@@ -41,4 +41,13 @@ class ColorNameHelper
         ];
         return $colorStyles[$color] ?? '';
     }
+
+    public static function changeNameAttribute($value): string
+    {
+        $valueNames = [
+          'Size' => 'Kích cỡ',
+          'Color' => 'Màu sắc',
+        ];
+        return $valueNames[$value] ?? '';
+    }
 }

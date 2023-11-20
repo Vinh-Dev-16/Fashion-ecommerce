@@ -12,7 +12,7 @@
         });
     });
 
-    $('#search-attribute').keyup(function(e) {
+    $('#search-attribute').keyup(function (e) {
         if (e.keyCode === 13) {
             list_data();
         }
@@ -26,7 +26,7 @@
                 search: $('#search-attribute').val(),
             },
             success: function (data) {
-                $('#show-data').fadeOut(200, function() {
+                $('#show-data').fadeOut(200, function () {
                     $(this).html(data);
                     $(this).fadeIn(200);
                 });
@@ -93,5 +93,18 @@
         });
     });
 
+    function get_modal_edit_attribute(id) {
+        $.ajax({
+            url: '{{ url('admin/attribute/edit') }}/' + id,
+            method: 'GET',
+            success: function (data) {
+                $('#show-modal').html(data);
+                $('#modal-edit-attribute').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
 
 </script>

@@ -8,6 +8,7 @@ use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class voucherController extends Controller
 {
@@ -32,7 +33,7 @@ class voucherController extends Controller
                 ->orWhere('min_price', 'like', '%' . $request->get('search') . '%');
         }
         $currentPage = $request->input('page', 1);
-        Session::put('page', $currentPage);
+        Session::put('page_voucher', $currentPage);
         $vouchers = $vouchers->paginate(6, ['*'], 'page', $currentPage);
         return view('admin.voucher.list_data', compact('vouchers'))->render();
     }
@@ -43,10 +44,9 @@ class voucherController extends Controller
         return view('admin.voucher.modal.create', compact('brands'))->render();
     }
 
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function validate(Request $request, array $rules = [], array $messages = [], array $customAttributes = [])
     {
-
-        $validator = Validator::make($request->all(), [
+        return Validator::make($request->all(), [
             'value' => 'required|max:255',
             'quantity' => 'numeric',
             'percent' => 'max:255',
@@ -56,7 +56,6 @@ class voucherController extends Controller
             'end_date' => 'required|date|after:start_date|max:255',
             'min_price' => 'required|max:255',
             'type' => 'required',
-            'status' => 'required|numeric',
         ],
             [
                 'value.required' => 'Giá trị không được để trống',
@@ -78,9 +77,16 @@ class voucherController extends Controller
                 'end_date.max' => 'Ngày kết thúc không được quá 255 ký tự',
                 'min_price.required' => 'Giá trị tối thiểu không được để trống',
                 'min_price.max' => 'Giá trị tối thiểu không được quá 255 ký tự',
-                'status.required' => 'Trạng thái không được để trống',
-                'status.numeric' => 'Trạng thái phải là số',
             ]);
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function store(Request $request): \Illuminate\Http\JsonResponse
+    {
+
+        $validator = $this->validate($request);
         if ($validator->fails()) {
             return response()->json([
                 'status' => 0,
@@ -117,7 +123,7 @@ class voucherController extends Controller
             $input['price'] = $price;
             $voucher = Voucher::create($input);
             $voucher->brands()->attach($request->brand_id);
-            $url = url('admin/voucher/index') . '?page=' . Session::get('page');
+            $url = url('admin/voucher/index') . '?page=' . Session::get('page_voucher');
             return response()->json([
                 'status' => 1,
                 'message' => 'Thêm voucher thành công',
@@ -139,4 +145,87 @@ class voucherController extends Controller
         return view('admin.voucher.modal.edit', compact('voucher', 'brands'))->render();
     }
 
+    /**
+     * @throws ValidationException
+     */
+    public function update(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validator = $this->validate($request);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $validator->errors()->toArray(),
+            ]);
+        }
+        try {
+            $id = $request->id;
+            $min_price = str_replace(',', '', $request->min_price);
+            $max = str_replace(',', '', $request->max);
+            $price = str_replace(',', '', $request->price);
+            $input = $request->all();
+
+            if (!empty($request->price) && !empty($request->percent)) {
+                return response()->json([
+                    'status' => 2,
+                    'message' => 'Không được nhập cả 2 giá trị giá và phần trăm',
+                ]);
+            } elseif (empty($request->price) && empty($request->percent)) {
+                return response()->json([
+                    'status' => 2,
+                    'message' => 'Phải nhập 1 trong 2 giá trị giá và phần trăm',
+                ]);
+            }
+            if (!($request->type == '1') && !($request->type == '0')) {
+                return response()->json([
+                    'status' => 2,
+                    'message' => 'Loại không hợp lệ',
+                ]);
+            }
+            unset($input['_token']);
+            $input['min_price'] = $min_price;
+            $input['max'] = $max;
+            $input['price'] = $price;
+            $voucher = Voucher::findOrFail($id);
+            $voucher->update($input);
+            $voucher->brands()->sync($request->brand_id);
+            $url = url('admin/voucher/index') . '?page=' . Session::get('page_voucher');
+            return response()->json([
+                'status' => 1,
+                'message' => 'Sửa voucher thành công',
+                'url' => $url,
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'status' => 2,
+                'message' => $exception->getMessage(),
+            ]);
+        }
+    }
+
+    public function destroy(Request $request)
+    {
+        $id = $request->id;
+        $voucher = Voucher::findOrFail($id);
+        if (empty($voucher)) {
+            return response()->json([
+                'status' => STATUS_ERROR,
+                'message' => 'Không tìm thấy giảm giá',
+            ]);
+        }
+        try {
+            $voucher->brand()->detach();
+            $voucher->delete();
+            $url = url('admin/voucher/index') . '?page=' . Session::get('page_voucher');
+            return response()->json([
+                'status' => STATUS_SUCCESS,
+                'message' => 'Xóa giảm giá thành công',
+                'url' => $url,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => STATUS_FAIL,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
+        }
+    }
 }
