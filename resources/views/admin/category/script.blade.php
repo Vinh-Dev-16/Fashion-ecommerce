@@ -12,7 +12,7 @@
         });
     });
 
-    $('#search-category').keyup(function(e) {
+    $('#search-category').keyup(function (e) {
         if (e.keyCode === 13) {
             list_data();
         }

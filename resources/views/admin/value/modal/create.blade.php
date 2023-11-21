@@ -20,13 +20,8 @@
                             <div class="text-danger error-text value_error"></div>
                         </div>
                         <div class="form-group">
-                            <label for="exampleName">Slug giá trị</label>
-                            <input type="text" class="form-control" id="convert_slug" name="slug">
-                            <div class="text-danger error-text slug_error"></div>
-                        </div>
-                        <div class="form-group">
                             <label for="exampleName">Thuộc tính</label>
-                            <select name="attribute_id[]" class="tag_multiple" style="width: 100%" multiple>
+                            <select name="attribute_id" class="tag_multiple" style="width: 100%" >
                                 @foreach ($attributes as $attribute)
                                     <option value="{{ $attribute->id }}">{{ $attribute->value }}</option>
                                 @endforeach
@@ -53,15 +48,14 @@
         theme: "classic",
     });
 
-    $('.btn-create-attribute').click(function () {
+    $('.btn-create-value').click(function () {
         var page = $(this).attr('data-page');
         $.ajax({
             url: '{{ route('admin.value.store') }}',
             method: 'POST',
             data: {
                 value: $('#slug').val(),
-                'slug': $('#convert_slug').val(),
-                'attribute_id': $('#attribute_id').val(),
+                attribute_id: $('select[name="attribute_id"]').val(),
                 page: page,
             },
             beforeSend: function () {
@@ -75,12 +69,12 @@
                         });
                         break;
                     case 1:
-                        $('#modal-create-attribute').modal('hide');
+                        $('#modal-create-value').modal('hide');
                         list_data(data.url)
                         createSuccess(data.message);
                         break;
                     case 2:
-                        $('#modal-create-attribute').modal('hide');
+                        $('#modal-create-value').modal('hide');
                         createToast(data.message);
                 }
             },

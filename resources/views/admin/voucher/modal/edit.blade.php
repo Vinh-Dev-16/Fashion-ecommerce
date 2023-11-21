@@ -6,7 +6,7 @@
             <div class="modal-header" style="background: #5e72e4">
                 <h4 class="modal-title" style="color: white" id="myModalLabel">Thêm thương hiệu</h4>
                 <button
-                        class="close-modal btn btn-icon-only btn-rounded btn-outline-white mb-0 me-3 btn-sm d-flex align-items-center justify-content-center">
+                    class="close-modal btn btn-icon-only btn-rounded btn-outline-white mb-0 me-3 btn-sm d-flex align-items-center justify-content-center">
                     <i class="ri-close-line"></i>
                 </button>
             </div>
@@ -45,29 +45,39 @@
                                     </span>
                                 </label>
                                 <input type="text" class="form-control"
-                                       placeholder="% giảm giá"  data-type="currency" name="price" value="{{$voucher->price}}">
+                                       placeholder="% giảm giá" data-type="currency" name="price"
+                                       value="{{$voucher->price}}">
                                 <div class="text-danger error-text price_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleMax">Tối đa</label>
                                 <input type="text" class="form-control"
-                                       placeholder="Nhập số tiền" data-type="currency" name="max" value="{{$voucher->max}}">
+                                       placeholder="Nhập số tiền" data-type="currency" name="max"
+                                       value="{{$voucher->max}}">
                                 <div class="text-danger error-text max_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleType">Phân loại</label>
                                 <br>
-                                <select  name="type" style="width: 100%; height: 37px">
+                                <select name="type" style="width: 100%; height: 37px">
                                     <option>Phân loại giảm giá</option>
-                                    <option value="0">Mã Ship</option>
-                                    <option value="1">Mã giảm giá đơn hàng</option>
+                                    <option value="0"
+                                            @if($voucher->type == 0) selected @endif>Mã Ship
+                                    </option>
+                                    <option value="1"
+                                            @if($voucher->type == 0)
+                                                selected
+                                        @endif
+                                    >Mã giảm giá đơn hàng
+                                    </option>
                                 </select>
                                 <div class="text-danger error-text type_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleMinPrice">Đơn hàng tối thiểu</label>
                                 <input type="text" class="form-control price_format"
-                                       placeholder="Nhập số tiền"  data-type="currency" name="min_price" value="{{$voucher->min_price}}">
+                                       placeholder="Nhập số tiền" data-type="currency" name="min_price"
+                                       value="{{$voucher->min_price}}">
                                 <div class="text-danger error-text min_price_error"></div>
                             </div>
                             <div class="form-group">
@@ -172,10 +182,10 @@
     // Jquery Dependency
 
     $("input[data-type='currency']").on({
-        keyup: function() {
+        keyup: function () {
             formatCurrency($(this));
         },
-        blur: function() {
+        blur: function () {
             formatCurrency($(this), "blur");
         }
     });
@@ -195,7 +205,9 @@
         var input_val = input.val();
 
         // don't validate empty input
-        if (input_val === "") { return; }
+        if (input_val === "") {
+            return;
+        }
 
         // original length
         var original_len = input_val.length;
@@ -237,7 +249,7 @@
             // add commas to number
             // remove all non-digits
             input_val = formatNumber(input_val);
-            input_val =  input_val;
+            input_val = input_val;
 
             // final formatting
             // if (blur === "blur") {
@@ -253,6 +265,7 @@
         caret_pos = updated_len - original_len + caret_pos;
         input[0].setSelectionRange(caret_pos, caret_pos);
     }
+
     //     end format money
 
 

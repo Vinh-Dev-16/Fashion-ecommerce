@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 class ValueController extends Controller
 {
 
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|string|\Illuminate\Contracts\Foundation\Application
     {
         $values = ValueAttribute::query();
         if ($request->ajax()) {
@@ -24,7 +24,7 @@ class ValueController extends Controller
         return view('admin.value.index', compact('values'));
     }
 
-    public function listData(Request $request)
+    public function listData(Request $request): string
     {
         $values = ValueAttribute::query();
         if (!empty($request->search)) {
@@ -39,16 +39,16 @@ class ValueController extends Controller
         return view('admin.value.list_data', compact('values'))->render();
     }
 
-    public function create()
+    public function create(): string
     {
         $attributes = Attribute::all();
         return view('admin.value.modal.create', compact('attributes'))->render();
     }
 
-    public function validate(Request $request, array $rules = [], array $messages = [], array $customAttributes = [])
+    public function validate(Request $request, array $rules = [], array $messages = [], array $customAttributes = []): \Illuminate\Contracts\Validation\Validator|array
     {
         return Validator::make($request->all(), [
-            'value' => 'required|unique:values|max:255',
+            'value' => 'required|max:255',
             'attribute_id' => 'required'
         ], [
             'required' => ':attribute không được để trống',
@@ -61,13 +61,13 @@ class ValueController extends Controller
     /**
      * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        $validate = $this->validate($request);
-        if ($validate->fails()) {
+        $validator = $this->validate($request);
+        if ($validator->fails()) {
             return response()->json([
                 'status' => STATUS_ERROR,
-                'message' => $validate->errors()->toArray(),
+                'message' => $validator->errors()->toArray(),
             ]);
         }
         try {
@@ -99,49 +99,67 @@ class ValueController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function edit($id): string
     {
-        $values = ValueAttribute::find($id);
+        $value = ValueAttribute::find($id);
         $attributes = Attribute::all();
-        return view('admin.value.edit', compact('values', 'attributes'));
+        return view('admin.value.modal.edit', compact('value', 'attributes'))->render();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $validator = $this->validate($request);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => STATUS_ERROR,
+                'message' => $validator->errors()->toArray(),
+            ]);
+        }
+        $id = $request->id;
         try {
             $values = ValueAttribute::find($id);
             $input = $request->all();
             unset($input['_token']);
             $values->update($input);
-            return redirect('admin/value/index')->with('success', 'Đã sửa attribute value thành công');
+            $url = url('admin/value/index') . '?page=' . Session::get('page_value');
+            return response()->json([
+                'status' => STATUS_SUCCESS,
+                'message' => 'Cập nhật giá trị thành công',
+                'url' => $url,
+            ]);
         } catch (Exception $e) {
-            return redirect('admin/value/edit/' . $id)->with('error', 'Đã xảy ra lỗi');
+            return response()->json([
+                'status' => STATUS_ERROR,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $values = ValueAttribute::find($id);
-        $values->delete();
-        return redirect('admin/value/index')->with('success', 'Đã xóa value thành công');
+        $id = $request->id;
+        $value = ValueAttribute::find($id);
+        if (empty($value)) {
+            return response()->json([
+                'status' => STATUS_ERROR,
+                'message' => 'Không tìm thấy giá trị',
+            ]);
+        }
+        try {
+            $value->delete();
+            $url = url('admin/value/index') . '?page=' . Session::get('page_value');
+            return response()->json([
+                'status' => STATUS_SUCCESS,
+                'message' => 'Xóa giá trị thành công',
+                'url' => $url,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => STATUS_ERROR,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
+        }
+
     }
 }

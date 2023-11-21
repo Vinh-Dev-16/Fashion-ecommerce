@@ -52,4 +52,60 @@
             }
         });
     }
+
+    function confirmation(eve, id) {
+        swal({
+            title: 'Bạn có chắc là xóa nó chứ?',
+            text: 'Bạn không thể restore nó',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willCancle) => {
+                if (willCancle) {
+                    $.ajax({
+                        url: '{{ url('admin/value/destroy')}}',
+                        method: 'DELETE',
+                        data: {
+                            id: id,
+                        },
+                        success: function (data) {
+                            switch (data.status) {
+                                case 0:
+                                    createToast(data.message);
+                                    break;
+                                case 1:
+                                    list_data(data.url);
+                                    createSuccess(data.message);
+                                    break;
+                                case 2:
+                                    createToast(data.message);
+                                    break;
+                            }
+                        },
+                        error: function (error) {
+                            createToast(error);
+                        }
+                    });
+                }
+            })
+        return false;
+    }
+
+   function get_modal_edit_value(id) {
+        $.ajax({
+            url: '{{ url('admin/value/edit') }}/' + id,
+            method: 'GET',
+            success: function (data) {
+                $('#show-modal').html(data);
+                $('#modal-edit-value').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+
+
 </script>
