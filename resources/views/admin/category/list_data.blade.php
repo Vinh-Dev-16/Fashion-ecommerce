@@ -24,10 +24,10 @@
             <td>
                 @if ($category->parent_id == 0)
                     <p class="text-xs text-center  mb-0"
-                    style="width:38%">Không có</p>
+                       style="width:38%">Không có</p>
                 @elseif ($parent = \App\Models\admin\Category::find($category->parent_id))
                     <p class="text-xs text-center  mb-0"
-                    style="width:38%">{{ $parent->name }}</p>
+                       style="width:38%">{{ $parent->name }}</p>
                 @endif
             </td>
             <td class="align-middle text-center ms-auto text-end" style="width: 20%">
@@ -43,5 +43,6 @@
             </td>
     </tr>
     @endforeach
+    </tbody>
 </table>
 {{ $categories->render('vendor.pagination.bootstrap-4') }}

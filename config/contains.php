@@ -28,3 +28,5 @@ const SENDER_DISTRICT = 'Thanh Xuân';
 const ONE_DAY = 1440;
 
 const TWO_HOUR = 120;
+
+const SIZE = 6;

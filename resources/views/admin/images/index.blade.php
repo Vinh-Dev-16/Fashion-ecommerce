@@ -1,112 +1,45 @@
 @extends('admin.layout')
 @section('title')
-    Trang image
+    Trang ảnh
+@endsection
+@section('breadcrumbs')
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white"
+                                               href="{{url('admin/dashboard')}}">Home</a></li>
+        <li class="breadcrumb-item text-sm text-white active" aria-current="page">Ảnh sản phẩm</li>
+    </ol>
+    <h6 class="font-weight-bolder text-white mb-0">Trang chủ</h6>
 @endsection
 @section('content')
-
     {{-- Content --}}
-    <div class="col-md-12" style="display:flex;align-items: center;justify-content:center">
-        <div class="product col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2 style="font-size:25px;text-align:center;margin:10px 0">TRANG THÔNG TIN IMAGES</h2>
-                    <h3 class="card-title"><a href="{{ route('admin.images.create') }}">Tạo mới image</a></h3>
-
-                    <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" id="search" class="form-control float-right" placeholder="Search">
-
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+    <div class="card mb-4">
+        <div class="card-header pb-0">
+            <h6>Bảng ảnh sản phẩm</h6>
+            <div class="mb-4 mt-4 d-flex align-items- justify-content-between">
+                @can('create-image')
+                    <a class="btn bg-gradient-dark mb-0 create-image" href="javascript:void(0)">
+                        <i class="fas fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;
+                        Thêm ảnh sản phẩm</a>
+                @endcan
+                <div class="input-group d-flex justify-content-end" style="width: 300px">
+                    <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                    <input type="text" id="search-image" class="form-control" placeholder="Tìm kiếm...">
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap" id="myTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th> Image product</th>
-                                <th>Tên product</th>
-                                <th>CRUD</th>
-                            </tr>
-                        </thead>
-                        <tbody class="infor_images">
-                            <tr>
-                                <?php $i = 1; ?>
-                                @foreach ($images as $image)
-                                    <td>{{ $images->firstItem() + $loop->index  }}</td>
-                                    <td style="width:150px;height:120px;"><img class="logo_image" src=" {{ $image->path }}"
-                                            alt="images của {{$image->products->name}}"></td>
-                                    <td>{{ Illuminate\Support\Str::of($image->products->name)->words(4) }}</td>
-                                    <td class="table_crud" style="display:flex;justify-content:flex-start;">
-                                        <a href="{{ url('admin/images/edit/' . $image->id) }}" title="Sửa image"
-                                            style="border: none;outline:none">
-                                            <i class="fa-solid fa-pen" style="color:black; font-size:25px;"></i></a>
-                                        <form method="post" action="{{ url('admin/images/destroy/' . $image->id) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" title="Xóa image"
-                                                onclick=" return confirm ('Bạn có muốn xóa không?')"
-                                                style="border: none;outline:none;padding:0 13px;background:transparent"><i
-                                                    class="fa-solid fa-trash"
-                                                    style="color: black; font-size:25px;"></i></button>
-                                        </form>
-                                    </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                        <tbody id="search_result"></tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
             </div>
         </div>
-    </div>
-    <div class="col-md-12" style="display: flex;justify-content: center;
-      align-items: center;">
-        {{ $images->links() }}
+        <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0" id="show-data">
+                @include('admin.images.list_data')
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <div id="show-modal">
+
+        </div>
     </div>
 @endsection
 
-@section('breadcumb')
-    <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Home</a></li>
-        <li class="breadcrumb-item active">Images</li>
-    </ol>
-@endsection
 
 @section('javascript')
-    <script>
-        function searchImages() {
-            $(document).ready(function() {
-                $("#search").keyup(function() {
-                    console.log(1);
-                    $input = $(this).val();
-                    if ($input) {
-                        $('.infor_images').hide();
-                        $('#search_result').show();
-                    } else {
-                        $('.infor_images').show();
-                        $('#search_result').hide();
-                    }
-                    $.ajax({
-                        url: "{{ URL::to('admin/images/search') }}",
-                        method: "GET",
-                        data: {
-                            'search': $input
-                        },
-                        success: function(data) {
-                            $("#search_result").html(data);
-                        }
-                    });
-                })
-            })
-        }
-        searchImages();
-    </script>
+    @include('admin.images.script')
 @endsection

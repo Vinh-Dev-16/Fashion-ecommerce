@@ -12,52 +12,32 @@ use Illuminate\Support\Str;
 
 class imagesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|string|\Illuminate\Contracts\Foundation\Application
     {
-        $images = Image::orderBy('product_id')->paginate(6);
-        // Kích thước trang (số hình ảnh trên mỗi trang)
+        $images = Image::query();
+        if ($request->ajax()) {
+            return $this->listData($request);
+        }
+        $images = $images->orderBy('product_id')->paginate(SIZE);
         return view('admin.images.index', compact('images'));
-//        Session::put('image_url', request()->fullUrl());
     }
 
-    public function search(Request $request)
+    public function listData(Request $request): string
     {
-        $output = "";
-        $searches = Product::where('name', 'like', '%' . $request->search . '%')->get();
-        foreach ($searches as $result) {
-           $key = Image::where('product_id', $result->id)->get();
-           foreach($key as $images) {
-            $name = Str::of($images->products->name)->words(4);
-            $path = '<img  style="display:flex;justify-content:space-between;width:110px" src=" '. $images->path. '" alt="'. $name.'">.';
-            $output .=
-                '<tr>
-              <td> '. $images->id. ' </td>
-               <td>'. $path . '</td>
-               <td> '. $name. ' </td>
-               <td class="table_crud" style="display:flex;justify-content:space-between;width:110px">' . '
-                   <a href="' . route('admin.images.edit', $images->id) . '" title="Sửa image"
-                   style="border: none;outline:none">
-                   <i class="fa-solid fa-pen" style=" font-size:22px;"></i></a>
-                   <a href="' . route('admin.images.destroy', $images->id) . '" title="Xoa image"
-                   style="border:none;outline:none">
-                   <i class="fa-solid fa-trash"
-                   style="font-size:22px;"></i></a>
-              ' . '</td>
-           </tr>';
+        $images = Image::query();
+        if (!empty($request->get('search'))) {
+            $images->where('path', 'like', '%' . $request->get('search') . '%')
+                ->orWhereHas('products', function ($query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->get('search') . '%');
+                });
         }
+        $currentPage = $request->input('page', 1);
+        Session::put('page_image', $currentPage);
+        $images->orderBy('product_id');
+        $images = $images->paginate(SIZE, ['*'], 'page', $currentPage);
+        return view('admin.images.list_data', compact('images'))->render();
     }
-    return response($output);
-}
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         $images = Image::all();
@@ -65,12 +45,8 @@ class imagesController extends Controller
         return view('admin.images.create', compact('images','products'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function store(Request $request)
     {
         if ($request->isMethod('POST')) {
