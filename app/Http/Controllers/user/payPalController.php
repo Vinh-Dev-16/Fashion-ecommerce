@@ -29,7 +29,7 @@ use Exception;
 
 class payPalController extends Controller
 {
-    public function payment(Request $request)
+    public function payment(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
 
         if ($request->isMethod('Post')) {
@@ -78,6 +78,11 @@ class payPalController extends Controller
     }
 
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws \Throwable
+     * @throws NotFoundExceptionInterface
+     */
     public function processTransaction(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
 

@@ -1205,7 +1205,7 @@ section .details span{
     max-height: 150px;
 }
 .uploaded-area::-webkit-scrollbar{
-    width: 0px;
+    width: 0;
 }
 .uploaded-area .row .content{
     display: flex;
@@ -3895,7 +3895,7 @@ input[type="range"] {
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(90deg, rbga(255, 255, 255, 1) 0%, rgb(27, 26, 26));
+        background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0, rgb(27, 26, 26));
     }
 
     .dpt_menu .mega {

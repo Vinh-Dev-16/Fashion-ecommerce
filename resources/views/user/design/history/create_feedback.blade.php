@@ -76,19 +76,20 @@
 <script defer>
     $(document).ready(function () {
         $('.overlay').addClass('active');
-            ClassicEditor
-                .create(document.querySelector('#editor'))
-                .then( newEditor => {
-                    editor = newEditor;
-                } )
-                .catch(error => {
-                    console.error(error);
-                });
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .then(newEditor => {
+                editor = newEditor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
     })
     document.addEventListener('click', function (e) {
         if (e.target.classList.contains('overlay')) {
             $('.modal-data').removeClass('active');
             $('.overlay').removeClass('active');
+            $('.show-data').html('');
         }
     })
 
@@ -134,6 +135,7 @@
         });
         $('#show-image-upload').html(images);
     }
+
     function removeImage(element) {
         let index = $(element).parent().index();
         filesImage.splice(index, 1);
@@ -199,7 +201,7 @@
                     createToast(data.message);
                 }
             }
-        });
+        })
     }
 
     // feedback
@@ -262,4 +264,11 @@
             }
         });
     }
+
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('overlay')) {
+            $('.overlay').removeClass('active');
+            $('.show-data').html('');
+        }
+    })
 </script>

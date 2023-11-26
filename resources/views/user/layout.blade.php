@@ -183,13 +183,6 @@
                     <ul class="flexitem second_links">
                         @if (Auth::check())
                             <li class="mobile_hide">
-                                <a title="Thông báo" href="{{ route('history') }}">
-                                    <div class="icon_large" style="margin-top: -36px">
-                                        <i class="ri-notification-line"></i>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="mobile_hide">
                                 <a title="Lịch sử" href="{{ route('history') }}">
                                     <div class="icon_large" style="margin-top: -36px">
                                         <i class="ri-history-line"></i>

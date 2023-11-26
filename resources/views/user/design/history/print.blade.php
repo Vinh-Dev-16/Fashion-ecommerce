@@ -45,7 +45,7 @@
                 <div class="i_table_head">
                     <div class="i_row">
                         <div class="i_col w_15">
-                            <p class="p_title">Thuộc tinh</p>
+                            <p class="p_title">Thuộc tính</p>
                         </div>
                         <div class="i_col w_55">
                             <p class="p_title">Tên</p>
