@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ asset('user/404.css') }}">
+    <link rel='icon' href='{{asset('images/logoCart.png')}}' type='image/x-icon'>
     <title>Page 403</title>
 </head>
 

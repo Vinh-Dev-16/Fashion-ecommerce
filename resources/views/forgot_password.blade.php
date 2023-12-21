@@ -20,6 +20,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet">
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('css/argon-dashboard.css') }}" rel="stylesheet"/>
+    <link rel='icon' href='{{asset('images/logoCart.png')}}' type='image/x-icon'>
     <link href="{{ asset('css/verify.css') }}" rel="stylesheet"/>
 </head>
 

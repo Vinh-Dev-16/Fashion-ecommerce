@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
     <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_SANDBOX_CLIENT_ID') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel='icon' href='{{asset('images/logoCart.png')}}' type='image/x-icon'>
 
     <link rel="stylesheet" type="text/css" href="{{ asset('user/user.css') }}">
     <title>
