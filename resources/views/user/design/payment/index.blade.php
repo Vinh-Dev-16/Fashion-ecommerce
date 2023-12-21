@@ -24,6 +24,13 @@
                                 return $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
                             }
                         });
+                        $weight = array_sum(array_column($cart, 'product.weight'));
+                        $province = \App\Helpers\SubStringAddress::subStringProvince(\Illuminate\Support\Facades\Auth::user()->information->province);
+                        $district = \App\Helpers\SubStringAddress::subStringDistrict(\Illuminate\Support\Facades\Auth::user()->information->district);
+                        $data = \App\Helpers\GetShip::getShip($province, $district, $weight, $subTotal);
+                        $fee = $data['results'][0]['fee'];
+                        $pickUp = $data['results'][0]['pickup']['name'];
+                        $delivery = $data['results'][0]['delivery']['name'];
                         ?>
                         @if (App\Models\Information::where('user_id', Auth::user()->id)->first())
                             <form action="{{ url('/process-transaction') }}" method="POST">
@@ -77,9 +84,10 @@
                                 </p>
                                 <input type="text" name="user_id" value="{{ Auth::user()->id }}" hidden>
                                 <input type="text" name="subtotal" value="{{ $subTotal }}" hidden>
+                                <input type="text" name="fee" value="{{$fee}}" hidden>
                                 <div class="primary_checkout">
                                     <button class="primary_button"
-                                            type="submit">Thanh toán</button>
+                                            type="submit">Thanh toán Paypal</button>
                                 </div>
 
                             </form>
@@ -120,12 +128,12 @@
                                 </p>
                                 <input type="text" name="user_id" value="{{ Auth::user()->id }}" hidden>
                                 <input type="text" name="subtotal" value="{{ $subTotal }}" hidden>
-
+                                <input type="text" name="fee" value="{{$fee}}" hidden>
                                 <div class="primary_checkout"><button class="primary_button"
-                                        type="submit">Thanh toán</button></div>
+                                        type="submit">Thanh toán Paypal</button></div>
                             </form>
                         @endif
-
+                        <button id="pay_cash">Hoặc trả tiền mặt</button>
                     </div>
                     <div class="item right">
                         <h2>Thông tin đơn hàng</h2>
@@ -136,15 +144,6 @@
                                         <span>Tổng tiền</span>
                                         <span>{{ number_format($subTotal) }} VND</span>
                                     </li>
-                                    <?php
-                                    $weight = array_sum(array_column($cart, 'product.weight'));
-                                    $province = \App\Helpers\SubStringAddress::subStringProvince(\Illuminate\Support\Facades\Auth::user()->information->province);
-                                    $district = \App\Helpers\SubStringAddress::subStringDistrict(\Illuminate\Support\Facades\Auth::user()->information->district);
-                                    $data = \App\Helpers\GetShip::getShip($province, $district, $weight, $subTotal);
-                                    $fee = $data['results'][0]['fee'];
-                                    $pickUp = $data['results'][0]['pickup']['name'];
-                                    $delivery = $data['results'][0]['delivery']['name'];
-                                    ?>
                                     <li>
                                         <span>Phí ship</span>
                                         <span>{{ number_format($fee) }} VND</span>

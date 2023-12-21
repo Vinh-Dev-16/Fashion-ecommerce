@@ -20,7 +20,7 @@
         document.querySelector('.site').classList.remove('showmodal');
     });
     //Phần deal of day
-    let countDate = new Date('29,October,2023 00:00:00').getTime();
+    let countDate = new Date('29,December,2023 00:00:00').getTime();
 
     function countDown() {
         let now = new Date().getTime();
@@ -39,10 +39,10 @@
         let s = Math.floor((gap % (minutes)) / (seconds)) < 10 ? '0' + Math.floor((gap % (minutes)) / (seconds)) : Math
             .floor((gap % (minutes)) / (seconds));
 
-        document.querySelector('.days').innerText = d;
-        document.querySelector('.hours').innerText = h;
-        document.querySelector('.minutes').innerText = m;
-        document.querySelector('.seconds').innerText = s;
+        document.querySelector('.days').innerText = d + ' d';
+        document.querySelector('.hours').innerText = h + ' h';
+        document.querySelector('.minutes').innerText = m + ' m';
+        document.querySelector('.seconds').innerText = s + ' s';
 
 
     }

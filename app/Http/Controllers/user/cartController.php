@@ -293,8 +293,6 @@ class cartController extends Controller
      */
     public function process(Request $request)
     {
-
-
         if ($request->isMethod('POST')) {
             $rules = [
                 'fullname' => 'required|max:255',
@@ -320,7 +318,7 @@ class cartController extends Controller
                 return $cartItem['quantity'] * ($cartItem['product']->price - ($cartItem['product']->discount / 100) * $cartItem['product']->price);
             }
         });
-        $totalMoney = $subTotal + ($subTotal * 0.1) + (15000 * count($cartCollect));
+        $totalMoney = $subTotal + ($subTotal * 0.1) + $request->fee ;
         $order = collect(session('order', []));
         $order = $order->toArray();
 
@@ -451,6 +449,12 @@ class cartController extends Controller
                 ->with('error', $response['message'] ?? 'Đã xảy ra lỗi');
         }
     }
+
+    public function insertDBWhenPayCash(Request $request)
+    {
+
+    }
+
 
     public function cancel(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {

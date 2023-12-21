@@ -31,7 +31,6 @@ class payPalController extends Controller
 {
     public function payment(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-
         if ($request->isMethod('Post')) {
             $rules = [
                 'color' => 'required',
@@ -123,16 +122,17 @@ class payPalController extends Controller
             switch ($cartItem['voucher']) {
                 case ($cartItem['voucher'] == 0):
                 case(!($cartItem['voucher'])):
-                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment', [])));
+                    return $subTotal + ($subTotal * 0.1) ;
                     break;
                 case($cartItem['voucher'] > 0 && $cartItem['voucher'] <= 100):
-                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment', []))) - ($subTotal * ($cartItem['voucher'] / 100));
+                    return $subTotal + ($subTotal * 0.1)  - ($subTotal * ($cartItem['voucher'] / 100));
                     break;
                 case($cartItem['voucher'] > 100):
-                    return $subTotal + ($subTotal * 0.1) + (15000 * count(collect('payment', []))) - ($cartItem['voucher']);
+                    return $subTotal + ($subTotal * 0.1) - ($cartItem['voucher']);
                     break;
             }
         });
+        $total_money = $total_money + $request->fee;
         $order = collect(session('order', []));
         $order = $order->toArray();
 

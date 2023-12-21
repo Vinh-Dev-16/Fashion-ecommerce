@@ -337,10 +337,10 @@
     <div class="header_main mobile_hide">
         <div class="container">
             <div class="wrapper flexitem">
-                <div class="left">
+                <div class="left">nào
                     <div class="dpt_cat">
                         <div class="dpt_head">
-                            <div class="main_text">Mại zô Mại zô</div>
+                            <div class="main_text">Mua </div>
                             <div class="mini_text mobile_hide">Tất cả {{ \App\Models\admin\Product::count()  }} sản
                                 phẩm
                             </div>
@@ -348,171 +348,171 @@
                                 <i class="ri-menu-3-line ri_xl"></i>
                             </a>
                         </div>
-                        <div class="dpt_menu">
-                            <ul class="second_links">
-                                <li class="has_child beauty">
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-bear-smile-line"></i></div>
-                                        Beauty
-                                        <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>
-                                    </a>
-                                    <ul>
-                                        <li><a href="#">Makeup</a></li>
-                                        <li><a href="#">Skin Care</a></li>
-                                        <li><a href="#">Hair Care </a></li>
-                                        <li><a href="#">Fragrance</a></li>
-                                        <li><a href="#">Foot & Hand Care</a></li>
-                                        <li><a href="#">Tools & Accessories</a></li>
-                                        <li><a href="#">Share & Hair Removal</a></li>
-                                        <li><a href="#">Personal Care</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has_child electric">
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-bluetooth-connect-line"></i></div>
-                                        Electronic
-                                        <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>
-                                    </a>
-                                    <ul>
-                                        <li><a href="#">Makeup</a></li>
-                                        <li><a href="#">Skin Care</a></li>
-                                        <li><a href="#">Hair Care </a></li>
-                                        <li><a href="#">Fragrance</a></li>
-                                        <li><a href="#">Foot & Hand Care</a></li>
-                                        <li><a href="#">Tools & Accessories</a></li>
-                                        <li><a href="#">Share & Hair Removal</a></li>
-                                        <li><a href="#">Personal Care</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has_child woman">
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-t-shirt-air-line"></i></div>
-                                        Women's Fashion
-                                        <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>
-                                    </a>
-                                    <ul>
-                                        <li><a href="#">Makeup</a></li>
-                                        <li><a href="#">Skin Care</a></li>
-                                        <li><a href="#">Hair Care </a></li>
-                                        <li><a href="#">Fragrance</a></li>
-                                        <li><a href="#">Foot & Hand Care</a></li>
-                                        <li><a href="#">Tools & Accessories</a></li>
-                                        <li><a href="#">Tools & Accessories</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-t-shirt-line"></i></div>
-                                        Men's Fashion
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-user-5-line"></i></div>
-                                        Girl's Fashion
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-user-6-line"></i></div>
-                                        Boy's Fashion
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-heart-pulse-line"></i></div>
-                                        Health & Household
-                                    </a>
-                                </li>
-                                <li class="has_child homekit">
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-home-8-line"></i></div>
-                                        Home & Kitchen
-                                        <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>
-                                    </a>
-                                    <div class="mega">
-                                        <div class="flexcol">
-                                            <div class="row">
-                                                <h4><a href="#">Kitchen & Dining</a></h4>
-                                                <ul>
-                                                    <li><a href="#">Kitchen</a></li>
-                                                    <li><a href="#">Dining Room</a></li>
-                                                    <li><a href="#">Pantry</a></li>
-                                                    <li><a href="#">Great Room</a></li>
-                                                    <li><a href="#">Breakfast Nook</a></li>
-                                                    <li><a href="#">Great Room</a></li>
-                                                    <li><a href="#">Breakfast Nook</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="row">
-                                                <h4><a href="#">Living</a></h4>
-                                                <ul>
-                                                    <li><a href="#">Kitchen</a></li>
-                                                    <li><a href="#">Dining Room</a></li>
-                                                    <li><a href="#">Pantry</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="flexcol">
-                                            <div class="row">
-                                                <h4><a href="#">Bed & Bath</a></h4>
-                                                <ul>
-                                                    <li><a href="#">Bathroom</a></li>
-                                                    <li><a href="#">Dining Room</a></li>
-                                                    <li><a href="#">Pantry</a></li>
-                                                    <li><a href="#">Great Room</a></li>
-                                                    <li><a href="#">Breakfast Nook</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="row">
-                                                <h4><a href="#">Utility</a></h4>
-                                                <ul>
-                                                    <li><a href="#">Laudry</a></li>
-                                                    <li><a href="#">Garage</a></li>
-                                                    <li><a href="#">Mudroom</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="flexcol">
-                                            <div class="row">
-                                                <h4><a href="#">Outdoor</a></h4>
-                                                <ul>
-                                                    <li><a href="#">Bathroom</a></li>
-                                                    <li><a href="#">Dining Room</a></li>
-                                                    <li><a href="#">Pantry</a></li>
-                                                    <li><a href="#">Great Room</a></li>
-                                                    <li><a href="#">Breakfast Nook</a></li>
-                                                    <li><a href="#">Bathroom</a></li>
-                                                    <li><a href="#">Dining Room</a></li>
-                                                    <li><a href="#">Pantry</a></li>
-                                                    <li><a href="#">Great Room</a></li>
-                                                    <li><a href="#">Breakfast Nook</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-android-line"></i></div>
-                                        Pet Supplies
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-basketball-line"></i></div>
-                                        Sports
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" style="display: flex">
-                                        <div class="icon_large"><i class="ri-shield-star-line"></i></div>
-                                        Best Seller
-                                    </a>
-                                </li>
+{{--                        <div class="dpt_menu">--}}
+{{--                            <ul class="second_links">--}}
+{{--                                <li class="has_child beauty">--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-bear-smile-line"></i></div>--}}
+{{--                                        Beauty--}}
+{{--                                        <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>--}}
+{{--                                    </a>--}}
+{{--                                    <ul>--}}
+{{--                                        <li><a href="#">Makeup</a></li>--}}
+{{--                                        <li><a href="#">Skin Care</a></li>--}}
+{{--                                        <li><a href="#">Hair Care </a></li>--}}
+{{--                                        <li><a href="#">Fragrance</a></li>--}}
+{{--                                        <li><a href="#">Foot & Hand Care</a></li>--}}
+{{--                                        <li><a href="#">Tools & Accessories</a></li>--}}
+{{--                                        <li><a href="#">Share & Hair Removal</a></li>--}}
+{{--                                        <li><a href="#">Personal Care</a></li>--}}
+{{--                                    </ul>--}}
+{{--                                </li>--}}
+{{--                                <li class="has_child electric">--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-bluetooth-connect-line"></i></div>--}}
+{{--                                        Electronic--}}
+{{--                                        <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>--}}
+{{--                                    </a>--}}
+{{--                                    <ul>--}}
+{{--                                        <li><a href="#">Makeup</a></li>--}}
+{{--                                        <li><a href="#">Skin Care</a></li>--}}
+{{--                                        <li><a href="#">Hair Care </a></li>--}}
+{{--                                        <li><a href="#">Fragrance</a></li>--}}
+{{--                                        <li><a href="#">Foot & Hand Care</a></li>--}}
+{{--                                        <li><a href="#">Tools & Accessories</a></li>--}}
+{{--                                        <li><a href="#">Share & Hair Removal</a></li>--}}
+{{--                                        <li><a href="#">Personal Care</a></li>--}}
+{{--                                    </ul>--}}
+{{--                                </li>--}}
+{{--                                <li class="has_child woman">--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-t-shirt-air-line"></i></div>--}}
+{{--                                        Women's Fashion--}}
+{{--                                        <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>--}}
+{{--                                    </a>--}}
+{{--                                    <ul>--}}
+{{--                                        <li><a href="#">Makeup</a></li>--}}
+{{--                                        <li><a href="#">Skin Care</a></li>--}}
+{{--                                        <li><a href="#">Hair Care </a></li>--}}
+{{--                                        <li><a href="#">Fragrance</a></li>--}}
+{{--                                        <li><a href="#">Foot & Hand Care</a></li>--}}
+{{--                                        <li><a href="#">Tools & Accessories</a></li>--}}
+{{--                                        <li><a href="#">Tools & Accessories</a></li>--}}
+{{--                                    </ul>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-t-shirt-line"></i></div>--}}
+{{--                                        Men's Fashion--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-user-5-line"></i></div>--}}
+{{--                                        Girl's Fashion--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-user-6-line"></i></div>--}}
+{{--                                        Boy's Fashion--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-heart-pulse-line"></i></div>--}}
+{{--                                        Health & Household--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li class="has_child homekit">--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-home-8-line"></i></div>--}}
+{{--                                        Home & Kitchen--}}
+{{--                                        <div class="icon_small"><i class="ri-arrow-right-s-line"></i></div>--}}
+{{--                                    </a>--}}
+{{--                                    <div class="mega">--}}
+{{--                                        <div class="flexcol">--}}
+{{--                                            <div class="row">--}}
+{{--                                                <h4><a href="#">Kitchen & Dining</a></h4>--}}
+{{--                                                <ul>--}}
+{{--                                                    <li><a href="#">Kitchen</a></li>--}}
+{{--                                                    <li><a href="#">Dining Room</a></li>--}}
+{{--                                                    <li><a href="#">Pantry</a></li>--}}
+{{--                                                    <li><a href="#">Great Room</a></li>--}}
+{{--                                                    <li><a href="#">Breakfast Nook</a></li>--}}
+{{--                                                    <li><a href="#">Great Room</a></li>--}}
+{{--                                                    <li><a href="#">Breakfast Nook</a></li>--}}
+{{--                                                </ul>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="row">--}}
+{{--                                                <h4><a href="#">Living</a></h4>--}}
+{{--                                                <ul>--}}
+{{--                                                    <li><a href="#">Kitchen</a></li>--}}
+{{--                                                    <li><a href="#">Dining Room</a></li>--}}
+{{--                                                    <li><a href="#">Pantry</a></li>--}}
+{{--                                                </ul>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="flexcol">--}}
+{{--                                            <div class="row">--}}
+{{--                                                <h4><a href="#">Bed & Bath</a></h4>--}}
+{{--                                                <ul>--}}
+{{--                                                    <li><a href="#">Bathroom</a></li>--}}
+{{--                                                    <li><a href="#">Dining Room</a></li>--}}
+{{--                                                    <li><a href="#">Pantry</a></li>--}}
+{{--                                                    <li><a href="#">Great Room</a></li>--}}
+{{--                                                    <li><a href="#">Breakfast Nook</a></li>--}}
+{{--                                                </ul>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="row">--}}
+{{--                                                <h4><a href="#">Utility</a></h4>--}}
+{{--                                                <ul>--}}
+{{--                                                    <li><a href="#">Laudry</a></li>--}}
+{{--                                                    <li><a href="#">Garage</a></li>--}}
+{{--                                                    <li><a href="#">Mudroom</a></li>--}}
+{{--                                                </ul>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="flexcol">--}}
+{{--                                            <div class="row">--}}
+{{--                                                <h4><a href="#">Outdoor</a></h4>--}}
+{{--                                                <ul>--}}
+{{--                                                    <li><a href="#">Bathroom</a></li>--}}
+{{--                                                    <li><a href="#">Dining Room</a></li>--}}
+{{--                                                    <li><a href="#">Pantry</a></li>--}}
+{{--                                                    <li><a href="#">Great Room</a></li>--}}
+{{--                                                    <li><a href="#">Breakfast Nook</a></li>--}}
+{{--                                                    <li><a href="#">Bathroom</a></li>--}}
+{{--                                                    <li><a href="#">Dining Room</a></li>--}}
+{{--                                                    <li><a href="#">Pantry</a></li>--}}
+{{--                                                    <li><a href="#">Great Room</a></li>--}}
+{{--                                                    <li><a href="#">Breakfast Nook</a></li>--}}
+{{--                                                </ul>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-android-line"></i></div>--}}
+{{--                                        Pet Supplies--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-basketball-line"></i></div>--}}
+{{--                                        Sports--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <a href="#" style="display: flex">--}}
+{{--                                        <div class="icon_large"><i class="ri-shield-star-line"></i></div>--}}
+{{--                                        Best Seller--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
 
-                            </ul>
-                        </div>
+{{--                            </ul>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
                 <div class="right">

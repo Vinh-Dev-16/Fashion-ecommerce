@@ -8,8 +8,8 @@
 
     <div class="page_single">
         <div class="container">
-            <div class="wrapper" style="border: 1px solid #e5e8ec;min-height:100vh">
-                <div class="breadcrumb">
+            <div class="wrapper" style="border: 1px solid #e5e8ec;">
+                <div class="breadcrumb" style="margin: 10px">
                     <ul class="flexitem">
                         <li><a href="{{ url('/') }}">Home</a></li>
                         <li>Trang thông tin</li>
@@ -42,7 +42,7 @@
                         <div class="sidebar_info">
                             <ul>
                                 <li>
-                                    <a href="{{url('information/' . $user->id)}}">
+                                    <a href="{{url('information/' . $user->id)}}" style="height: 73.7px">
                                         <div class="icon_large">
                                             <i class="ri-home-line"></i>
                                         </div>
@@ -50,15 +50,15 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{url('edit/' . $user->id)}}">
+                                    <a href="{{url('information/edit/' . $user->id)}}" style="height: 73.7px">
                                         <div class="icon_large">
                                             <i class="ri-article-line"></i>
                                         </div>
-                                        Thông tin cá nhân
+                                        Chỉnh sửa thông tin
                                     </a>
                                 </li>
                                 <li>
-                                    <a>
+                                    <a style="height: 73.7px">
                                         <div class="icon_large">
                                             <i class="ri-exchange-funds-line"></i>
                                         </div>
@@ -67,7 +67,7 @@
                                 </li>
                                 @if(!empty($user->information->address))
                                     <li>
-                                        <a href="{{url('information/edit-address/' . $user->id)}}">
+                                        <a href="{{url('information/edit-address/' . $user->id)}}" style="height: 73.7px">
                                             <div class="icon_large">
                                                 <i class="ri-edit-box-line"></i>
                                             </div>
@@ -76,7 +76,7 @@
                                     </li>
                                 @else
                                     <li>
-                                        <a href="{{url('information/create-address/' . $user->id)}}">
+                                        <a href="{{url('information/create-address/' . $user->id)}}" style="height: 73.7px">
                                             <div class="icon_large">
                                                 <i class="ri-add-circle-line"></i>
                                             </div>

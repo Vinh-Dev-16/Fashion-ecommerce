@@ -10,23 +10,23 @@
                             <input type="radio" name="rate"
                                    id="star5" value="5">
                             <label for="star5"><i
-                                    class="ri-star-fill"></i></label>
+                                        class="ri-star-fill"></i></label>
                             <input type="radio" name="rate"
                                    id="star4" value="4">
                             <label for="star4"><i
-                                    class="ri-star-fill"></i></label>
+                                        class="ri-star-fill"></i></label>
                             <input type="radio" name="rate"
                                    id="star3" value="3">
                             <label for="star3"><i
-                                    class="ri-star-fill"></i></label>
+                                        class="ri-star-fill"></i></label>
                             <input type="radio" name="rate"
                                    id="star2" value="2">
                             <label for="star2"><i
-                                    class="ri-star-fill"></i></label>
+                                        class="ri-star-fill"></i></label>
                             <input type="radio" name="rate"
                                    id="star1" value="1">
                             <label for="star1"><i
-                                    class="ri-star-fill"></i></label>
+                                        class="ri-star-fill"></i></label>
                         </div>
                     </div>
                     <div style="color:red; margin-bottom: 15px;" class="text-danger error-text rate_error"></div>
@@ -93,13 +93,13 @@
         }
     })
 
-    let currentAjaxCall = null;
-    const form = document.querySelector("#form-upload-image"),
+    var currentAjaxCall = null;
+    var form = document.querySelector("#form-upload-image"),
         fileInput = document.querySelector(".file-input"),
         progressArea = document.querySelector(".progress-area"),
         uploadedArea = document.querySelector(".uploaded-area");
-    let filesImage = [];
-    let xhrArray = [];
+    var filesImage = [];
+    var xhrArray = [];
     if (form) {
         form.addEventListener("click", () => {
             fileInput.click();

@@ -54,4 +54,10 @@
             total.innerText = (calculator + (calculator * 0.1) + ship).toLocaleString('vi-VN') + ' VND';
         }
     }
+
+
+    let payCash = document.querySelector('#payCash');
+    payCash.addEventListener('click', () => {
+
+    })
 </script>
