@@ -1755,14 +1755,13 @@ form .button input:hover {
     margin-top: 1.25em;
 }
 
-.products .rating {
+.rating {
     display: flex;
     align-items: center;
     gap: 0.5em;
     margin: 1em 0;
 }
-
-.products .rating .stars {
+.rating .stars {
     width: 80px;
     height: 20px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M12 18.26l-7.053 3.948 1.575-7.928L.587 8.792l8.027-.952L12 .5l3.386 7.34 8.027.952-5.935 5.488 1.575 7.928z' fill='rgba(241,196,14,1)'/%3E%3C/svg%3E");
@@ -3319,7 +3318,7 @@ input[type="range"] {
     bottom: 0;
     max-width: 600px;
     width: 90%;
-    height: auto;
+    height: max-content;
     margin: auto;
     text-align: center;
     background-color: var(--light-bg-color);

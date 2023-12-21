@@ -1,5 +1,5 @@
 @if (Auth::check())
-    <section class="modal-data">
+    <section class="modal-data" style="padding: 20px 40px;">
         <div id="review_form" class="review_form">
             <h4>Viết đánh giá của bạn</h4>
             <div class="form_review_user">

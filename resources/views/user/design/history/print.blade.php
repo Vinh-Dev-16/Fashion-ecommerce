@@ -27,7 +27,7 @@
                 </div>
                 <div class="i_number">
                     <p class="p_title"></p>
-                        {!!  DNS2D::getBarcodeHTML('fashion' . $orderDetail->id, 'QRCODE') !!}
+                        {!!  DNS2D::getBarcodeHTML(route('/') . $orderDetail->id, 'QRCODE') !!}
                 </div>
                 <div class="i_address text_right">
                     <p>Tới</p>
