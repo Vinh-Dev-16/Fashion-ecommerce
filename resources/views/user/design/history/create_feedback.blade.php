@@ -33,7 +33,7 @@
                     <p style="margin-bottom: 20px">
                         <label>Tiêu đề</label>
                         <input type="text" name="title"
-                               required style="width: 95%">
+                               required style="width: 95%; padding: 8px 10px; font-size: 16px">
                     </p>
                     <div style="color:red; margin-bottom: 15px" class="text-danger error-text title_error"></div>
 
@@ -130,15 +130,38 @@
         filesImage.forEach(file => {
             images += `<div class="image-upload" style="position: relative">
                             <img src="${URL.createObjectURL(file)}" alt="">
-                            <i class="fas fa-times remove-image" onclick="removeImage(this)"></i>
+                            <i class="fas fa-times remove-image" id="removeImage" onclick="removeImage(this)"></i>
                         </div>`;
         });
         $('#show-image-upload').html(images);
     }
 
+    $(document).on('click', '.remove-image', function() {
+        removeImage(this);
+    });
+
     function removeImage(element) {
-        let index = $(element).parent().index();
+        let fileName = $(element).parent().find('img').attr('src');
+        let index = filesImage.findIndex(file => file.name === fileName);
         filesImage.splice(index, 1);
+        $(element).parent().remove();
+        let files = fileInput.files;
+        // for (let i = 0; i < files.length; i++) {
+        //     const file = files[i];
+        //     if (file) {
+        //         let name = file.name;
+        //         if (name.length >= 12) {
+        //             let splitName = name.split('.');
+        //             name = splitName[0].substring(0, 13) + "... ." + name[1];
+        //         }
+        //         if (name === $(element).parent().find('img').attr('alt')) {
+        //             fileInput.value = "";
+        //         }
+        //         xhrArray.push(name);
+        //         uploadFile(name);
+        //     }
+        // }
+        console.log(222);
     }
 
     function uploadFile(name) {
@@ -207,27 +230,30 @@
     // feedback
 
     function send_feed_back(product_id) {
+
         let editorContent = editor.getData();
         let rate = $('input[name="rate"]:checked').val();
         let title = $('input[name="title"]').val();
         let name = $('input[name="name"]').val();
         let email = $('input[name="email"]').val();
-        let image = [];
-        $('.image-upload').each(function () {
-            image.push($(this).find('img').attr('src'));
-        });
+        let formData = new FormData();
+        filesImage.forEach(
+            file => formData.append('images[]', file)
+        );
+        formData.append('product_id', product_id);
+        formData.append('rate', rate);
+        formData.append('title', title);
+        formData.append('content', editorContent);
+        formData.append('name', name);
+        formData.append('email', email);
+        console.log(formData)
         $.ajax({
             url: "{{ route('history.feedback.store') }}",
             method: "POST",
-            data: {
-                product_id: product_id,
-                rate: rate,
-                title: title,
-                content: editorContent,
-                images: image,
-                name: name,
-                email: email,
-            },
+            processData: false,  // Không xử lý dữ liệu
+            contentType: false,  // Không đặt kiểu dữ liệu
+            data: formData,
+
             beforeSend: function () {
                 $(document).find('div.text-danger').text('');
             },
@@ -242,19 +268,10 @@
                         createToast(data.message);
                         break;
                     case 1:
-                        $('#review_ul').fadeOut(300, function () {
-                            $(this).html(data.view);
-                            $(this).fadeIn(300);
-                        });
+                        $('.modal-data').removeClass('active');
+                        $('.overlay').removeClass('active');
+                        $('.show-data').html('');
                         editor.setData('');
-                        $('.user_review')[0].reset();
-                        $('.render_count').text(data.count + ' đánh giá');
-                        $('.rate_sum').text(data.rate + ' sao');
-                        $('.count_feedback').text(data.count);
-                        $('.rate_count_start').text(data.rate);
-                        $('#show_rating').html(data.html);
-                        $('#show-image-upload').html('');
-                        $('.uploaded-area').html('');
                         createNoti(data.message);
                         break;
                 }

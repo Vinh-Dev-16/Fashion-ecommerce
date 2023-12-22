@@ -2,30 +2,27 @@
 
 namespace App\Http\Controllers\user;
 
+use App\Events\UserOrderEvent;
 use App\Http\Controllers\Controller;
+use App\Models\admin\Brand;
+use App\Models\admin\Category;
 use App\Models\admin\FeedBack;
+use App\Models\admin\Product;
+use App\Models\admin\ValueAttribute;
 use App\Models\ImageFeedBack;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
-use App\Models\admin\Product;
-use Illuminate\Support\Facades\Session;
-use App\Models\admin\Category;
-use App\Models\admin\Brand;
-use App\Models\Order;
-use App\Models\OrderDetail;
-use App\Events\UserOrderEvent;
 
-
-use App\Models\Information;
-use App\Models\admin\ValueAttribute;
-
-use Illuminate\Support\Facades\DB;
-use Exception;
 
 class payPalController extends Controller
 {
@@ -122,10 +119,10 @@ class payPalController extends Controller
             switch ($cartItem['voucher']) {
                 case ($cartItem['voucher'] == 0):
                 case(!($cartItem['voucher'])):
-                    return $subTotal + ($subTotal * 0.1) ;
+                    return $subTotal + ($subTotal * 0.1);
                     break;
                 case($cartItem['voucher'] > 0 && $cartItem['voucher'] <= 100):
-                    return $subTotal + ($subTotal * 0.1)  - ($subTotal * ($cartItem['voucher'] / 100));
+                    return $subTotal + ($subTotal * 0.1) - ($subTotal * ($cartItem['voucher'] / 100));
                     break;
                 case($cartItem['voucher'] > 100):
                     return $subTotal + ($subTotal * 0.1) - ($cartItem['voucher']);
@@ -282,7 +279,7 @@ class payPalController extends Controller
         $brands = Brand::all();
         $cart = session()->get('cart', []);
         $user = Auth::user()->with('information')->first();
-        return view('user.design.history.index', compact('user','brands', 'products', 'categories', 'cart'))->with('success', 'Đã thanh toán thành công');
+        return view('user.design.history.index', compact('user', 'brands', 'products', 'categories', 'cart'))->with('success', 'Đã thanh toán thành công');
     }
 
     public function print(Request $request): string
@@ -290,7 +287,7 @@ class payPalController extends Controller
         $id = $request->id;
         $orderDetail = OrderDetail::where('id', $id)->first();
         $user = Auth::user()->with('information')->first();
-        return view('user.design.history.print', compact('user','orderDetail'))->render();
+        return view('user.design.history.print', compact('user', 'orderDetail'))->render();
     }
 
     public function printInvoice(Request $request): \Illuminate\Http\Response
@@ -309,6 +306,7 @@ class payPalController extends Controller
             'view' => view('user.design.history.create_feedback', compact('product', 'rate', 'count'))->render(),
         ];
     }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -328,40 +326,42 @@ class payPalController extends Controller
             ];
         }
         try {
-            $input = $request->all();
-            $newFeedback = FeedBack::create([
-                'name' => $input['name'],
-                'email' => $input['email'],
-                'title' => $input['title'],
-                'content' => $input['content'],
-                'product_id' => $input['product_id'],
-                'rate' => $input['rate'],
-            ]);
-            if ($request->images) {
-                $files = $request->images;
-                foreach ($files as $file) {
-                    ImageFeedBack::create([
-                        'path' => $file,
-                        'feedback_id' => $newFeedback->id,
-                    ]);
-                }
+        $input = $request->all();
+        $newFeedback = FeedBack::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'title' => $input['title'],
+            'content' => $input['content'],
+            'product_id' => $input['product_id'],
+            'rate' => $input['rate'],
+        ]);
+        if ($request->hasFile('images')) {
+            $files = $request->file('images');
+            foreach ($files as $file) {
+                $file->storeAs('public/upload', time() . '-' . $file->getClientOriginalName());
+                $image = 'storage/upload/' . time() . '-' . $file->getClientOriginalName();
+                ImageFeedBack::query()->create([
+                    'path' => $image,
+                    'feedback_id' => $newFeedback->id,
+                ]);
             }
-            $count = FeedBack::where('product_id', $input['product_id'])->count();
-            $rateStar = FeedBack::where('product_id', $input['product_id'])->pluck('rate')->avg();
-            $rate = round($rateStar, 1);
-            Product::where('id', $input['product_id'])->update([
-                'rate' => $rate,
-                'count' => $count,
-            ]);
-            $product = Product::findOrFail($request->product_id);
-            return [
-                'status' => 1,
-                'message' => 'Gửi đánh giá thành công',
-                'count' => $count,
-                'rate' => $rate,
-                'html' => view('user.design.detail.rating', compact('product', 'rate', 'count'))->render(),
-                'view' => view('user.design.detail.feedback', compact('count', 'rate', 'product'))->render(),
-            ];
+        }
+        $count = FeedBack::where('product_id', $input['product_id'])->count();
+        $rateStar = FeedBack::where('product_id', $input['product_id'])->pluck('rate')->avg();
+        $rate = round($rateStar, 1);
+        Product::where('id', $input['product_id'])->update([
+            'rate' => $rate,
+            'count' => $count,
+        ]);
+        $product = Product::findOrFail($request->product_id);
+        return [
+            'status' => 1,
+            'message' => 'Gửi đánh giá thành công',
+            'count' => $count,
+            'rate' => $rate,
+            'html' => view('user.design.detail.rating', compact('product', 'rate', 'count'))->render(),
+            'view' => view('user.design.detail.feedback', compact('count', 'rate', 'product'))->render(),
+        ];
         } catch (\Exception $e) {
             return [
                 'status' => 2,

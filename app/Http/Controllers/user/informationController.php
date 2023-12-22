@@ -171,7 +171,7 @@ class informationController extends Controller
             ]);
         }
 
-//        try {
+        try {
 
             $input = $request->all();
             unset($input['_token']);
@@ -191,12 +191,12 @@ class informationController extends Controller
                 'status' => STATUS_SUCCESS,
                 'message' => 'Sửa địa chỉ thành công',
             ]);
-//        } catch (Exception $e) {
-//            return response()->json([
-//                'status' => STATUS_FAIL,
-//                'message' => 'Đã xảy ra lỗi',
-//            ]);
-//        }
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => STATUS_FAIL,
+                'message' => 'Đã xảy ra lỗi',
+            ]);
+        }
     }
 
     public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application

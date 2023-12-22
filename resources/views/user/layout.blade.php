@@ -337,10 +337,10 @@
     <div class="header_main mobile_hide">
         <div class="container">
             <div class="wrapper flexitem">
-                <div class="left">nào
+                <div class="left">
                     <div class="dpt_cat">
                         <div class="dpt_head">
-                            <div class="main_text">Mua </div>
+                            <div class="main_text">Mua nào</div>
                             <div class="mini_text mobile_hide">Tất cả {{ \App\Models\admin\Product::count()  }} sản
                                 phẩm
                             </div>

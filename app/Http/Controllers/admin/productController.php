@@ -5,17 +5,15 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\admin\Brand;
-use App\Models\Material;
-use Illuminate\Http\Request;
-use App\Models\admin\Product;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use App\Models\admin\Category;
 use App\Models\admin\Image;
+use App\Models\admin\Product;
 use App\Models\admin\ValueAttribute;
+use App\Models\Material;
 use App\Models\Voucher;
 use Exception;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class productController extends Controller
 {
@@ -70,6 +68,7 @@ class productController extends Controller
             'sale' => 'required|integer',
             'tags' => 'required',
             'material' => 'required',
+            'weight' => 'required|integer',
         ], [
             'name.required' => 'Tên sản phẩm không được để trống',
             'slug.unique' => 'Tên sản phẩm đã tồn tại',
@@ -81,9 +80,11 @@ class productController extends Controller
             'stock.integer' => 'Số lượng sản phẩm phải là số',
             'desce.required' => 'Mô tả sản phẩm không được để trống',
             'brand_id.required' => 'Thương hiệu sản phẩm không được để trống',
-        'sale.integer' => 'Giảm giá sản phẩm phải là số',
+            'sale.integer' => 'Giảm giá sản phẩm phải là số',
             'tags.required' => 'Tags sản phẩm không được để trống',
             'material.required' => 'Chất liệu sản phẩm không được để trống',
+            'weight.required' => 'Trọng lượng sản phẩm không được để trống',
+            'weight.integer' => 'Trọng lượng sản phẩm phải là số',
         ]);
 
         if ($validator->fails()) {
@@ -93,18 +94,18 @@ class productController extends Controller
             ]);
         }
 
-         try {
+        try {
             $input = $request->all();
             unset($input['_token']);
             $products = Product::create($input);
             $products->categories()->attach($request->input('id_category'));
             $products->attributevalues()->attach($request->input('attribute_value_id'));
-             for ($i = 0; $i < count($request->material); $i++) {
-                 Material::create([
-                      'name' => $request->material[$i],
-                      'product_id' => $products->id,
-                 ]);
-                }
+            for ($i = 0; $i < count($request->material); $i++) {
+                Material::create([
+                    'name' => $request->material[$i],
+                    'product_id' => $products->id,
+                ]);
+            }
             for ($j = 0; $j < count($request->path); $j++) {
                 Image::create([
                     'path' => $request->path[$j],
@@ -112,9 +113,9 @@ class productController extends Controller
                 ]);
             }
             return redirect()->route('admin.product.index')->with('success', 'Đã thêm sản phẩm thành công');
-         } catch (Exception $e) {
-             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
-         }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi');
+        }
     }
 
     public function edit($slug)
@@ -171,7 +172,7 @@ class productController extends Controller
                 ->whereNotIn('name', $materialNames)
                 ->delete();
 
-           $existingImageNames = $images->pluck('path')->toArray();
+            $existingImageNames = $images->pluck('path')->toArray();
             foreach ($imageNames as $imageName) {
                 if (in_array($imageName, $existingImageNames)) {
                     Image::where('product_id', $product->id)
@@ -189,7 +190,7 @@ class productController extends Controller
                 ->delete();
 
 
-          return redirect()->route('admin.product.index')->with('success', 'Đã cập nhật sản phẩm thành công');
+            return redirect()->route('admin.product.index')->with('success', 'Đã cập nhật sản phẩm thành công');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi');
         }

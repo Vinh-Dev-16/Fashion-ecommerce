@@ -35,6 +35,7 @@ class Product extends Model
             'tags',
             'view',
             'count',
+            'weight',
         ];
 
 

@@ -118,7 +118,7 @@
             data: {
                 id: id,
                 like: like,
-                user_id: $('[name="user_id"]').val(),
+                user_id: {{Auth::id()}},
             },
             success: function (data) {
                 $('#review_ul').html(data.view);
