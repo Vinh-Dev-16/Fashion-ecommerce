@@ -13,6 +13,7 @@ use App\Models\Material;
 use App\Models\Voucher;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class productController extends Controller
@@ -38,8 +39,9 @@ class productController extends Controller
                 ->orWhere('stock', 'like', '%' . $request->search . '%')
                 ->orWhere('discount', 'like', '%' . $request->search . '%');
         }
-
-        $products = $products->paginate(6);
+        $currentPage = $request->input('page', 1);
+        Session::put('page_product', $currentPage);
+        $products = $products->paginate(6, ['*'], 'page', $currentPage);
         return view('admin.product.list_data', compact('products'))->render();
     }
 
@@ -118,8 +120,9 @@ class productController extends Controller
         }
     }
 
-    public function edit($slug)
+    public function edit(Request $request)
     {
+        $slug = $request->get('slug');
         $brands = Brand::all();
         $categories = Category::all();
         $product = Product::where('slug', $slug)->first();
@@ -127,14 +130,52 @@ class productController extends Controller
         $sizes = ValueAttribute::where('attribute_id', '=', 1)->get();
         $selects = $product->categories()->pluck('categories.name', 'categories.id');
         $options = $product->attributevalues()->pluck('attribute_value.id', 'attribute_value.value');
-        return view('admin.product.edit',
-            compact('product', 'categories', 'brands', 'selects', 'colors', 'sizes', 'options'));
+        return view('admin.product.modal.edit',
+            compact('product', 'categories', 'brands', 'selects', 'colors', 'sizes', 'options'))
+            ->render();
     }
 
 
-    public function update(Request $request, $id, ProductRequest $productRequest)
+    public function update(Request $request, ProductRequest $productRequest)
     {
-//        $validate = $productRequest->validated();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'slug' => 'unique:products|required',
+            'price' => 'required|integer',
+            'stock' => 'required|integer',
+            'desce' => 'required',
+            'brand_id' => 'required',
+            'path' => 'required',
+            'sale' => 'required|integer',
+            'tags' => 'required',
+            'material' => 'required',
+            'weight' => 'required|integer',
+        ], [
+            'name.required' => 'Tên sản phẩm không được để trống',
+            'slug.unique' => 'Tên sản phẩm đã tồn tại',
+            'slug.required' => 'Slug không được để trống',
+            'name.max' => 'Tên sản phẩm không được quá 255 ký tự',
+            'price.required' => 'Giá sản phẩm không được để trống',
+            'price.integer' => 'Giá sản phẩm phải là số',
+            'stock.required' => 'Số lượng sản phẩm không được để trống',
+            'stock.integer' => 'Số lượng sản phẩm phải là số',
+            'desce.required' => 'Mô tả sản phẩm không được để trống',
+            'brand_id.required' => 'Thương hiệu sản phẩm không được để trống',
+            'sale.integer' => 'Giảm giá sản phẩm phải là số',
+            'tags.required' => 'Tags sản phẩm không được để trống',
+            'material.required' => 'Chất liệu sản phẩm không được để trống',
+            'weight.required' => 'Trọng lượng sản phẩm không được để trống',
+            'weight.integer' => 'Trọng lượng sản phẩm phải là số',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $validator->errors()->toArray(),
+            ]);
+        }
+
+        $id = $request->get('id');
         try {
             $product = Product::find($id);
             $input = $request->all();

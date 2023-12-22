@@ -1,35 +1,35 @@
-<div class="modal fade" id="modal-create-product" style="--bs-modal-width:50%" tabindex="-1" role="dialog"
+<div class="modal fade" id="modal-edit-product" style="--bs-modal-width:50%" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content"
              style="z-index:10000000; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
             <div class="modal-header" style="background: #5e72e4">
-                <h4 class="modal-title" style="color: white" id="myModalLabel">Thêm sản phẩm</h4>
+                <h4 class="modal-title" style="color: white" id="myModalLabel">Sửa sản phẩm</h4>
                 <button
                     class="close-modal btn btn-icon-only btn-rounded btn-outline-white mb-0 me-3 btn-sm d-flex align-items-center justify-content-center">
                     <i class="ri-close-line"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="">
-                    <div class="card-body px-3 pt-2 pb-2">
-                        <div class="card-body">
+                @can('edit-product')
+                    <form>
+                        <div class="card-body px-3 pt-2 pb-2">
                             <div class="form-group">
                                 <label for="exampleName">Tên sản phẩm</label>
-                                <input type="text" class="form-control" id="slug" onkeyup="ChangeToSlug();"
-                                       placeholder="Điền tên sản phẩm" name="name">
+                                <input type="text" class="form-control" id="slug"
+                                       value="{{ $product->name }}" name="name" onkeyup="ChangeToSlug();">
                                 <div class="text-danger error-text name_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleName">Slug sản phẩm</label>
-                                <input type="text" class="form-control" id="convert_slug" name="slug">
+                                <input type="text" class="form-control" id="convert_slug" name="slug"
+                                       value="{{$product->slug}}">
                                 <div class="text-danger error-text slug_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="examplePrice">Giá sản phẩm</label>
-                                <input type="text" id="examplePrice" name="price"
-                                       placeholder="Điền giá sản phẩm" class="form-control"
-                                       data-type="currency">
+                                <input type="text" class="form-control" data-type="currency" id="examplePrice" name="price"
+                                       value="{{ $product->price }}">
                                 <div class="text-danger error-text price_error"></div>
                             </div>
                             <div class="form-group">
@@ -40,14 +40,16 @@
                                     </span>
                                 </label>
                                 <input type="text" class="form-control" id="exampleWeight" name="weight"
-                                       placeholder="Điền cân nặng sản phẩm">
+                                       placeholder="Điền cân nặng sản phẩm" value="{{$product->weight}}">
                                 <div class="text-danger error-text weight_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="examplePrice">Category sản phẩm</label>
-                                <select class="select2" name="id_category[]" id="categories_select"
-                                        multiple="multiple"
+                                <select name="id_category[]" class="select2" id="select2" multiple="multiple"
                                         style="width: 100%">
+                                    @foreach ($selects as $id=>$name)
+                                        <option selected value="{{ $id }}">{{ $name }}</option>
+                                    @endforeach
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
@@ -56,9 +58,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="examplePrice">Brand sản phẩm</label>
-                                <select name="brand_id" class="select2" style="width: 100%">
+                                <select name="brand_id" class="form-control">
                                     @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                        <option @if ($product->brand_id == $brand->id) selected
+                                                @endif value="{{ $brand->id }}">{{ $brand->name }}</option>
                                     @endforeach
                                 </select>
                                 <div class="text-danger error-text brand_id_error"></div>
@@ -67,8 +70,14 @@
                                 <label for="examplePrice">Size sản phẩm</label>
                                 <select class="select2" name="attribute_value_id[]" multiple="multiple"
                                         style="width: 100%">
+                                    @foreach ($product->attributevalues as $select)
+                                        @if ($select->attributes->id == 1)
+                                            <option selected value="{{$select->id}}">{{$select->value}}</option>
+                                        @endif
+                                    @endforeach
                                     @foreach ($sizes as $size)
-                                        <option value="{{ $size->id }}">{{ $size->value }}</option>
+                                        <option
+                                            value="{{ $size->id }}">{{ $size->value }}</option>
                                     @endforeach
                                 </select>
                                 <div class="text-danger error-text attribute_value_id_error"></div>
@@ -77,8 +86,14 @@
                                 <label for="examplePrice">Màu sản phẩm</label>
                                 <select class="select2" name="attribute_value_id[]" multiple="multiple"
                                         style="width: 100%">
+                                    @foreach ($product->attributevalues as $select)
+                                        @if ($select->attributes->id == 2)
+                                            <option selected value="{{$select->id}}">{{$select->value}}</option>
+                                        @endif
+                                    @endforeach
                                     @foreach ($colors as $color)
-                                        <option value="{{ $color->id }}">{{ $color->value }}</option>
+                                        <option
+                                            value="{{ $color->id }}">{{ $color->value }}</option>
                                     @endforeach
                                 </select>
                                 <div class="text-danger error-text attribute_value_id_error"></div>
@@ -86,14 +101,14 @@
                             <div class="form-group">
                                 <label for="exampleDiscount">% giảm giá</label>
                                 <input type="text" class="form-control" id="exampleInputDiscount" name="discount"
-                                       placeholder="Điền % giảm giá">
+                                       value="{{ $product->discount }}">
                                 <div class="text-danger error-text discount_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleSale">Sản phẩm Sale</label>
                                 <select class="form-control" name="sale">
-                                    <option selected value="0">Không sale</option>
-                                    <option value="1">Sale</option>
+                                    <option @if ($product->sale == 1) selected @endif value="1">Sale</option>
+                                    <option @if ($product->sale == 0) selected @endif value="0">Không sale</option>
                                 </select>
                                 <div class="text-danger error-text sale_error"></div>
                             </div>
@@ -101,6 +116,9 @@
                                 <label for="examplePrice">Ảnh sản phẩm</label>
                                 <select class="tag_multiple" name="path[]" multiple="multiple"
                                         style="width: 100%">
+                                    @foreach ($product->images as $image)
+                                        <option value="{{$image->path}}" selected> {{$image->path}}</option>
+                                    @endforeach
                                 </select>
                                 <div class="text-danger error-text path_error"></div>
                             </div>
@@ -108,40 +126,49 @@
                                 <label for="examplePrice">Chất liệu sản phẩm</label>
                                 <select class="tag_multiple" name="material[]" multiple="multiple"
                                         style="width: 100%">
+                                    @foreach ($product->materials as $material)
+                                        <option value="{{$material->name}}" selected> {{$material->name}}</option>
+                                    @endforeach
                                 </select>
                                 <div class="text-danger error-text material_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleTags">Tag sản phẩm</label>
-                                <input type="text" class="form-control" id="exampleTags" name="tags">
-                                <div class="text-danger error-text tags_error"></div>
+                                <input type="text" class="form-control" id="exampleTags"
+                                       value="{{$product->tags}}" name="tags">
+                                @error('tags')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="exampleStock">Số tồn kho</label>
                                 <input type="text" class="form-control" id="exampleInputStock" name="stock"
-                                       placeholder="Điền số lượng hàng tồn kho">
+                                       value="{{ $product->stock }}">
                                 <div class="text-danger error-text stock_error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleDesce">Thông tin sản phẩm</label>
-                                <textarea rows="3" type="text" class="form-control" id="editor" name="desce"
-                                          placeholder="Điền thông tin sản phẩm"></textarea>
+                                <textarea type="text" class="form-control" name="desce" id="editor">
+                            {!! $product->desce !!}
+                        </textarea>
                                 <div class="text-danger error-text desce_error"></div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                @endcan
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default close-modal" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary btn-create-product">Tạo mới</button>
+                <button type="button" class="btn btn-primary btn-edit-product">Sửa</button>
             </div>
         </div>
     </div>
     <div class="overlay-modal"></div>
 </div>
 
+
 <script defer>
+
 
     $(document).ready(function () {
         $('.select2').select2();
@@ -160,18 +187,19 @@
             console.error(error);
         });
     $('.close-modal').click(function () {
-        $('#modal-create-product').modal('hide');
+        $('#modal-edit-product').modal('hide');
     });
     document.addEventListener('click', function (e) {
         e.target.classList.contains('overlay-modal') ? $('#modal-create-voucher').modal('hide') : false;
     });
     $('.btn-create-product').click(function () {
-        create_product();
+        update_product();
     })
 
-    function create_product() {
+
+    function update_product() {
         $.ajax({
-            url: '{{ route('admin.product.store') }}',
+            url: '{{ route('admin.product.update') }}',
             method: 'POST',
             data: {
                 name: $('input[name=name]').val(),
@@ -188,6 +216,7 @@
                 stock: $('input[name=stock]').val(),
                 weight: $('input[name=weight]').val(),
                 desce: editor.getData(),
+                id: {{$product->id}}
             },
             beforeSend: function () {
                 $(document).find('div.text-danger').text('');
@@ -201,14 +230,15 @@
                         break;
                     case 1:
                         $('#modal-create-product').modal('hide');
-                        createSuccess('Thêm sản phẩm thành công!');
+                        createSuccess('Sửa sản phẩm thành công!');
                 }
             },
             error: function (error) {
-                createToast('Thêm sản phẩm thất bại!')
+                createToast('Sửa sản phẩm thất bại!')
             }
         });
     }
+
 
 
     $("input[data-type='currency']").on({

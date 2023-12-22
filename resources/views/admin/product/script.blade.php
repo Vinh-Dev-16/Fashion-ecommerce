@@ -75,4 +75,21 @@
         });
     }
 
+ function modal_edit(slug) {
+     $.ajax({
+         url: '{{ route('admin.product.edit') }}',
+         method: 'GET',
+         data: {
+             slug: slug,
+         },
+         success: function (data) {
+             $('#modal-create').html(data);
+             $('#modal-edit-product').modal('show');
+         },
+         error: function (error) {
+             console.log(error);
+         }
+     });
+    }
+
 </script>
